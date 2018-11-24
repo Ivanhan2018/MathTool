@@ -72,7 +72,10 @@ void __stdcall pcbub(char *p,int n);
 void __stdcall pchap(char *p,int n);
 void __stdcall pcqck(char *p,int n);
 void __stdcall pcshl(char *p,int n);
-void __stdcall pibub(int *p,int n);
+void __stdcall mysort1(int *p,int n,int ascending);//ascending=1表示升序，0表示降序
+void __stdcall mysort2(int *p,int n,int ascending);
+void __stdcall reversed(int* arr, int n);
+void __stdcall pibub(int *p,int n);//整数冒泡升序排序
 void __stdcall pihap(int *p,int n);
 void __stdcall piqck(int *p,int n);
 void __stdcall pishl(int *p,int n);

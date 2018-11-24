@@ -2190,6 +2190,115 @@ void __stdcall pcshl(char *p,int n)
     p[i]=t; *m=i;
     return;
   }
+
+void __stdcall pibub(int *p,int n)
+{ int m,k,j,i,d;
+k=0; m=n-1;
+while (k<m)
+{ j=m-1; m=0;
+for (i=k; i<=j; i++)
+if (p[i]>p[i+1])
+{ d=p[i]; p[i]=p[i+1]; p[i+1]=d; m=i;}
+j=k+1; k=0;
+for (i=m; i>=j; i--)
+if (p[i-1]>p[i])
+{ d=p[i]; p[i]=p[i-1]; p[i-1]=d; k=i;}
+}
+return;
+}
+
+void __stdcall mysort1(int *p,int n,int ascending)
+{
+	int temp,i,j;
+	if(ascending)
+	{
+		for(i=0;i<n;i++)
+		{
+			for(j=0;j<i;j++)
+			{
+				if(p[j]>p[i])//选择升序排序
+				{
+					temp=p[i];
+					//插入
+					for(int k=i;k>=j;k--)p[k]=p[k-1];
+					p[j]=temp;
+				}
+			}
+			printf("A[i=%d]=",i);
+			for(int k=0;k<n;k++) 
+				printf("%d",p[k]);
+			printf("\n");
+		}
+	}
+	else
+	{
+		for(i=0;i<n-1;i++)
+		{
+			for(j=0;j<n-1;j++)
+				if(p[j]<p[j+1])//选择降序
+				{
+					temp=p[j];
+					p[j]=p[j+1];
+					p[j+1]=temp;
+				}
+		}
+	}
+}
+
+void __stdcall mysort2(int *p,int n,int ascending)
+{ 
+	int m,k,j,i,d;
+	k=0; m=n-1;
+	while (k<m)
+	{ 
+		j=m-1; m=0;
+		for (i=k; i<=j; i++)
+{
+		if (p[i]>p[i+1])
+		{ 
+			d=p[i]; 
+			p[i]=p[i+1]; 
+			p[i+1]=d; 
+			m=i;
+		}
+			printf("A[i=%d]=",i);
+			for(int k=0;k<n;k++) 
+				printf("%d",p[k]);
+			printf("\n");
+}
+		j=k+1; 
+		k=0;
+		for (i=m; i>=j; i--)
+{
+		if (p[i-1]>p[i])
+		{ 
+			d=p[i]; 
+			p[i]=p[i-1]; 
+			p[i-1]=d; 
+			k=i;
+		}
+			printf("A[i=%d]=",i);
+			for(int k=0;k<n;k++) 
+				printf("%d",p[k]);
+			printf("\n");
+}
+	}
+       if(ascending==0)
+           reversed(p,n);
+	return;
+}
+
+void __stdcall reversed(int* arr, int n)
+{   
+   for(int i=0;i<n/2;i++)
+   {
+      int k=n-1-i;
+      int temp=arr[k];
+      arr[k]=arr[i];
+      arr[i]=temp;
+   }
+} 
+
   void __stdcall piqck(int *p,int n)
   { int m,i0,*i,s0,*s;
     i=&i0;
