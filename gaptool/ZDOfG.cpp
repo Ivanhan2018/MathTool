@@ -8,7 +8,7 @@
 #include<algorithm>
 using namespace std;
 
-// 根据群的凯莱表分析其中心、换位子群的小工具ZDOfG.exe
+// 根据群的凯莱表分析其中心、换位子群、射影中心、射影换位子群的小工具ZDOfG.exe
 
 std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
 {
@@ -203,6 +203,29 @@ bool SaveTable(const char *fn,const vector<vector<int> > &A)
 			{
 				fprintf(fp,"%d ",A[i][j]);
 			}
+			fprintf(fp,"\r\n");
+		}
+		fclose(fp);
+	}
+	return true;
+}
+
+bool PrintSaveTable(const char *fn,const vector<vector<int> > &A)
+{
+	vector<int> AFlag=IsLegalMtx(A);
+	if(AFlag[0]==-1)
+		return false;
+	FILE *fp;
+	if((fp=fopen(fn,"ab+"))!=NULL)
+	{
+		for(int i=0;i<AFlag[1];i++)
+		{
+			for(int j=0;j<AFlag[2];j++)
+			{
+		           printf("%d ",A[i][j]);
+                           fprintf(fp,"%d ",A[i][j]);
+			}
+			printf("\r\n");
 			fprintf(fp,"\r\n");
 		}
 		fclose(fp);
@@ -443,6 +466,96 @@ bool SaveZDOfG(const char *srcfn,const char *Desfn,const char *DesGn=0)
 	return true;
 }
 
+vector<vector<int> > quotientGN(const vector<vector<int> > &vvG,const vector<int> &vN)
+{
+	vector<vector<int> > ret;
+	int G=vvG.size();
+	int N=vN.size();
+	for(int i=0;i<G;i++)
+	{
+		vector<int> I;
+		for(int j=0;j<N;j++)
+		{
+			int ij=vvG[i][vN[j]]-1;
+			I.push_back(ij);
+		}
+		bool bNew=true;
+		for(int k=0;k<ret.size();k++)
+		{
+			//判断I中的元素是否在ret中
+			vector<int>::iterator p;
+			p=std::find(ret[k].begin(),ret[k].end(),I[0]);
+			if(p!=ret[k].end())
+			{
+				bNew=false;
+				break;
+			}
+		}
+		if(bNew)
+		{
+			ret.push_back(I);
+		}
+	}
+	return ret;
+}
+
+vector<vector<int> > quotientGNTable(const vector<vector<int> > &vvG,const vector<int> &vN)
+{
+	vector<vector<int> > ret1=quotientGN(vvG,vN);
+	int G=vvG.size();
+	int H=ret1.size();
+	vector<vector<int> > ret(H);
+	for(int i=0;i<H;i++)
+	{
+		vector<int> I(H);
+		for(int j=0;j<H;j++)
+		{
+			int ij=vvG[ret1[i][0]][ret1[j][0]]-1;
+			int IJ=-1;
+			for(int k=0;k<ret1.size();k++)
+			{
+				vector<int>::iterator p;
+				p=std::find(ret1[k].begin(),ret1[k].end(),ij);
+				if(p!=ret1[k].end())
+				{
+					IJ=k+1;
+					break;
+				}
+			}
+			I[j]=IJ;
+		}
+		ret[i]=I;
+	}
+	return ret;
+}
+
+bool SavePZDTableOfG(const char *srcfn,const char *Desfn,const char *DesGn=0)
+{
+	vector<char> A=lof(srcfn);
+	string strA=CharArrToStr(CharArrToNormal(A));
+	vector<vector<int> > vvA=atoTable(strA.c_str());
+	vector<int> AFlag=IsLegalMtx(vvA);
+	if(AFlag[0]==-1||AFlag[1]!=AFlag[2])
+		return false;
+
+	vector<int> ZA=CenterOfG(vvA);//0表示Z(D_3)={1}=C_1
+	vector<vector<int> > PZA=quotientGNTable(vvA,ZA);
+	printf("射影中心PZTableOfG：\n");
+	ofstream fout(Desfn,ios::app);
+	fout<<"射影中心PZTableOfG："<<endl;
+	PrintSaveTable(Desfn,PZA);
+
+	vector<int> DA=commutatorOfG(vvA);//0表示(D_4)'={1}=C_1
+	vector<vector<int> > PDA=quotientGNTable(vvA,DA);
+	printf("射影换位子群PDTableOfG：\n");
+	ofstream foutD(Desfn,ios::app);
+	foutD<<"射影换位子群PDTableOfG："<<endl;
+	PrintSaveTable(Desfn,PDA);
+
+	return true;
+}
+
+
 // 从路径名中分离出文件名
 char * find_file_name(char *name)
 {
@@ -511,6 +624,11 @@ int main(int argc, char **argv)
 	if(bret)
 	{
 		printf("计算群的中心、换位子群完毕！\n");
+	}
+	bool bret2=SavePZDTableOfG(sz,sz1,sz2);
+	if(bret2)
+	{
+		printf("计算群的射影中心、射影换位子群完毕！\n");
 	}
 
 	return 0;
