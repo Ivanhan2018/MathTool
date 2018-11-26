@@ -1,0 +1,6 @@
+G4ElementToOrder(0)=1
+G4ElementToOrder(1)=4
+G4ElementToOrder(2)=2
+G4ElementToOrder(3)=4
+Z4有1个1阶元，1个2阶元，2个4阶元
+交换,幺环,幂等元个数n2=2,2次幂零元个数n4=1,2~3次幂零元个数n5=1,零乘个数n6=8,零因子个数n7=1,

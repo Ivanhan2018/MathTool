@@ -1,0 +1,5 @@
+G4ElementToOrder(0)=1
+G4ElementToOrder(1)=2
+G4ElementToOrder(2)=2
+G4ElementToOrder(3)=2
+F4有1个1阶元，3个2阶元，0个4阶元
