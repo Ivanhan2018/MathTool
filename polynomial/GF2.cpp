@@ -4,9 +4,10 @@
 #include <cstring>
 #include <cmath>
 #include <iostream>
-#include "GaloisField.h"
-#include "GaloisFieldElement.h"
-#include "GaloisFieldPolynomial.h"
+#include "polyInF2.h"
+//#include "GaloisField.h"
+//#include "GaloisFieldElement.h"
+//#include "GaloisFieldPolynomial.h"
 using namespace std;
 
 int Mod(int ret,unsigned int n)
@@ -27,11 +28,11 @@ bool FindrootInFp(vector<unsigned int>& v,int p)
                 int ret=0;
 		for(int j=0;j<v.size();j++)
 		{
-                  ret+=v[j]*pow(i,v.size()-1-j);
+                   ret+=v[j]*pow(i,v.size()-1-j);
 		}
 		if(Mod(ret,p)==0)
 		{
-	          return true;
+	           return true;
 		}
 	}
 
@@ -108,6 +109,71 @@ vector<vector<unsigned int> > findIrreducible(int n)
    return vv;
 }
 
+vector<unsigned int> Int2Vec(int n,int a)
+{
+     vector<unsigned int> v(n+1);
+     for(int j=0;j<n+1;j++)
+     { 
+       v[j]=((a>>(n-j)) & 1);
+     }
+     return v;
+}
+
+string Vec2Str(vector<unsigned int>& A)
+{
+   string str;
+   for(int i=0;i<A.size();i++)
+   {
+     char sz[10]={0};
+     sprintf(sz,"%d",A[i]);
+     str+=sz;
+   }
+   return str;
+}
+
+string Int2Str(int n,int a)
+{
+    vector<unsigned int> A=Int2Vec(n,a);
+    string str=Vec2Str(A);
+    return str;
+}
+
+vector<vector<int> > makeAddTable(int n,int m)
+{
+        vector<vector<int> > vv;
+	for(int i=0;i<m;i++)
+	{
+                vector<int> v;
+ 		for(int j=0;j<m;j++)
+		{
+	            polyInF2 fi(Int2Str(n,i)),fj(Int2Str(n,j));
+	            polyInF2 fij=fi+fj;
+	            int ij=polyInF2::ToUINT64(fij);
+                    v.push_back(ij);
+		}
+		vv.push_back(v);
+	}
+        return vv;
+}
+
+vector<vector<int> > makeMulTable(polyInF2 &f,int n,int m)
+{
+        vector<vector<int> > vv;
+	for(int i=0;i<m;i++)
+	{
+                vector<int> v;
+ 		for(int j=0;j<m;j++)
+		{
+	            polyInF2 fi(Int2Str(n,i)),fj(Int2Str(n,j));
+	            polyInF2 fij=(fi*fj)%f;
+	            int ij=polyInF2::ToUINT64(fij);
+                    v.push_back(ij);
+		}
+		vv.push_back(v);
+	}
+        return vv;
+}
+
 int main(int argc, char **argv)
 {
 	char szn[100]={0};
@@ -125,7 +191,14 @@ int main(int argc, char **argv)
 	sprintf(sz1,"F%d.txt",m);
 
 	vector<vector<unsigned int> > vv=findIrreducible(n); 
-	galois::GaloisField gf(n,&vv[0][0]);
+	//galois::GaloisField gf(n,&vv[0][0]);
+
+        string strf=Vec2Str(vv[0]);
+	polyInF2 f(strf);
+	const char *szf=f.isIrreducible()?(f.isPrimitive()?"是本原多项式":"是非本原不可约多项式"):"是可约多项式";
+	cout <<"f="<<f<<"="<<polyInF2::ToStr(f).c_str()<<"="<<polyInF2::ToUINT64(f)<<szf<<endl;
+        vector<vector<int> > gfadd=makeAddTable(n,m);
+        vector<vector<int> > gfmul=makeMulTable(f,n,m);
 
 	FILE *fp=fopen(sz1,"w");
 	// 生成加群凯莱表
@@ -135,8 +208,8 @@ int main(int argc, char **argv)
 	{
 		for(int j=0;j<m;j++)
 		{
-			printf("%d ",gf.add(i,j)+1);
-			fprintf(fp,"%d ",gf.add(i,j)+1);
+			printf("%d ",gfadd[i][j]+1);
+			fprintf(fp,"%d ",gfadd[i][j]+1);
 		}
 		printf("\n");
 		fprintf(fp,"\n");
@@ -148,8 +221,8 @@ int main(int argc, char **argv)
 	{
 		for(int j=0;j<m;j++)
 		{
-			printf("%d ",gf.mul(i,j)+1);
-			fprintf(fp,"%d ",gf.mul(i,j)+1);
+			printf("%d ",gfmul[i][j]+1);
+			fprintf(fp,"%d ",gfmul[i][j]+1);
 		}
 		printf("\n");
 		fprintf(fp,"\n");
