@@ -1,4 +1,4 @@
-#include "polyInF2.h"
+ï»¿#include "polyInF2.h"
 
 vector<polyInF2>				polyInF2::irreducible;
 
@@ -28,9 +28,9 @@ polyInF2::polyInF2(const string & str) {
 		char ch = str[i++];
 		if (!isBegin) {
 			if (ch == '0') {				
-				continue;			// ºöÂÔÇ°µ¼Áã
+				continue;			// å¿½ç•¥å‰å¯¼é›¶
 			} else {
-				isBegin = true;		// ¿ªÊ¼¶ÁÈ¡
+				isBegin = true;		// å¼€å§‹è¯»å–
 			}
 		}
 		if (ch == '0') {
@@ -52,10 +52,10 @@ polyInF2::~polyInF2() {
 
 void polyInF2::refresh() {
 
-	while (coef.size() && *(coef.rbegin()) == 0) {	// Çå³ı¸ßÎ»ÎŞĞ§Áã
+	while (coef.size() && *(coef.rbegin()) == 0) {	// æ¸…é™¤é«˜ä½æ— æ•ˆé›¶
 		coef.pop_back();
 	}
-	if (coef.empty()) {	// ²¹Áã
+	if (coef.empty()) {	// è¡¥é›¶
 		coef.push_back(0);
 	}
 }
@@ -85,12 +85,12 @@ polyInF2 polyInF2::operator + (const polyInF2 & rval) const{
 	const size_t		b_size = vec_b.size();
 	const size_t		min_size = min(a_size, b_size);
 	
-	for (size_t idx = 0; idx < min_size; idx++) {	// Ä£2¼Ó
+	for (size_t idx = 0; idx < min_size; idx++) {	// æ¨¡2åŠ 
 		if (vec_b[idx]) {
 			vec_a[idx] = 1 - vec_a[idx];
 		}
 	}
-	if (b_size > min_size) {	// Èôb±Èa³¤£¬¸½¼ÓaµÄ¸ßÎ»
+	if (b_size > min_size) {	// è‹¥bæ¯”aé•¿ï¼Œé™„åŠ açš„é«˜ä½
 		vec_a.insert(vec_a.end(), vec_b.begin() + min_size, vec_b.end());
 	}
 	RetVal.refresh();
@@ -112,8 +112,8 @@ polyInF2 polyInF2::operator * (const polyInF2 & rval) const {
 	const size_t		a_size = vec_a.size();
 	const size_t		b_size = vec_b.size();	
 
-	vec_r.resize(a_size + b_size - 1);	// Ô¤Áô½á¹ûÊı×é
-	for (size_t b_idx = 0; b_idx < b_size; b_idx++) {	// Î»ÒÆÀÛ¼Ó
+	vec_r.resize(a_size + b_size - 1);	// é¢„ç•™ç»“æœæ•°ç»„
+	for (size_t b_idx = 0; b_idx < b_size; b_idx++) {	// ä½ç§»ç´¯åŠ 
 		if (!vec_b[b_idx])
 			continue;
 		for (size_t a_idx = 0; a_idx < a_size; a_idx++) {
@@ -140,16 +140,16 @@ polyInF2 polyInF2::operator % (const polyInF2 & rval) const {
 	const size_t		b_size = vec_b.size();
 	size_t				a_size = vec_a.size();
 
-	while (a_size >= b_size) {	// ÖğÎ»³ı·¨
+	while (a_size >= b_size) {	// é€ä½é™¤æ³•
 		a_size--;
-		if (vec_a[a_size] == 1) {	// ²âÊÔ×î¸ßÎ»£¬Î»1Ê±¿É³ı
-			for (size_t i = 1; i < b_size; i++) {	// Ä£2¼Ó£¬×î¸ßÎ»²»±Ø²ÎÓëÔËËã
+		if (vec_a[a_size] == 1) {	// æµ‹è¯•æœ€é«˜ä½ï¼Œä½1æ—¶å¯é™¤
+			for (size_t i = 1; i < b_size; i++) {	// æ¨¡2åŠ ï¼Œæœ€é«˜ä½ä¸å¿…å‚ä¸è¿ç®—
 				if (vec_b[b_size - 1 - i]) {
 					vec_a[a_size - i] = 1 - vec_a[a_size - i];
 				}				
 			}
 		}
-		vec_a.pop_back();	// É¾³ı×î¸ßÎ»
+		vec_a.pop_back();	// åˆ é™¤æœ€é«˜ä½
     }
 	RetVal.refresh();
 	return RetVal;
@@ -169,10 +169,10 @@ polyInF2 polyInF2::operator / (const polyInF2 & rval) const {
 	const size_t		b_size = vec_b.size();
 
 	size_t				a_size = vec_a.size();
-	while (a_size >= b_size) {	// ÖğÎ»³ı·¨
+	while (a_size >= b_size) {	// é€ä½é™¤æ³•
 		a_size--;
-		if (vec_a[a_size] == 1) {	// ²âÊÔ×î¸ßÎ»£¬Î»1Ê±¿É³ı
-			for (size_t i = 1; i < b_size; i++) {	// Ä£2¼Ó£¬×î¸ßÎ»²»±Ø²ÎÓëÔËËãÁô×÷½á¹û
+		if (vec_a[a_size] == 1) {	// æµ‹è¯•æœ€é«˜ä½ï¼Œä½1æ—¶å¯é™¤
+			for (size_t i = 1; i < b_size; i++) {	// æ¨¡2åŠ ï¼Œæœ€é«˜ä½ä¸å¿…å‚ä¸è¿ç®—ç•™ä½œç»“æœ
 				if (vec_b[b_size - 1 - i]) {
 					vec_a[a_size - i] = 1 - vec_a[a_size - i];
 				}
@@ -180,7 +180,7 @@ polyInF2 polyInF2::operator / (const polyInF2 & rval) const {
 		}
     }
 	if (vec_a.size() >= b_size) {
-		vec_a.erase(vec_a.begin(), vec_a.begin() + b_size - 1);	// É¾³ıÉÌÖĞÎŞÓÃµÄµÍÎ»
+		vec_a.erase(vec_a.begin(), vec_a.begin() + b_size - 1);	// åˆ é™¤å•†ä¸­æ— ç”¨çš„ä½ä½
 	} else {
 		vec_a.clear();
 	}
@@ -205,9 +205,9 @@ bool polyInF2::isIrreducible() const {
 	}
 
 	const size_t	m = coef.size() - 1;
-	// Éú³É´ÎÊı²»¸ßÓÚ [m/2] µÄ²»¿ÉÔ¼¶àÏîÊ½±í	
+	// ç”Ÿæˆæ¬¡æ•°ä¸é«˜äº [m/2] çš„ä¸å¯çº¦å¤šé¡¹å¼è¡¨	
 	polyInF2::generateIrreducible(m/2);
-	// ²âÊÔÊÇ·ñÎª²»¿ÉÔ¼¶àÏîÊ½
+	// æµ‹è¯•æ˜¯å¦ä¸ºä¸å¯çº¦å¤šé¡¹å¼
 	size_t		i = 0;
 	while (i < polyInF2::irreducible.size()) {
 		if (polyInF2::irreducible[i].coef.size() > (m/2 + 1))
@@ -227,7 +227,7 @@ bool polyInF2::isPrimitive_step2() const {
 	polyInF2			f;
 	const size_t	m = coef.size() - 1;
 
-	// ¼ì²â¿ÉÕû³ı x^n + 1 ( n = 2^m - 1 )
+	// æ£€æµ‹å¯æ•´é™¤ x^n + 1 ( n = 2^m - 1 )
 	if (m > 8 * sizeof(size_t)) {
 		cerr<<"2^"<<(unsigned long)m<<"-1 is out of range!"<<endl;
 		return false;
@@ -245,9 +245,9 @@ bool polyInF2::isPrimitive_step2() const {
 		return false;
 	}
 
-	// ¼ì²â²»¿ÉÕû³ı x^n + 1 ( m <= n < 2^m - 1 )
+	// æ£€æµ‹ä¸å¯æ•´é™¤ x^n + 1 ( m <= n < 2^m - 1 )
 
-	// ·½·¨Ò»£º¸ßÎ»¸ßÎ»
+	// æ–¹æ³•ä¸€ï¼šé«˜ä½é«˜ä½
 	// m = 10, 1202 ms
 	// m = 11, 11256 ms
 	// m = 12, 54588 ms
@@ -262,7 +262,7 @@ bool polyInF2::isPrimitive_step2() const {
 	//	}
 	//}
 
-	// ·½·¨¶ş£ºµÍÎ»¿ªÊ¼
+	// æ–¹æ³•äºŒï¼šä½ä½å¼€å§‹
 	// m = 10, 991 ms
 	// m = 11, 11196 ms
 	// m = 12, 40879 ms
@@ -318,7 +318,7 @@ polyInF2 polyInF2::inverse (const polyInF2 & p) const {
 		return polyInF2();
 	}
 
-	// Éú³ÉÏµÊı²éÕÒ±í
+	// ç”Ÿæˆç³»æ•°æŸ¥æ‰¾è¡¨
 	vector<polyInF2>		Table;
 	polyInF2				f;
 	size_t				idx;
@@ -343,13 +343,13 @@ polyInF2 polyInF2::inverse (const polyInF2 & p) const {
 		f.coef.push_back(1);
 	}
 
-	// Éú³É·½³Ì×é
-	// ×îºóÒ»Î»Áô×÷¸ßË¹ÏûÔª±êÖ¾Î»£¬µ¹ÊıµÚ¶şÎ»Îª·½³Ì×éÓÒ¾ØÕó
+	// ç”Ÿæˆæ–¹ç¨‹ç»„
+	// æœ€åä¸€ä½ç•™ä½œé«˜æ–¯æ¶ˆå…ƒæ ‡å¿—ä½ï¼Œå€’æ•°ç¬¬äºŒä½ä¸ºæ–¹ç¨‹ç»„å³çŸ©é˜µ
 	vector<vector<int> >		Matrix(b_max_size, vector<int>(b_max_size + 2, 0));
-	for (size_t a_idx = 0; a_idx < a_size; a_idx++) {	// ÖğÎ»³Ë·¨
+	for (size_t a_idx = 0; a_idx < a_size; a_idx++) {	// é€ä½ä¹˜æ³•
 		if (a.coef[a_idx] == 0)
 			continue;
-		for (size_t x_idx = a_idx;x_idx < a_idx + b_max_size; x_idx++) {	// ½«ÏµÊı²éÕÒ±íÄ£2¼Óµ½·½³Ì×é
+		for (size_t x_idx = a_idx;x_idx < a_idx + b_max_size; x_idx++) {	// å°†ç³»æ•°æŸ¥æ‰¾è¡¨æ¨¡2åŠ åˆ°æ–¹ç¨‹ç»„
 			//cout<<"a_"<<x_idx - a_idx<<" * "<<Table[x_idx]<<endl;
 			for (idx = 0; idx < Table[x_idx].coef.size(); idx++) {
 				//cout<<"\tMatrix["<< idx <<"]["<< x_idx - a_idx <<"] add "<< Table[x_idx].coef[idx] <<endl;
@@ -358,7 +358,7 @@ polyInF2 polyInF2::inverse (const polyInF2 & p) const {
 			}
 		}
 	}
-	Matrix[0][b_max_size] = 1;	// Ìî³äÓÒ¾ØÕó
+	Matrix[0][b_max_size] = 1;	// å¡«å……å³çŸ©é˜µ
 
 	//cout<<"Matrix:"<<endl;
 	//for (size_t i = 0; i < b_max_size; i++) {
@@ -369,18 +369,18 @@ polyInF2 polyInF2::inverse (const polyInF2 & p) const {
 	//	cout<<endl;
 	//}
 
-	// ¸ßË¹ÏûÔª·¨	
+	// é«˜æ–¯æ¶ˆå…ƒæ³•	
 	const size_t	right_bit = b_max_size;
 	const size_t	flag_bit = right_bit + 1;	
-	for (idx = 0; idx < right_bit; idx++) {	// b_max_size ÂÖ
-		for (size_t i = 0; i < right_bit; i++) {	// Ñ°ÕÒ (x^idx) ´æÔÚµÄĞĞ
-			if (!Matrix[i][idx] || Matrix[i][flag_bit])	// Ìø¹ı (x^idx) ²»´æÔÚ£¬»òÒÑ´¦ÀíµÄĞĞ
+	for (idx = 0; idx < right_bit; idx++) {	// b_max_size è½®
+		for (size_t i = 0; i < right_bit; i++) {	// å¯»æ‰¾ (x^idx) å­˜åœ¨çš„è¡Œ
+			if (!Matrix[i][idx] || Matrix[i][flag_bit])	// è·³è¿‡ (x^idx) ä¸å­˜åœ¨ï¼Œæˆ–å·²å¤„ç†çš„è¡Œ
 				continue;				
-			Matrix[i][flag_bit] = 1;	// ÉèÖÃÒÑ´¦Àí±êÖ¾
+			Matrix[i][flag_bit] = 1;	// è®¾ç½®å·²å¤„ç†æ ‡å¿—
 			for (size_t j = 0; j < right_bit; j++) {
 				if (!Matrix[j][idx] || i == j)
 					continue;				
-				// ÏûÔª
+				// æ¶ˆå…ƒ
 				for (size_t k = idx; k < flag_bit; k++) {
 					//if (!Matrix[i][k])
 					//	continue;
@@ -400,7 +400,7 @@ polyInF2 polyInF2::inverse (const polyInF2 & p) const {
 			}		
 		}
 	}
-	// ¾ØÕóÇó½â
+	// çŸ©é˜µæ±‚è§£
 	polyInF2				b;
 	b.coef.resize(b_max_size, 0);
 	for (idx = 0; idx < right_bit; idx++) {
@@ -426,7 +426,7 @@ polyInF2 polyInF2::inverse (const polyInF2 & p) const {
 
 void polyInF2::listPrimitive(const int m) {			
 
-	// Éú³É´ÎÊı²»¸ßÓÚ m µÄ²»¿ÉÔ¼¶àÏîÊ½±í				
+	// ç”Ÿæˆæ¬¡æ•°ä¸é«˜äº m çš„ä¸å¯çº¦å¤šé¡¹å¼è¡¨				
 	polyInF2::generateIrreducible(m);
 	size_t		i = 0;
 	//DWORD		Tick = GetTickCount();	
@@ -448,7 +448,7 @@ void polyInF2::generateIrreducible(const int m) {
 		polyInF2::irreducible.push_back(polyInF2("10"));
 		polyInF2::irreducible.push_back(polyInF2("11"));
 	}		
-	// Ìø¹ıÒÑ¼ÆËãºÃµÄ²»¿ÉÔ¼¶àÏîÊ½
+	// è·³è¿‡å·²è®¡ç®—å¥½çš„ä¸å¯çº¦å¤šé¡¹å¼
 	f.coef.resize(polyInF2::irreducible[polyInF2::irreducible.size() - 1].coef.size(), 0);	
 	f.coef.reserve(m + 1);
 	f.coef.push_back(1);
@@ -457,7 +457,7 @@ void polyInF2::generateIrreducible(const int m) {
 		const size_t		size = f.coef.size();
 		const size_t		max_exp = (size - 1) / 2;
 		const size_t		list_size = polyInF2::irreducible.size();
-		// Õû³ı²âÊÔ£¬±»³ıÊıÎª²»¸ßÓÚ max_exp ´ÎµÄËùÓĞ²»¿ÉÔ¼¶àÏîÊ½
+		// æ•´é™¤æµ‹è¯•ï¼Œè¢«é™¤æ•°ä¸ºä¸é«˜äº max_exp æ¬¡çš„æ‰€æœ‰ä¸å¯çº¦å¤šé¡¹å¼
 		i = 0;
 		while (i < list_size && polyInF2::irreducible[i].coef.size() <= max_exp + 1) {
 			if ((f % polyInF2::irreducible[i]).isZero())
@@ -465,11 +465,11 @@ void polyInF2::generateIrreducible(const int m) {
 			i++;
 		}
 		if (i == list_size || polyInF2::irreducible[i].coef.size() > max_exp + 1) {
-			// ¶¼²»ÄÜÕû³ıÔòÎª²»¿ÉÔ¼¶àÏîÊ½
+			// éƒ½ä¸èƒ½æ•´é™¤åˆ™ä¸ºä¸å¯çº¦å¤šé¡¹å¼
 			//cerr<<"Debug: irreducible "<<f<<endl;
 			polyInF2::irreducible.push_back(f);
 		}
-		// Éú³ÉÏÂÒ»¸ö´ı²â¶àÏîÊ½
+		// ç”Ÿæˆä¸‹ä¸€ä¸ªå¾…æµ‹å¤šé¡¹å¼
 		i = 0;
 		while (i < size) {
 			if (f.coef[i] == 0) {
