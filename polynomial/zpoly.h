@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------------
 
 #include <iostream>
-
+#include "PolyUtil.h"
 using namespace std;
 
 class zpoly
@@ -46,6 +46,25 @@ public:
 		//coef = new zpoly[b+1];
 		coef[b] = a;
 		deg = degree();
+	}
+
+	void set (const vector<vector<int> >& v) //setter function
+	{
+		for(int i=0;i<v.size();i++)
+		{
+                    set(v[i][0],v[i][1]);
+                }
+	}
+
+	bool set (const char* str) //setter function
+	{
+	     vector<vector<int> > v;
+	     bool bret=PolyUtil::parsePoly(str,v);
+             if(bret)
+             {
+                set(v);
+             }
+             return bret;
 	}
 
 	int degree()
