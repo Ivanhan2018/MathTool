@@ -18,6 +18,7 @@
 //------------------------------------------------------------------------------
 
 #include <iostream>
+#include <cstring>
 #include "PolyUtil.h"
 using namespace std;
 
@@ -116,8 +117,8 @@ public:
 		return deriv;
 	}
 
-	zpoly plus ( zpoly b )
-	{
+	zpoly operator + (const zpoly & b) const
+        {
 		zpoly a = *this; //a is the poly on the L.H.S
 		zpoly c;
 
@@ -126,10 +127,10 @@ public:
 		c.deg = c.degree();
 
 		return c;
-	}
+        }
 
-	zpoly minus ( zpoly b )
-	{
+	zpoly operator - (const zpoly & b) const
+        {
 		zpoly a = *this; //a is the poly on the L.H.S
 		zpoly c;
 
@@ -138,10 +139,10 @@ public:
 		c.deg = c.degree();
 
 		return c;
-	}
+        }
 
-	zpoly times ( zpoly b )
-	{
+	zpoly operator * (const zpoly & b) const
+        {
 		zpoly a = *this; //a is the poly on the L.H.S
 		zpoly c;
 
@@ -150,7 +151,44 @@ public:
 				c.coef[i+j] += ( a.coef[i] * b.coef[j] );
 		c.deg = c.degree();
 		return c;
-	}
+        }
+
+	zpoly operator / (const zpoly & b) const
+        {
+		zpoly a = *this; //a is the poly on the L.H.S
+                pair<zpoly,zpoly> qr=p_div(a, b);
+		zpoly c = qr.first;
+		return c;
+        }
+
+	zpoly operator % (const zpoly & b) const
+        {
+		zpoly a = *this; //a is the poly on the L.H.S
+                pair<zpoly,zpoly> qr=p_div(a, b);
+		zpoly c = qr.second;
+		return c;
+        }
+
+        /* p: poly;  d: divisor;  r: remainder; returns quotient */
+        static pair<zpoly,zpoly> p_div(zpoly p, zpoly d)
+        {        
+	   zpoly q;
+	   zpoly r=p;       
+	   int i, j;        
+	   int power = p.degree() - d.degree();        
+	   if (power < 0) 
+		return pair<zpoly,zpoly>(q,r);   
+	   for (i = p.degree(); i >= d.degree(); i--) 
+	   {                
+                int ratio = r.coef[i] / d.coef[d.degree()]; 
+		q.coef[i - d.degree()] = ratio;            
+		r.coef[i] = 0;                 
+		for (j = 0; j < d.degree(); j++)                        
+			r.coef[i - d.degree() + j] -= d.coef[j] * ratio;        
+	   }      
+	   return pair<zpoly,zpoly>(q,r);
+         } 
+
 };
 
 

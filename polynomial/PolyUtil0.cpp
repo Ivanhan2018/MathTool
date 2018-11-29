@@ -1,9 +1,27 @@
 ﻿#include <iostream>
+#include <complex>
 using namespace std;
 #include "zpoly.h"
 
 int main(int argc, char* argv[])
 {
+
+
+#if 1
+   int N=4;
+   complex<double> x(1,0);
+   complex<double> y=std::pow(x,1.f/N);
+   cout<<y<<endl;
+   DComplex x0={1,0};
+   vector<DComplex> C4=PolyUtil::CRoot(x0,N);
+   for(int i=0;i<C4.size();i++)
+   {
+    complex<double> xi(C4[i].x,C4[i].y);
+    complex<double> xiN=std::pow(*(complex<double>*)&xi,N);
+    cout<<"第"<<i+1<<"个"<<N<<"次单位根="<< xi<<",模=" << std::abs(xi) << ","<<N<<"次幂=" << xiN << endl; 
+   }
+#endif
+
 #if 1
 	 // 根据本原n次单位根计算n次分圆多项式
 	 DComplex c3pr[]={{-0.5,0.866},{-0.5,-0.866}};
@@ -86,13 +104,13 @@ int main(int argc, char* argv[])
  	b.print();
 	cout << "\n";
 
-	c = a.minus ( b ); // (7x^4 + x^2) - (6x^3 - 3x^2)
+	c = a-b; // (7x^4 + x^2) - (6x^3 - 3x^2)
 	cout << "c=a-b=";
 	c.print();
 
 	cout << "\n";
 
-	c = a.times ( b ); // (7x^4 + x^2) * (6x^3 - 3x^2)
+	c = a*b; // (7x^4 + x^2) * (6x^3 - 3x^2)
 	cout << "c=a*b=";
 	c.print();
 	cout << "\n";
@@ -107,6 +125,48 @@ int main(int argc, char* argv[])
 	cout << "c(2)=";
 	cout << c.evaluate ( 2 ); //substitue x with 2
 	cout << "\n";
+        
+        // 多项式带余除法
+#if 1
+	const char* poly="x^0+2x^1+3x^2+4x^3";
+	const char* div="x^0+2x^1+x^2";
+	const char* quot="-5x^0+4x^1";
+	const char* rem="6x^0+8x^1";
+
+	zpoly polys[5];
+	polys[0].set (poly);
+	polys[1].set (div);
+	polys[2].set (quot);
+	polys[3].set (rem);
+        polys[4]=(polys[1]*polys[2])+polys[3];
+	cout << "polys[0]=";
+	polys[0].print();
+	cout << "\n"; 
+	cout << "polys[1]=";
+	polys[1].print();
+	cout << "\n";
+	cout << "polys[2]=";
+	polys[2].print();
+	cout << "\n";
+	cout << "polys[3]=";
+	polys[3].print();
+	cout << "\n";
+	cout << "polys[4]=";
+	polys[4].print();
+	cout << "\n"; 
+
+        //pair<zpoly,zpoly> qr=zpoly::p_div(polys[0], polys[1]);
+	cout << "q=";
+	zpoly q=polys[0]/polys[1];
+        q.print();
+	//qr.first.print();
+	cout << "\n";
+	cout << "r=";
+	zpoly r=polys[0]%polys[1];
+        r.print();
+	//qr.second.print();
+	cout << "\n";     
+#endif
 
 	cin.get();
 

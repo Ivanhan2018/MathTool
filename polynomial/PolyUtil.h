@@ -32,7 +32,9 @@ public:
         // 复数的逆
         static DComplex DCAddInv(const DComplex &a);
         // 构造复数对象
-        static DComplex DComplexObj(double x,double y); 
+        static DComplex DComplexObj(double x,double y);
+        // 返回n个n次单位根
+        static vector<DComplex>  CRoot(const DComplex &z,int n);
 
 	static string stringReplace(const  string&   input,const   string&   find,const   string&   replaceWith);
 

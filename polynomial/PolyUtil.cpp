@@ -1,5 +1,42 @@
 ﻿#include "PolyUtil.h"
 
+void ontrt(double x,double y,int n,double *u,double *v)
+{ 
+	int k;
+	double r,q,t;
+	if(n<1) 
+		return;
+	q=atan2(y,x);
+	r=sqrt(x*x+y*y);
+	if(r+1.0!=1.0)
+	{ 
+		r=(1.0/n)*log(r); 
+		r=exp(r);
+	}
+	for(k=0; k<=n-1; k++)
+	{ 
+		t=(2.0*k*3.1415926+q)/n;
+		u[k]=r*cos(t); 
+		v[k]=r*sin(t);
+	}
+	return;
+}
+
+vector<DComplex>  PolyUtil::CRoot(const DComplex &z,int n)
+{
+	vector<DComplex> ret;
+	vector<double> u(n);
+	vector<double> v(n);
+	ontrt(z.x,z.y,n,&u[0],&v[0]);
+	for(int i=0;i<n;i++)
+	{
+		DComplex uv={u[i],v[i]};
+		ret.push_back(uv);
+	}
+
+	return ret;
+}
+
 // 多项式a乘以多项式b得到多项式c，deg(a)=m-1,deg(b)=n-1,deg(c)=m+n-2=k
 int PolyUtil::polymul(int a[],int m,int b[],int n,int c[],int *k) 
 { 

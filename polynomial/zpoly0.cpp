@@ -13,13 +13,13 @@ int main()
 	b.set ( 6, 3 ); //6x^3
 	b.set ( -3, 2 ); //-3x^2
 
-	c = a.minus ( b ); // (7x^4 + x^2) - (6x^3 - 3x^2)
+	c = a-b; // (7x^4 + x^2) - (6x^3 - 3x^2)
 
 	c.print();
 
 	cout << "\n";
 
-	c = a.times ( b ); // (7x^4 + x^2) * (6x^3 - 3x^2)
+	c = a*b; // (7x^4 + x^2) * (6x^3 - 3x^2)
 	c.print();
 
 	cout << "\n";
