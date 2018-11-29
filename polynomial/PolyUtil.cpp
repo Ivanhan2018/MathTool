@@ -1,5 +1,121 @@
 ﻿#include "PolyUtil.h"
 
+// 多项式a乘以多项式b得到多项式c，deg(a)=m-1,deg(b)=n-1,deg(c)=m+n-2=k
+int PolyUtil::polymul(int a[],int m,int b[],int n,int c[],int *k) 
+{ 
+ int i,j; 
+ *k=m+n-2;
+ for(i=0;i<m+n-2;i++) 
+  c[i]=0; 
+ for(i=0;i<m;i++) 
+  for(j=0;j<n;j++) 
+   c[i+j]=a[i]*b[j]+c[i+j];
+ return 0;
+}
+
+void ocmul(double a,double b,double c,double d,double *e,double *f)
+{ 
+    double p,q,s;
+    p=a*c; q=b*d; s=(a+b)*(c+d);
+    *e=p-q; *f=s-p-q;
+    return;
+}
+
+DComplex PolyUtil::DCMul(const DComplex &a,const DComplex &b)
+{
+	DComplex c;
+	ocmul(a.x,a.y,b.x,b.y,&c.x,&c.y);
+	return c;
+}
+
+DComplex PolyUtil::DCAdd(const DComplex &a,const DComplex &b)
+{
+	DComplex c={a.x+b.x,a.y+b.y};
+	return c;
+}
+
+DComplex PolyUtil::DCAddInv(const DComplex &a)
+{
+	DComplex c={-a.x,-a.y};
+	return c;
+}
+
+DComplex PolyUtil::DComplexObj(double x,double y) 
+{
+	DComplex c={x,y};
+	return c;
+}
+
+// 复数域多项式乘法
+int PolyUtil::polyCmul(DComplex a[],int m,DComplex b[],int n,DComplex c[],int *k) 
+{ 
+ int i,j; 
+ *k=m+n-2;
+ for(i=0;i<m+n-2;i++) 
+ {
+    c[i].x=0;
+	c[i].y=0;
+ }
+ for(i=0;i<m;i++) 
+  for(j=0;j<n;j++) 
+   c[i+j]=DCAdd(DCMul(a[i],b[j]),c[i+j]);
+ return 0;
+}
+
+vector<DComplex> PolyUtil::polyCmul(vector<DComplex> &a,vector<DComplex> &b) 
+{ 
+ vector<DComplex> c(a.size()+b.size()-1);
+ int k=0;
+ int ret=polyCmul(&a[0],a.size(),&b[0],b.size(),&c[0],&k);
+ return c;
+}
+
+vector<DComplex> PolyUtil::polyCmul(DComplex cnpr[],int m) 
+{
+	vector<vector<DComplex> > arr;
+	for(int i=0;i<m;i++)
+	{
+	     vector<DComplex> a;
+	     a.push_back(DCAddInv(cnpr[i]));
+	     a.push_back(DComplexObj(1,0));
+	     arr.push_back(a);
+	}
+	vector<DComplex> ret;
+	int n=arr.size();
+	if(n==0)
+		return ret;
+	if(n==1)
+		return arr[0];
+	ret=arr[0];
+	for(int i=1;i<n;i++)
+	{ 
+		vector<DComplex> retMul=polyCmul(ret,arr[i]);
+		ret=retMul;
+	}
+	return ret;
+}
+
+// 返回true，表示能转化成整系数多项式
+bool PolyUtil::CPolyToZPoly(const vector<DComplex> &c,vector<int> &z)
+{
+	z.clear();
+	int n=c.size();
+	for(int i=0;i<n;i++)
+	{
+	    int ix=floor(c[i].x+0.5);
+		int iy=floor(c[i].y+0.5);
+		if(fabs(c[i].x-ix)<0.01 && iy==0 && fabs(c[i].y-iy)<0.01)
+		{
+		   z.push_back(ix);
+		}
+		else
+		{
+		    return false;
+		}
+	}
+	return true;
+}
+
 //   原始串
 //   替换源串
 //   替换目的串

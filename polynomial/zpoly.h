@@ -48,11 +48,19 @@ public:
 		deg = degree();
 	}
 
-	void set (const vector<vector<int> >& v) //setter function
+	void set (const vector<vector<int> >& vv) //setter function
+	{
+		for(int i=0;i<vv.size();i++)
+		{
+                    set(vv[i][0],vv[i][1]);
+                }
+	}
+
+	void set (const vector<int>& v) //setter function
 	{
 		for(int i=0;i<v.size();i++)
 		{
-                    set(v[i][0],v[i][1]);
+                    set(v[i],i);
                 }
 	}
 
