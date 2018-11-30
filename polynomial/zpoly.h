@@ -1,22 +1,3 @@
-//-----------------------------zpoly.h---------------------------------
-//-----------------------------------------------------------------------------
-//
-// A zpoly Class
-//
-// Author: Iamthwee 2008 (c)
-//
-// Improvements:
-// Could use a dynamic array as opposed to a static one.
-// Could improve the print function to tidy up the output.
-// Suffers from a space complexity issue but achieves lexicographic sorting 
-// very easily. I.e. prints terms in order of powers highest to lowest
-// Could use operator overloading for code syntax candy lovers.
-//
-// Notes:
-// Bugs may exist, not thorougly tested.
-//
-//------------------------------------------------------------------------------
-
 #include <iostream>
 #include <cstring>
 #include "PolyUtil.h"
@@ -26,6 +7,7 @@ class zpoly
 {
 	//define private member functions
 private:
+	int m_p;//ÌØÕ÷p
 	int coef[100];  // array of coefficients
 	// coef[0] would hold all coefficients of x^0
 	// coef[1] would hold all x^1
@@ -35,17 +17,26 @@ private:
 
 	//define public member functions
 public:
-	zpoly() //default constructor
+	zpoly(int p=0) //default constructor
 	{
 		for ( int i = 0; i < 100; i++ )
 		{
 			coef[i] = 0;
 		}
+		m_p=p;
+	}
+	void setp(int p)
+	{
+		m_p=p;
 	}
 	void set ( int a , int b ) //setter function
 	{
-		//coef = new zpoly[b+1];
-		coef[b] = a;
+	    int a1=a;
+		if(m_p>0)
+		{
+			a1=Mod(a1,m_p);
+		}
+		coef[b] = a1;
 		deg = degree();
 	}
 
@@ -53,27 +44,27 @@ public:
 	{
 		for(int i=0;i<vv.size();i++)
 		{
-                    set(vv[i][0],vv[i][1]);
-                }
+			set(vv[i][0],vv[i][1]);
+		}
 	}
 
 	void set (const vector<int>& v) //setter function
 	{
 		for(int i=0;i<v.size();i++)
 		{
-                    set(v[i],i);
-                }
+			set(v[i],i);
+		}
 	}
 
 	bool set (const char* str) //setter function
 	{
-	     vector<vector<int> > v;
-	     bool bret=PolyUtil::parsePoly(str,v);
-             if(bret)
-             {
-                set(v);
-             }
-             return bret;
+		vector<vector<int> > v;
+		bool bret=PolyUtil::parsePoly(str,v);
+		if(bret)
+		{
+			set(v);
+		}
+		return bret;
 	}
 
 	int degree()
@@ -99,6 +90,10 @@ public:
 		int p = 0;
 		for ( int i = deg; i >= 0; i-- )
 			p = coef[i] + ( x * p );
+		if(m_p>0)
+		{
+			p=Mod(p,m_p);
+		}
 		return p;
 	}
 
@@ -117,77 +112,112 @@ public:
 		return deriv;
 	}
 
+	static int Mod(int ret,unsigned int n)
+	{
+		//assert(n>0);
+		if(ret<0)
+		{
+			int ret1=ret+(-ret+1)*n;
+			return ret1%n;
+		}
+		return ret%n;
+	}
+
 	zpoly operator + (const zpoly & b) const
-        {
+	{
 		zpoly a = *this; //a is the poly on the L.H.S
-		zpoly c;
+		zpoly c(m_p);
 
 		for ( int i = 0; i <= a.deg; i++ ) c.coef[i] += a.coef[i];
 		for ( int i = 0; i <= b.deg; i++ ) c.coef[i] += b.coef[i];
 		c.deg = c.degree();
+		if(m_p>0)
+		{
+			for ( int i = 0; i <= c.deg; i++ )
+				c.coef[i]=Mod(c.coef[i],m_p);
+		}
 
 		return c;
-        }
+	}
 
 	zpoly operator - (const zpoly & b) const
-        {
+	{
 		zpoly a = *this; //a is the poly on the L.H.S
-		zpoly c;
+		zpoly c(m_p);
 
 		for ( int i = 0; i <= a.deg; i++ ) c.coef[i] += a.coef[i];
 		for ( int i = 0; i <= b.deg; i++ ) c.coef[i] -= b.coef[i];
 		c.deg = c.degree();
+		if(m_p>0)
+		{
+			for ( int i = 0; i <= c.deg; i++ )
+				c.coef[i]=Mod(c.coef[i],m_p);
+		}
 
 		return c;
-        }
+	}
 
 	zpoly operator * (const zpoly & b) const
-        {
+	{
 		zpoly a = *this; //a is the poly on the L.H.S
-		zpoly c;
+		zpoly c(m_p);
 
 		for ( int i = 0; i <= a.deg; i++ )
 			for ( int j = 0; j <= b.deg; j++ )
 				c.coef[i+j] += ( a.coef[i] * b.coef[j] );
 		c.deg = c.degree();
+		if(m_p>0)
+		{
+			for ( int i = 0; i <= c.deg; i++ )
+				c.coef[i]=Mod(c.coef[i],m_p);
+		}
 		return c;
-        }
+	}
 
 	zpoly operator / (const zpoly & b) const
-        {
+	{
 		zpoly a = *this; //a is the poly on the L.H.S
-                pair<zpoly,zpoly> qr=p_div(a, b);
+		pair<zpoly,zpoly> qr=p_div(a, b,m_p);
 		zpoly c = qr.first;
 		return c;
-        }
+	}
 
 	zpoly operator % (const zpoly & b) const
-        {
+	{
 		zpoly a = *this; //a is the poly on the L.H.S
-                pair<zpoly,zpoly> qr=p_div(a, b);
+		pair<zpoly,zpoly> qr=p_div(a, b,m_p);
 		zpoly c = qr.second;
 		return c;
-        }
+	}
 
-        /* p: poly;  d: divisor;  r: remainder; returns quotient */
-        static pair<zpoly,zpoly> p_div(zpoly p, zpoly d)
-        {        
-	   zpoly q;
-	   zpoly r=p;       
-	   int i, j;        
-	   int power = p.degree() - d.degree();        
-	   if (power < 0) 
-		return pair<zpoly,zpoly>(q,r);   
-	   for (i = p.degree(); i >= d.degree(); i--) 
-	   {                
-                int ratio = r.coef[i] / d.coef[d.degree()]; 
-		q.coef[i - d.degree()] = ratio;            
-		r.coef[i] = 0;                 
-		for (j = 0; j < d.degree(); j++)                        
-			r.coef[i - d.degree() + j] -= d.coef[j] * ratio;        
-	   }      
-	   return pair<zpoly,zpoly>(q,r);
-         } 
+	/* p: poly;  d: divisor;  r: remainder; returns quotient */
+	static pair<zpoly,zpoly> p_div(zpoly p, zpoly d,int m_p=0)
+	{        
+		zpoly q(m_p);
+		zpoly r=p;       
+		int i, j;        
+		int power = p.degree() - d.degree();        
+		if (power < 0) 
+			return pair<zpoly,zpoly>(q,r);   
+		for (i = p.degree(); i >= d.degree(); i--) 
+		{                
+			int ratio = r.coef[i] / d.coef[d.degree()]; 
+			q.coef[i - d.degree()] = ratio;            
+			r.coef[i] = 0;                 
+			for (j = 0; j < d.degree(); j++)                        
+				r.coef[i - d.degree() + j] -= d.coef[j] * ratio;        
+		}
+		q.deg = q.degree();
+		r.deg = r.degree();
+		if(m_p>0)
+		{
+			for ( int i = 0; i <= q.deg; i++ )
+				q.coef[i]=Mod(q.coef[i],m_p);
+			for ( int i = 0; i <= r.deg; i++ )
+				r.coef[i]=Mod(r.coef[i],m_p);
+		}
+		return pair<zpoly,zpoly>(q,r);
+	} 
 
 };
 
