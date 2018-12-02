@@ -95,13 +95,16 @@ bool GroupUtil::FG(const char *szFG,const char *szfilename)
 		FG.push_back(viM1);
 	}
 	int N=FG[0].size();
-
 	vector<int> E;
 	for(int i=0;i<N;i++)
 	{
 		E.push_back(i+1);
 	}
-	FG.push_back(E);
+	int bIn=IsInFG(N,FG,E);
+	if(bIn==-1)
+	{
+	        FG.insert(FG.begin(),E);
+	} 
 	int R=FG.size();
 	int cnt=R;
 	int cnt1=R;
