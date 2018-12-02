@@ -14,31 +14,37 @@ struct IdxFg
 
 IdxFg g_ring_fg_data[]={ \
 	//R2_1:=RingByGenerators([ZmodnZObj(2,4)]);
-	{2,1,"1;4;2","M_2=M_2(M_2^+=C_2)"}, \
+	{2,1,"1;4;2","M_2"}, \
 	//R2_2:=RingByGenerators([ZmodnZObj(1,2)]);
-	{2,2,"1;2;1","GF(2)"}, \
+	{2,2,"1;2;1","F_2"}, \
 	//R3_1:=RingByGenerators([ZmodnZObj(3,9)]);
-	{3,1,"1;9;3","M_3=M_3(M_3^+=C_3)"}, \
+	{3,1,"1;9;3","M_3"}, \
 	//R3_2:=RingByGenerators([ZmodnZObj(2,6)]);
-	{3,2,"1;6;2","GF(3)"}, \
+	{3,2,"1;6;2","F_3"}, \
 	//R4_1:=RingByGenerators([ZmodnZObj(4,16)]);
-	{4,1,"1;16;4","M_4=M_4(M_4^+=C_4)"}, \
+	{4,1,"1;16;4","M_4"}, \
+	//R4_2:=RingByGenerators([ZmodnZObj(2,8)]);
+	{4,2,"1;8;2","R4_2"}, \
 	//R4_3:=RingByGenerators([ZmodnZObj(1,4)]);
 	{4,3,"1;4;1","Z/4Z"}, \
-	//R4_8:=ring 22.NC.2
-	{4,8,"2;2;1,0,0,0;1,1,0,0;0,1,0,0","ring 22.NC.2"}, \
+	//R4_7:=ring 22.NC.2
+	{4,7,"2;2;0,1,0,0;1,0,0,0;1,1,0,0","ring 22.NC.2"}, \
+	//R4_8:=ring 22.NC.1
+	{4,8,"2;2;0,0,1,0;1,0,0,0;1,0,1,0","ring 22.NC.1"}, \
+	//R4_10:=DirectSum(GF(2),GF(2));
+	{4,10,"2;2;1,0,0,0;1,0,0,1;0,0,0,1","4阶布尔环F_2×F_2=F_2[v]/(v(v+1))=F_2[i]"}, \
 	//R5_1:=RingByGenerators([ZmodnZObj(5,25)]);
-	{5,1,"1;25;5","M_5=M_5(M_5^+=C_5)"}, \
+	{5,1,"1;25;5","M_5"}, \
 	//R5_2:=RingByGenerators([ZmodnZObj(1,5)]);
-	{5,2,"1;5;1","GF(5)"}, \
+	{5,2,"1;5;1","F_5"}, \
 	//R6_1:=RingByGenerators([ZmodnZObj(6,36)]);
-	{6,1,"1;36;6","M_6=M_6(M_6^+=C_6)"}, \
+	{6,1,"1;36;6","M_6=M_3×M_2"}, \
 	//R6_2:=RingByGenerators([ZmodnZObj(2,12)]);
-	{6,2,"1;12;2","R_2(R_2^+=C_6)"}, \
+	{6,2,"1;12;2","F_3×M_2"}, \
 	//R6_3:=RingByGenerators([ZmodnZObj(3,18)]);
-	{6,3,"1;18;3","R_3(R_3^+=C_6)"}, \
+	{6,3,"1;18;3","M_3×F_2"}, \
 	//R6_4:=RingByGenerators([ZmodnZObj(1,6)]);
-	{6,4,"1;6;1","Z/6Z"}, \
+	{6,4,"1;6;1","Z/6Z=F_3×F_2"}, \
 };
 
 int g_ring_fg_data_count=sizeof(g_ring_fg_data)/sizeof(IdxFg);
