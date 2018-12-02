@@ -130,6 +130,29 @@ int RingUtil::IsInFR(int N,const vector<vector<vector<int> > > & FR,const vector
 
 bool RingUtil::FR(const char *szFR,const char *szfilename)
 {
+	vector<string> vMDP=split(szFR,"|");
+	int MDP=vMDP.size();
+	if(MDP>1)
+	{
+		vector<string> vfn(MDP);
+		for(int i=0;i<MDP;i++)
+		{
+			char szfn[100]={0};
+			sprintf(szfn,"%s%d",szfilename,i);
+			vfn[i]=szfn;
+			bool bRet=FR(vMDP[i].c_str(),szfn);
+			if(!bRet)
+				return false;
+		}
+		char szcmd[100]={0};
+		sprintf(szcmd,"./DPR %s %s %s",vfn[0].c_str(),vfn[1].c_str(),szfilename);
+		system(szcmd);
+		char szcmd1[100]={0};
+		sprintf(szcmd1,"rm %s %s",vfn[0].c_str(),vfn[1].c_str());
+		system(szcmd1);
+		return true;
+	}
+
 	vector<vector<vector<int> > > FR;
 	vector<string> vM=split(szFR,";");
 	int M=vM.size();

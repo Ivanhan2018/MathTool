@@ -27,11 +27,15 @@ IdxFg g_ring_fg_data[]={ \
 	{4,2,"1;8;2","R4_2"}, \
 	//R4_3:=RingByGenerators([ZmodnZObj(1,4)]);
 	{4,3,"1;4;1","Z/4Z"}, \
+	//R4_4:=DirectSum(SmallRing(2,1),SmallRing(2,1));
+	{4,4,"2;4;2,0,0,0;0,0,0,2;2,0,0,2","M_2×M_2"}, \
+	//R4_6:=DirectSum(SmallRing(2,1),SmallRing(2,2));
+	{4,6,"1;4;2|1;2;1","M_2×F_2"}, \
 	//R4_7:=ring 22.NC.2
 	{4,7,"2;2;0,1,0,0;1,0,0,0;1,1,0,0","ring 22.NC.2"}, \
 	//R4_8:=ring 22.NC.1
 	{4,8,"2;2;0,0,1,0;1,0,0,0;1,0,1,0","ring 22.NC.1"}, \
-	//R4_10:=DirectSum(GF(2),GF(2));
+	//R4_10:=DirectSum(SmallRing(2,2),SmallRing(2,2));
 	{4,10,"2;2;1,0,0,0;1,0,0,1;0,0,0,1","4阶布尔环F_2×F_2=F_2[v]/(v(v+1))=F_2[i]"}, \
 	//R5_1:=RingByGenerators([ZmodnZObj(5,25)]);
 	{5,1,"1;25;5","M_5"}, \
