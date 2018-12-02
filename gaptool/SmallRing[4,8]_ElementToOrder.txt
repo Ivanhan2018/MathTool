@@ -1,6 +1,0 @@
-G4ElementToOrder(0)=1
-G4ElementToOrder(1)=2
-G4ElementToOrder(2)=2
-G4ElementToOrder(3)=2
-SmallRing[4,8]有1个1阶元，3个2阶元，0个4阶元
-非交换,无幺环,幂等元个数n2=3,2次幂零元个数n4=1,2~3次幂零元个数n5=1,零乘个数n6=10,零因子个数n7=1,
