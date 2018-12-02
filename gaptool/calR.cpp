@@ -307,18 +307,6 @@ bool IsIdempotent(const vector<vector<int> > &A,int i2){
 	return false;
 }
 
-// 幂等元个数n2
-int IdempotentNum(const vector<vector<int> > &A)
-{
-	vector<int> AFlag=IsLegalMtx(A);
-	if(AFlag[0]==-1)
-		return -1;
-	int n=AFlag[1];
-	int iRet=0;
-	for(int i2=0;i2<n;i2++){if(IsIdempotent(A,i2))iRet++;}
-	return iRet;
-}
-
 // 是否为幺元
 bool IsOne(const vector<vector<int> > &A,int i3)
 {
@@ -345,6 +333,44 @@ int One(const vector<vector<int> > &A)
 	int n=AFlag[1];
 	for (int i3=0; i3<n; i3++){if(IsOne(A,i3))return i3+1;}
 	return -1;
+}
+
+// 是否有可逆元,-1表示没有
+int Inv(const vector<vector<int> > &A,int i1,int iOne)
+{
+	vector<int> AFlag=IsLegalMtx(A);
+	if(AFlag[0]==-1)
+		return false;
+	int n=AFlag[1];
+	for (int i=0; i<n; i++){if(A[i1][i]==iOne && A[i][i1]==iOne)return i+1;}
+	return -1;
+}
+
+// 不可逆元个数n1
+int NoInvNum(const vector<vector<int> > &A)
+{
+	vector<int> AFlag=IsLegalMtx(A);
+	if(AFlag[0]==-1)
+		return -1;
+	int n=AFlag[1];
+	int iRet=0;
+        int iOne=One(A);
+        if(iOne==-1)
+           return n;
+	for(int i1=0;i1<n;i1++){if(Inv(A,i1,iOne)==-1)iRet++;}
+	return iRet;
+}
+
+// 幂等元个数n2
+int IdempotentNum(const vector<vector<int> > &A)
+{
+	vector<int> AFlag=IsLegalMtx(A);
+	if(AFlag[0]==-1)
+		return -1;
+	int n=AFlag[1];
+	int iRet=0;
+	for(int i2=0;i2<n;i2++){if(IsIdempotent(A,i2))iRet++;}
+	return iRet;
 }
 
 // 2次幂零元个数n4
@@ -457,21 +483,37 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 	printf("%s\n",strF.c_str());
         fout<<endl;
 
+        int n0=0;
+	for(int i=vOrders.size()-1;i>=0;i--)
+	{
+		if(vCounts[vOrders[i]]>0)
+                {
+                   n0=vOrders[i];
+                   break;
+                }
+	}
+
         // 分析乘法结构
-	bool bRet=IsAbelian(vvA1);
+	bool bA=IsAbelian(vvA1);
+	int bO=One(vvA1)>-1;
+        int n1=NoInvNum(vvA1);
 	int n2=IdempotentNum(vvA1);
-	int n3=One(vvA1);
 	int n4=Nil2Num(vvA1);
 	int n5=Nil3Num(vvA1);
 	int n6=ZeroNum(vvA1);
 	int n7=ZeroFactorNum(vvA1);
 
-        const char *szRet=(bRet?"交换":"非交换");
+	printf("环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7=%d,%d,%d,%d,%d,%d,%d,%d,%d\n",n0,bA,bO,n1,n2,n4,n5,n6,n7);
+        fout<<"环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7="<<n0<<","<<bA<<","<<bO<<","<<n1<<","<<n2<<","<<n4<<","<<n5<<","<<n6<<","<<n7<<endl;
+
+        const char *szRet=(bA?"交换":"非交换");
 	printf("%s,",szRet);
         fout<<szRet<<",";
-        const char *szRet3=(n3>-1?"幺环":"无幺环");
+        const char *szRet3=(bO?"幺环":"无幺环");
 	printf("%s,",szRet3);
         fout<<szRet3<<",";
+	printf("不可逆元个数n1=%d,",n1);
+        fout<<"不可逆元个数n1="<<n1<<",";
 	printf("幂等元个数n2=%d,",n2);
         fout<<"幂等元个数n2="<<n2<<",";
 	printf("2次幂零元个数n4=%d,",n4);
@@ -482,6 +524,7 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
         fout<<"零乘个数n6="<<n6<<",";
 	printf("零因子个数n7=%d,",n7);
         fout<<"零因子个数n7="<<n7<<",";
+
 	printf("\n");
         fout<<endl;
 
