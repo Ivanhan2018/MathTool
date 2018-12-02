@@ -17,6 +17,28 @@ IdxFg g_ring_fg_data[]={ \
 	{2,1,"1;4;2","M_2=M_2(M_2^+=C_2)"}, \
 	//R2_2:=RingByGenerators([ZmodnZObj(1,2)]);
 	{2,2,"1;2;1","GF(2)"}, \
+	//R3_1:=RingByGenerators([ZmodnZObj(3,9)]);
+	{3,1,"1;9;3","M_3=M_3(M_3^+=C_3)"}, \
+	//R3_2:=RingByGenerators([ZmodnZObj(2,6)]);
+	{3,2,"1;6;2","GF(3)"}, \
+	//R4_1:=RingByGenerators([ZmodnZObj(4,16)]);
+	{4,1,"1;16;4","M_4=M_4(M_4^+=C_4)"}, \
+	//R4_3:=RingByGenerators([ZmodnZObj(1,4)]);
+	{4,3,"1;4;1","Z/4Z"}, \
+	//R4_8:=ring 22.NC.2
+	{4,8,"2;2;1,0,0,0;1,1,0,0;0,1,0,0","ring 22.NC.2"}, \
+	//R5_1:=RingByGenerators([ZmodnZObj(5,25)]);
+	{5,1,"1;25;5","M_5=M_5(M_5^+=C_5)"}, \
+	//R5_2:=RingByGenerators([ZmodnZObj(1,5)]);
+	{5,2,"1;5;1","GF(5)"}, \
+	//R6_1:=RingByGenerators([ZmodnZObj(6,36)]);
+	{6,1,"1;36;6","M_6=M_6(M_6^+=C_6)"}, \
+	//R6_2:=RingByGenerators([ZmodnZObj(2,12)]);
+	{6,2,"1;12;2","R_2(R_2^+=C_6)"}, \
+	//R6_3:=RingByGenerators([ZmodnZObj(3,18)]);
+	{6,3,"1;18;3","R_3(R_3^+=C_6)"}, \
+	//R6_4:=RingByGenerators([ZmodnZObj(1,6)]);
+	{6,4,"1;6;1","Z/6Z"}, \
 };
 
 int g_ring_fg_data_count=sizeof(g_ring_fg_data)/sizeof(IdxFg);

@@ -93,22 +93,36 @@ vector<vector<int> > RingUtil::Mul(int N,int n,const vector<vector<int> > & a,co
 		vector<int> v(N);
 		vv[i]=v;
 	}
-    bool bret=Brmul(n,(int *)&a[0][0],(int *)&b[0][0],N,N,N,&vv[0][0]);
+	for (int i=0; i<N; i++)
+		for (int j=0; j<N; j++)
+		{ 
+			vv[i][j]=0;
+			for(int l=0; l<N; l++)
+			{
+				vv[i][j]=vv[i][j]+a[i][l]*b[l][j];
+				vv[i][j]=vv[i][j]%n;
+			}
+		}
 	return vv;
 }
 
 bool RingUtil::IsEqual(int N,const vector<vector<int> > & m,const vector<vector<int> > & n)
 {
-	if(memcmp(&m[0][0],&n[0][0],sizeof(int)*N*N)==0)
+	for(int i=0;i<N;i++)
+		for(int j=0;j<N;j++)
+		{
+			if(m[i][j]!=n[i][j])
+				return false;
+		}
+
 		return true;
-	return false;
 }
 
 int RingUtil::IsInFR(int N,const vector<vector<vector<int> > > & FR,const vector<vector<int> > & m)
 {
 	for(int i=0;i<FR.size();i++)
 	{
-		if(memcmp(&m[0][0],&FR[i][0][0],sizeof(int)*N*N)==0)
+		if(IsEqual(N,FR[i],m))
 			return i;
 	}
 	return -1;

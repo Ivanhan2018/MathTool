@@ -1,0 +1,7 @@
+G5ElementToOrder(0)=1
+G5ElementToOrder(1)=5
+G5ElementToOrder(2)=5
+G5ElementToOrder(3)=5
+G5ElementToOrder(4)=5
+SmallRing[5,1]有1个1阶元，4个5阶元
+交换,无幺环,幂等元个数n2=1,2次幂零元个数n4=4,2~3次幂零元个数n5=4,零乘个数n6=25,零因子个数n7=4,

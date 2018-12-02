@@ -1,0 +1,5 @@
+G3ElementToOrder(0)=1
+G3ElementToOrder(1)=3
+G3ElementToOrder(2)=3
+SmallRing[3,2]有1个1阶元，2个3阶元
+交换,幺环,幂等元个数n2=2,2次幂零元个数n4=0,2~3次幂零元个数n5=0,零乘个数n6=5,零因子个数n7=0,

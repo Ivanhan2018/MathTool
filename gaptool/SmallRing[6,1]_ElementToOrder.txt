@@ -1,0 +1,8 @@
+G6ElementToOrder(0)=1
+G6ElementToOrder(1)=6
+G6ElementToOrder(2)=3
+G6ElementToOrder(3)=2
+G6ElementToOrder(4)=3
+G6ElementToOrder(5)=6
+SmallRing[6,1]有1个1阶元，1个2阶元，2个3阶元，2个6阶元
+交换,无幺环,幂等元个数n2=1,2次幂零元个数n4=5,2~3次幂零元个数n5=5,零乘个数n6=36,零因子个数n7=5,
