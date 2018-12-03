@@ -36,6 +36,14 @@ extern int g_Z4Mul[4][4];
 extern int g_M2M2Add[4][4];
 extern int g_M2M2Mul[4][4];
 
+//R4_5=ring 22.Nu.2
+extern int g_R4_5_Add[4][4];
+extern int g_R4_5_Mul[4][4];
+
+//R4_6=ring 22.Nu.3=M_2×F_2
+extern int g_M2F2Add[4][4];
+extern int g_M2F2Mul[4][4];
+
 //R4_Y=ring 22.NC.2={0={{0,0},{0,0}},1={{1,0},{0,0}},2={{1,1},{0,0}},3={{0,1},{0,0}}}，是16阶环M_2(Z_2)的一个子环
 extern int g_Y4Add[4][4];
 extern int g_Y4Mul[4][4];
