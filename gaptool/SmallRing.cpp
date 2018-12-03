@@ -192,7 +192,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	char szfn[100]={0};
-	sprintf(szfn,"SmallRing[%d,%d].txt",n,Id);
+	sprintf(szfn,"R%d_%d.txt",n,Id);
 	bool bRet=RingUtil::FR(idxfg.Fg,szfn);
 #endif
 

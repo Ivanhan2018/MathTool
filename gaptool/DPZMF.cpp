@@ -19,12 +19,18 @@ int main(int argc, char* argv[])
 	for(int i=0;i<MDP;i++)
 	{
             char szcmd[100]={0};
-            if(vMDP[i][0]='Z')
+            if(vMDP[i][0]=='Z')
                sprintf(szcmd,"./Zn %s",vMDP[i].substr(1,vMDP[i].size()-1).c_str());
-            else if(vMDP[i][0]='M')
+            else if(vMDP[i][0]=='M')
                sprintf(szcmd,"./Mn %s",vMDP[i].substr(1,vMDP[i].size()-1).c_str()); 
-            else if(vMDP[i][0]='F')
-               sprintf(szcmd,"./Fn %s",vMDP[i].substr(1,vMDP[i].size()-1).c_str());            
+            else if(vMDP[i][0]=='F')
+               sprintf(szcmd,"./Fn %s",vMDP[i].substr(1,vMDP[i].size()-1).c_str()); 
+            else if(vMDP[i][0]=='R')
+            {
+               int n=0,Id=0;
+               sscanf(vMDP[i].c_str(),"R%d_%d",&n,&Id);
+               sprintf(szcmd,"./SmallRing %d %d",n,Id); 
+            }        
 	    system(szcmd);             
 	}
         string strfn;
@@ -42,6 +48,7 @@ int main(int argc, char* argv[])
                         
             char szcmd[100]={0};
             sprintf(szcmd,"./DPR %s.txt %s.txt %s.txt",strfn.c_str(),vMDP[i].c_str(),szfn);
+	    //printf("%s\n",szcmd);
 	    system(szcmd);
 
             vtmp.insert(strfn); 
