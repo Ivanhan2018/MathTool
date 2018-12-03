@@ -64,5 +64,41 @@ extern int g_F2F2Mul[4][4];
 extern int g_F4Add[4][4];
 extern int g_F4Mul[4][4];
 
+//M_6=M_3×M_2=ring 6.Nu.1即6阶零乘环，同构于Z/36Z的6阶子环{0,6,12,18,24,30},运算为模36加与模36乘
+extern int g_M6Add[6][6];
+extern int g_M6Mul[6][6];
+
+//F_3×M_2=ring 6.Nu.2同构于Z/12Z的6阶子环{0,2,4,6,8,10},运算为模12加与模12乘，非零零因子个数：5（[2],[4],[6],[8],[10]）
+extern int g_F3M2Add[6][6];
+extern int g_F3M2Mul[6][6];
+
+//M_3×F_2=ring 6.Nu.3同构于Z/18Z的6阶子环{0,3,6,9,12,15},运算为模18加与模18乘,非零零因子个数：5（[3],[6],[9],[12],[15]）
+extern int g_M3F2Add[6][6];
+extern int g_M3F2Mul[6][6];
+
+//Z/6Z=F_3×F_2=ring 6.u.1,运算为模6加与模6乘,非零零因子个数：3（[[2],[3],[4]]）
+extern int g_F3F2Add[6][6];
+extern int g_F3F2Mul[6][6];
+
+//R8_1=M_8
+extern int g_M8Add[8][8];
+extern int g_M8Mul[8][8];
+
+//R8_3=Z/8Z,运算为模8加与模8乘,非零零因子个数：3（[[2],[4],[6]]）
+extern int g_Z8Add[8][8];
+extern int g_Z8Mul[8][8];
+
+//R8_14
+extern int g_Z4F2Add[8][8];
+extern int g_Z4F2Mul[8][8];
+
+//R8_51
+extern int g_F4F2Add[8][8];
+extern int g_F4F2Mul[8][8];
+
+//R8_52
+extern int g_F8Add[8][8];
+extern int g_F8Mul[8][8];
+
 #endif
 
