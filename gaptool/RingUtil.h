@@ -26,6 +26,10 @@ public:
 
    // 有限生成矩阵环M_N(Z/nZ)的小工具FR.exe
    static bool FR(const char *szFR,const char *szfilename);
+
+   static vector<int> IsLegalMtx(const vector<vector<int> > &mtx);
+   static bool SaveTable(const char *fn,const vector<vector<int> > &A,const vector<vector<int> > &B);
+   static vector<vector<int> > Arr2ToVec2(int *R,int N);
 };
 
 #endif

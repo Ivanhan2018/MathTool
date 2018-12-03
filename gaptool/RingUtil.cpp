@@ -246,3 +246,89 @@ bool RingUtil::FR(const char *szFR,const char *szfilename)
 
 	return true;
 }
+
+vector<int> RingUtil::IsLegalMtx(const vector<vector<int> > &mtx)
+{
+	vector<int> ret(3);
+	int illegal=-1;
+	ret[1]=mtx.size();
+	if(ret[1]==0)
+	{
+		ret[0]=illegal;//不是合法矩阵
+		return ret;
+	}
+	ret[2]=mtx[0].size();
+	if(ret[2]==0)
+	{
+		ret[0]=illegal;//不是合法矩阵
+		return ret;
+	}
+	for(int i=1;i<ret[1];i++)
+	{
+		if(mtx[i].size()!=ret[2])
+		{
+			ret[0]=illegal;//不是合法矩阵
+			return ret;
+		}
+	}
+	ret[0]=0;//是合法矩阵
+	return ret;
+}
+
+bool RingUtil::SaveTable(const char *fn,const vector<vector<int> > &A,const vector<vector<int> > &B)
+{
+	vector<int> AFlag=IsLegalMtx(A);
+	if(AFlag[0]==-1)
+		return false;
+	vector<int> BFlag=IsLegalMtx(B);
+	if(BFlag[0]==-1)
+		return false;
+	FILE *fp;
+	if((fp=fopen(fn,"wb+"))!=NULL)
+	{
+                // 生成加群凯莱表
+                printf("[R%dAdd]\n",AFlag[1]);
+                fprintf(fp,"[R%dAdd]\n",AFlag[1]);
+		for(int i=0;i<AFlag[1];i++)
+		{
+			for(int j=0;j<AFlag[2];j++)
+			{
+				printf("%d ",A[i][j]);
+				fprintf(fp,"%d ",A[i][j]);
+			}
+			printf("\r\n");
+			fprintf(fp,"\r\n");
+		}
+                // 生成乘法凯莱表
+                printf("[R%dMul]\n",BFlag[1]);
+                fprintf(fp,"[R%dMul]\n",BFlag[1]);
+		for(int i=0;i<BFlag[1];i++)
+		{
+			for(int j=0;j<BFlag[2];j++)
+			{
+				printf("%d ",B[i][j]);
+				fprintf(fp,"%d ",B[i][j]);
+			}
+			printf("\r\n");
+			fprintf(fp,"\r\n");
+		}
+		fclose(fp);
+	}
+	return true;
+}
+
+vector<vector<int> > RingUtil::Arr2ToVec2(int *R,int N)
+{
+	vector<vector<int> > vv(N);
+	for(int i=0;i<N;i++)
+	{
+		vector<int> v(N);
+		vv[i]=v;
+	}
+	for (int i=0; i<N; i++)
+		for (int j=0; j<N; j++)
+		{ 
+			vv[i][j]=*(R+i*N+j)+1;
+		}
+	return vv;
+}

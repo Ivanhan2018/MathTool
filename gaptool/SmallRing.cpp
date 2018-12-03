@@ -4,6 +4,70 @@
 #include <map>
 using namespace std;
 
+#define USE_ARR2 //直接使用加法、乘法运算表表示有限环
+
+#ifdef USE_ARR2
+
+#include "Rn.h"
+
+struct IdxArr2
+{
+	int n;
+	int Id;
+	int *RAdd;
+  	int *RMul;
+  	char name[100];   
+};
+
+IdxArr2 g_ring_arr2_data[]={ \
+	{2,1,&g_M2Add[0][0],&g_M2Mul[0][0],"M_2"}, \
+	{2,2,&g_F2Add[0][0],&g_F2Mul[0][0],"F_2"}, \
+	{3,1,&g_M3Add[0][0],&g_M3Mul[0][0],"M_3"}, \
+	{3,2,&g_F3Add[0][0],&g_F3Mul[0][0],"F_3"}, \
+	{4,1,&g_M4Add[0][0],&g_M4Mul[0][0],"M_4"}, \
+	{4,2,&g_B4Add[0][0],&g_B4Mul[0][0],"R4_2"}, \
+	{4,3,&g_Z4Add[0][0],&g_Z4Mul[0][0],"Z/4Z"}, \
+	{4,4,&g_M2M2Add[0][0],&g_M2M2Mul[0][0],"M_2×M_2"}, \
+	{4,7,&g_Y4Add[0][0],&g_Y4Mul[0][0],"ring 22.NC.2"}, \
+	{4,8,&g_P4Add[0][0],&g_P4Mul[0][0],"ring 22.NC.1"}, \
+	{4,9,&g_X4Add[0][0],&g_X4Mul[0][0],"ring 22.u.2"}, \
+	{4,10,&g_F2F2Add[0][0],&g_F2F2Mul[0][0],"F_2×F_2"}, \
+	{4,11,&g_F4Add[0][0],&g_F4Mul[0][0],"F_4"}, \
+};
+
+int g_ring_arr2_data_count=sizeof(g_ring_arr2_data)/sizeof(IdxArr2);
+
+map<pair<int,int>,IdxArr2> g_Marr2;
+
+void initArr2()
+{
+	for(int i=0;i<g_ring_arr2_data_count;i++)
+	{
+	    pair<int,int> key=make_pair(g_ring_arr2_data[i].n,g_ring_arr2_data[i].Id);
+            g_Marr2[key]=g_ring_arr2_data[i];
+	}
+}
+
+IdxArr2 SmallRingArr2(int n,int Id)
+{
+	pair<int,int> key=make_pair(n,Id);
+	map<pair<int,int>,IdxArr2>::const_iterator ptr=g_Marr2.find(key);
+	if(ptr!=g_Marr2.end())
+	{
+	    return ptr->second;
+	}
+
+	IdxArr2 ret;
+	ret.n=n;
+	ret.Id=Id;
+	ret.RAdd=NULL;
+	ret.RMul=NULL;
+	ret.name[0]='\0';
+	return ret;
+}
+
+#endif
+
 struct IdxFg
 {
 	int n;
@@ -104,6 +168,20 @@ int main(int argc, char* argv[])
 	int n=atoi(szn);
 	int Id=atoi(szId);
 
+#ifdef USE_ARR2
+	initArr2();
+	IdxArr2 idxarr2=SmallRingArr2(n,Id);
+	if(idxarr2.RAdd==NULL||idxarr2.RMul==NULL)
+	{
+		printf("Error\n");	   
+		return -1;
+	}
+	char szfn[100]={0};
+	sprintf(szfn,"R%d_%d.txt",n,Id);
+        vector<vector<int> > A=RingUtil::Arr2ToVec2(idxarr2.RAdd,n);
+        vector<vector<int> > B=RingUtil::Arr2ToVec2(idxarr2.RMul,n);
+	bool bRet=RingUtil::SaveTable(szfn,A,B);
+#else
 	init();
 	IdxFg idxfg=SmallRingFg(n,Id);
 	if(idxfg.Fg[0]=='\0')
@@ -114,6 +192,7 @@ int main(int argc, char* argv[])
 	char szfn[100]={0};
 	sprintf(szfn,"SmallRing[%d,%d].txt",n,Id);
 	bool bRet=RingUtil::FR(idxfg.Fg,szfn);
+#endif
 
 	//system("pause");
 	return 0;
