@@ -64,8 +64,9 @@ int main(int argc, char **argv)
 		printf("有限域F_%d不存在！\n",m);
 		return -1;
 	}        
-	int n=v[0];
-	int p=v[1];
+	int p=v[0];
+	int n=v[1];
+	printf("%d=%d^%d：\n",m,p,n);
 	char sz1[100]={0};
 	sprintf(sz1,"F%d.txt",m);
 	vector<vector<int> > vv=zpoly::findIrreducible(n,p); 
