@@ -4,7 +4,7 @@
 #include <map>
 using namespace std;
 
-#define USE_ARR2 //直接使用加法、乘法运算表表示有限环
+//#define USE_ARR2 //直接使用加法、乘法运算表表示有限环
 
 #ifdef USE_ARR2
 
@@ -115,6 +115,16 @@ IdxFg g_ring_fg_data[]={ \
 	{6,3,"1;18;3","M_3×F_2"}, \
 	//R6_4:=RingByGenerators([ZmodnZObj(1,6)]);
 	{6,4,"1;6;1","Z/6Z=F_3×F_2"}, \
+	//R8_1:=RingByGenerators([ZmodnZObj(8,64)]);
+	{8,1,"1;64;8","M_8"}, \
+	//R8_2:=RingByGenerators([ZmodnZObj(2,16)]);
+	{8,2,"1;16;2","R8_2"}, \
+	//R8_3:=RingByGenerators([ZmodnZObj(1,8)]);
+	{8,3,"1;8;1","Z/8Z"}, \
+	//R8_4:=RingByGenerators([ZmodnZObj(4,32)]);
+	{8,4,"1;32;4","R8_4"}, \
+	//R8_14:=DirectSum(SmallRing(4,3),SmallRing(2,2));
+	{8,14,"1;4;1|1;2;1","Z/4Z×F_2"}, \
 };
 
 int g_ring_fg_data_count=sizeof(g_ring_fg_data)/sizeof(IdxFg);
