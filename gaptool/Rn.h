@@ -80,6 +80,16 @@ extern int g_M3F2Mul[6][6];
 extern int g_Z6Add[6][6];
 extern int g_Z6Mul[6][6];
 
+/*
+8阶环分类定理：
+n0=8的8阶环有4个：R8_1~R8_4
+n0=4的8阶环有20个：R8_5~R8_24
+n0=2的8阶环有28个：R8_25~R8_52
+There are 52 (if p=2) or 53 (if p>2) rings of size p3, as follows:
+Four rings over Zp3.
+Twenty (or twenty-one if p>2) rings over Zp2+Zp.
+Twenty-eight rings over Zp+Zp+Zp.
+*/
 //R8_1=M_8=Z_64的一个8阶子环={[0],[8],[16],[24],[32],[40],[48],[56]},运算为模64加与模64乘,零乘环
 /*
 i=1,不可逆元个数n1=8,幂等元个数n2=1,特征：8,是否交换：true,是否有幺元=false,2次幂零元个数n4=7,2~3次幂零元个数n5=7,零乘个数n6=
@@ -170,7 +180,7 @@ i=12,不可逆元个数n1=8,幂等元个数n2=1,特征：4,是否交换：true,�
 extern int g_R8_12Add[8][8];
 extern int g_R8_12Mul[8][8];
 
-//R8_14
+//R8_14=Z/4Z×F_2
 /*
 i=14,不可逆元个数n1=6,幂等元个数n2=4,特征：4,是否交换：true,是否有幺元=true,2次幂零元个数n4=1,2~3次幂零元个数n5=1,零乘个数n6=
 24,零因子个数n7=5
