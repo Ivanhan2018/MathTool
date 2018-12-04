@@ -75,6 +75,22 @@ public:
 		return d;
 	}
 
+        vector<int> vcoef()
+	{
+		vector<int> v;
+		deg = degree();
+		for ( int i = 0; i <= deg; i++ )
+		   v.push_back(coef[i]);
+		return v;
+	}
+
+        bool isIrreducible()
+        {
+                vector<int> v=vcoef();
+                bool bFind=zpoly::FindrootInFp(v,m_p);
+	        return !bFind; 
+        }
+
 	void print()
 	{
 		for ( int i = 99; i >= 0; i-- ) {
@@ -296,7 +312,7 @@ public:
 			if(!bFind)
 			{
 				vv.push_back(v);
-#ifndef USE_PRINT_ALL
+#if USE_PRINT_IRR_POLY
 				printf("ii=%d\n",ii);
 #endif
 				for(int j=0;j<n+1;j++)
@@ -323,7 +339,7 @@ public:
 #undef USE_PRINT_ALL_POLY
 #undef USE_PRINT_IRR_POLY
 
-	// v[n-1]…v[0]表示p进制数
+	// v[n]…v[0]表示p进制数
 	static bool FindrootInFp(vector<int>& v,int p)
 	{
 		for(int i=0;i<p;i++)
@@ -342,7 +358,7 @@ public:
 		return false;
 	}
 
-	// v[n-1]…v[0]表示p进制数
+	// v[n]…v[0]表示p进制数
 	static vector<int> Int2Vec(int n,int a,int p)
 	{
 		//printf("a=%d\n",a);
