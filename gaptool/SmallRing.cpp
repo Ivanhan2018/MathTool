@@ -37,10 +37,12 @@ IdxArr2 g_ring_arr2_data[]={ \
 	{4,11,&g_F4Add[0][0],&g_F4Mul[0][0],"F_4"}, \
 	{6,1,&g_M6Add[0][0],&g_M6Mul[0][0],"M_6"}, \
 	{6,2,&g_F3M2Add[0][0],&g_F3M2Mul[0][0],"F_3×M_2"}, \
-	{6,3,&g_M3F2Add[0][0],&g_M3F2Mul[0][0],"M_3×M_2"}, \
+	{6,3,&g_M3F2Add[0][0],&g_M3F2Mul[0][0],"M_3×F_2"}, \
 	{6,4,&g_Z6Add[0][0],&g_Z6Mul[0][0],"Z/6Z=F_3×F_2"}, \
 	{8,1,&g_M8Add[0][0],&g_M8Mul[0][0],"M_8"}, \
+	{8,2,&g_Z8Add[0][0],&g_R8_2Mul[0][0],"R8_2"}, \
 	{8,3,&g_Z8Add[0][0],&g_Z8Mul[0][0],"Z/8Z"}, \
+	{8,4,&g_Z8Add[0][0],&g_R8_4Mul[0][0],"R8_4"}, \
 };
 
 int g_ring_arr2_data_count=sizeof(g_ring_arr2_data)/sizeof(IdxArr2);
