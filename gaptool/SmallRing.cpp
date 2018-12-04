@@ -4,7 +4,7 @@
 #include <map>
 using namespace std;
 
-#define USE_ARR2 //直接使用加法、乘法运算表表示有限环
+//#define USE_ARR2 //直接使用加法、乘法运算表表示有限环
 
 #ifdef USE_ARR2
 
@@ -138,6 +138,8 @@ IdxFg g_ring_fg_data[]={ \
 	{8,4,"1;32;4","R8_4"}, \
 	//R8_14:=DirectSum(SmallRing(4,3),SmallRing(2,2));
 	{8,14,"1;4;1|1;2;1","Z/4Z×F_2"}, \
+	//R8_52:=F_8
+	{8,52,"2,x^3+x^1+x^0,R8_52.txt","F_8"}, \
 };
 
 int g_ring_fg_data_count=sizeof(g_ring_fg_data)/sizeof(IdxFg);

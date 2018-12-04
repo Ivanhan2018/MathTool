@@ -153,6 +153,18 @@ bool RingUtil::FR(const char *szFR,const char *szfilename)
 		return true;
 	}
 
+        // 判断是不是有限域上多项式环的商环表示
+        string s=szFR;
+        unsigned int loc = s.find("x", 0 );
+        if(loc != string::npos )
+	{
+	   vector<string> vArg=split(szFR,",");
+	   char szcmd[100]={0};
+	   sprintf(szcmd,"./GRpf %s %s %s",vArg[0].c_str(),vArg[1].c_str(),vArg[2].c_str());
+	   system(szcmd);
+           return true;
+	}
+
 	vector<vector<vector<int> > > FR;
 	vector<string> vM=split(szFR,";");
 	int M=vM.size();
