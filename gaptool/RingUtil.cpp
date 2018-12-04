@@ -155,7 +155,7 @@ bool RingUtil::FR(const char *szFR,const char *szfilename)
 
         // 判断是不是有限域上多项式环的商环表示
         string s=szFR;
-        unsigned int loc = s.find("x", 0 );
+        size_t loc = s.find_first_of("x", 0 );
         if(loc != string::npos )
 	{
 	   vector<string> vArg=split(szFR,",");
