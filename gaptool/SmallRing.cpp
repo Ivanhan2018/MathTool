@@ -43,16 +43,20 @@ IdxArr2 g_ring_arr2_data[]={ \
 	{8,2,&g_Z8Add[0][0],&g_R8_2Mul[0][0],"R8_2"}, \
 	{8,3,&g_Z8Add[0][0],&g_Z8Mul[0][0],"Z/8Z"}, \
 	{8,4,&g_Z8Add[0][0],&g_R8_4Mul[0][0],"R8_4"}, \
-	{8,6,&g_R8_6Add[0][0],&g_R8_6Mul[0][0],"R8_6"}, \
-	{8,8,&g_R8_8Add[0][0],&g_R8_8Mul[0][0],"R8_8"}, \
-	{8,9,&g_R8_9Add[0][0],&g_R8_9Mul[0][0],"R8_9"}, \
-	{8,10,&g_R8_10Add[0][0],&g_R8_10Mul[0][0],"R8_10"}, \
-	{8,11,&g_R8_11Add[0][0],&g_R8_11Mul[0][0],"R8_11"}, \
-	{8,12,&g_R8_12Add[0][0],&g_R8_12Mul[0][0],"R8_12"}, \
+	{8,6,&g_R8_24Add[0][0],&g_R8_6Mul[0][0],"R8_6"}, \
+	{8,8,&g_R8_24Add[0][0],&g_R8_8Mul[0][0],"R8_8"}, \
+	{8,9,&g_R8_24Add[0][0],&g_R8_9Mul[0][0],"R8_9"}, \
+	{8,10,&g_R8_24Add[0][0],&g_R8_10Mul[0][0],"R8_10"}, \
+	{8,11,&g_R8_24Add[0][0],&g_R8_11Mul[0][0],"R8_11"}, \
+	{8,12,&g_R8_24Add[0][0],&g_R8_12Mul[0][0],"R8_12"}, \
 	{8,14,&g_Z4F2Add[0][0],&g_Z4F2Mul[0][0],"Z/4Z×F_2"}, \
-	{8,15,&g_R8_15Add[0][0],&g_R8_15Mul[0][0],"R8_15"}, \
-	{8,18,&g_R8_18Add[0][0],&g_R8_18Mul[0][0],"R8_18"}, \
-	{8,20,&g_R8_20Add[0][0],&g_R8_20Mul[0][0],"R8_20"}, \
+	{8,15,&g_R8_24Add[0][0],&g_R8_15Mul[0][0],"R8_15"}, \
+	{8,18,&g_R8_24Add[0][0],&g_R8_18Mul[0][0],"R8_18"}, \
+	{8,20,&g_R8_24Add[0][0],&g_R8_20Mul[0][0],"R8_20"}, \
+	{8,22,&g_R8_24Add[0][0],&g_R8_22Mul[0][0],"R8_22"}, \
+	{8,23,&g_R8_24Add[0][0],&g_R8_23Mul[0][0],"R8_23"}, \
+	{8,24,&g_R8_24Add[0][0],&g_R8_24Mul[0][0],"R8_24"}, \
+	{8,31,&g_F8Add[0][0],&g_R8_31Mul[0][0],"R8_31"}, \
 	{8,45,&g_F8Add[0][0],&g_R8_45Mul[0][0],"R8_45"}, \
 	{8,49,&g_F8Add[0][0],&g_R8_49Mul[0][0],"R8_49"}, \
 	{8,52,&g_F8Add[0][0],&g_F8Mul[0][0],"F_8"}, \
@@ -226,8 +230,33 @@ int main(int argc, char* argv[])
 	IdxArr2 idxarr2=SmallRingArr2(n,Id);
 	if(idxarr2.RAdd==NULL||idxarr2.RMul==NULL)
 	{
-		printf("Error\n");	   
-		return -1;
+                int iFlag=0;// 非0表示继续查找
+                if(argc==4) 
+                {
+         	    char szFlag[100]={0};
+		    strcpy(szFlag,argv[3]);    
+    	            iFlag=atoi(szFlag);                               
+                }   
+                
+                if(iFlag)
+                {
+	            init();
+	            IdxFg idxfg=SmallRingFg(n,Id);
+	            if(idxfg.Fg[0]=='\0')
+	            {
+		        printf("Error\n");	   
+		        return -1;
+	            }
+	            char szfn[100]={0};
+	            sprintf(szfn,"R%d_%d.txt",n,Id);
+	            bool bRet=RingUtil::FR(idxfg.Fg,szfn);
+                    return 0;
+                }
+                else
+                {
+		   printf("Error\n");	   
+		   return -1;
+                }
 	}
 	char szfn[100]={0};
 	sprintf(szfn,"R%d_%d.txt",n,Id);
