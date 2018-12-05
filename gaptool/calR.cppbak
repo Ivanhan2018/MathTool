@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include<algorithm>
 using namespace std;
 
 // 根据环的加法、乘法凯莱表分析其结构的小工具calR.exe
@@ -431,46 +431,6 @@ int ZeroFactorNum(const vector<vector<int> > &A)
 	return iRet;
 }
 
-bool IsInCenterOfG(const vector<vector<int> > &vvG,int j)
-{
-	int N=vvG.size();
-	for(int i=0;i<N;i++)
-	{
-		int ij=vvG[i][j]-1;
-		int ji=vvG[j][i]-1;
-		if(ij==ji)
-			continue;
-		else
-			return false;
-	}
-	return true;
-}
-
-// 定义：一个环R可以同每一个元交换的元作成一个子环，叫作环R的中心。
-vector<int> CenterOfG(const vector<vector<int> > &vvG)
-{
-	vector<int> ret;
-	int N=vvG.size();
-	for(int i=0;i<N;i++)
-	{
-		if(IsInCenterOfG(vvG,i))
-			ret.push_back(i);
-		else
-			continue;
-	}
-	return ret;
-}
-
-int ToNormal(const vector<int> &v,int a)
-{
-	for(int i=0;i<v.size();i++)
-	{
-		if(v[i]==a)
-			return i;
-	}
-	return -1;
-}
-
 bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 {
 	vector<char> A=lof2(srcfn);
@@ -543,11 +503,8 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 	int n6=ZeroNum(vvA1);
 	int n7=ZeroFactorNum(vvA1);
 
-        vector<int> ZA=CenterOfG(vvA1);
-	int n8=ZA.size();
-
-	printf("环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",n0,bA,bO,n1,n2,n4,n5,n6,n7,n8);
-        fout<<"环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8="<<n0<<","<<bA<<","<<bO<<","<<n1<<","<<n2<<","<<n4<<","<<n5<<","<<n6<<","<<n7<<","<<n8<<endl;
+	printf("环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7=%d,%d,%d,%d,%d,%d,%d,%d,%d\n",n0,bA,bO,n1,n2,n4,n5,n6,n7);
+        fout<<"环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7="<<n0<<","<<bA<<","<<bO<<","<<n1<<","<<n2<<","<<n4<<","<<n5<<","<<n6<<","<<n7<<endl;
 
         const char *szRet=(bA?"交换":"非交换");
 	printf("%s,",szRet);
@@ -567,75 +524,9 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
         fout<<"零乘个数n6="<<n6<<",";
 	printf("零因子个数n7=%d,",n7);
         fout<<"零因子个数n7="<<n7<<",";
-	printf("中心大小n8=%d,",n8);
-        fout<<"中心大小n8="<<n8<<",";
 
 	printf("\n");
         fout<<endl;
-
-	for(int i=0;i<ZA.size();i++)
-	{
-		printf("%d ",ZA[i]);
-		fout<<ZA[i]<<endl;
-	}
-	printf("\n");
-	bool bIsNormal[]={false,true};
-	const char * szArr[2]={"子环形式的中心凯莱表：","规范形式的中心凯莱表："};
-	// 环的中心是非平凡子环才打印运算表
-	if(n8>1 && n8<AFlag[1])
-	{
-		for(int k=0;k<2;k++)
-		{
-			printf("%s\n",szArr[k]);
-			fout<<szArr[k]<<endl;
-			printf("[R%dAdd]\n",n8);
-			fout<<"[R"<<n8<<"Add]"<<endl;
-			for(int i=0;i<ZA.size();i++)
-			{
-				for(int j=0;j<ZA.size();j++)
-				{
-					if(bIsNormal[k])
-					{
-						int ij=vvA[ZA[i]][ZA[j]]-1;
-						int ij2=ToNormal(ZA,ij)+1;
-						printf("%d ",ij2);
-						fout<<ij2<<" ";
-					}
-					else
-					{
-						int ij=vvA[ZA[i]][ZA[j]];
-						printf("%d ",ij);
-						fout<<ij<<" ";
-					}
-				}
-				printf("\n");
-				fout<<endl;
-			}
-			printf("[R%dMul]\n",n8);
-			fout<<"[R"<<n8<<"Mul]"<<endl;
-			for(int i=0;i<ZA.size();i++)
-			{
-				for(int j=0;j<ZA.size();j++)
-				{
-					if(bIsNormal[k])
-					{
-						int ij=vvA1[ZA[i]][ZA[j]]-1;
-						int ij2=ToNormal(ZA,ij)+1;
-						printf("%d ",ij2);
-						fout<<ij2<<" ";
-					}
-					else
-					{
-						int ij=vvA1[ZA[i]][ZA[j]];
-						printf("%d ",ij);
-						fout<<ij<<" ";
-					}
-				}
-				printf("\n");
-				fout<<endl;
-			}
-		}
-	}
 
 	fout.close();
 	return true;
