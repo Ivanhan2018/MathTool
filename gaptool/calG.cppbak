@@ -1,7 +1,18 @@
-﻿//#include "stdafx.h"
-#include "GroupUtil.h"
+﻿#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include<algorithm>
+using namespace std;
 
-std::vector<string> GroupUtil::split( const std::string& str, const std::string& delims, unsigned int maxSplits /*= 0*/)
+// 根据群的凯莱表分析其结构的小工具calG.exe
+//#include <Windows.h>
+//#pragma comment(lib,"user32.lib")
+
+std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
 {
 	std::vector<string> ret;
 	unsigned int numSplits = 0;
@@ -35,165 +46,8 @@ std::vector<string> GroupUtil::split( const std::string& str, const std::string&
 	return ret;
 }
 
-// S_N中置换乘法m*n
-vector<int> GroupUtil::Mul(int N,const vector<int> & m,const vector<int> & n)
-{
-	vector<int> tArr(N);
-	vector<int> aArr(N);
-	vector<int> taArr(N);
-	memcpy(&tArr[0],&m[0],sizeof(tArr[0])*N);
-	memcpy(&aArr[0],&n[0],sizeof(aArr[0])*N);
-	for(int i=0;i<N;i++)
-		taArr[i]=aArr[tArr[i]-1];
-	vector<int> ret(N);
-	memcpy(&ret[0],&taArr[0],sizeof(taArr[0])*N);
-	return ret;
-}
 
-vector<vector<int> > GroupUtil::Order(int N,const vector<int> & m)
-{
-	vector<vector<int> > ret;
-	vector<int> mi=m;
-	vector<int> m0(N);
-	for(int i=0;i<N;i++)
-	{
-		m0[i]=i+1;
-	}
-	while(memcmp(&mi[0],&m0[0],sizeof(int)*N)!=0)
-	{
-		ret.push_back(mi);
-		mi=Mul(N,mi,m);
-	}
-	ret.push_back(mi);
-	return ret;
-}
-
-int GroupUtil::IsInFG(int N,const vector<vector<int> > FG,const vector<int> & m)
-{
-	for(int i=0;i<FG.size();i++)
-	{
-		if(memcmp(&m[0],&FG[i][0],sizeof(int)*N)==0)
-			return i;
-	}
-	return -1;
-}
-
-bool GroupUtil::FG(const char *szFG,const char *szfilename)
-{
-	vector<vector<int> > FG;
-	vector<string> vM=split(szFG,";");
-	int M=vM.size();
-	for(int i=0;i<M;i++)
-	{
-		vector<string> vM1=split(vM[i],",");
-		int N=vM1.size();
-		vector<int> viM1(N);
-		for(int i=0;i<N;i++)
-		{
-			viM1[i]=atoi(vM1[i].c_str());
-		}
-		FG.push_back(viM1);
-	}
-	int N=FG[0].size();
-	vector<int> E;
-	for(int i=0;i<N;i++)
-	{
-		E.push_back(i+1);
-	}
-	int bIn=IsInFG(N,FG,E);
-	if(bIn==-1)
-	{
-	        FG.insert(FG.begin(),E);
-	} 
-	int R=FG.size();
-	int cnt=R;
-	int cnt1=R;
-	do{
-		cnt=FG.size();
-		for(int i=0;i<cnt;i++)
-		{
-			for(int j=0;j<cnt;j++)
-			{
-				vector<int> IJ=Mul(N,FG[i],FG[j]);
-				int bIn=IsInFG(N,FG,IJ);
-				if(bIn==-1)
-				{
-					FG.push_back(IJ);
-				}
-			}
-		}
-		cnt1=FG.size();
-	}while(cnt1>cnt);
-
-	ofstream fout(szfilename);
-	int n=FG.size();
-	for(int i=0;i<n;i++)
-	{
-		for(int j=0;j<n;j++)
-		{
-			vector<int> IJ=Mul(N,FG[i],FG[j]);
-			int bIn=IsInFG(N,FG,IJ);
-			fout<<bIn+1<<" ";
-		}
-		fout<<endl;
-	}
-	cout<<szfilename<<"生成完毕！"<<endl;
-
-	return true;
-}
-
-vector<int> GroupUtil::rank(const vector<vector<int> > &A)
-{
-        vector<int> vr; 
-        vector<vector<int> > vvr;// 遍历过的生成元集
-	vector<int> AFlag=IsLegalMtx(A);
-	if(AFlag[0]==-1)
-		return vr;
-	int n=AFlag[1];
-        int r=1;
-	for(int r=1;r<=n-1;r++)
-	{
-          vector<int> A1(&A[0][1],&A[0][1]+n-1);
-          do {
-              	vector<int> temp(&A1[0],&A1[0]+r);
-                bool bFind=false;
-	        for(int t=0;t<vvr.size();t++)
-	        {  
-		    if(vvr[t].size()==r && memcmp(&temp[0],&vvr[t][0],sizeof(int)*r)==0)
-			bFind=true;
-	        }
-                if(bFind)
-                   continue;               
-              	vector<int> FG(&A1[0],&A1[0]+r);
-                vvr.push_back(FG);
-                FG.insert(FG.begin(),1);
-	        int R=FG.size();
-	        int cnt=R;
-	        int cnt1=R;
-	        do{
-		     cnt=FG.size();
-		     for(int i=1;i<cnt;i++)
-		     {
-			for(int j=1;j<cnt;j++)
-			{
-				int IJ=A[FG[i]-1][FG[j]-1];
-	                        vector<int>::const_iterator it=std::find(FG.begin(),FG.end(),IJ);
-				if(it==FG.end())
-				{
-				   FG.push_back(IJ);
-				}
-			 }
-		       }
-		       cnt1=FG.size();
-	            }while(cnt1>cnt);
-	         if(FG.size()==n)
-		    return temp;
-             }while( next_permutation(A1.begin(),A1.end()));
-	}
-        return vr;
-}
-
-vector<char> GroupUtil::lof(const char *fn)
+vector<char> lof(const char *fn)
 {
 	vector<char> ret;
 	FILE *fp;
@@ -215,7 +69,7 @@ vector<char> GroupUtil::lof(const char *fn)
 	return ret; 
 }
 
-vector<char> GroupUtil::CharArrToNormal(const vector<char>& vec)
+vector<char> CharArrToNormal(const vector<char>& vec)
 {
 	vector<char> ret;
 	int n=vec.size();
@@ -234,7 +88,7 @@ vector<char> GroupUtil::CharArrToNormal(const vector<char>& vec)
 	return ret;
 }
 
-string GroupUtil::CharArrToStr(const vector<char>& vec)
+string CharArrToStr(const vector<char>& vec)
 {
 	string str;
 	int n=vec.size();
@@ -245,7 +99,7 @@ string GroupUtil::CharArrToStr(const vector<char>& vec)
 	return str;
 }
 
-vector<vector<int> > GroupUtil::atoTable(const char* strMtx)
+vector<vector<int> > atoTable(const char* strMtx)
 {
 	vector<vector<int> > vvMtx;
 	vector<int> iAll;
@@ -276,7 +130,7 @@ vector<vector<int> > GroupUtil::atoTable(const char* strMtx)
 	return vvMtx;
 }
 
-vector<int> GroupUtil::IsLegalMtx(const vector<vector<int> > &mtx)
+vector<int> IsLegalMtx(const vector<vector<int> > &mtx)
 {
 	vector<int> ret(3);
 	int illegal=-1;
@@ -305,7 +159,7 @@ vector<int> GroupUtil::IsLegalMtx(const vector<vector<int> > &mtx)
 }
 
 
-vector<vector<int> > GroupUtil::ABmul(const vector<vector<int> > &A,const vector<vector<int> > &B)
+vector<vector<int> > ABmul(const vector<vector<int> > &A,const vector<vector<int> > &B)
 {
 	vector<vector<int> > C;
 	vector<int> AFlag=IsLegalMtx(A);
@@ -336,7 +190,7 @@ vector<vector<int> > GroupUtil::ABmul(const vector<vector<int> > &A,const vector
 	return C;
 }
 
-bool GroupUtil::SaveTable(const char *fn,const vector<vector<int> > &A)
+bool SaveTable(const char *fn,const vector<vector<int> > &A)
 {
 	vector<int> AFlag=IsLegalMtx(A);
 	if(AFlag[0]==-1)
@@ -357,7 +211,7 @@ bool GroupUtil::SaveTable(const char *fn,const vector<vector<int> > &A)
 	return true;
 }
 
-vector<int>  GroupUtil::Factors(int n)
+vector<int>  Factors(int n)
 {
 	vector<int> ret;
 	if(n<1)
@@ -373,7 +227,7 @@ vector<int>  GroupUtil::Factors(int n)
 }
 
 // 未知n阶群的群元的阶
-int GroupUtil::getGnEOrder(const vector<vector<int> > &A,int a)
+int getGnEOrder(const vector<vector<int> > &A,int a)
 {
 	vector<int> AFlag=IsLegalMtx(A);
 	if(AFlag[0]==-1)
@@ -391,7 +245,7 @@ int GroupUtil::getGnEOrder(const vector<vector<int> > &A,int a)
 	return -1;
 }
 
-bool GroupUtil::SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn/*= 0*/)
+bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 {
 	vector<char> A=lof(srcfn);
 	string strA=CharArrToStr(CharArrToNormal(A));
@@ -440,23 +294,13 @@ bool GroupUtil::SaveGnEOrder(const char *srcfn,const char *Desfn,const char *Des
 		strF=strF.substr(0,strF.size()-2);
 	}
 	printf("%s\n",strF.c_str());
-	printf("最小生成元集：\n");
-	fout<<"最小生成元集："<<endl;
-	vector<int> vr=rank(vvA);
-        int r=vr.size();
-	for(int i=0;i<r;i++)
-	{
-		printf("%d\n",vr[i]);
-		fout<<vr[i]<<endl;
-	}
-        printf("rank=%d\n",r);
-	fout<<"rank="<<r<<endl;
+	//fout<<strF.c_str()<<endl;// Linux下不能用sprintf格式化带中文的字符串??
 	fout.close();
 	return true;
 }
 
 // 从路径名中分离出文件名
-char * GroupUtil::find_file_name(char *name)
+char * find_file_name(char *name)
 {
 	char *name_start = NULL;
 	int sep = '/';
@@ -470,7 +314,7 @@ char * GroupUtil::find_file_name(char *name)
 }
 
 // 过滤掉文件名中的扩展名
-void GroupUtil::filter_ext_name(char *name)
+void filter_ext_name(char *name)
 {
 	char *name_start = NULL;
 	int sep = '.';
@@ -485,4 +329,49 @@ void GroupUtil::filter_ext_name(char *name)
             *name_start='\0';
             name_start++;
         }
+}
+
+int main(int argc, char **argv)
+{
+	char sz[100]={0};
+	char sz1[100]={0};
+	char sz2[100]={0};
+	if(argc<2)
+	{
+		printf("请输入群A凯莱表文件名：");
+		scanf("%s",sz);
+	}
+	else
+		strcpy(sz,argv[1]);
+	if(argc<3)
+	{
+#if defined(_WIN32)||defined(_WIN64)
+		_splitpath(sz,0,0,sz1,0);
+#else
+                //sscanf(sz,"./%s.txt",sz1);
+                char *fn=find_file_name(sz);
+                strcpy(sz1,fn);
+                printf("%s\n",sz1);
+                filter_ext_name(sz1);
+                printf("%s\n",sz1);
+#endif
+		string strDes=sz;
+		string strFn=sz1;
+		strFn+="_ElementToOrder";
+		strcpy(sz2,sz1);
+		strDes.replace(strDes.find(sz1,0),strlen(sz1),strFn.c_str());
+		strcpy(sz1,strDes.c_str());
+	}
+	else
+		strcpy(sz1,argv[2]);
+
+	bool bret=SaveGnEOrder(sz,sz1,sz2);
+	if(bret)
+	{
+		//MessageBoxA(NULL,"分析群的结构完毕！","提示",MB_OK);
+                printf("分析群的结构完毕！\n");
+	}
+
+	//system("pause");
+	return 0;
 }
