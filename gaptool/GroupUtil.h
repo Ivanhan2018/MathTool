@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <iterator>
+//#include <iterator>
 #include <algorithm>
 using namespace std;
 
@@ -50,7 +50,7 @@ public:
    // 未知n阶群的群元的阶
    static int getGnEOrder(const vector<vector<int> > &A,int a);
 
-   static bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0);
+   static bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn,int iFlag);
 
    // 从路径名中分离出文件名
    static char * find_file_name(char *name);

@@ -37,7 +37,15 @@ int main(int argc, char **argv)
 	else
 		strcpy(sz1,argv[2]);
 
-	bool bret=GroupUtil::SaveGnEOrder(sz,sz1,sz2);
+	char szFlag[100]={0};
+        int iFlag=0;// 非0表示要计算群的最小生成元集、秩
+	if(argc>=4)
+	{
+		strcpy(szFlag,argv[3]);
+		iFlag=atoi(szFlag);
+	}
+
+	bool bret=GroupUtil::SaveGnEOrder(sz,sz1,sz2,iFlag);
 	if(bret)
 	{
 		//MessageBoxA(NULL,"分析群的结构完毕！","提示",MB_OK);

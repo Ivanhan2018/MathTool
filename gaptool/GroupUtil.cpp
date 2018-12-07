@@ -150,7 +150,12 @@ vector<int> GroupUtil::rank(const vector<vector<int> > &A)
 	if(AFlag[0]==-1)
 		return vr;
 	int n=AFlag[1];
-        int r=1;
+        if(n>=6)
+        {
+	    cout<<"n>=6，计算终止！"<<endl; 
+            vr.clear();                   
+            return vr;
+        } 
 	for(int r=1;r<=n-1;r++)
 	{
           vector<int> A1(&A[0][1],&A[0][1]+n-1);
@@ -163,7 +168,7 @@ vector<int> GroupUtil::rank(const vector<vector<int> > &A)
 			bFind=true;
 	        }
                 if(bFind)
-                   continue;               
+                   continue;              
               	vector<int> FG(&A1[0],&A1[0]+r);
                 vvr.push_back(FG);
                 FG.insert(FG.begin(),1);
@@ -391,7 +396,7 @@ int GroupUtil::getGnEOrder(const vector<vector<int> > &A,int a)
 	return -1;
 }
 
-bool GroupUtil::SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn/*= 0*/)
+bool GroupUtil::SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn,int iFlag)
 {
 	vector<char> A=lof(srcfn);
 	string strA=CharArrToStr(CharArrToNormal(A));
@@ -440,17 +445,20 @@ bool GroupUtil::SaveGnEOrder(const char *srcfn,const char *Desfn,const char *Des
 		strF=strF.substr(0,strF.size()-2);
 	}
 	printf("%s\n",strF.c_str());
-	printf("最小生成元集：\n");
-	fout<<"最小生成元集："<<endl;
-	vector<int> vr=rank(vvA);
-        int r=vr.size();
-	for(int i=0;i<r;i++)
-	{
+        if(iFlag==1)
+        {
+	  printf("最小生成元集：\n");
+	  fout<<"最小生成元集："<<endl;
+	  vector<int> vr=rank(vvA);
+          int r=vr.size();
+	  for(int i=0;i<r;i++)
+	  {
 		printf("%d\n",vr[i]);
 		fout<<vr[i]<<endl;
-	}
-        printf("rank=%d\n",r);
-	fout<<"rank="<<r<<endl;
+	  }
+          printf("rank=%d\n",r);
+	  fout<<"rank="<<r<<endl;
+        }
 	fout.close();
 	return true;
 }
