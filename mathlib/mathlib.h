@@ -4,10 +4,25 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define __stdcall
 
 extern "C" void conv(float *xin, float *h, int lx, int lh,float *xout);//线性卷积
+extern "C" int __stdcall fkmod26(int x,int k);
+extern "C" void  __stdcall ECode(char *str,int k);
+extern "C" double __stdcall fcbsv(double a,double b,double eps,double(__stdcall *fcbsvf)(double));//切比雪夫求积法
+extern "C" double __stdcall fromb(double a,double b,double eps,double(__stdcall *frombf)(double));//龙贝格求积法
+extern "C" double __stdcall Arcsn(double e,double x);
+extern "C" double __stdcall RK4(double(__stdcall *f)(double x, double y), double x0, double y0, double xn, double h);
+extern "C" double __stdcall fsimp(double a,double b,double eps,double(__stdcall *fsimpf)(double));/*辛普森算法*/
+extern "C" int __stdcall DFT1(double *pr,double *pi,double *fr,double *fi,int N,int inv);//inv=1表示DFT=~F_n，inv=-1表示DFT=F_n/n，其中对称阵F_n=(F_n)^T={V_0,V_1,…,V_(n-1)}，V_0,V_1,…,V_(n-1)是正交的，且V_0=(1,1,…,1),V_1=(1,W_n,…,(W_n)^(n-1)),V_(n-1)=(1,(W_n)^(n-1),…,(W_n)^[(n-1)(n-1)])。
+extern "C" int __stdcall FFT1(float a_rl[], float a_im[], int ex, int inv);
+extern "C" int __stdcall FFT2(float *a_rl, float *a_im, int inv, int xsize, int ysize);
+extern "C" int __stdcall FFTImage(char *image_in, char *image_out, int xsize, int ysize);
+extern "C" int __stdcall FFTFilter(char *image_in, char *image_out, int xsize, int ysize, int a, int b);
+extern "C" int __stdcall FFTFilterImage(char *image_in, char *image_out, int xsize, int ysize, int a, int b);
+extern "C" double __stdcall Zeta(double s);
 extern "C" 
 {
 int __stdcall abint(double *a,int n,double *b,double eps,double *x);

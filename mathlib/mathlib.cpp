@@ -1,4 +1,5 @@
 ﻿#include "mathlib.h"
+typedef unsigned char BYTE;
 
 void conv(float *xin, float *h, int lx, int lh,float *xout)
 {
@@ -2658,3 +2659,688 @@ void __stdcall ncmul(double *pr,double *pi,int m,double *qr,double *qi,int n,dou
     free(p); free(r); free(e); return(1);
   } 
 
+//f(x)=(x+k)mod26,f^(-1)(x)=(x-k)mod26
+int __stdcall fkmod26(int x,int k)
+{
+  int ret=(x+k)%26;
+  while(ret<0){ret=ret+26;}//if(ret<0)ret=ret+26;
+  while(ret>25){ret=ret-26;}//if(ret>25)ret=ret-26;
+  return ret;
+}
+
+void  __stdcall ECode(char *str,int k)
+{
+ int nsize=strlen(str);
+ for(int i=0;i<nsize;i++)
+ {
+    if(str[i]<='z'&&str[i]>='a')
+  str[i]=fkmod26(str[i]-97,k)+97;
+    if(str[i]<='Z'&&str[i]>='A')
+         str[i]=fkmod26(str[i]-65,k)+65;
+        }
+}
+
+
+static float maxarg1,maxarg2;
+#define FMAX(a,b) (maxarg1=(a),maxarg2=(b),(maxarg1)>(maxarg2)?(maxarg1):(maxarg2))
+
+void nrerror(char error_text[])
+{
+fprintf(stderr,"%s\n",error_text);
+exit(1);
+}
+
+float **matrix(long nrl,long nrh,long ncl,long nch)
+{
+long i,nrow=nrh=nrh-nrl+1,ncol=nch-ncl+1;
+float **m;
+m=(float **)malloc((size_t)((nrow+1)*sizeof(float *)));
+if(!m)nrerror("malloc失败1");
+m+=1;
+m-=nrl;
+m[nrl]=(float *)malloc((size_t)((nrow*ncol+1)*sizeof(float)));
+if(!m[nrl])nrerror("malloc失败2");
+m[nrl]+=1;
+m[nrl]-=ncl;
+for(i=nrl+1;i<=nrh;i++)m[i]=m[i-1]+ncol;
+return m;
+}
+
+void free_matrix(float **m,long nrl,long nrh,long ncl,long nch)
+{
+free((char *)(m[nrl]+ncl-1));
+free((char *)(m+nrl-1));
+}
+
+//Ridders多项式外推法求导func'(x)
+//h!==0.0
+float __stdcall dfridr(float(__stdcall *func)(float),float x,float h,float *err)
+{
+int i,j;
+float errt,fac,hh,**a,ans;
+if(h==0.0)nrerror("h不能为0");
+a=matrix(1,10,1,10);
+hh=h;
+a[1][1]=((*func)(x+hh)-(*func)(x-hh))/(2.0*hh);
+*err=1.0e30;
+for(i=2;i<=10;i++)
+{
+hh/=1.4;
+a[1][i]=((*func)(x+hh)-(*func)(x-hh))/(2.0*hh);
+fac=1.96;
+for(j=2;j<=i;j++)
+{
+a[j][i]=(a[j-1][i]*fac-a[j-1][i-1])/(fac-1.0);
+fac=1.96*fac;
+errt=FMAX(fabs(a[j][i]-a[j-1][i]),fabs(a[j][i]-a[j-1][i-1]));
+if(errt<=*err)
+{
+*err=errt;
+ans=a[j][i];
+}
+}
+if(fabs(a[i][i]-a[i-1][i-1])>=2.0*(*err))break;
+}
+free_matrix(a,1,10,1,10);
+return ans;
+}
+
+double __stdcall fcbsv(double a,double b,double eps,double(__stdcall *fcbsvf)(double))//切比雪夫求积法
+{
+    int m,i,j;
+    double h,d,p,ep,g,aa,bb,s,x;
+    static double t[5]={-0.8324975,-0.3745414,0.0,
+                         0.3745414,0.8324975};
+    m=1;
+    h=b-a; d=fabs(0.001*h);
+    p=1.0e+35; ep=1.0+eps;
+    while ((ep>=eps)&&(fabs(h)>d))
+      { g=0.0;
+        for (i=1;i<=m;i++)
+          { aa=a+(i-1.0)*h; bb=a+i*h;
+            s=0.0;
+            for (j=0;j<=4;j++)
+              { x=((bb-aa)*t[j]+(bb+aa))/2.0;
+                s=s+fcbsvf(x);
+              }
+            g=g+s;
+          }
+        g=g*h/5.0;
+        ep=fabs(g-p)/(1.0+fabs(g));
+        p=g; m=m+1; h=(b-a)/m;
+      }
+    return(g);
+}
+
+double __stdcall fromb(double a,double b,double eps,double(__stdcall *frombf)(double))//龙贝格求积法
+/*a为积分下限，b为积分上限，eps是希望达到的精度*/ 
+{ 
+    int m,n,i,k;
+    double y[10],h,ep,p,x,s,q;
+    h=b-a;
+    y[0]=h*(frombf(a)+frombf(b))/2.0;
+    m=1; n=1; ep=eps+1.0;
+    while ((ep>=eps)&&(m<=9))
+      { p=0.0;
+        for (i=0;i<=n-1;i++)
+          { x=a+(i+0.5)*h;
+            p=p+frombf(x);
+          }
+        p=(y[0]+h*p)/2.0;
+        s=1.0;
+        for (k=1;k<=m;k++)
+          { s=4.0*s;
+            q=(s*p-y[k-1])/(s-1.0);
+            y[k-1]=p; p=q;
+          }
+        ep=fabs(q-y[m-1]);
+        m=m+1; y[m-1]=q; n=n+n; h=h/2.0;
+      }
+    return(q);
+}
+
+/*
+static double __stdcall fk(double k,double f)
+{ int m,i,j;
+    double s,p,ep,h,aa,bb,w,xx,g,q;
+    static double t[5]={-0.9061798459,-0.5384693101,0.0,
+                         0.5384693101,0.9061798459};
+    static double c[5]={0.2369268851,0.4786286705,0.5688888889,
+                        0.4786286705,0.2369268851};
+    m=1; g=0.0;
+    h=fabs(f); s=fabs(0.0001*h);
+    p=1.0e+35; ep=0.000001;
+    while ((ep>=0.0000001)&&(fabs(h)>s))
+      { g=0.0;
+        for (i=1;i<=m;i++)
+          { aa=(i-1.0)*h; bb=i*h;
+            w=0.0;
+            for (j=0;j<=4;j++)
+              { xx=((bb-aa)*t[j]+(bb+aa))/2.0;
+                q=sqrt(1.0-k*k*sin(xx)*sin(xx));
+                w=w+c[j]/q;
+              }
+            g=g+w;
+          }
+        g=g*h/2.0;
+        ep=fabs(g-p)/(1.0+fabs(g));
+        p=g; m=m+m; h=0.5*h;
+      }
+    return(g);
+}
+
+double __stdcall lelp1(double k,double f)
+{ int n;
+    double pi,y,e,ff;
+    if (k<0.0) k=-k;
+    if (k>1.0) k=1.0/k;
+    pi=3.1415926; y=fabs(f);
+    n=0;
+    while (y>=pi)
+      { n=n+1; y=y-pi;}
+    e=1.0;
+    if (y>=pi/2.0)
+      { n=n+1; e=-e; y=pi-y;}
+    if (n==0)
+      ff=fk(k,y);
+    else
+      { ff=fk(k,pi/2.0);
+        ff=2.0*n*ff+e*fk(k,y);
+      }
+    if (f<0.0) ff=-ff;
+    return(ff);
+}
+*/
+
+//雅可比分号形式的第一类[不完全]椭圆积分Arcsn(e;x)
+double __stdcall lelp1J(double(__stdcall *lelp1)(double e,double x),double e,double x)
+{
+  return lelp1(e,asin(x));
+}
+
+double __stdcall Arcsn(double e,double x)
+{ 
+    //return lelp1J(lelp1,e,x);
+    return lelp1(e,asin(x));
+}
+
+/*
+RK4（比Solver1D要一般）计算泛函：输入：初值X=t,y，函数f(x,y)；输出一阶常微分方程y'=f(x,y)的特解y(x)在x处的值（这里步长h=1e-2）
+Solver1D计算泛函：输入：初值X=t,y，函数f(x)；输出一阶常微分方程y'=f(y)的特解y(x)的采样值（这里步长dt=0.1）
+*/
+double __stdcall RK4(double(__stdcall *f)(double x, double y), double x0, double y0, double xn, double h)
+{
+ double k1 = 0.0, k2 = 0.0, k3 = 0.0, k4 = 0.0;
+ double x = 0.0, y = y0, ns;
+ int nsteps, i;
+ 
+ // Calculate nsteps
+ ns = (xn - x0)/h;
+ ns = ceil(ns);
+ nsteps = (int) ns;  // number of steps
+ h = (xn - x0)/ns;
+
+ for(i = 0; i < nsteps; i++)
+ {
+     x = x0 + i * h;
+     k1 = h * f(x, y);
+     k2 = h * f(x + h / 2, y + k1 / 2);
+     k3 = h * f(x + h / 2, y + k2 / 2);
+     k4 = h * f(x + h, y + k3);
+     y += k1 / 6 + k2 / 3 + k3 / 3 + k4 / 6;
+}
+return y;
+}
+
+double __stdcall fsimp(double a,double b,double eps,double(__stdcall *fsimpf)(double)) /*辛普森算法*/ 
+/*a为积分下限，b为积分上限，eps是希望达到的精度*/ 
+{ 
+int n,k; 
+double h,t1,t2,s1,s2,ep,p,x; 
+n=1; h=b-a; 
+t1=h*(fsimpf(a)+fsimpf(b))/2.0; /*用梯形公式求出一个大概的估值*/ 
+s1=t1; 
+ep=eps+1.0; 
+while (ep>=eps) 
+{ 
+/*用梯形法则计算*/ 
+p=0.0; 
+for (k=0;k<=n-1;k++) 
+{ 
+x=a+(k+0.5)*h; 
+p=p+fsimpf(x); 
+} 
+t2=(t1+h*p)/2.0; 
+/*用辛普森公式求精*/ 
+s2=(4.0*t2-t1)/3.0; 
+ep=fabs(s2-s1); 
+t1=t2; s1=s2; n=n+n; h=h/2.0; 
+} 
+return(s2); 
+}
+
+double __stdcall Zeta(double s)
+{
+ int i;
+ double sum=0;
+ for (i=1;i<=100;i++)
+  sum+=1.0/pow((double)i,s);
+ return sum;
+}
+
+int __stdcall DFT1(double *pr,double *pi,double *fr,double *fi,int N,int inv)
+{
+    double sr,si;
+    if(inv==1)
+    {
+      for(int j=0;j<N;j++)
+      { sr=0.0;si=0.0;
+        for(int k=0;k<N;k++)
+        {
+          sr+=pr[k]*cos(-6.2831853068*j*k/N);
+          si+=pr[k]*sin(-6.2831853068*j*k/N);
+         }
+         fr[j]=sr;fi[j]=si;
+      }
+    }
+    if(inv==-1)
+    {
+      for(int k=0;k<N;k++)
+      {
+         sr=0.0;si=0.0;
+         for(int j=0;j<N;j++)
+         {
+          sr+=fr[j]*cos(6.2831853068*j*k/N)-fi[j]*sin(6.2831853068*j*k/N);
+          si+=fr[k]*sin(6.2831853068*j*k/N)+fi[j]*cos(6.2831853068*j*k/N);
+         }
+          pr[k]=sr/N;
+          pi[k]=si/N;
+        }
+    }
+    return 0;
+}
+
+#define	PI (float)3.14159265 
+// 一维FFT
+#define OPT  1 // OPT = 1 光学DFT(直流成分在中间)
+// OPT = 0 一般DFT(直流成分在左端)
+
+void fft1core(float a_rl[], float a_im[], int length,int ex, float sin_tbl[], float cos_tbl[], float buf[]);
+void cstb(int length, int inv, float sin_tbl[], float cos_tbl[]);
+void birv(float a[], int length, int ex, float b[]);
+
+int __stdcall FFT1(float a_rl[], float a_im[], int ex, int inv)
+{
+int i, length = 1;
+float *sin_tbl;//Sin 数据配列
+float *cos_tbl; //Cos 数据配列
+float *buf; //工作用数列
+for (i=0; i<ex; i++) length*=2; //计算数据个数
+sin_tbl=(float *)malloc((size_t)length*sizeof(float));
+cos_tbl = (float *)malloc((size_t)length*sizeof(float));
+buf = (float *)malloc((size_t)length*sizeof(float));
+if ((sin_tbl == NULL) || (cos_tbl == NULL) || (buf == NULL)) {
+return -1;
+}
+cstb(length, inv, sin_tbl, cos_tbl);      //计算Sin、Cos数据
+fft1core(a_rl, a_im, length, ex, sin_tbl, cos_tbl, buf);
+free(sin_tbl);
+free(cos_tbl);
+return 0;
+}
+
+void fft1core(float a_rl[], float a_im[], int length, int ex, float sin_tbl[], float cos_tbl[], float buf[])
+{
+int i, j, k, w, j1, j2;
+int numb, lenb, timb;
+float xr, xi, yr, yi, nrml;
+if (OPT==1) {
+for (i = 1; i < length; i+=2) {
+a_rl[i] = -a_rl[i];
+a_im[i] = -a_im[i];
+}
+}
+numb=1;
+lenb=length;
+for(i=0; i<ex;i++){
+lenb/=2;
+timb=0;
+for(j=0;j<numb;j++) {
+w = 0;
+for (k=0; k<lenb;k++) {
+j1=timb+k;
+j2=j1+lenb;
+xr=a_rl[j1];
+xi=a_im[j1];
+yr=a_rl[j2];
+yi=a_im[j2];
+a_rl[j1]=xr+yr;
+a_im[j1]=xi+yi;
+xr=xr-yr;
+xi=xi-yi;
+a_rl[j2] = xr*cos_tbl[w] - xi*sin_tbl[w];
+a_im[j2] = xr*sin_tbl[w] + xi*cos_tbl[w];
+w += numb;
+}
+timb += (2*lenb);
+}
+numb *= 2;
+}
+birv(a_rl, length, ex, buf); //实数数据的排列
+birv(a_im, length, ex, buf); //虚数数据的排列
+if(OPT==1) {
+for (i = 1; i < length; i+=2) {
+a_rl[i] = -a_rl[i];
+a_im[i] = -a_im[i];
+}
+}
+nrml = (float)(1.0 / sqrt((float)length));
+for (i = 0; i < length; i++) {
+a_rl[i] *= nrml;
+a_im[i] *= nrml;
+}
+}
+
+void cstb(int length, int inv, float sin_tbl[], float cos_tbl[])
+{int i;
+float xx, arg;
+xx = (float)(((-PI) * 2.0) / (float)length);
+if (inv < 0) xx = -xx;
+for (i = 0; i < length; i++) {
+arg = (float)i * xx;
+sin_tbl[i] = (float)sin(arg);
+cos_tbl[i] = (float)cos(arg);
+}
+}
+
+void birv(float a[], int length, int ex, float b[])
+{int i, ii, k, bit;
+ for (i = 0; i < length; i++) {
+for (k = 0, ii=i, bit=0; ; bit<<=1, ii>>=1) {
+bit = (ii & 1) | bit;
+if (++k == ex) break;
+}
+b[i] = a[bit];
+}
+for (i = 0; i < length; i++) 
+a[i] = b[i];
+}
+
+// 二维FFT
+void cstb(int length, int inv, float sin_tbl[], float cos_tbl[]);
+void rvmtx1(float *a, float *b,      int xsize, int ysize);
+void rvmtx2(float *a, float *b,      int xsize, int ysize);
+int __stdcall FFT2(float *a_rl, float *a_im, int inv, int xsize, int ysize)
+{
+float *b_rl;            //数据转置作业用配列（实数部）
+float *b_im;            //数据转置作业用配列（虚数部）
+float *hsin_tbl;         //计算水平SIN用配列
+float *hcos_tbl;         //计算水平COS用配列
+float *vsin_tbl;         //计算垂直SIN用配列
+float *vcos_tbl;         //计算垂直COS用配列
+float *buf_x;            //水平方向作业用配列
+float *buf_y;            //垂直方向作业用配列
+int i;
+           b_rl = (float *)calloc((size_t)xsize*ysize, sizeof(float));
+           b_im = (float *)calloc((size_t)xsize*ysize, sizeof(float));
+           hsin_tbl = (float *)calloc((size_t)xsize, sizeof(float));
+           hcos_tbl = (float *)calloc((size_t)xsize, sizeof(float));
+           vsin_tbl = (float *)calloc((size_t)ysize, sizeof(float));
+           vcos_tbl = (float *)calloc((size_t)ysize, sizeof(float));
+           buf_x = (float *)malloc((size_t)xsize*sizeof(float));
+           buf_y = (float *)malloc((size_t)ysize*sizeof(float));
+           if ((b_rl == NULL) || (b_im == NULL)
+                 || (hsin_tbl == NULL) || (hcos_tbl == NULL)
+                 || (vsin_tbl == NULL) || (vcos_tbl == NULL)
+                 || (buf_x == NULL) || (buf_y == NULL)) {
+                 return -1;
+           }
+           cstb(xsize, inv, hsin_tbl, hcos_tbl);   //计算水平用SIN,COS配列
+           cstb(ysize, inv, vsin_tbl, vcos_tbl);   //计算垂直用SIN,COS配列
+           
+           int x_exp = (int)(log((double)xsize)/log((double)2));
+           //水平方向的傅里叶变换
+           for (i = 0; i < ysize; i++) {
+                 fft1core(&(*(a_rl + (long)i*xsize)), &(*(a_im + (long)i*xsize)),xsize, x_exp, hsin_tbl, hcos_tbl, buf_x);
+           }
+           //2维数据的倒置
+           rvmtx1(a_rl, b_rl, xsize, ysize);
+           rvmtx1(a_im, b_im, xsize, ysize);
+
+           //垂直方向的傅里叶变换
+           int y_exp = (int)(log((double)ysize)/log((double)2));
+           for (i = 0; i < xsize; i++) {
+                 fft1core(&(*(b_rl + ysize*i)), &(*(b_im + ysize*i)), ysize, y_exp, vsin_tbl, vcos_tbl, buf_y);
+           }
+           //2维数据的倒置
+           rvmtx2(b_rl, a_rl, xsize, ysize);
+           rvmtx2(b_im, a_im, xsize, ysize);
+
+           free(b_rl);
+           free(b_im);
+           free(hsin_tbl);
+           free(hcos_tbl);
+           free(vsin_tbl);
+           free(vcos_tbl);
+           return 0;
+      }
+      void rvmtx1(float *a, float *b, 
+           int xsize, int ysize)
+      {
+           int i, j;
+
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++)
+                 *(b + i*ysize + j) = *(a + j*xsize + i);
+           }
+      }
+      void rvmtx2(float *a, float *b, 
+           int xsize, int ysize)
+      {
+           int i, j;
+
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++)
+                       *(b + j*xsize + i) = *(a + i*ysize + j);
+           }
+      }
+
+
+//二维FFT结果图像化
+int __stdcall FFTImage(char *image_in, char *image_out, int xsize, int ysize)
+      {
+           float      *ar;            //数据实数部（输入输出）
+           float      *ai;            //数据虚数部（输入输出）
+           double      norm, max;
+           float      data;
+           long      i, j;
+
+           ar = (float *)malloc((size_t)ysize*xsize*sizeof(float));
+           ai = (float *)malloc((size_t)ysize*xsize*sizeof(float));
+           if ((ar == NULL) || (ai == NULL)) return -1;
+           //读入原图像，变换2维FFT输入数据
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       ar[xsize*j + i] = (float)(*(image_in + j*xsize + i));
+                       ai[xsize*j + i] = 0.0;
+                 }
+           }
+           //2维FFT变换
+           if (FFT2(ar, ai, 1, xsize, ysize) == -1) 
+                 return -1;
+           //FFT结果图像化
+           max = 0;
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       norm = ar[xsize*j + i]*ar[xsize*j + i] 
+                          + ai[xsize*j + i]*ai[xsize*j + i];       //计算幅度成分
+                       if (norm != 0.0) norm = log(norm) / 2.0;
+                       else norm = 0.0;
+                       ar[xsize*j + i] = (float)norm;
+                       if (norm > max) max = norm;
+                 }
+           }
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       ar[xsize*j + i] = (float)(ar[xsize*j + i]*255 / max);
+                 }
+           }
+           //FFT结果变图像
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       data = ar[xsize*j + i];
+                       if (data > 255) data = 255;
+                       if (data <   0) data = 0;
+                       *(image_out + j*xsize + i) = (unsigned char)data;
+                 }
+           }
+           free(ar);
+           free(ai);
+           return 0;
+      }
+
+
+//基于二维FFT的滤波处理
+int __stdcall FFTFilter(char *image_in, char *image_out, int xsize, int ysize, int a, int b)
+      {
+           float      *ar;   //数据实数部（输入输出）
+           float      *ai;   //数据虚数部（输入输出）
+           float      *ff;   //滤波子的空间频率特性
+           double      norm, max;
+           float      data;
+           long      i, j, circ;
+
+           ar = (float *)malloc((size_t)ysize*xsize*sizeof(float));
+           ai = (float *)malloc((size_t)ysize*xsize*sizeof(float));
+           ff = (float *)malloc((size_t)ysize*xsize*sizeof(float));
+           if ((ar == NULL) || (ai == NULL) || (ff == NULL)) {
+                 return -1;
+           }
+           //读入原图像，变换2维FFT输入数据
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       ar[xsize*j + i] = (float)(*(image_in + j*xsize + i));
+                       ai[xsize*j + i] = 0.0;
+                 }
+           }
+           //2维FFT变换 
+           if (FFT2(ar, ai, 1, xsize, ysize) == -1) 
+                 return -1;
+
+           //FFT结果图像化
+           max = 0;
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       norm = ar[xsize*j + i]*ar[xsize*j + i] 
+                          + ai[xsize*j + i]*ai[xsize*j + i];       //计算幅度成分
+                       if (norm != 0.0) norm = log(norm) / 2.0;
+                       else norm = 0.0;
+                       ar[xsize*j + i] = (float)norm;
+                       if (norm > max) max = norm;
+                 }
+           }
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       ar[xsize*j + i] = (float)(ar[xsize*j + i]*255 / max);
+                 }
+           }
+
+
+           //做成只通过a以上b以下成分的滤波子
+           for (j = 0; j < ysize; j++) {
+                 for(i = 0; i < xsize; i++) {
+                       data = (float)((i-xsize/2)*(i-xsize/2)
+                             + (j-ysize/2)*(j-ysize/2));
+                       circ = (long)sqrt(data);
+                       if ((circ >= a) && (circ <= b))
+                             ff[xsize*j + i] = 1.0;
+                       else
+                             ff[xsize*j + i] = 0.0;
+                 }
+           }
+
+           //对原图像的频率成分实施滤波
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       ar[xsize*j + i] *= ff[xsize*j + i];
+                       ai[xsize*j + i] *= ff[xsize*j + i];
+                 }
+           }
+
+           //将结果变为图像数据
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       data = ar[xsize*j + i];
+                       if (data > 255) data = 255;
+                       if (data <   0) data = 0;
+                       *(image_out + j*xsize + i) = (BYTE)data;
+                 }
+           }
+           free(ar);
+           free(ai);
+           free(ff);
+           return 0;
+      }
+
+
+// 基于二维FFT的滤波处理、逆傅里叶变换
+int __stdcall FFTFilterImage(char *image_in, char *image_out, int xsize, int ysize, int a, int b)
+{
+           float *ar;   //数据实数部（输入输出）
+           float *ai;   //数据虚数部（输入输出）
+           float *ff;   //滤波子的空间频率特性
+           float data;
+           long i,j, circ;
+
+           ar = (float *)malloc((size_t)ysize*xsize*sizeof(float));
+           ai = (float *)malloc((size_t)ysize*xsize*sizeof(float));
+           ff = (float *)malloc((size_t)ysize*xsize*sizeof(float));
+           if ((ar == NULL) || (ai == NULL) || (ff == NULL)) {
+                 return -1;
+           }
+           //读入原图像，变换2维FFT输入数据
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       ar[xsize*j + i] = (float)(*(image_in + j*xsize + i));
+                       ai[xsize*j + i] = 0.0;
+                 }
+           }
+           //2维FFT变换 
+           if (FFT2(ar, ai, 1, xsize, ysize) == -1) 
+                 return -1;
+           //做成只通过a以上b以下成分的滤波子
+           for (j = 0; j < ysize; j++) {
+                 for(i = 0; i < xsize; i++) {
+                       data = (float)((i-xsize/2)*(i-xsize/2)
+                             + (j-ysize/2)*(j-ysize/2));
+                       circ = (long)sqrt(data);
+                       if ((circ >= a) && (circ <= b))
+                             ff[xsize*j + i] = 1.0;
+                       else
+                             ff[xsize*j + i] = 0.0;
+                 }
+           }
+           //对原图像的频率成分实施滤波
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       ar[xsize*j + i] *= ff[xsize*j + i];
+                       ai[xsize*j + i] *= ff[xsize*j + i];
+                 }
+           }
+           //实施逆FFT变换，将滤波后的频率成分变回为图像
+           if (FFT2(ar, ai, -1, xsize, ysize) == -1) 
+                 return -1;
+           //将结果变为图像数据
+           for (j = 0; j < ysize; j++) {
+                 for (i = 0; i < xsize; i++) {
+                       data = ar[xsize*j + i];
+                       if (data > 255) data = 255;
+                       if (data <   0) data = 0;
+                       *(image_out + j*xsize + i) = (BYTE)data;
+                 }
+           }
+           free(ar);
+           free(ai);
+           free(ff);
+           return 0;
+}
