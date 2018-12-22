@@ -494,3 +494,81 @@ void GroupUtil::filter_ext_name(char *name)
             name_start++;
         }
 }
+
+string GroupUtil::FormatStr(int cnt)
+{
+	string str="";
+	if(cnt<=0)
+		return str;
+	for(int i=0;i<cnt;i++)
+	{
+		str+="%d,";
+		if(i==cnt-1)
+		{
+			str=str.substr(0,str.size()-1);
+			str+="\\n";
+		}
+	}
+	return str;
+}
+
+string GroupUtil::Trim(const string& theString)
+{
+	int aStartPos=0;
+	while(aStartPos<(int)theString.length() && isspace(theString[aStartPos]))
+		aStartPos++;
+	int anEndPos=theString.length()-1;
+	while(anEndPos>=0 && isspace(theString[anEndPos]))
+		anEndPos--;
+	return theString.substr(aStartPos,anEndPos-aStartPos+1);
+}
+
+vector<int> GroupUtil::atoMtx(const char *str)
+{
+	vector<string> vs;
+	vector<int> vi(2);
+	int rows=0;
+	int cols=0;
+	if(str!=NULL)
+	{
+		vs=split(str,";");
+		rows=vs.size();
+		vi[0]=rows;
+		for(int i=0;i<vs.size();i++)
+		{
+			vector<string> vsi=split(vs[i],",");
+			if(cols>0 && vsi.size()!=cols)
+			{
+				vi.clear();
+				return vi;
+			}
+			cols=vsi.size();
+			vi[1]=cols;
+			for(int j=0;j<vsi.size();j++)
+			{
+				vi.push_back(atoi(vsi[j].c_str()));
+			}
+		}
+	}
+	else
+	{
+		vi.clear();
+	}
+	return vi;
+}
+
+vector<vector<int> > GroupUtil::StrtoInt(const vector<string>& ElemSet)
+{
+	vector<vector<int> > ret(ElemSet.size());
+	for(int i=0;i<ElemSet.size();i++)
+	{
+		vector<int> I;
+		vector<string> vsi=split(ElemSet[i],",");
+		for(int j=0;j<vsi.size();j++)
+		{
+			I.push_back(atoi(vsi[j].c_str()));
+		}
+		ret[i]=I;
+	}
+	return ret;
+}

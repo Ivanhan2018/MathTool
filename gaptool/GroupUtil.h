@@ -57,6 +57,14 @@ public:
 
    // 过滤掉文件名中的扩展名
    static void filter_ext_name(char *name);
+
+   static string FormatStr(int cnt);
+
+   static string Trim(const string& theString);
+
+   static vector<int> atoMtx(const char *str);
+
+   static vector<vector<int> > StrtoInt(const vector<string>& ElemSet);
 };
 
 #endif
