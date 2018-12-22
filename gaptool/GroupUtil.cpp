@@ -83,6 +83,26 @@ bool GroupUtil::FG(const char *szFG,const char *szfilename)
 	vector<vector<int> > FG;
 	vector<string> vM=split(szFG,";");
 	int M=vM.size();
+
+        // 判断是不是矩阵表示
+        if(M>=3)
+        {
+           size_t loc = vM[0].find_first_of(",", 0 );
+           if(loc == string::npos )
+	   {
+              string strPath=szfilename;
+	      //去掉.txt
+	      int pos1 = strPath.find_last_of(".");
+	      strPath = strPath.substr(0, pos1);
+
+	      char szcmd[100]={0};
+	      sprintf(szcmd,"./FGMtx \"%s\" \"%s\"",szFG,strPath.c_str());
+	      system(szcmd);
+              return true;
+	   }
+        }
+
+
 	for(int i=0;i<M;i++)
 	{
 		vector<string> vM1=split(vM[i],",");
