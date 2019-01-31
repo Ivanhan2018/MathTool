@@ -406,5 +406,8 @@ i=52,不可逆元个数n1=1,幂等元个数n2=2,特征：2,是否交换：true,�
 extern int g_F8Add[8][8];
 extern int g_F8Mul[8][8];
 
+extern int g_R9_5Add[9][9];
+extern int g_R9_5Mul[9][9];
+
 #endif
 

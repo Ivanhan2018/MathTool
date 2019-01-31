@@ -64,6 +64,7 @@ IdxArr2 g_ring_arr2_data[]={ \
 	{8,45,&g_F8Add[0][0],&g_R8_45Mul[0][0],"R8_45"}, \
 	{8,49,&g_F8Add[0][0],&g_R8_49Mul[0][0],"R8_49"}, \
 	{8,52,&g_F8Add[0][0],&g_F8Mul[0][0],"F_8"}, \
+	{9,5,&g_R9_5Add[0][0],&g_R9_5Mul[0][0],"R9_5"}, \
 };
 
 int g_ring_arr2_data_count=sizeof(g_ring_arr2_data)/sizeof(IdxArr2);
@@ -180,6 +181,26 @@ IdxFg g_ring_fg_data[]={ \
 	{8,51,"2,x^3+x^0,R8_51.txt","F4×F2"}, \
 	//R8_52:=F_8
 	{8,52,"2,x^3+x^1+x^0,R8_52.txt","F_8"}, \
+	//R9_1:=RingByGenerators([ZmodnZObj(9,81)]);
+	{9,1,"1;81;9","M_9"}, \
+	//R9_2:=RingByGenerators([ZmodnZObj(1,9)]);
+	{9,2,"1;9;1","Z/9Z"}, \
+	//R9_3:=RingByGenerators([ZmodnZObj(3,27)]);
+	{9,3,"1;27;3","R9_3"}, \
+        //R9_4:=M_3+M_3
+	{9,4,"1;9;3|1;9;3","M_3×M_3"}, \
+        //R9_6:=M_3+F_3
+	{9,6,"1;9;3|1;6;2","M_3×F_3"}, \
+	//R9_7
+	{9,7,"2;3;1,0,0,0;1,1,0,0","R9_7"}, \
+	//R9_8
+	{9,8,"2;3;1,0,0,0;1,0,1,0","R9_8"}, \
+	//R9_9:=F_3[x]/(x^2);
+	{9,9,"3,x^2,R9_9.txt","R9_9"}, \
+        //R9_10:=F_3+F_3
+	{9,10,"1;6;2|1;6;2","F_3×F_3"}, \
+	//F_9:=F_3[x]/(x^2+x^0);
+	{9,11,"3,x^2+x^0,F_9.txt","F_9"}, \
 };
 
 int g_ring_fg_data_count=sizeof(g_ring_fg_data)/sizeof(IdxFg);
