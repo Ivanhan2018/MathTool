@@ -173,16 +173,17 @@ vector<std::complex<long> > totientE4(const std::complex<long>& z)
 	long num=Norm(z);
 	long nb=gcd(z.real(),z.imag());
 	long na=num/nb;
+	ret.push_back(std::complex<long>(1,0));
 	if(num==1)
 	{
-		vector<std::complex<long> > ret1(1);
-		ret1[0]=std::complex<long>(1,0);
-		return ret1;
+		return ret;
 	}
 	for(int i=0;i<na;i++)
 	{
 		for(int j=0;j<nb;j++)
 		{
+			if(i==1 && j==0)
+				continue;
             std::complex<long> ij=std::complex<long>(i,j);
 			std::complex<long> ij1=simple_gcd(ij,z);
 	        long num1=Norm(ij1);			
