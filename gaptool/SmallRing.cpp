@@ -120,7 +120,7 @@ IdxFg g_ring_fg_data[]={ \
 	//R4_1:=RingByGenerators([ZmodnZObj(4,16)]);
 	{4,1,"1;16;4","M_4"}, \
 	//R4_2:=RingByGenerators([ZmodnZObj(2,8)]);
-	{4,2,"1;8;2","R4_2"}, \
+	{4,2,"1;8;2","2Z/8Z"}, \
 	//R4_3:=RingByGenerators([ZmodnZObj(1,4)]);
 	{4,3,"1;4;1","Z/4Z"}, \
 	//R4_4:=DirectSum(SmallRing(2,1),SmallRing(2,1));
@@ -152,13 +152,15 @@ IdxFg g_ring_fg_data[]={ \
 	//R8_1:=RingByGenerators([ZmodnZObj(8,64)]);
 	{8,1,"1;64;8","M_8"}, \
 	//R8_2:=RingByGenerators([ZmodnZObj(2,16)]);
-	{8,2,"1;16;2","R8_2"}, \
+	{8,2,"1;16;2","2Z/16Z"}, \
 	//R8_3:=RingByGenerators([ZmodnZObj(1,8)]);
 	{8,3,"1;8;1","Z/8Z"}, \
 	//R8_4:=RingByGenerators([ZmodnZObj(4,32)]);
-	{8,4,"1;32;4","R8_4"}, \
+	{8,4,"1;32;4","4Z/32Z"}, \
 	//R8_14:=DirectSum(SmallRing(4,3),SmallRing(2,2));
 	{8,14,"1;4;1|1;2;1","Z/4Z×F_2"}, \
+	//R8_16:=DirectSum(SmallRing(4,2),SmallRing(2,1));
+	{8,16,"1;8;2|1;4;2","2Z/8Z×M_2"}, \	
 	//R8_19
 	{8,19,"2;4;2,0,0,2;1,1,1,1","R8_19"}, \
 	//R8_21
@@ -186,7 +188,7 @@ IdxFg g_ring_fg_data[]={ \
 	//R9_2:=RingByGenerators([ZmodnZObj(1,9)]);
 	{9,2,"1;9;1","Z/9Z"}, \
 	//R9_3:=RingByGenerators([ZmodnZObj(3,27)]);
-	{9,3,"1;27;3","R9_3"}, \
+	{9,3,"1;27;3","3Z/27Z"}, \
         //R9_4:=M_3+M_3
 	{9,4,"1;9;3|1;9;3","M_3×M_3"}, \
         //R9_6:=M_3+F_3
