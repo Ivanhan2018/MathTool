@@ -532,6 +532,41 @@ int IsInFG(int N,const vector<vector<int> > FG,const vector<int> & m)
 	return -1;
 }
 
+int IsInFR(const vector<int> &v,int m){
+	for(int i=0;i<v.size();i++){
+		if(v[i]==m){
+			return i;
+		}
+	}
+	return -1;
+}
+
+vector<int> FR(const vector<vector<int> > &vvA,const vector<vector<int> > &vvM,const vector<int> &v)
+{
+	vector<int> ret=v;	
+	int cnt=0,cnt1=v.size();	
+    while(cnt1!=cnt) {
+	    cnt=ret.size();
+		for(int i=0;i<cnt;i++){
+			for(int j=0;j<cnt;j++){
+			int IJ=vvA[ret[i]-1][ret[j]-1];
+			int bIn=IsInFR(ret,IJ);
+			if(bIn==-1){
+			 ret.push_back(IJ);
+			}
+			int IJ1=vvM[ret[i]-1][ret[j]-1];			
+			int bIn1=IsInFR(ret,IJ1);
+			if(bIn1==-1){
+			 ret.push_back(IJ1);
+			}			
+		}
+		}
+		cnt1=ret.size();
+    }
+	std::sort(ret.begin(),ret.end());
+    return ret;
+}
+
 // 二维数组是群的凯莱表的充要条件
 bool IsGroup(const vector<vector<int> > &vvA)
 {
@@ -756,6 +791,25 @@ std::string calRInfo(const vector<vector<int> > &vvA1)
 	return szInfo;
 }
 
+string itos(int a)
+{
+	char sz[20]={0};
+	sprintf(sz,"%d",a);
+	return sz;
+}
+
+string VStr(const vector<int> &v)
+{
+	string str="[";
+    for(int i=0;i<v.size();i++){
+		str+=itos(v[i]);
+		if(i<v.size()-1)
+          	str+=",";		
+    }	
+	str+="]";
+	return str;
+}
+
 bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 {
 	vector<char> A=lof2(srcfn);
@@ -787,12 +841,18 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 	
 	vector<int> vOrders=Factors(AFlag[1]);
 	vector<int> vCounts(AFlag[1]+1);
+	vector<int> vCounts1(AFlag[1]+1);	
 	for(int i=0;i<AFlag[1];i++)
 	{
 		int ord=getGnEOrder(vvA,i);
 		printf("G%dElementToOrder(%d)=%d\n",AFlag[1],i,ord);
 		fout<<"G"<<AFlag[1]<<"ElementToOrder("<<i<<")="<<ord<<endl;
 		vCounts[ord]=vCounts[ord]+1;
+		
+		vector<int> v(1,i+1);
+		vector<int> vi=FR(vvA,vvA1,v);
+		int ord1=vi.size();
+		vCounts1[ord1]=vCounts1[ord1]+1;	
 	}
 	string strF;
 	{
@@ -825,7 +885,16 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 	printf("%s\n",strF.c_str());
         fout<<endl;
 
-        int n0=0;
+	vector<int> v0;
+	vector<int> v1;
+	for(int i=0;i<vOrders.size();i++)
+	{
+		v0.push_back(vCounts[vOrders[i]]);
+		v1.push_back(vCounts1[vOrders[i]]);
+	}
+	string N0=VStr(v0);//加法群同阶元的分布N0
+	string S1=VStr(v1);//单个生成元子环的阶的分布S1
+    int n0=0;
 	for(int i=vOrders.size()-1;i>=0;i--)
 	{
 		if(vCounts[vOrders[i]]>0)
@@ -847,9 +916,9 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 
         vector<int> ZA=CenterOfG(vvA1);
 	int n8=ZA.size();
-
-	printf("环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",n0,bA,bO,n1,n2,n4,n5,n6,n7,n8);
-        fout<<"环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8="<<n0<<","<<bA<<","<<bO<<","<<n1<<","<<n2<<","<<n4<<","<<n5<<","<<n6<<","<<n7<<","<<n8<<endl;
+	
+	printf("环的结构不变量N0,n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,S1=%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s\n",N0.c_str(),n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,S1.c_str());
+        fout<<"环的结构不变量N0,n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,S1="<<N0<<n0<<","<<bA<<","<<bO<<","<<n1<<","<<n2<<","<<n4<<","<<n5<<","<<n6<<","<<n7<<","<<n8<<S1<<endl;
 
         const char *szRet=(bA?"交换":"非交换");
 	printf("%s,",szRet);
