@@ -1,204 +1,4 @@
-#ifndef IRING_H
-#define IRING_H
-
-#include<stdio.h>
-#include<string.h>
-#include<sstream>
-#include<vector>
-#include<map>
-#include<iterator>
-#include<algorithm>
-using namespace std;
-
-struct IRing
-{
-	virtual void printTable() = 0;
-	virtual int add(int a,int b) = 0;
-	virtual int mul(int a,int b) = 0;
-	virtual int size() = 0; 	   
-};
-
-int IdRing(IRing* r)
-{	
-	return -1;
-}
-
-void printRing(IRing* r){
-   int n=r->size();
-   printf("[R%dAdd]\n",n);   
-   for(int i=0;i<n;i++){
-	   for(int j=0;j<n;j++){
-		  int ij=r->add(i,j);
-		  printf("%d ",ij+1);
-	   } 
-       printf("\n");   
-   }
-   printf("[R%dMul]\n",n);   
-   for(int i=0;i<n;i++){
-	   for(int j=0;j<n;j++){
-		  int ij=r->mul(i,j);
-		  printf("%d ",ij+1); 
-	   } 
-       printf("\n");	   
-   }
-}
-
-// 一个环r的子环s
-struct Subring:public IRing
-{
-public:
-	// 静态函数
-public:
-	// 实现抽象基类的方法
-	virtual void printTable();
-	virtual int add(int a,int b);
-	virtual int mul(int a,int b);
-	virtual int size(); 
-	// 构造函数
-	Subring(IRing* r,const vector<int>& gens);
-	// 成员函数	
-	// 成员变量
-	vector<int> m_Set;
-	IRing* m_r;
-};
-
-void Subring::printTable()
-{
-	int ID=IdRing(this);
-	printf("R%d_%d:\n",size(),ID);
-	printRing(this);	
-}
-
-int Subring::add(int a,int b)
-{
-	int ij=m_r->add(m_Set[a],m_Set[b]);
-	vector<int>::iterator p=std::find(m_Set.begin(),m_Set.end(),ij);
-	int IJ=-1;
-	if(p!=m_Set.end()){
-		IJ=p-m_Set.begin();
-	}
-	return IJ;
-}
-
-int Subring::mul(int a,int b)
-{
-	int ij=m_r->mul(m_Set[a],m_Set[b]);
-	vector<int>::iterator p=std::find(m_Set.begin(),m_Set.end(),ij);
-	int IJ=-1;
-	if(p!=m_Set.end()){
-		IJ=p-m_Set.begin();
-	}
-	return IJ;
-}
-
-int Subring::size()
-{
-	return m_Set.size();
-}
-
-Subring::Subring(IRing* r,const vector<int>& gens)
-{
-	m_r=r;
-	int E=0;
-	m_Set.push_back(E);
-	for(int i=0;i<gens.size();i++)
-	{
-		if(gens[i]!=E)
-			m_Set.push_back(gens[i]);
-	}
-	int R=m_Set.size();
-	int cnt=R;
-	int cnt1=R;
-	do{
-		cnt=m_Set.size();
-		for(int i=0;i<cnt;i++)
-		{
-			for(int j=0;j<cnt;j++)
-			{
-				int IJ=m_r->mul(m_Set[i],m_Set[j]);
-				vector<int>::iterator p=std::find(m_Set.begin(),m_Set.end(),IJ);
-				if(p==m_Set.end()){
-					m_Set.push_back(IJ);
-				}
-				int IJ1=m_r->add(m_Set[i],m_Set[j]);
-				p=std::find(m_Set.begin(),m_Set.end(),IJ1);
-				if(p==m_Set.end()){
-					m_Set.push_back(IJ1);
-				}
-			}
-		}
-		cnt1=m_Set.size();
-	}while(cnt1>cnt);
-}
-
-string itos(int i)
-{
-  stringstream s;
-  s << i;
-  return s.str();
-}
-
-vector<int>  DivisorsInt(int n){
-	vector<int> ret;
-	if(n<1)
-		return ret;
-	for(int i=1;i<=n;i++){
-		if(n%i==0){
-			ret.push_back(i);
-		}
-	}
-	return ret;
-}
-
-string simplyS1(vector<int>& S1){
-    int n=S1.size();
-	vector<int> vOrders=DivisorsInt(n);
-	vector<int> vCounts(n+1);
- 	for(int i=0;i<n;i++)
-	{
-		int ord=S1[i];
-		vCounts[ord]=vCounts[ord]+1;
-	}
-	string str="[";
-	for(int i=0;i<vOrders.size();i++)
-	{
-		char sz[200]={0};
-		sprintf(sz,"%d,",vCounts[vOrders[i]]);
-		str+=sz;
-	}
-	if(str.size()>2)
-	{
-		str=str.substr(0,str.size()-1);
-	}
-	str+="]";
-	return str;
-}
-
-string calS1(IRing* r,bool bDone){
-
-   int n=r->size();
-   vector<int> S1;
-   for(int i=0;i<n;i++){
-	   vector<int> v;
-	   v.push_back(i);
-	   Subring si(r,v);
-	   S1.push_back(si.size());
-   }
-   if(bDone)
-   {
-	   string str=simplyS1(S1);
-	   return str;
-   }	
-   string str="[";
-   for(int i=0;i<n;i++)
-   {
-	   str+=itos(S1[i]);
-	   if(i<n-1)
-		   str+=",";   
-   }	   
-   str+="]";
-   return str;
-}
+#include"IRing.h"
 
 // 有限循环环mZ/nZ，这里限制m|n
 struct ZmodnZ:public IRing
@@ -222,10 +22,12 @@ public:
 void ZmodnZ::printTable()
 {
 	int ID=IdRing(this);
-	string S1=calS1(this,true);
-	string undoS1=calS1(this,false);	
-	printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
-	printRing(this);	
+	string str=calcRingInvariant(this);
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());	
+	//string S1=calS1(this,true);
+	//string undoS1=calS1(this,false);	
+	//printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
+	//printRing(this);	
 }
 
 int ZmodnZ::add(int a,int b)
@@ -298,11 +100,13 @@ bool M2r::IsEqual(const MATRIXi &t,const MATRIXi &m){
 void M2r::printTable()
 {
 	int ID=IdRing(this);
-	string S1=calS1(this,true);
-	string undoS1=calS1(this,false);	
-	printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
+	string str=calcRingInvariant(this);
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());	
+	//string S1=calS1(this,true);
+	//string undoS1=calS1(this,false);	
+	//printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
 	if(size()<100){
-	printRing(this);	
+		//printRing(this);	
 	}
 	else{
 	   printf("环的阶太大，不在控制台打印\n");
@@ -369,8 +173,162 @@ M2r::M2r(IRing* r)
 	}
 }
 
+typedef vector<vector<unsigned char> > MATRIXi8;
+
+// n阶全矩阵环Mn(r)
+struct Mnr:public IRing
+{
+public:
+	// 静态函数
+   static int getidx(vector<MATRIXi8> &Arr2,MATRIXi8 &Arr1);
+   static bool IsEqual(const MATRIXi8 &t,const MATRIXi8 &m);	
+   static bool nextV1(int m,vector<unsigned char>& v);
+public:
+	// 实现抽象基类的方法
+	virtual void printTable();
+	virtual int add(int a,int b);
+	virtual int mul(int a,int b);
+	virtual int size(); 
+	// 构造函数
+	Mnr(IRing* r,int n);
+	// 成员函数	
+    int visitMnRm(int n,int m);	
+	// 成员变量
+	vector<MATRIXi8> m_Set;
+	IRing* m_r;
+	int m_n;
+};
+
+bool Mnr::nextV1(int m,vector<unsigned char>& v){
+	int n=v.size();
+	for(int i=n-1;i>=0;i--){
+		if(v[i]<m-1){
+			v[i]+=1;
+			return true;
+		}
+		else if(v[i]==m-1 && i>0){
+			if(v[i-1]<m-1){
+				v[i-1]+=1;
+				for(int j=i;j<n;j++)
+					v[j]=0;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+// 调用m^(n^2)次visit
+int Mnr::visitMnRm(int n,int m){
+	vector<unsigned char> v(n*n,0);
+	int cnt=0;
+	do {
+		++cnt;
+		MATRIXi8 M(n,vector<unsigned char>(n,0));
+		for(int k=0;k<n*n;k++){
+			int i=k/n;
+			int j=k%n;
+			M[i][j]=v[k];
+		}
+		m_Set.push_back(M);
+	}while(nextV1(m,v));
+	return cnt;
+}
+
+int Mnr::getidx(vector<MATRIXi8> &Arr2,MATRIXi8 &Arr1){
+	int N=Arr2.size();
+	for(int i=0;i<N;i++){
+		if(IsEqual(Arr2[i],Arr1))
+			return i;
+	}
+	return -1;
+}
+
+bool Mnr::IsEqual(const MATRIXi8 &t,const MATRIXi8 &m){
+	int nt=t.size();
+	int nm=m.size();
+	if(nt!=nm)
+		return false;
+	for(int i=0;i<nt;i++){
+		for(int j=0;j<nt;j++){
+			if(t[i][j]!=m[i][j])
+				return false;
+		}
+	}
+	return true;
+}
+
+void Mnr::printTable()
+{
+	int ID=IdRing(this);
+	string str=calcRingInvariant(this);
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());
+	//string undoS1=calS1(this,false);	
+	//printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
+	if(size()<100){
+		//printRing(this);	
+	}
+	else{
+	   printf("环的阶太大，不在控制台打印\n");
+	}
+}
+
+int Mnr::add(int a,int b)
+{
+	MATRIXi8 A=m_Set[a];
+	MATRIXi8 B=m_Set[b];	
+    int n=m_n;
+	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			C[i][j]=m_r->add(A[i][j],B[i][j]);
+		}
+	}
+	int c=getidx(m_Set,C);
+	return c;
+}
+
+int Mnr::mul(int a,int b)
+{
+	MATRIXi8 A=m_Set[a];
+	MATRIXi8 B=m_Set[b];	
+    int n=m_n;
+	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			int sum=0;
+			for(int k=0;k<n;k++){
+				sum=m_r->add(sum,m_r->mul(A[i][k],B[k][j]));
+			}
+			C[i][j]=sum;
+		}
+	}
+	int c=getidx(m_Set,C);
+	return c;
+}
+
+int Mnr::size()
+{
+	return m_Set.size();
+}
+
+Mnr::Mnr(IRing* r,int n)
+{
+	m_r=r;
+	m_n=n;
+	int N=r->size();
+	int cnt=visitMnRm(m_n,N);
+	printf("cnt=%d\n",cnt);
+}
+
 int main()
 {
+   ZmodnZ r2_1(2,4);
+   r2_1.printTable();  
+
+   ZmodnZ r2_2(1,2);  
+   r2_2.printTable();
+
    ZmodnZ r4_2(2,8);
    r4_2.printTable();  
 
@@ -383,7 +341,22 @@ int main()
    M2r m2r4_3(&r4_3);
    m2r4_3.printTable(); 
    
+   vector<int> v;
+   v.push_back(2);
+   Subring r2_1a(&r4_3,v);
+   r2_1a.printTable();
+   
+   Mnr m2r2_1(&r2_1,2);
+   m2r2_1.printTable(); 
+
+   Mnr m3r2_1(&r2_1,3);
+   m3r2_1.printTable();   
+   
+   Mnr m2r2_2(&r2_2,2);
+   m2r2_2.printTable(); 
+
+   Mnr m3r2_2(&r2_2,3);
+   m3r2_2.printTable();      
+   
    return 0;
 }
-
-#endif
