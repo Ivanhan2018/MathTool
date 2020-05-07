@@ -497,7 +497,7 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("4,1,0,8,2,3,3,32,7",13));
 	m_RingInvariant.insert(make_pair("4,1,1,6,4,1,1,24,5",14));	
 	m_RingInvariant.insert(make_pair("4,0,0,8,3,3,3,28,7",15));	
-	m_RingInvariant.insert(make_pair("4,1,0,8,1,3,7,48,7",16));	
+	m_RingInvariant.insert(make_pair("[1,3,4,0],4,1,0,8,1,3,7,48,7,8,[1,3,4,0]",16));	
 	m_RingInvariant.insert(make_pair("4,1,0,8,2,1,3,36,7",17));
 	m_RingInvariant.insert(make_pair("4,0,0,8,1,1,7,40,7",18));	
 	m_RingInvariant.insert(make_pair("4,1,0,8,1,3,7,40,7",19));
