@@ -1,351 +1,467 @@
-ï»¿//  ç”Ÿæˆæœ‰é™ç¯çš„åŠ æ³•ã€ä¹˜æ³•å‡¯è±è¡¨FiniteRing.exe
-// è§£æä¸€ä¸ªå¤šé¡¹å¼çš„ç³»æ•°å’ŒæŒ‡æ•°
-#include<iostream>
-#include<vector>
-#include<string>
-#include<algorithm>
-using namespace std;
+#include"IRing.h"
 
-class StringUtil
-{
-public:
-	static string stringReplace(const  string&   input,const   string&   find,const   string&   replaceWith);
-
-	// æ ¹æ®æ‰€ç»™å­—ç¬¦å¯¹å­—ç¬¦ä¸²è¿›è¡Œåˆ†å‰²
-	static std::vector<string> split( const std::string& str, const std::string& delims = "\t\n ", unsigned int maxSplits = 0);
-
-	// å»æ‰æ‰€æœ‰ç©ºæ ¼
-	static void trimAllSpace(std::string &str);
-
-	// å¾—åˆ°å•é¡¹å¼çš„ç³»æ•°å’Œæ¬¡æ•°
-	static vector<int> CoefAndDeg(const string &str);
-
-	// è§£æå¤šé¡¹å¼
-	static bool parsePoly(const char* strA,vector<vector<int>>& result);
-
+int g_M2Add[2][2]={
+	 {0,1},
+	 {1,0}
 };
 
-//   åŸå§‹ä¸²
-//   æ›¿æ¢æºä¸²
-//   æ›¿æ¢ç›®çš„ä¸²
-string StringUtil::stringReplace(const  string&   input,const   string&   find,const   string&   replaceWith)   
-{   
-	string   strOut(input);
-	int   curPos   =   0;   
+int g_M2Mul[2][2]={
+	 {0,0},
+	 {0,0}
+};
 
-	int   pos;
-	while((pos=strOut.find(find,curPos))!=-1)   
-	{   
-		strOut.replace(pos,find.size(),replaceWith);             //   ä¸€æ¬¡æ›¿æ¢   
-		curPos=pos+replaceWith.size();                     //   é˜²æ­¢å¾ªç¯æ›¿æ¢!!   
-	}   
+int g_F2Add[2][2]={
+	 {0,1},
+	 {1,0}
+};
+int g_F2Mul[2][2]={
+	 {0,0},
+	 {0,1}
+};
 
-	return   strOut;   
-}   
+int g_M3Add[3][3]={
+	 {0,1,2},
+	 {1,2,0},
+	 {2,0,1}
+};
+int g_M3Mul[3][3]={
+	 {0,0,0},
+	 {0,0,0},
+	 {0,0,0}
+};
 
-/** Returns a std::stringVector that contains all the substd::strings delimited
-   by the characters in the passed <code>delims</code> argument.
-   @param 
-   delims A list of delimiter characters to split by
-   @param 
-   maxSplits The maximum number of splits to perform (0 for unlimited splits). If this
-   parameters is > 0, the splitting process will stop after this many splits, left to right.
-   */
-std::vector<string> StringUtil::split( const std::string& str, const std::string& delims/* = "\t\n "*/, unsigned int maxSplits/* = 0*/)
+int g_F3Add[3][3]={
+	 {0,1,2},
+	 {1,2,0},
+	 {2,0,1}
+};
+
+int g_F3Mul[3][3]={
+	 {0,0,0},
+	 {0,1,2},
+	 {0,2,1}
+};
+
+int g_M3M2_M6Add[6][6]={
+	 {0,1,2,3,4,5},
+	 {1,2,3,4,5,0},
+	 {2,3,4,5,0,1},
+	 {3,4,5,0,1,2},
+	 {4,5,0,1,2,3},
+	 {5,0,1,2,3,4}
+}; 
+
+int g_M3M2_M6Mul[6][6]={
+	 {0,0,0,0,0,0},
+	 {0,0,0,0,0,0},
+	 {0,0,0,0,0,0},
+	 {0,0,0,0,0,0},
+	 {0,0,0,0,0,0},
+	 {0,0,0,0,0,0}
+};
+
+//R6_2
+int g_F3M2_R2Add[6][6]={
+	 {0,1,2,3,4,5},
+	 {1,2,3,4,5,0},
+	 {2,3,4,5,0,1},
+	 {3,4,5,0,1,2},
+	 {4,5,0,1,2,3},
+	 {5,0,1,2,3,4}
+};
+
+int g_F3M2_R2Mul[6][6]={
+	 {0,0,0,0,0,0},
+	 {0,2,4,0,2,4},
+	 {0,4,2,0,4,2},
+	 {0,0,0,0,0,0},
+	 {0,2,4,0,2,4},
+	 {0,4,2,0,4,2}
+};
+
+int g_F3M2Add[6][6]={
+	{0,1,2,3,4,5},
+	{1,0,3,2,5,4},
+	{2,3,4,5,0,1},
+	{3,2,5,4,1,0},
+	{4,5,0,1,2,3},
+	{5,4,1,0,3,2},
+};
+int g_F3M2Mul[6][6]={
+	{0,0,0,0,0,0},
+	{0,0,0,0,0,0},
+	{0,0,2,2,4,4},
+	{0,0,2,2,4,4},
+	{0,0,4,4,2,2},
+	{0,0,4,4,2,2},
+};
+
+//R6_4
+int g_F3F2_Z6Add[6][6]={
+	 {0,1,2,3,4,5},
+	 {1,2,3,4,5,0},
+	 {2,3,4,5,0,1},
+	 {3,4,5,0,1,2},
+	 {4,5,0,1,2,3},
+	 {5,0,1,2,3,4}
+};
+
+int g_F3F2_Z6Mul[6][6]={
+	 {0,0,0,0,0,0},
+	 {0,1,2,3,4,5},
+	 {0,2,4,0,2,4},
+	 {0,3,0,3,0,3},
+	 {0,4,2,0,4,2},
+	 {0,5,4,3,2,1}
+};
+
+//R6_4
+int g_F3F2Add[6][6]={
+	{0,1,2,3,4,5},
+	{1,0,3,2,5,4},
+	{2,3,4,5,0,1},
+	{3,2,5,4,1,0},
+	{4,5,0,1,2,3},
+	{5,4,1,0,3,2},
+};
+
+int g_F3F2Mul[6][6]={
+	{0,0,0,0,0,0},
+	{0,1,0,1,0,1},
+	{0,0,2,2,4,4},
+	{0,1,2,3,4,5},
+	{0,0,4,4,2,2},
+	{0,1,4,5,2,3},
+};
+
+int g_C8Mul[8][8]={
+	{0, 1, 2, 3, 4, 5, 6, 7},
+	{1, 0, 3, 2, 5, 4, 7, 6},
+	{2, 3, 1, 0, 6, 7, 5, 4},
+	{3, 2, 0, 1, 7, 6, 4, 5},
+	{4, 5, 6, 7, 2, 3, 1, 0},
+	{5, 4, 7, 6, 3, 2, 0, 1},
+	{6, 7, 5, 4, 1, 0, 3, 2},
+	{7, 6, 4, 5, 0, 1, 2, 3}
+};
+
+int g_C8Mul_2[8][8]={
+	{0,1,2,3,4,5,6,7},
+	{1,2,3,4,5,6,7,0},
+	{2,3,4,5,6,7,0,1},
+	{3,4,5,6,7,0,1,2},
+	{4,5,6,7,0,1,2,3},
+	{5,6,7,0,1,2,3,4},
+	{6,7,0,1,2,3,4,5},
+	{7,0,1,2,3,4,5,6}
+};
+
+//int* g_C8Add=&g_C8Mul[0][0];//Error,Óë³Ë·¨±íg_Z8Mul²»ÏàÈİ
+int* g_C8Add=&g_C8Mul_2[0][0];
+
+// »·R8_3µÄ½á¹¹²»±äÁ¿n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=8,1,1,4,2,1,3,20,3,8,[ 1, 2, 4, 8 ],[ 1, 2, 4, 4, 8, 8, 8, 8 ]
+// R8_3:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,1,2,4],8,1,1,4,2,1,3,20,3,8,[1,1,2,4],[[2,8,4],[4,4,4],[4,8,8],[8,2,4],[8,4,8],[8,8,16]]
+int g_Z8Mul[8][8]={
+	{0,0,0,0,0,0,0,0},
+	{0,1,2,3,4,5,6,7},
+	{0,2,4,6,0,2,4,6},
+	{0,3,6,1,4,7,2,5},
+	{0,4,0,4,0,4,0,4},
+	{0,5,2,7,4,1,6,3},
+	{0,6,4,2,0,6,4,2},
+	{0,7,6,5,4,3,2,1}
+};
+
+// »·R8_2µÄ½á¹¹²»±äÁ¿n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=8,1,0,8,1,3,3,32,7,8,[ 1, 2, 4, 8 ],[ 1, 2, 4, 4, 8, 8, 8, 8 ]
+// R8_2:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,1,2,4],8,1,0,8,1,3,3,32,7,8,[1,1,2,4],[[4,8,8],[8,4,8],[8,8,16]]
+int g_C8R2Mul[8][8]={
+	{0,0,0,0,0,0,0,0},
+	{0,2,4,6,0,2,4,6},
+	{0,4,0,4,0,4,0,4},
+	{0,6,4,2,0,6,4,2},
+	{0,0,0,0,0,0,0,0},
+	{0,2,4,6,0,2,4,6},
+	{0,4,0,4,0,4,0,4},
+	{0,6,4,2,0,6,4,2}
+};
+
+// »·R8_4µÄ½á¹¹²»±äÁ¿n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=8,1,0,8,1,3,7,48,7,8,[ 1, 2, 4, 8 ],[ 1, 2, 4, 4, 8, 8, 8, 8 ]
+// R8_4:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,1,2,4],8,1,0,8,1,3,7,48,7,8,[1,1,2,4],[[8,8,16]]
+int g_C8R4Mul[8][8]={
+	{0,0,0,0,0,0,0,0},
+	{0,4,0,4,0,4,0,4},
+	{0,0,0,0,0,0,0,0},
+	{0,4,0,4,0,4,0,4},
+	{0,0,0,0,0,0,0,0},
+	{0,4,0,4,0,4,0,4},
+	{0,0,0,0,0,0,0,0},
+	{0,4,0,4,0,4,0,4},
+};
+
+//C_4¡ÁC_2¡ª¡ª>Z/4Z¡ÁF_2
+//¼Ó·¨±íÊı¾İÓĞÎó
+int g_Z4F2Add[8][8]={
+	{0,1,2,3,4,5,6,7},
+	{1,0,3,2,5,4,7,6},
+	{2,3,4,5,6,7,0,1},
+	{3,2,5,4,7,6,1,0},
+	{4,5,6,7,2,3,0,1},
+	{5,4,7,6,3,2,1,0},
+	{6,7,0,1,2,3,4,5},
+	{7,6,1,0,3,2,5,4},
+};
+
+int g_C2C4Mul[8][8]={
+	{0, 1, 2, 3, 4, 5, 6, 7},
+	{1, 0, 3, 2, 5, 4, 7, 6},
+	{2, 3, 0, 1, 6, 7, 4, 5},
+	{3, 2, 1, 0, 7, 6, 5, 4},
+	{4, 5, 6, 7, 1, 0, 3, 2},
+	{5, 4, 7, 6, 0, 1, 2, 3},
+	{6, 7, 4, 5, 3, 2, 1, 0},
+	{7, 6, 5, 4, 2, 3, 0, 1}
+};
+
+int g_C2C4Mul_2[8][8]={
+	{0,1,2,3,4,5,6,7},
+	{1,4,7,2,5,0,3,6},
+	{2,7,4,1,6,3,0,5},
+	{3,2,1,0,7,6,5,4},
+	{4,5,6,7,0,1,2,3},
+	{5,0,3,6,1,4,7,2},
+	{6,3,0,5,2,7,4,1},
+	{7,6,5,4,3,2,1,0}
+};
+
+//int* g_C2C4Add=&g_C2C4Mul[0][0];//Error,Óë³Ë·¨±íg_Z4F2Mul²»ÏàÈİ
+int* g_C2C4Add=&g_C2C4Mul_2[0][0];
+// »·R8_14µÄ½á¹¹²»±äÁ¿n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=4,1,1,6,4,1,1,24,5,8,[ 1, 2, 2, 4, 4, 8 ],[ 1, 2, 2, 4, 4, 4, 4, 4 ]
+// R8_14:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,1,1,6,4,1,1,24,5,8,[1,2,5,0],[[2,2,8],[2,4,10],[4,2,10],[4,4,12]]
+int g_Z4F2Mul[8][8]={
+	{0,0,0,0,0,0,0,0},
+	{0,1,0,1,0,1,0,1},
+	{0,0,2,2,4,4,6,6},
+	{0,1,2,3,4,5,6,7},
+	{0,0,4,4,0,0,4,4},
+	{0,1,4,5,0,1,4,5},
+	{0,0,6,6,4,4,2,2},
+	{0,1,6,7,4,5,2,3},
+};
+
+// C_2¡ÁC_2¡ÁC_2¡ª¡ª>ĞÏµ¤µ¤ÂÛÎÄÖĞµÄ8½×»·R_1
+//¼Ó·¨±íÊı¾İÓĞÎó
+int g_R8_C2C2C2_28_R1_Add[8][8]={
+	{0,1,2,3,4,5,6,7},
+	{1,0,3,2,5,4,7,6},
+	{2,3,0,1,6,7,4,5},
+	{3,2,0,1,7,6,5,4},
+	{4,5,6,7,0,1,2,3},
+	{5,4,7,6,1,0,3,2},
+	{6,7,4,5,2,3,0,1},
+	{7,6,5,4,3,2,1,0}
+};
+
+// ³Ë·¨±íÊı¾İÓĞÎó
+int g_R8_C2C2C2_28_1Mul[8][8]={
+	{0,0,0,0,0,0,0,0},
+	{0,1,0,0,0,1,0,1},
+	{0,0,2,2,0,0,2,2},
+	{0,0,2,3,0,1,2,3},
+	{0,0,0,0,4,4,4,4},
+	{0,1,0,1,4,5,4,5},
+	{0,0,2,2,4,4,6,6},
+	{0,1,2,3,4,5,6,7}
+};
+
+//R={{{a,0,0},{b,a,0},{c,0,a}}|a,b,c¡ÊZ/2Z}<=M_3(Z/2Z)ÊÇ8½×½»»»çÛ»·
+//»·R8_45µÄ½á¹¹²»±äÁ¿n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=2,1,1,4,2,3,3,24,3,8,[ 1, 2, 2, 2, 4, 8 ],[ 1, 2, 2, 2, 2, 4, 4, 4 ]
+//R8_45:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,7,0,0],2,1,1,4,2,3,3,24,3,8,[1,4,3,0],[[2,2,40]]
+int g_R8_C2C2C2_28_R1_Mul[8][8]={
+	 {0,0,0,0,0,0,0,0},
+	 {0,1,2,3,4,5,6,7},
+	 {0,2,0,2,0,2,0,2},
+	 {0,3,2,1,4,7,6,5},
+	 {0,4,0,4,0,4,0,4},
+	 {0,5,2,7,4,1,6,3},
+	 {0,6,0,6,0,6,0,6},
+	 {0,7,2,5,4,3,6,1}
+};
+
+int g_R8_C2C2C2_28_2Mul[8][8]={
+	{0,0,0,0,0,0,0,0},
+	{0,1,2,3,4,5,6,7},
+	{0,2,0,2,0,2,0,2},
+	{0,3,2,1,4,7,6,5},
+	{0,4,0,4,0,4,0,4},
+	{0,5,2,7,4,1,6,5},
+	{0,6,0,6,0,6,0,6},
+	{0,7,2,5,4,5,6,1}
+};
+
+int g_C2C2C2Mul[8][8]={
+	{0, 1, 2, 3, 4, 5, 6, 7},
+	{1, 0, 3, 2, 5, 4, 7, 6},
+	{2, 3, 0, 1, 6, 7, 4, 5},
+	{3, 2, 1, 0, 7, 6, 5, 4},
+	{4, 5, 6, 7, 0, 1, 2, 3},
+	{5, 4, 7, 6, 1, 0, 3, 2},
+	{6, 7, 4, 5, 2, 3, 0, 1},
+	{7, 6, 5, 4, 3, 2, 1, 0}
+};
+int* g_C2C2C2Add=&g_C2C2C2Mul[0][0];
+
+// C_2¡ÁC_2¡ÁC_2¡ª¡ª>ĞÏµ¤µ¤ÂÛÎÄÖĞµÄ8½×»·R_3
+// ³Ë·¨±íÊı¾İÓĞÎó
+int g_R8_C2C2C2_28_R3_Mul[8][8]={
+	 {0,0,0,0,0,0,0,0},
+	 {0,1,2,3,4,5,6,7},
+	 {0,2,0,2,0,2,0,2},
+	 {0,3,2,1,4,7,6,5},
+	 {0,4,0,4,3,7,3,7},//ÕâÒ»ĞĞºó4¸öÔªËØ±äÁË
+	 {0,5,2,7,7,2,5,0},//ÕâÒ»ĞĞºó4¸öÔªËØ±äÁË
+	 {0,6,0,6,3,5,3,5},//ÕâÒ»ĞĞºó4¸öÔªËØ±äÁË
+	 {0,7,2,5,7,0,5,2}//ÕâÒ»ĞĞºó4¸öÔªËØ±äÁË
+};
+
+// C_2¡ÁC_2¡ÁC_2¡ª¡ª>ĞÏµ¤µ¤ÂÛÎÄÖĞµÄ8½×»·R_2
+// ³Ë·¨±íÊı¾İÓĞÎó
+int g_R8_C2C2C2_28_R2_Mul[8][8]={
+	 {0,0,0,0,0,0,0,0},
+	 {0,1,2,3,4,5,6,7},
+	 {0,2,0,2,0,2,0,2},
+	 {0,3,2,1,4,7,6,5},
+	 {0,4,0,4,2,6,2,6},//ÕâÒ»ĞĞºó4¸öÔªËØ±äÁË
+	 {0,5,2,7,6,3,4,1},//ÕâÒ»ĞĞºó4¸öÔªËØ±äÁË
+	 {0,6,0,6,2,4,2,4},//ÕâÒ»ĞĞºó4¸öÔªËØ±äÁË
+	 {0,7,2,5,4,1,4,3}//ÕâÒ»ĞĞºó3¸öÔªËØ±äÁË
+};
+
+//»·R8_49µÄ½á¹¹²»±äÁ¿n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=2,0,1,6,6,1,1,26,5,2,[ 1, 2, 4, 4, 8 ],[ 1, 2, 2, 2, 2, 2, 2, 4 ]
+//R8_49:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,7,0,0],2,0,1,6,6,1,1,26,5,2,[1,6,1,0],[[2,2,38]]
+int g_R8_C2C2C2_28_3Mul[8][8]={
+	{0,0,0,0,0,0,0,0},
+	{0,1,0,1,4,5,4,5},
+	{0,0,2,2,0,0,2,2},
+	{0,1,2,3,4,5,6,7},
+	{0,0,4,4,0,0,4,4},
+	{0,1,4,5,4,5,0,1},
+	{0,0,6,6,0,0,6,6},
+	{0,1,6,7,4,5,2,3},
+};
+
+//C_2¡ÁC_2¡ÁC_2¡ª¡ª>F_4¡ÁF_2
+//R8_51:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,7,0,0],2,1,1,5,4,0,0,21,4,8,[1,3,2,2],[[2,2,43]]
+int g_F4F2Add[8][8]={
+	{0,1,2,3,4,5,6,7},
+	{1,0,3,2,5,4,7,6},
+	{2,3,0,1,6,7,4,5},
+	{3,2,1,0,7,6,5,4},
+	{4,5,6,7,0,1,2,3},
+	{5,4,7,6,1,0,3,2},
+	{6,7,4,5,2,3,0,1},
+	{7,6,5,4,3,2,1,0},
+};
+
+int g_F4F2Mul[8][8]={
+	{0,0,0,0,0,0,0,0},
+	{0,1,0,1,0,1,0,1},
+	{0,0,2,2,4,4,6,6},
+	{0,1,2,3,4,5,6,7},
+	{0,0,4,4,6,6,2,2},
+	{0,1,4,5,6,7,2,3},
+	{0,0,6,6,2,2,4,4},
+	{0,1,6,7,2,3,4,5},
+};
+
+//R8_52:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,7,0,0],2,1,1,1,2,0,0,15,0,8,[1,1,0,6],[[2,2,49]]
+int g_F8Add[8][8]={
+	{0,   1,   2,   3,   4,   5,   6,   7},  
+	{1,   0,   4,   7,   2,   6,   5,   3},  
+	{2,   4,   0,   5,   1,   3,   7,   6},  
+	{3,   7,   5,   0,   6,   2,   4,   1},  
+	{4,   2,   1,   6,   0,   7,   3,   5},  
+	{5,   6,   3,   2,   7,   0,   1,   4},  
+	{6,   5,   7,   4,   3,   1,   0,   2},  
+	{7,   3,   6,   1,   5,   4,   2,   0}
+};
+
+int g_F8Mul[8][8]={ 
+	{0,   0,   0,   0,   0,   0,   0,   0},  
+	{0,   1,   2,   3,   4,   5,   6,   7}, 
+	{0,   2,   3,   4,   5,   6,   7,   1},  
+	{0,   3,   4,   5,   6,   7,   1,   2},  
+	{0,   4,   5,   6,   7,   1,   2,   3},  
+	{0,   5,   6,   7,   1,   2,   3,   4},  
+	{0,   6,   7,   1,   2,   3,   4,   5},  
+	{0,   7,   1,   2,   3,   4,   5,   6}
+};
+
+
+// Ö±½Ó´Ó¿­À³±í¹¹ÔìÒ»¸öÓĞÏŞ»·
+struct FiniteRing:public IRing
 {
-	std::vector<string> ret;
-	unsigned int numSplits = 0;
+public:
+	//  ¾²Ì¬º¯Êı  
+public:
+	// ÊµÏÖ³éÏó»ùÀàµÄ·½·¨
+	virtual void printTable();
+	virtual int add(int a,int b);
+	virtual int mul(int a,int b);
+	virtual int size(); 
+	// ¹¹Ôìº¯Êı
+	FiniteRing(int n,int* a,int* m,int delt);  
+	// ³ÉÔ±±äÁ¿  
+	int m_n; 
+	int* m_Add;
+	int* m_Mul; 
+	int m_delt; 
+};
 
-	// Use STL methods 
-	size_t start, pos;
-	start = 0;
-	do 
-	{
-		pos = str.find_first_of(delims, start);
-		if (pos == start)
-		{
-			// Do nothing
-			start = pos + 1;
-		}
-		else if (pos == std::string::npos || (maxSplits && numSplits == maxSplits))
-		{
-			// Copy the rest of the std::string
-			ret.push_back( str.substr(start) );
-			break;
-		}
-		else
-		{
-			// Copy up to delimiter
-			ret.push_back( str.substr(start, pos - start) );
-			start = pos + 1;
-		}
-		// parse up to next real data
-		start = str.find_first_not_of(delims, start);
-		++numSplits;
-
-	} while (pos != std::string::npos);
-	return ret;
+void FiniteRing::printTable()
+{
+	int ID=IdRing(this);
+	string str=calcRingInvariant(this);
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());
+	//printRing(this);	
 }
 
-void StringUtil::trimAllSpace(std::string &str)
+int FiniteRing::add(int a,int b)
 {
-	std::string::iterator destEnd=std::remove_if(str.begin(),str.end(),isspace);
-	str.resize(destEnd-str.begin());
+	int c=*(m_Add+a*m_n+b);
+	return c-m_delt;
 }
 
-vector<int> StringUtil::CoefAndDeg(const string &str)
+int FiniteRing::mul(int a,int b)
 {
-	string s=str;
-	vector<int> ret;
-	int Coef=0;
-	int Deg=0;
-	unsigned int loc = s.find( "x", 0 );
-	if(loc != string::npos)
+	int c=*(m_Mul+a*m_n+b);
+	return c-m_delt;
+}
+
+int FiniteRing::size()
+{
+	return m_n;
+}
+
+FiniteRing::FiniteRing(int n,int* a,int* m,int delt)
+{
+	m_n=n;
+	m_Add=a;
+    m_Mul=m;
+    m_delt=delt;	
+}
+
+int main()
+{
+    int *R8Add[]={&g_M2Add[0][0],&g_F2Add[0][0],&g_M3Add[0][0],&g_F3Add[0][0],&g_M3M2_M6Add[0][0],&g_F3M2_R2Add[0][0],&g_F3M2Add[0][0],&g_F3F2Add[0][0],g_C8Add,g_C8Add,g_C8Add,g_C2C4Add,&g_F4F2Add[0][0],&g_F4F2Add[0][0],&g_F4F2Add[0][0],&g_F4F2Add[0][0],&g_F8Add[0][0]};
+    int *R8Mul[]={&g_M2Mul[0][0],&g_F2Mul[0][0],&g_M3Mul[0][0],&g_F3Mul[0][0],&g_M3M2_M6Mul[0][0],&g_F3M2_R2Mul[0][0],&g_F3M2Mul[0][0],&g_F3F2Mul[0][0],&g_C8R2Mul[0][0],&g_Z8Mul[0][0],&g_C8R4Mul[0][0],&g_Z4F2Mul[0][0],&g_R8_C2C2C2_28_R1_Mul[0][0],&g_R8_C2C2C2_28_2Mul[0][0],&g_R8_C2C2C2_28_3Mul[0][0],&g_F4F2Mul[0][0],&g_F8Mul[0][0]};
+	int nArr[]={2,2,3,3,6,6,6,6,8,8,8,8,8,8,8,8,8};
+	int nDelt[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	int nNum=sizeof(nArr)/sizeof(nArr[0]);
+	for(int i=0;i<nNum;i++)
 	{
-		unsigned int loc1 = s.find( "x^", 0 );
-		if(loc1 == string::npos)
-		{
-			Deg=1;
-		}
-		else
-		{
-	        string strR=s.substr(loc1+2,s.length()-loc1-2);
-			Deg=atoi(strR.c_str());
-		}
-		if(loc==0)
-		{
-			Coef=1;
-		}
-		else
-		{
-			if(loc==1 && s[0]=='-')
-		    {
-			   Coef=-1;
-		    }
-			else
-			{
-			   	string strL=s.substr(0,loc1+1);
-			    Coef=atoi(strL.c_str());
-			}
-		}
-		ret.push_back(Coef);
-		ret.push_back(Deg);
+		FiniteRing fr(nArr[i],R8Add[i],R8Mul[i],nDelt[i]);
+		fr.printTable();
 	}
-	else
-	{
-		ret.push_back(atoi(s.c_str()));
-		ret.push_back(0);
-	}
-	return ret;
-}
-
-bool StringUtil::parsePoly(const char* strA,vector<vector<int>>& result)
-{
-	if(strA!=0)
-	{
-		result.clear();
-		string StrA=StringUtil::stringReplace(strA,"-","+-");
-		vector<vector<int>> vMonomials;
-		vector<string> strArr=StringUtil::split(StrA,"+");
-		int nSize=strArr.size();
-		for(int i=0;i<nSize;i++)
-		{
-			StringUtil::trimAllSpace(strArr[i]);
-			vector<int> cds=StringUtil::CoefAndDeg(strArr[i]);
-			result.push_back(cds);
-		}
-		return true;
-	}
-	return false;
-}
-
-// å¤šé¡¹å¼aä¹˜ä»¥å¤šé¡¹å¼bå¾—åˆ°å¤šé¡¹å¼cï¼Œdeg(a)=m-1,deg(b)=n-1,deg(c)=m+n-2=k
-int polymul(int a[],int m,int b[],int n,int c[],int *k) 
-{ 
- int i,j; 
- if(k)
-  *k=m+n-2;
- for(i=0;i<m+n-2;i++) 
-  c[i]=0; 
- for(i=0;i<m;i++) 
-  for(j=0;j<n;j++) 
-   c[i+j]=a[i]*b[j]+c[i+j];
- return 0;
-} 
-
-//å°†ä¸€ä¸ªæ•°å­—è½¬æ¢æˆå­—ç¬¦ä¸²
-string NumberTostring(long Num)   
-{
-	char buffer[100]={0};
-	sprintf(buffer,"%d",Num);
-	string strBuf=buffer;
-
-	return strBuf;
-}
-
-string sPoly(int a[],int n)
-{
-	string str="[";
-	for(int i=0;i<n;i++)
-	{
-		str+=NumberTostring(a[i]);
-		if(i<n-1)
-		{
-			str+=",";
-		}
-	}
-	str+="]";
-	return str;
-}
-
-int indexofmax1(int value)
-{
-	int tmp=1;
-	int count=0;
-	for(int i=0;i<sizeof(int)*8;++i)
-	{
-		if((value&tmp))
-			count=i;
-		tmp=tmp*2;
-	}
-	return count;
-}
-void polynomialtostring(int value)
-{
-	int tmp=1;
-	int flag=0;
-	int c=indexofmax1(value);
-	for(int i=0;i<sizeof(int)*8;++i)
-	{
-		if((value&tmp))
-		{
-			if(i==0)
-			{
-				cout<<"1";
-			}else if(i==1)
-			{
-				cout<<"x";
-			}else
-			{
-				cout<<"x^"<<i;
-			}
-			flag=1;
-			if(i<c)
-				cout<<"+";
-		}
-		tmp=tmp*2;
-	}
-	if(flag==0)
-		cout<<"0";
-}
-int powofvalue(int value)
-{
-	return 1<<(value);
-}
-int divide(int m,int b,int &remainvalue)
-{
-	int mindex=indexofmax1(m);
-	int vindex=indexofmax1(b);
-	if(mindex<vindex)
-	{
-		remainvalue=m;
-		return 0;
-	}
-	int c=mindex-vindex;
-	int tmp=b;
-	tmp=tmp<<c;
-	m=m^tmp;
-	return powofvalue(c)|divide(m,b,remainvalue);
-}
-int Tx(int ax,int q,int bx)
-{
-	//cout<<endl;
-	//cout<<ax<<"\t"<<bx<<"\t";
-	int tmp=1;
-	int value=0;
-	for(int i=0;i<sizeof(int)*8;++i)
-	{
-		if((q&tmp))
-		{
-			value=value^((bx<<i));
-		}
-		tmp=tmp*2;
-	}
-	//cout<<ax<<"\t"<<value<<"\t";
-	//cout<<endl;
-	return ax^(value);
-}
-int extent_gcd(int m,int b,int &x,int &y)
-{
-	int a1=1,a2=0,a3=m;
-	int b1=0,b2=1,b3=b;
-	int remainvalue=0;
-	while(1)
-	{
-/*
-		polynomialtostring(a1);
-		cout<<" ";
-		polynomialtostring(a2);
-		cout<<" ";
-		polynomialtostring(a3);
-		cout<<" ";
-		polynomialtostring(b1);
-		cout<<" ";
-		polynomialtostring(b2);
-		cout<<" ";
-		polynomialtostring(b3);
-		cout<<" ";
-		*/
-		if(b3==0)
-			return a3;
-		if(b3==1)
-			return b3;
-		int q=divide(a3,b3,remainvalue);
-		int t1=Tx(a1,q,b1);
-		int t2=Tx(a2,q,b2);
-		int t3=remainvalue;
-		cout<<"t1="<<t1<<endl;
-		cout<<"t2="<<t2<<endl;
-		a1=b1;a2=b2;a3=b3;
-		b1=t1;b2=t2;b3=t3;
-		x=b2;y=b3;
-		//polynomialtostring(q);
-		//cout<<endl;
-	}
-}
-
-void test1()
-{
-	int m=283,b=83,x=0,y=0;
-	//cout<<"ä¸­é—´ç»“æœå¦‚ä¸‹:"<<endl;
-	//cout<<"a1 a2 a3 b1 b2 b3 q"<<endl;
-	int r1=0;
-	int q1=divide(m,b,r1);
-	int ret=extent_gcd(m,b,x,y);
-	cout<<b<<","<<m<<"->"<<q1<<","<<r1<<"->"<<ret<<","<<x<<","<<y<<endl;
-	cout<<"å¤šé¡¹å¼(";polynomialtostring(b);cout<<")mod(";polynomialtostring(m);cout<<")çš„ä¹˜æ³•é€†å…ƒæ˜¯(";polynomialtostring(x);cout<<")"<<endl;	
-}
-
-int main(int argc, char **argv)
-{
-	int a[3]={0,1,2};//0x^0+1x^1+2x^2
-	int b[2]={3,1};//3x^0+1x^1
-	const int m=sizeof(a)/sizeof(int);
-	const int n=sizeof(b)/sizeof(int);
-	int k=0;
-	int c[m+n-1]={0};//0x^0+3x^1+7x^2+2x^3
-	int ret=polymul(a,m,b,n,c,&k);
-	cout<<sPoly(a,m)<<"*"<<sPoly(b,n)<<"="<<sPoly(c,m+n-1)<<endl;
-	
-	const char* strA=" 7x^4   +  x^2";
-	vector<vector<int> > vMonomialsA;
-	bool bretA=StringUtil::parsePoly(strA,vMonomialsA);
-
-	const char* strB="6x^3 - 3x^2";
-	vector<vector<int> > vMonomialsB;
-	bool bretB=StringUtil::parsePoly(strB,vMonomialsB);
-	
-    test1();
 	//system("pause");
 	return 0;
 }

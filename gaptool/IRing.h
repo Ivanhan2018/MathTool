@@ -484,7 +484,7 @@ RIDHelper::RIDHelper(){
 	//R8
 	m_RingInvariant.insert(make_pair("8,1,0,8,1,7,7,64,7",1));
 	m_RingInvariant.insert(make_pair("8,1,0,8,1,3,3,32,7",2));	
-	m_RingInvariant.insert(make_pair("8,1,1,4,2,1,3,20,3",3));
+	m_RingInvariant.insert(make_pair("8,1,1,4,2,1,3,20,3,8,[1,1,2,4]",3));
 	m_RingInvariant.insert(make_pair("8,1,0,8,1,3,7,48,7",4));	
 	m_RingInvariant.insert(make_pair("4,1,0,8,1,7,7,64,7",5));
 	m_RingInvariant.insert(make_pair("[1,3,4,0],4,1,0,8,1,3,7,48,7,8,[1,1,6,0]",6));	
@@ -495,7 +495,7 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("4,1,0,8,1,7,7,40,7",11));
 	m_RingInvariant.insert(make_pair("4,1,0,8,1,3,7,40,7",12));	
 	m_RingInvariant.insert(make_pair("4,1,0,8,2,3,3,32,7",13));
-	m_RingInvariant.insert(make_pair("4,1,1,6,4,1,1,24,5",14));	
+	m_RingInvariant.insert(make_pair("4,1,1,6,4,1,1,24,5,8,[1,2,5,0]",14));	
 	m_RingInvariant.insert(make_pair("4,0,0,8,3,3,3,28,7",15));	
 	m_RingInvariant.insert(make_pair("[1,3,4,0],4,1,0,8,1,3,7,48,7,8,[1,3,4,0]",16));	
 	m_RingInvariant.insert(make_pair("4,1,0,8,2,1,3,36,7",17));
@@ -526,7 +526,7 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("2,0,0,8,6,1,1,30,5",42));	
 	m_RingInvariant.insert(make_pair("2,0,0,8,5,3,3,36,7",43));
 	m_RingInvariant.insert(make_pair("2,0,0,8,3,3,3,28,7",44));	
-	m_RingInvariant.insert(make_pair("2,1,1,4,2,3,3,24,3",45));	
+	m_RingInvariant.insert(make_pair("[1,7,0,0],2,1,1,4,2,3,3,24,3,8,[1,4,3,0],[[2,2,40]]",45));	
 	m_RingInvariant.insert(make_pair("2,1,1,4,2,1,3,20,3",46));	
 	m_RingInvariant.insert(make_pair("2,0,0,8,6,1,1,30,7",47));
 	m_RingInvariant.insert(make_pair("2,1,1,6,4,1,1,24,5",48));	
