@@ -455,6 +455,8 @@ public:
 
 RIDHelper::RIDHelper(){
 	// N0,¡¾n0,bA,bO,n1,n2,n4,n5,n6,n7¡¿,n8,S1,N2
+	//R1
+	m_RingInvariant.insert(make_pair("1,0,1,1,0,0,1,0,1",1));	
 	//R2
 	m_RingInvariant.insert(make_pair("2,1,0,2,1,1,1,4,1",1));
 	m_RingInvariant.insert(make_pair("2,1,1,1,2,0,0,3,0",2));	
@@ -481,6 +483,9 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("6,1,0,6,2,1,1,20,5",2));
 	m_RingInvariant.insert(make_pair("6,1,0,6,2,2,2,27,5",3));
 	m_RingInvariant.insert(make_pair("6,1,1,4,4,0,0,15,3",4));
+	//R7
+	m_RingInvariant.insert(make_pair("1,0,7,1,6,6,49,6,7",1));
+	m_RingInvariant.insert(make_pair("1,1,1,2,0,0,13,0,7",2));	
 	//R8
 	m_RingInvariant.insert(make_pair("8,1,0,8,1,7,7,64,7",1));
 	m_RingInvariant.insert(make_pair("8,1,0,8,1,3,3,32,7",2));	
@@ -545,7 +550,116 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("3,0,0,9,4,2,2,33,8,1",8));	
 	m_RingInvariant.insert(make_pair("3,1,1,3,2,2,2,21,2,9",9));
 	m_RingInvariant.insert(make_pair("3,1,1,5,4,0,0,25,4,9",10));
-	m_RingInvariant.insert(make_pair("3,1,1,1,2,0,0,17,0,9",11));	
+	m_RingInvariant.insert(make_pair("3,1,1,1,2,0,0,17,0,9",11));
+	//R10
+	m_RingInvariant.insert(make_pair("10,1,0,10,1,9,9,100,9,10",1));
+	m_RingInvariant.insert(make_pair("10,1,0,10,2,1,1,36,9,10",2));
+	m_RingInvariant.insert(make_pair("10,1,1,6,4,0,0,27,5,10",3));
+	m_RingInvariant.insert(make_pair("10,1,0,10,2,4,4,75,9,10",4));	
+	//R11
+	m_RingInvariant.insert(make_pair("1,0,11,1,10,10,121,10,11",1));
+	m_RingInvariant.insert(make_pair("1,1,1,2,0,0,21,0,11",2));	
+	//R12
+	m_RingInvariant.insert(make_pair("1,0,12,1,11,11,144,11,12",1));
+	m_RingInvariant.insert(make_pair("1,0,12,2,1,3,60,11,12",2));
+	m_RingInvariant.insert(make_pair("1,0,12,2,5,5,72,11,12",3));
+	m_RingInvariant.insert(make_pair("1,0,12,2,3,3,80,11,12",4));	
+	m_RingInvariant.insert(make_pair("1,1,8,4,1,1,40,7,12",5));
+	m_RingInvariant.insert(make_pair("1,0,12,1,5,11,108,11,12",6));
+	m_RingInvariant.insert(make_pair("1,0,12,1,11,11,144,11,12",7));
+	m_RingInvariant.insert(make_pair("1,0,12,1,5,11,108,11,12",8));	
+	m_RingInvariant.insert(make_pair("1,0,12,2,5,5,108,11,12",9));
+	m_RingInvariant.insert(make_pair("0,0,12,3,5,5,90,11,3",10));
+	m_RingInvariant.insert(make_pair("0,0,12,3,5,5,90,11,3",11));
+	m_RingInvariant.insert(make_pair("1,0,12,2,5,5,72,11,12",12));
+	m_RingInvariant.insert(make_pair("1,0,12,4,1,1,60,11,12",13));
+	m_RingInvariant.insert(make_pair("1,1,10,8,0,0,45,9,12",14));	
+	m_RingInvariant.insert(make_pair("0,0,12,6,1,1,50,11,3",15));
+	m_RingInvariant.insert(make_pair("1,0,12,2,3,3,80,11,12",16));
+	m_RingInvariant.insert(make_pair("1,0,12,2,1,3,60,11,12",17));
+	m_RingInvariant.insert(make_pair("0,0,12,6,1,1,50,7,3",18));	
+	m_RingInvariant.insert(make_pair("1,1,8,4,1,1,40,7,12",19));
+	m_RingInvariant.insert(make_pair("1,0,12,4,2,2,81,11,12",20));
+	m_RingInvariant.insert(make_pair("1,0,12,2,2,2,63,11,12",21));	
+	m_RingInvariant.insert(make_pair("1,1,6,4,0,0,35,5,12",22));	
+	//R13
+	m_RingInvariant.insert(make_pair("1,0,13,1,12,12,169,12,13",1));
+	m_RingInvariant.insert(make_pair("1,1,1,2,0,0,25,0,13",2));	
+	//R14
+	m_RingInvariant.insert(make_pair("14,1,0,14,1,13,13,196,13,14",1));
+	m_RingInvariant.insert(make_pair("14,1,0,14,2,1,1,52,13,14",2));
+	m_RingInvariant.insert(make_pair("14,1,1,8,4,0,0,39,7,14",3));
+	m_RingInvariant.insert(make_pair("14,1,0,14,2,6,6,147,13,14",4));
+	//R15
+	m_RingInvariant.insert(make_pair("15,1,0,15,1,14,14,225,14,15",1));
+	m_RingInvariant.insert(make_pair("15,1,1,7,4,0,0,45,6,15",2));
+	m_RingInvariant.insert(make_pair("15,1,0,15,2,2,2,81,14,15",3));
+	m_RingInvariant.insert(make_pair("15,1,0,15,2,4,4,125,14,15",4));	
+	//R16
+	m_RingInvariant.insert(make_pair("[1,1,2,4,8],16,1,0,16,1,15,15,256,15,16,[1,1,2,4,8],[]",1));//A16
+	m_RingInvariant.insert(make_pair("16,1,0,16,1,3,7,80,15,16",2));
+	m_RingInvariant.insert(make_pair("[1,1,2,4,8],16,1,1,8,2,3,3,48,7,16,[1,1,2,4,8],[[2,16,8],[4,8,8],[4,16,16],[8,4,8],[8,8,16],[8,16,32],[16,2,8],[16,4,16],[16,8,32],[16,16,64]]",3));//C16
+	m_RingInvariant.insert(make_pair("[1,1,2,4,8],16,1,0,16,1,7,15,128,15,16,[1,1,2,4,8],[[8,16,32],[16,8,32],[16,16,64]]",4));//B16	
+	m_RingInvariant.insert(make_pair("16,1,0,16,1,7,15,192,15,16",5));
+	m_RingInvariant.insert(make_pair("8,1,1,12,4,1,3,60,11,16",6));
+	m_RingInvariant.insert(make_pair("8,1,1,8,2,3,7,64,7,16",7));
+	m_RingInvariant.insert(make_pair("8,1,0,16,1,7,7,128,15,16",8));
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,0,0,16,5,5,7,88,7,1,[1,3,12,0,0],[[2,4,24],[4,2,24],[4,4,120]]",101));//G16
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,0,0,16,5,5,7,88,15,1,[1,3,12,0,0],[[2,4,24],[4,2,24],[4,4,120]]",102));//H16	
+	m_RingInvariant.insert(make_pair("4,1,0,16,1,3,15,144,15,16",103));
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,1,12,4,3,3,64,11,16,[1,3,6,6,0],[[2,4,28],[4,2,28],[4,4,136]]",104));//J16	
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,1,8,2,3,3,48,7,16,[1,3,2,6,4]",105));
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,1,4,2,3,3,40,3,16,[1,3,2,2,8],[[2,4,36],[4,2,36],[4,4,144]]",106));//K16
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,0,16,1,15,15,256,15,16,[1,3,12,0,0],[]",107));//D16
+	m_RingInvariant.insert(make_pair("4,0,0,16,1,7,15,160,15,4",108));	
+	m_RingInvariant.insert(make_pair("4,1,0,16,1,3,7,80,15,16",109));
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,1,8,2,7,7,56,7,16,[1,3,6,2,4],[[2,4,32],[4,2,32],[4,4,136]]",110));//I16
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,0,16,1,7,15,128,15,16,[1,3,4,0,8],[[2,4,16],[4,2,16],[4,4,96]]",111));//E16
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,0,16,2,7,7,128,15,16,[1,3,6,2,4],[[2,4,16],[4,2,16],[4,4,96]]",112));//F16
+	m_RingInvariant.insert(make_pair("4,1,0,16,1,7,15,192,15,16",200));	
+	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,0,1,10,8,3,3,58,9,2,[1,10,5,0,0],[[2,2,198]]",300));	
+	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,1,0,16,1,15,15,256,15,16,[1,15,0,0,0],[]",301));	
+	m_RingInvariant.insert(make_pair("2,0,0,16,1,11,15,144,15,4",379));
+	m_RingInvariant.insert(make_pair("2,0,1,14,12,1,1,78,13,4",380));	
+	m_RingInvariant.insert(make_pair("2,0,0,16,5,3,3,76,3,1",381));
+	m_RingInvariant.insert(make_pair("2,1,1,12,4,1,3,60,11,16",382));	
+	m_RingInvariant.insert(make_pair("2,1,1,4,2,3,3,40,3,16",383));
+	m_RingInvariant.insert(make_pair("2,1,1,12,4,3,3,64,11,16",384));	
+	m_RingInvariant.insert(make_pair("2,1,1,8,2,3,3,48,7,16",385));	
+	m_RingInvariant.insert(make_pair("2,1,1,15,16,0,0,81,14,16",386));	
+	m_RingInvariant.insert(make_pair("2,1,1,13,8,0,0,63,12,16",387));
+	m_RingInvariant.insert(make_pair("2,1,1,9,4,0,0,45,8,16",388));	
+	m_RingInvariant.insert(make_pair("2,1,1,7,4,0,0,49,6,16",389));
+	m_RingInvariant.insert(make_pair("2,1,1,1,2,0,0,31,0,16",390));	
+	//R17
+	m_RingInvariant.insert(make_pair("1,0,17,1,16,16,289,16,17",1));
+	m_RingInvariant.insert(make_pair("1,1,1,2,0,0,33,0,17",2));	
+	//R18
+	m_RingInvariant.insert(make_pair("1,0,18,1,17,17,324,17,18",1));
+	m_RingInvariant.insert(make_pair("1,0,18,2,5,5,84,17,18",2));
+	m_RingInvariant.insert(make_pair("1,0,18,1,5,17,180,17,18",3));
+	m_RingInvariant.insert(make_pair("1,0,18,1,17,17,324,17,18",4));	
+	m_RingInvariant.insert(make_pair("1,0,18,1,5,17,180,17,18",5));
+	m_RingInvariant.insert(make_pair("1,0,18,2,5,5,180,17,18",6));
+	m_RingInvariant.insert(make_pair("0,0,18,4,5,5,132,17,2",7));
+	m_RingInvariant.insert(make_pair("0,0,18,4,5,5,132,17,2",8));	
+	m_RingInvariant.insert(make_pair("1,0,18,2,5,5,84,17,18",9));
+	m_RingInvariant.insert(make_pair("1,0,18,4,1,1,100,17,18",10));
+	m_RingInvariant.insert(make_pair("1,0,18,2,1,1,68,17,18",11));
+	m_RingInvariant.insert(make_pair("1,0,18,2,8,8,243,17,18",12));
+	m_RingInvariant.insert(make_pair("1,1,12,4,2,2,63,11,18",13));
+	m_RingInvariant.insert(make_pair("1,0,18,2,2,8,135,17,18",14));	
+	m_RingInvariant.insert(make_pair("1,0,18,2,8,8,243,17,18",15));
+	m_RingInvariant.insert(make_pair("1,0,18,2,2,8,135,17,18",16));
+	m_RingInvariant.insert(make_pair("1,0,18,4,2,2,135,17,18",17));
+	m_RingInvariant.insert(make_pair("0,0,18,8,2,2,99,11,2",18));	
+	m_RingInvariant.insert(make_pair("0,0,18,8,2,2,99,17,2",19));
+	m_RingInvariant.insert(make_pair("1,1,12,4,2,2,63,11,18",20));
+	m_RingInvariant.insert(make_pair("1,1,14,8,0,0,75,13,18",21));	
+	m_RingInvariant.insert(make_pair("1,1,10,4,0,0,51,9,18",22));	
+	//R19
+	m_RingInvariant.insert(make_pair("1,0,19,1,18,18,361,18,19",1));
+	m_RingInvariant.insert(make_pair("1,1,1,2,0,0,37,0,19",2));	
 }
 
 RIDHelper::~RIDHelper(){

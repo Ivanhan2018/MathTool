@@ -931,8 +931,11 @@ void test1()
 
 int main()
 { 
+   test1();
    for(int i=2;i<10;i++)
    {
+	   if(i!=4)
+		   continue;
 	   // A、B、C系列的有限环是1阶矩阵表示
 	   ZmodnZ A(i*i,i*i*i*i);
 	   printf("A%d=",i*i);
