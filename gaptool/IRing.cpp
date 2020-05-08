@@ -215,6 +215,8 @@ public:
     void initI(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_9所在的有限环序列,X	
     void initJ(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_10所在的有限环序列,D=<a,b;pa=pb=0,a^2=a,b^2=b,ab=ba=0>=Z_p+Z_p	
     void initK(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_11所在的有限环序列,K=GF(p^2)=p^2阶有限域
+	void initR8(int ID=0);
+	void initR16(int ID=0);		
 	// 成员变量
 	vector<MATRIXi> m_Set;
 	IRing* m_r;
@@ -348,6 +350,107 @@ void M2r::initK(int n){
    vector<MATRIXi> gen;
    gen.push_back(A);
    m_r=new ZmodnZ(1,n);
+   m_flag=1;
+   m_Set=FR(m_r,gen);   
+}
+
+void M2r::initR16(int ID){
+   vector<MATRIXi> gen;	
+   MATRIXi A(2,vector<int>(2,0));
+   MATRIXi B(2,vector<int>(2,0));
+   if(ID==115){  
+		m_r=new ZmodnZ(1,4);
+		A[0][0]=0;
+		A[0][1]=1;
+		A[1][0]=1;
+		A[1][1]=0; 
+		gen.push_back(A);
+   }else if(ID==201){
+		m_r=new ZmodnZ(1,4);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=0;
+		B[0][1]=2;
+		B[1][0]=2;
+		B[1][1]=0;	
+		gen.push_back(A);
+		gen.push_back(B);	
+	}else if(ID==202){
+		m_r=new ZmodnZ(1,4);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[1][0]=2;
+		B[1][1]=0;	
+		gen.push_back(A);
+		gen.push_back(B);	
+	}else if(ID==203){
+		m_r=new ZmodnZ(1,4);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=2;
+		B[0][1]=0;
+		B[1][0]=2;
+		B[1][1]=0;	
+		gen.push_back(A);
+		gen.push_back(B);
+	}else if(ID==204){
+		m_r=new ZmodnZ(1,4);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[1][0]=2;
+		B[1][1]=1;	
+		gen.push_back(A);
+		gen.push_back(B);	
+	}else if(ID==205){
+		m_r=new ZmodnZ(1,4);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[0][0]=1;
+		B[0][1]=0;
+		B[1][0]=2;
+		B[1][1]=1;	
+		gen.push_back(A);
+		gen.push_back(B);		
+   }else if(ID==302){
+		M2r *r=new M2r();
+        r->initJ(2);
+		m_r=r;
+		A[0][0]=0;
+		A[0][1]=1;
+		A[1][0]=1;
+		A[1][1]=2;	
+		gen.push_back(A);	
+   }else{
+	    initR16(115);
+		return;
+   }	   
+   m_flag=1;
+   m_Set=FR(m_r,gen);   
+}
+
+void M2r::initR8(int ID){
+   MATRIXi A(2,vector<int>(2,0));
+   A[0][0]=0;
+   A[0][1]=1;
+   A[1][0]=1;
+   A[1][1]=0;  
+   vector<MATRIXi> gen;
+   gen.push_back(A);
+   m_r=new ZmodnZ(1,4);
    m_flag=1;
    m_Set=FR(m_r,gen);   
 }
@@ -574,6 +677,8 @@ public:
 	void initE(int n);// R4_5、R9_5所在的n^2阶有限环序列,
 	void initF(int n);// R4_6、R9_6所在的n^2阶有限环序列,		
 	void initL(int n);// R8_38所在的n^3阶有限环序列,
+	void initR8(int ID=0);
+	void initR16(int ID=0);	
 	// 成员变量
 	vector<MATRIXi8> m_Set;
 	IRing* m_r;
@@ -596,7 +701,7 @@ Mnr::~Mnr(){
 // A:=[[Z(m),Z(m),0*Z(m),0*Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)],[Z(m),Z(m),0*Z(m),0*Z(m)]];;R4_5:=RingByGenerators([A]);;
 void Mnr::initE(int n){
    MATRIXi8 A(4,vector<unsigned char>(4,0));
-   MATRIXi8 B(4,vector<unsigned char>(4,0));
+   //MATRIXi8 B(4,vector<unsigned char>(4,0));
    A[0][0]=0;
    A[0][1]=1;
    A[0][2]=0;
@@ -651,7 +756,7 @@ void Mnr::initF(int n){
 // A:=[[0*Z(m),Z(m),0*Z(m),Z(m)],[Z(m),Z(m),0*Z(m),0*Z(m)],[0*Z(m),0*Z(m),Z(m),Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)]];;R8_38:=RingByGenerators([A]);;
 void Mnr::initL(int n){
    MATRIXi8 A(4,vector<unsigned char>(4,0));
-   MATRIXi8 B(4,vector<unsigned char>(4,0));
+   //MATRIXi8 B(4,vector<unsigned char>(4,0));
    A[0][0]=0;
    A[0][1]=1;
    A[0][2]=0;
@@ -674,6 +779,102 @@ void Mnr::initL(int n){
    m_flag=1;
    m_n=4;
    m_Set=FR(m_r,gen);   
+}
+
+void Mnr::initR8(int ID){
+   MATRIXi8 A(4,vector<unsigned char>(4,0));	
+   if(ID==13){
+	   A[0][0]=0;
+	   A[0][1]=1;
+	   A[0][2]=0;
+	   A[0][3]=1;
+	   A[1][0]=2;
+	   A[1][1]=2;
+	   A[1][2]=0;
+	   A[1][3]=0; 
+	   A[2][0]=2;
+	   A[2][1]=2;
+	   A[2][2]=0;
+	   A[2][3]=0;
+	   A[3][0]=0;
+	   A[3][1]=1;
+	   A[3][2]=0;
+	   A[3][3]=1;
+   }else if(ID==24){
+	   A[0][0]=2;
+	   A[0][1]=1;
+	   A[0][2]=0;
+	   A[0][3]=2;
+	   A[1][0]=0;
+	   A[1][1]=2;
+	   A[1][2]=0;
+	   A[1][3]=2; 
+	   A[2][0]=0;
+	   A[2][1]=2;
+	   A[2][2]=0;
+	   A[2][3]=2;
+	   A[3][0]=2;
+	   A[3][1]=1;
+	   A[3][2]=0;
+	   A[3][3]=2;   	   
+   }else{
+	   initR8(13);
+       return;	   
+   }
+   vector<MATRIXi8> gen;
+   gen.push_back(A);
+   m_r=new ZmodnZ(1,4);
+   m_flag=1;
+   m_n=4;
+   m_Set=FR(m_r,gen);      
+}
+
+void Mnr::initR16(int ID){
+   MATRIXi8 A(4,vector<unsigned char>(4,0));	
+   if(ID==113){
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[0][2]=0;
+	   A[0][3]=1;
+	   A[1][0]=1;
+	   A[1][1]=0;
+	   A[1][2]=0;
+	   A[1][3]=1; 
+	   A[2][0]=0;
+	   A[2][1]=1;
+	   A[2][2]=1;
+	   A[2][3]=0;
+	   A[3][0]=1;
+	   A[3][1]=0;
+	   A[3][2]=0;
+	   A[3][3]=1;	
+   }else if(ID==114){
+	   A[0][0]=1;
+	   A[0][1]=1;
+	   A[0][2]=0;
+	   A[0][3]=0;
+	   A[1][0]=0;
+	   A[1][1]=1;
+	   A[1][2]=0;
+	   A[1][3]=1; 
+	   A[2][0]=0;
+	   A[2][1]=1;
+	   A[2][2]=0;
+	   A[2][3]=1;
+	   A[3][0]=1;
+	   A[3][1]=1;
+	   A[3][2]=0;
+	   A[3][3]=0;   
+   }else{
+	   initR16(113);
+       return;  
+   }
+   vector<MATRIXi8> gen;
+   gen.push_back(A);
+   m_r=new ZmodnZ(1,4);
+   m_flag=1;
+   m_n=4;
+   m_Set=FR(m_r,gen);      
 }
 
 Mnr::Mnr(IRing* r,int n,vector<MATRIXi8>& gen){
@@ -931,6 +1132,14 @@ void test1()
 
 int main()
 { 
+   int IDs[]={201,202,203,204,205};
+   for(int i=0;i<sizeof(IDs)/sizeof(IDs[0]);i++){
+	   M2r R16;
+	   R16.initR16(IDs[i]);
+	   R16.printTable();
+   }
+   return 0;
+
    test1();
    for(int i=2;i<10;i++)
    {
