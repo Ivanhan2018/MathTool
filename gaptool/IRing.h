@@ -319,6 +319,71 @@ string calcN2(IRing* r){
 	return strN2;
 }
 
+string calcI1(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();
+	vector<pair<int,int> > v;
+   for(int i=0;i<n;i++){
+	   vector<int> vi;
+	   vi.push_back(i);
+	   Subring si(r,vi);
+	   int ni=si.size();
+	   if(ni<n && ni>0){
+		int ID=IdRing(&si);
+		v.push_back(make_pair(ni,ID));
+	   }
+   }
+	std::sort(v.begin(),v.end());
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2)
+	{
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
+string calcI2(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();
+	vector<pair<int,int> > v;
+   for(int i=0;i<n;i++){
+	   for(int j=i+1;j<n;j++){
+		   vector<int> vi;
+		   vi.push_back(i);
+		   vi.push_back(j);		   
+		   Subring si(r,vi);
+		   int ni=si.size();
+		   if(ni<n && ni>0){
+			int ID=IdRing(&si);
+			v.push_back(make_pair(ni,ID));
+		   }
+	   }
+   }
+	std::sort(v.begin(),v.end());
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2)
+	{
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
 int ZeroNum(IRing* r){
     int n=r->size();
 	int iRet=0;
@@ -449,8 +514,10 @@ public:
 	~RIDHelper();
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2返回ID编号列表	
+	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表	
 public:
-	vector<int> IDFromRingInvariant(string& RingInvariant);		
+	vector<int> IDFromRingInvariant(string& RingInvariant);	
+	vector<int> IDFromI1I2(string& I1I2);	
 };
 
 RIDHelper::RIDHelper(){
@@ -505,7 +572,7 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("[1,3,4,0],4,1,0,8,1,3,7,48,7,8,[1,3,4,0]",16));	
 	m_RingInvariant.insert(make_pair("4,1,0,8,2,1,3,36,7",17));
 	m_RingInvariant.insert(make_pair("4,0,0,8,1,1,7,40,7",18));	
-	m_RingInvariant.insert(make_pair("4,1,0,8,1,3,7,40,7",19));
+	m_RingInvariant.insert(make_pair("[1,3,4,0],4,1,0,8,1,3,7,40,7,8,[1,3,4,0],[[2,4,8],[4,2,8],[4,4,8]]",19));
 	m_RingInvariant.insert(make_pair("4,0,0,8,3,3,3,28,3",20));
 	m_RingInvariant.insert(make_pair("4,1,1,4,2,3,3,24,3",21));
 	m_RingInvariant.insert(make_pair("4,1,1,4,2,1,3,20,3",22));	
@@ -515,12 +582,12 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("2,1,0,8,1,3,7,48,7",26));	
 	m_RingInvariant.insert(make_pair("2,1,0,8,2,3,3,48,7",27));
 	m_RingInvariant.insert(make_pair("2,0,0,8,1,5,7,48,7",28));	
-	m_RingInvariant.insert(make_pair("2,0,0,8,3,3,3,40,7",29));
+	m_RingInvariant.insert(make_pair("[1,7,0,0],2,0,0,8,3,3,3,40,7,2,[1,5,2,0],[[2,2,24]]",29));
 	m_RingInvariant.insert(make_pair("2,0,0,8,5,3,3,36,3",30));
 	m_RingInvariant.insert(make_pair("2,1,0,8,1,7,7,40,7",31));
 	m_RingInvariant.insert(make_pair("2,1,0,8,1,3,7,40,7",32));	
 	m_RingInvariant.insert(make_pair("2,1,0,8,1,3,3,32,7",33));
-	m_RingInvariant.insert(make_pair("2,0,0,8,3,3,3,40,7",34));	
+	m_RingInvariant.insert(make_pair("[1,7,0,0],2,0,0,8,3,3,3,40,7,2,[1,5,2,0],[[2,2,24]]",34));	
 	m_RingInvariant.insert(make_pair("2,1,0,8,2,3,3,32,7",35));	
 	m_RingInvariant.insert(make_pair("2,0,0,8,5,3,3,32,7",36));	
 	m_RingInvariant.insert(make_pair("2,0,0,8,3,3,3,28,3",37));
@@ -539,6 +606,9 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("2,1,1,7,8,0,0,27,6",50));
 	m_RingInvariant.insert(make_pair("2,1,1,5,4,0,0,21,4",51));
 	m_RingInvariant.insert(make_pair("2,1,1,1,2,0,0,15,0",52));
+	//R8
+	m_I1I2.insert(make_pair("[[1,1,1],[2,1,3],[2,2,2],[4,6,2]],[[2,1,3],[2,2,2],[4,4,3],[4,6,8],[4,7,3]]",29));
+	m_I1I2.insert(make_pair("[[1,1,1],[2,1,3],[2,2,2],[4,6,2]],[[2,1,3],[2,2,2],[4,4,3],[4,6,8],[4,8,3]]",34));	
 	//R9
 	m_RingInvariant.insert(make_pair("9,1,0,9,1,8,8,81,8,9",1));
 	m_RingInvariant.insert(make_pair("9,1,1,3,2,2,2,21,2,9",2));
@@ -694,6 +764,17 @@ vector<int>  RIDHelper::IDFromRingInvariant(string& RingInvariant){
 	return v;
 }
 
+vector<int>  RIDHelper::IDFromI1I2(string& I1I2){
+	std::multimap<string,int>::iterator it;
+	std::pair<std::multimap<string,int>::iterator, std::multimap<string,int>::iterator> pa;
+	vector<int> v;
+	pa = m_I1I2.equal_range(I1I2);	
+	for( it = pa.first; it != m_I1I2.end() && it != pa.second; ++it){
+		v.push_back(it->second);
+	}
+	return v;
+}
+
 string calcRingInvariant(IRing* r){
 	string strN0=calcN0(r);
 	int n0=calcn0(r); 
@@ -717,20 +798,33 @@ string calcRingInvariant(IRing* r){
 }
 
 int IdRing(IRing* r){	
+   if(r->size()<=1)
+	   return 1;
    string strRingInvariant=calcRingInvariant(r);
    RIDHelper idHelper;
    vector<int> vID=idHelper.IDFromRingInvariant(strRingInvariant);
    if(vID.size()<=0)	   
 	   return -1;//没有RingInvariant数据
    if(vID.size()>1){
-		#if 1
+	    string strI1I2=calcI1(r)+","+calcI2(r);
+		vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	
+		vector<int> vID02;
+		set_intersection(vID.begin(),vID.end(),vID2.begin(),vID2.end(),back_inserter(vID02));  
+        if(vID02.size()>1){		
+			#if 1
 			 printf("[");
 			 for(int i=0;i<vID.size();i++){
 				 printf("%d,",vID[i]);
 			 }
 			 printf("]\n");
-		#endif	   
-	   return 0;//ID不确定，还需要新的环不变量确定编号
+			#endif	
+			return 0;//ID不确定，还需要新的环不变量确定编号
+	   }
+	   else if(vID02.size()<=0){
+		   printf("出错了，环不变量数据I1I2遗漏或有误！\n");
+		   return 0;
+	   }
+	   return vID02[0];
    }   
    return vID[0];
 }

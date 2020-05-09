@@ -578,7 +578,7 @@ void M2r::printTable()
 	//string undoS1=calS1(this,false);	
 	//printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
 	if(size()<100){
-		//printRing(this);	
+		printRing(this);	
 	}
 	else{
 	   printf("环的阶太大，不在控制台打印\n");
@@ -1037,7 +1037,7 @@ void Mnr::printTable()
 	//string undoS1=calS1(this,false);	
 	//printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
 	if(size()<100){
-		//printRing(this);	
+		printRing(this);	
 	}
 	else{
 	   printf("环的阶太大，不在控制台打印\n");
@@ -1132,12 +1132,50 @@ void test1()
 
 int main()
 { 
-   int IDs[]={201,202,203,204,205};
+   ZmodnZ r2_1(2,4);  
+   M2r G4;
+   G4.initG(2);
+   M2r H4;
+   H4.initH(2);   
+   DecompositionRing r8_29(&G4,&r2_1);
+   DecompositionRing r8_34(&H4,&r2_1); 
+   string I1=calcI1(&r8_29);
+   string I2=calcI2(&r8_29);   
+   printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
+   r8_29.printTable();
+   I1=calcI1(&r8_34);
+   I2=calcI2(&r8_34);   
+   printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());  
+   r8_34.printTable();
+   
+   //int IDs[]={115,201,202,203,204,205};
+   int IDs[]={201};
    for(int i=0;i<sizeof(IDs)/sizeof(IDs[0]);i++){
 	   M2r R16;
 	   R16.initR16(IDs[i]);
 	   R16.printTable();
+	   for(int j=0;j<R16.size();j++){				
+			string str=M2r::MStr(R16.m_Set[j]);
+			printf("%d->%s\n",j+1,str.c_str());
+		}	   
    }
+   return 0;
+   int nIDs[]={113,114};
+   for(int i=0;i<sizeof(nIDs)/sizeof(nIDs[0]);i++){
+	   Mnr R16;
+	   R16.initR16(nIDs[i]);
+	   R16.printTable();
+   } 
+   {
+	   Mnr R16;
+	   R16.initE(4);
+	   R16.printTable();
+   }  
+   {
+	   Mnr R16;
+	   R16.initF(4);
+	   R16.printTable();
+   }    
    return 0;
 
    test1();

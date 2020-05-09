@@ -913,6 +913,7 @@ int IdGroup(IGroup* g){
 		   }
 		   else if(vID023.size()<=0){
 			   printf("出错了，群不变量数据kKEZDCANS有误！\n");
+			   return 0;
 		   }
 		   return vID023[0];
 	   }
