@@ -60,6 +60,8 @@ struct GLnR:public IGroup
 {
 public:
    //  静态函数
+   static MATRIXf IdentityMat(int n);   
+   static vector<MATRIXf> FG(vector<MATRIXf>& gen);   
    static int getidx(vector<MATRIXf> &Arr2,MATRIXf &Arr1);
    static bool IsEqual(const MATRIXf &t,const MATRIXf &m);
    static MATRIXf mul(const MATRIXf &t,const MATRIXf &m);
@@ -70,6 +72,7 @@ public:
    static float DeterminantMat(const MATRIXf &m);
    static float TraceMat(const MATRIXf &m);   
    static GLnR CyclicGroup(int n);
+   static GLnR TestGroup();   
 public:
    // 实现抽象基类的方法
    virtual void printSet();
@@ -86,6 +89,88 @@ public:
    vector<MATRIXf> s_Arr;
    int m_n;  
 };
+
+MATRIXf GLnR::IdentityMat(int n){
+	MATRIXf m0r(n,vector<float>(n,0));	
+	for(int i=0;i<n;i++){
+		m0r[i][i]=1;
+	}
+	return m0r;
+}
+
+vector<MATRIXf> GLnR::FG(vector<MATRIXf>& gen){
+	vector<MATRIXf> S;
+	int n=gen[0].size();
+	MATRIXf m0=IdentityMat(n);
+	S.push_back(m0);
+	int R=gen.size();
+	for(int i=0;i<R;i++){
+		if(IsEqual(gen[i],m0))
+			continue;
+		S.push_back(gen[i]);
+	}
+	int cnt=R+1;
+	int cnt1=R+1;
+	do{
+		cnt=S.size();
+		for(int i=1;i<cnt;i++){
+			for(int j=1;j<cnt;j++){
+				MATRIXf IJ=mul(S[i],S[j]);
+				//vector<MATRIXf>::iterator p=std::find(S.begin(),S.end(),IJ);// 请用下面的find_if语句，用这个会陷入死循环
+				vector<MATRIXf>::iterator p=std::find_if(S.begin(),S.end(),[IJ](MATRIXf& m)->bool{return IsEqual(m,IJ);});
+				if(p==S.end()){
+					S.push_back(IJ);
+				}
+			}
+		}
+		cnt1=S.size();
+	}while(cnt1>cnt);	
+   return S;
+}
+
+GLnR GLnR::TestGroup(){
+	MATRIXf a(3,vector<float>(3,0));
+	MATRIXf b(3,vector<float>(3,0));
+	MATRIXf c(3,vector<float>(3,0));	
+	//{-1,0,0,0,-1,0,0,0,-1}
+    a[0][0]=-1;
+	a[0][1]=0;
+    a[0][2]=0;
+    a[1][0]=0;
+	a[1][1]=-1;
+    a[1][2]=0;
+    a[2][0]=0;
+	a[2][1]=0;
+    a[2][2]=-1;	
+	//{0,-1,0,1,0,0,0,0,-1}
+    b[0][0]=0;
+	b[0][1]=-1;
+    b[0][2]=0;
+    b[1][0]=1;
+	b[1][1]=0;
+    b[1][2]=0;
+    b[2][0]=0;
+	b[2][1]=0;
+    b[2][2]=-1;	
+	//{0,0,-1,0,-1,0,1,0,0}
+    c[0][0]=0;
+	c[0][1]=0;
+    c[0][2]=-1;
+    c[1][0]=0;
+	c[1][1]=-1;
+    c[1][2]=0;
+    c[2][0]=1;
+	c[2][1]=0;
+    c[2][2]=0;		
+	vector<MATRIXf> gen;
+	gen.push_back(a);
+	gen.push_back(b);
+	//gen.push_back(c);	
+	GLnR G;
+	G.s_Arr=FG(gen);
+    G.m_n=3;
+    return G;
+}
 
 /* 
 SO(2,R)的子群圆群的元素可表示为复数cosθ+isinθ或矩阵{{cosθ,-sinθ},{sinθ,cosθ}},复数a+bi表示为矩阵{{a,-b},{b,a}},复数的乘法表示为矩阵的乘法
@@ -323,6 +408,11 @@ int GLnR::size(){
 }
 
 int main(){
+	GLnR G=GLnR::TestGroup();
+	G.printSet();	
+	G.printTable();
+    return 0;
+	
 	GLnR C4=GLnR::CyclicGroup(4);
 	C4.printSet();	
 	C4.printTable();
