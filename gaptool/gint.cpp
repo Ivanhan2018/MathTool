@@ -47,7 +47,7 @@ string gStr(GaussianInteger& a)
 		str=Itos(a.real())+Itos(a.imag())+"i";
 	if(a.imag()==0)
 		str=Itos(a.real());
-	if(a.imag()==0 && a.imag()!=0)
+	if(a.real()==0 && a.imag()!=0)
 		str=Itos(a.imag())+"i";
 	return str;
 }
@@ -78,9 +78,11 @@ public:
 	ZimodnZ(){};
 	ZimodnZ(const GaussianInteger &a);
 	// 成员函数	
-	void initmZinZi(const GaussianInteger &m,const GaussianInteger &n);
+	void initFR(const GaussianInteger &m,const GaussianInteger &n);
+	void initFR(const GaussianInteger &m1,const GaussianInteger &m2,const GaussianInteger &n);		
 	// 成员变量
 	vector<GaussianInteger> m_Set;
+	vector<GaussianInteger> m_gen;	
 	GaussianInteger m_a;// 运算为模a加法和模a乘法
 };
 
@@ -102,8 +104,9 @@ ZimodnZ::ZimodnZ(const GaussianInteger &a)
 
 vector<GaussianInteger> ZimodnZ::FRZi(const GaussianInteger &a,const vector<GaussianInteger> &v)
 {
-	vector<GaussianInteger> S;	
-	S.push_back(GaussianInteger(0,0));
+	vector<GaussianInteger> S;
+	S.clear();
+	S.push_back(gMod(GaussianInteger(0,0),a));
 	for(int i=0;i<v.size();i++)
 	{
 	    GaussianInteger r1=gMod(v[i],a);
@@ -123,7 +126,7 @@ vector<GaussianInteger> ZimodnZ::FRZi(const GaussianInteger &a,const vector<Gaus
 				GaussianInteger ij1=gMod(S[i]+S[j],a);
 				vector<GaussianInteger>::iterator p1=std::find(S.begin(),S.end(),ij1);
 				if(p1==S.end()){
-					S.push_back(ij);
+					S.push_back(ij1);
 				}				
 			}
 		}		
@@ -132,22 +135,44 @@ vector<GaussianInteger> ZimodnZ::FRZi(const GaussianInteger &a,const vector<Gaus
     return S;
 }
 
-void ZimodnZ::initmZinZi(const GaussianInteger &m,const GaussianInteger &n)
+void ZimodnZ::initFR(const GaussianInteger &m,const GaussianInteger &n)
 {
 	m_a=n;
 	vector<GaussianInteger> v;
 	v.push_back(m);
 	m_Set=FRZi(n,v);
+	m_gen=v;
+}
+
+void ZimodnZ::initFR(const GaussianInteger &m1,const GaussianInteger &m2,const GaussianInteger &n)
+{
+	m_a=n;
+	vector<GaussianInteger> v;
+	v.push_back(m1);
+	v.push_back(m2);
+	m_Set=FRZi(n,v);
+	m_gen=v;
 }
 
 void ZimodnZ::printTable()
 {
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());	
-	//string I1=calcI1(this);
-	//string I2=calcI2(this);   
-	//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
+	string str1=gStr(m_a);	
+	string str2="";
+	if(m_gen.size()>0){
+		str2+="[";
+		for(int i=0;i<m_gen.size();i++){
+			str2+=gStr(m_gen[i]);
+			if(i<m_gen.size()-1)
+				str2+=",";
+		}
+		str2+="],";
+	}	
+	printf("Z[i]/(%s%s)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",str2.c_str(),str1.c_str(),size(),ID,str.c_str());	
+	string I1=calcI1(this);
+	string I2=calcI2(this);   
+	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
 	//printRing(this);	
 }
 
@@ -155,7 +180,7 @@ int ZimodnZ::add(int a,int b)
 {
 	if(a<0||b<0)
 		return -1;
-	GaussianInteger C=gMod(GaussianInteger(m_Set[a])+GaussianInteger(m_Set[b]),m_a);
+	GaussianInteger C=gMod(m_Set[a]+m_Set[b],m_a);
 	vector<GaussianInteger>::iterator p=std::find(m_Set.begin(),m_Set.end(),C);
 	int c=-1;
 	if(p!=m_Set.end()){
@@ -168,7 +193,7 @@ int ZimodnZ::mul(int a,int b)
 {
 	if(a<0||b<0)
 		return -1;
-	GaussianInteger C=gMod(GaussianInteger(m_Set[a])*GaussianInteger(m_Set[b]),m_a);
+	GaussianInteger C=gMod(m_Set[a]*m_Set[b],m_a);
 	vector<GaussianInteger>::iterator p=std::find(m_Set.begin(),m_Set.end(),C);
 	int c=-1;
 	if(p!=m_Set.end()){
@@ -328,33 +353,49 @@ int main(void)
 	//}
 	//system("pause");
 	//return 0;
-	if(0)
-	{
-		ZimodnZ r32(GaussianInteger(4,4));
-		int ID=IdRing(&r32);
-		string str=calcRingInvariant(&r32);
-		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r32.size(),ID,str.c_str());	
-		string S1=calS1(&r32,true);
-		string undoS1=calS1(&r32,false);	
-		printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",r32.size(),ID,S1.c_str(),undoS1.c_str());
-		string I1=calcI1(&r32);
-		string I2=calcI2(&r32);   
-		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
-	}
 	if(1)
 	{
-		ZimodnZ r32(GaussianInteger(8,8));
-		int ID=IdRing(&r32);
-		string str=calcRingInvariant(&r32);
-		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r32.size(),ID,str.c_str());	
-		string S1=calS1(&r32,true);
-		string undoS1=calS1(&r32,false);	
-		printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",r32.size(),ID,S1.c_str(),undoS1.c_str());
-		string I1=calcI1(&r32);
-		string I2=calcI2(&r32);   
-		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
+		//ZimodnZ r32(GaussianInteger(4,4));
+		//r32.printTable();
+		// ZimodnZ r16_109;
+		// r16_109.initFR(GaussianInteger(1,1),GaussianInteger(4,4));
+		// r16_109.printTable();		
+		// ZimodnZ r8_16;
+		// r8_16.initFR(GaussianInteger(2,2),GaussianInteger(2,0),GaussianInteger(4,4));
+		// r8_16.printTable();
+/*		ZimodnZ r16_117;
+		r16_117.initFR(GaussianInteger(0,4),GaussianInteger(2,2),GaussianInteger(8,8));
+		r16_117.printTable();*/		
+		ZimodnZ r200(GaussianInteger(10,10));
+		r200.printTable();
 	}
-	system("pause");
+	if(0)
+	{
+		ZimodnZ r128(GaussianInteger(8,8));
+		//r128.printTable();
+	for(int i=0;i<r128.size();i++)
+	for(int j=i+1;j<r128.size();j++)
+	{
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);		
+		Subring S1i(&r128,v);
+		int ni=S1i.size();
+		int ID=IdRing(&S1i);
+		if(ni==16 && ID==117)   
+		{
+			string str=gStr(r128.m_Set[i]);
+			printf("%d->%s=>",i,str.c_str());
+			string strj=gStr(r128.m_Set[j]);
+			printf("%d->%s=>",j,strj.c_str());			
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			S1i.printTable();
+			break;
+		}		   
+	}		
+	}
+	//system("pause");
 	return 0;
 
 	int Norm=25;
