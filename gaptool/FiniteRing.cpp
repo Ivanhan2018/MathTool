@@ -1,6 +1,10 @@
 //#include"IRing.h"
+#include<set>
 #include"DecompositionRing.h"
 #include"Rn.h"
+#include"M2r.h"
+#include"Mnr.h"
+#include"PolynomialRing.h"
 
 #ifndef Rn_H
 int g_M2Add[2][2]={
@@ -524,6 +528,12 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_12Mul[0][0],0);
 		return r;
 	}
+	if(i==13)
+	{
+		Mnr* r=new Mnr();
+		r->initR8(13);
+		return r;
+	}
 	if(i==14)
 	{
 		FiniteRing* r=new FiniteRing(8,g_C2C4Add,&g_Z4F2Mul[0][0],0);
@@ -534,14 +544,58 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_15Mul[0][0],0);
 		return r;
 	}
+	if(i==16)
+	{
+		ZmodnZ* r4=new ZmodnZ(2,8);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}
 	if(i==18)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_18Mul[0][0],0);
 		return r;
 	}
+	if(i==19)
+	{
+		M2r* r=new M2r();
+		MATRIXi A(2,vector<int>(2,0));
+		MATRIXi B(2,vector<int>(2,0));
+		A[0][0]=2;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[0][0]=1;
+		B[0][1]=1;
+		B[1][0]=1;
+		B[1][1]=1;
+		vector<MATRIXi> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		r->m_r=new ZmodnZ(1,4);
+		r->m_flag=1;
+		r->m_Set=M2r::FR(r->m_r,gen);   
+		return r;
+	}
 	if(i==20)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_20Mul[0][0],0);
+		return r;
+	}
+	if(i==21)
+	{
+		M2r* r=new M2r();
+		MATRIXi A(2,vector<int>(2,0));
+		A[0][0]=1;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=3;
+		vector<MATRIXi> gen;
+		gen.push_back(A);
+		r->m_r=new ZmodnZ(1,4);
+		r->m_flag=1;
+		r->m_Set=M2r::FR(r->m_r,gen);   
 		return r;
 	}
 	if(i==22)
@@ -559,6 +613,116 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_24Mul[0][0],0);
 		return r;
 	}
+	if(i==28)
+	{
+		Mnr* r=new Mnr();
+		MATRIXi8 A(4,vector<unsigned char>(4,0));
+		MATRIXi8 B(4,vector<unsigned char>(4,0));
+		A[0][0]=1;
+		A[0][1]=0;
+		A[0][2]=1;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=0;
+		A[1][3]=1; 
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=1;
+		A[3][1]=0;
+		A[3][2]=1;
+		A[3][3]=0;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[0][2]=0;
+		B[0][3]=1;
+		B[1][0]=0;
+		B[1][1]=1;
+		B[1][2]=0;
+		B[1][3]=1; 
+		B[2][0]=0;
+		B[2][1]=1;
+		B[2][2]=0;
+		B[2][3]=1;
+		B[3][0]=0;
+		B[3][1]=1;
+		B[3][2]=0;
+		B[3][3]=1;
+		vector<MATRIXi8> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		r->m_r=new ZmodnZ(1,2);
+		r->m_flag=1;
+		r->m_n=4;
+		r->m_Set=Mnr::FR(r->m_r,gen);   
+		return r;
+	}
+	if(i==30)
+	{
+		Mnr* r=new Mnr();
+		MATRIXi8 A(4,vector<unsigned char>(4,0));
+		MATRIXi8 B(4,vector<unsigned char>(4,0));
+		MATRIXi8 C(4,vector<unsigned char>(4,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=1;
+		A[1][1]=1;
+		A[1][2]=0;
+		A[1][3]=0; 
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=1;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=1;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[0][3]=0;
+		B[1][0]=1;
+		B[1][1]=1;
+		B[1][2]=0;
+		B[1][3]=0; 
+		B[2][0]=1;
+		B[2][1]=0;
+		B[2][2]=1;
+		B[2][3]=0;
+		B[3][0]=0;
+		B[3][1]=0;
+		B[3][2]=0;
+		B[3][3]=1;
+		C[0][0]=0;
+		C[0][1]=0;
+		C[0][2]=0;
+		C[0][3]=0;
+		C[1][0]=1;
+		C[1][1]=1;
+		C[1][2]=0;
+		C[1][3]=0; 
+		C[2][0]=0;
+		C[2][1]=0;
+		C[2][2]=1;
+		C[2][3]=0;
+		C[3][0]=1;
+		C[3][1]=0;
+		C[3][2]=0;
+		C[3][3]=1;
+		vector<MATRIXi8> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		gen.push_back(C);
+		r->m_r=new ZmodnZ(1,2);
+		r->m_flag=1;
+		r->m_n=4;
+		r->m_Set=Mnr::FR(r->m_r,gen);   
+		return r;
+	}
 	if(i==31)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_R8_31Mul[0][0],0);
@@ -567,6 +731,34 @@ IRing* newR8(int i)
 	if(i==32)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_R8_32Mul[0][0],0);
+		return r;
+	}
+	if(i==33)
+	{
+		Mnr* r=new Mnr();
+		MATRIXi8 A(4,vector<unsigned char>(4,0));
+		A[0][0]=1;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=1;
+		A[1][0]=1;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=0; 
+		A[2][0]=1;
+		A[2][1]=1;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=1;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=1;
+		vector<MATRIXi8> gen;
+		gen.push_back(A);
+		r->m_r=new ZmodnZ(1,2);
+		r->m_flag=1;
+		r->m_n=4;
+		r->m_Set=Mnr::FR(r->m_r,gen);   
 		return r;
 	}
 	if(i==36)
@@ -579,14 +771,134 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_R8_37Mul[0][0],0);
 		return r;
 	}
+	if(i==38)
+	{
+		Mnr* r=new Mnr();
+		r->initL(2);
+		return r;
+	}
 	if(i==39)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_R8_39Mul[0][0],0);
 		return r;
 	}
+	if(i==43)
+	{
+		Mnr* r=new Mnr();
+		MATRIXi8 A(4,vector<unsigned char>(4,0));
+		MATRIXi8 B(4,vector<unsigned char>(4,0));
+		MATRIXi8 C(4,vector<unsigned char>(4,0));
+		A[0][0]=0;
+		A[0][1]=1;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=0;
+		A[1][3]=0; 
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=1;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=1;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[0][2]=1;
+		B[0][3]=1;
+		B[1][0]=0;
+		B[1][1]=1;
+		B[1][2]=0;
+		B[1][3]=0; 
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=1;
+		B[2][3]=0;
+		B[3][0]=0;
+		B[3][1]=0;
+		B[3][2]=0;
+		B[3][3]=1;
+		C[0][0]=0;
+		C[0][1]=1;
+		C[0][2]=1;
+		C[0][3]=0;
+		C[1][0]=0;
+		C[1][1]=1;
+		C[1][2]=0;
+		C[1][3]=0; 
+		C[2][0]=0;
+		C[2][1]=0;
+		C[2][2]=1;
+		C[2][3]=0;
+		C[3][0]=0;
+		C[3][1]=0;
+		C[3][2]=0;
+		C[3][3]=1;
+		vector<MATRIXi8> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		gen.push_back(C);
+		r->m_r=new ZmodnZ(1,2);
+		r->m_flag=1;
+		r->m_n=4;
+		r->m_Set=Mnr::FR(r->m_r,gen);   
+		return r;
+	}
+	if(i==44)
+	{
+		Mnr* r=new Mnr();
+		MATRIXi8 A(3,vector<unsigned char>(3,0));
+		MATRIXi8 B(3,vector<unsigned char>(3,0));
+		A[0][0]=1;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=0; 
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[2][0]=1;
+		B[2][1]=0;
+		B[2][2]=0;
+		vector<MATRIXi8> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		r->m_r=new ZmodnZ(1,2);
+		r->m_flag=1;
+		r->m_n=3;
+		r->m_Set=Mnr::FR(r->m_r,gen);   
+		return r;
+	}
 	if(i==45)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_F4F2Add[0][0],&g_R8_C2C2C2_28_2Mul[0][0],0);
+		return r;
+	}
+	if(i==46)
+	{
+		int f[] = {0,0,0,1};
+		Polynomial vf(f,f+sizeof(f)/sizeof(f[0]));			
+		ZmodnZ *r2_2=new ZmodnZ(1,2);	
+		PolynomialRing* r=new PolynomialRing(r2_2,vf);
+		r->m_flag=1;
+		return r;
+	}
+	if(i==48)
+	{
+		int f[] = {0,1,0,1};
+		Polynomial vf(f,f+sizeof(f)/sizeof(f[0]));			
+		ZmodnZ *r2_2=new ZmodnZ(1,2);	
+		PolynomialRing* r=new PolynomialRing(r2_2,vf);
+		r->m_flag=1;
 		return r;
 	}
 	if(i==49)
@@ -638,23 +950,130 @@ void test1()
 	}	
 }
 
+IRing* newR4(int i)
+{
+	if(i==1)
+	{
+		ZmodnZ* r=new ZmodnZ(4,16);
+		return r;
+	}
+	if(i==2)
+	{
+		ZmodnZ* r=new ZmodnZ(2,8);
+		return r;
+	}	
+	if(i==3)
+	{
+		ZmodnZ* r=new ZmodnZ(1,4);
+		return r;
+	}
+	if(i==4)
+	{
+		M2r* r=new M2r();
+	    r->initD(2);
+		return r;
+	}	
+	if(i==5)
+	{
+		Mnr* r=new Mnr();
+	    r->initE(2);
+		return r;
+	}	
+	if(i==6)
+	{
+		Mnr* r=new Mnr();
+	    r->initF(2);
+		return r;
+	}	
+	if(i==7)
+	{
+		M2r* r=new M2r();
+	    r->initG(2);
+		return r;
+	}
+	if(i==8)
+	{
+		M2r* r=new M2r();
+	    r->initH(2);
+		return r;
+	}
+	if(i==9)
+	{
+		M2r* r=new M2r();
+	    r->initI(2);
+		return r;
+	}
+	if(i==10)
+	{
+		M2r* r=new M2r();
+	    r->initJ(2);
+		return r;
+	}
+	if(i==11)
+	{
+		M2r* r=new M2r();
+	    r->initK(2);
+		return r;
+	}	
+	return NULL;
+}
+
+IRing* newR4R4(int ij)
+{
+	int i=(ij-1)%11+1;
+	int j=(ij-1)/11+1;
+	if(i>j)
+		return NULL;
+    IRing* ri=newR4(i);
+    IRing* rj=newR4(j);
+	DecompositionRing* r= new DecompositionRing(ri,rj);
+	r->m_flag=1;
+	return r;
+}
+
 int main()
 {
+   set<int> vID;
+   int cnt=0;
+
+   for(int i=1;i<=121;i++)
+   {
+	   IRing* r=newR4R4(i);
+	   if(r){
+		   int ID=IdRing(r);
+		   printf("R4R4_%d=R%d_%d\n",i,r->size(),ID);
+		   //r->printTable();
+			if(vID.find(ID)!=vID.end()){
+				//printf("Hit%d:i=%d,ID=%d\n",cnt++,i,ID);
+			}
+			vID.insert(ID);
+			//string I1=calcI1(r);
+			//string I2=calcI2(r);   
+			//printf("R%d_%d:I1I2=%s,%s\n",r->size(),ID,I1.c_str(),I2.c_str());
+		    delete r;
+		    r=NULL;	
+	   }	   
+   }
+
    for(int i=1;i<=104;i++)
    {
 	   IRing* r=newR8R2(i);
 	   if(r){
-		   printf("R8R2_%d=",i);
-		   r->printTable();
-		   if(i==84 && i==85){
-			   string I1=calcI1(r);
-			   string I2=calcI2(r);   
-			   printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
-		   }
+		   int ID=IdRing(r);
+		   printf("R8R2_%d=R%d_%d\n",i,r->size(),ID);
+		   //r->printTable();
+			if(vID.find(ID)!=vID.end()){
+				//printf("Hit%d:i=%d,ID=%d\n",cnt++,i,ID);
+			}
+			vID.insert(ID);
+			//string I1=calcI1(r);
+			//string I2=calcI2(r);   
+			//printf("R%d_%d:I1I2=%s,%s\n",r->size(),ID,I1.c_str(),I2.c_str());
 		   delete r;
 		   r=NULL;
 	   }	   
    }
-	system("pause");
-	return 0;
+   printf("%d种16阶可分解环\n",vID.size());
+   system("pause");
+   return 0;
 }
