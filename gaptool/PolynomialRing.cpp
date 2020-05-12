@@ -580,6 +580,7 @@ void test1(){
 int main(){
 	
     ZmodnZ r4_3(1,4);
+    ZmodnZ r8_3(1,8);	
 	int f1[] = {1,0,1};
 	Polynomial vf1(f1,f1+sizeof(f1)/sizeof(f1[0]));
 	int f2[] = {1,1,1};
@@ -604,10 +605,45 @@ int main(){
 	Polynomial vf11(f11,f11+sizeof(f11)/sizeof(f11[0]));	
 	int f12[] = {0,0,0,1};
 	Polynomial vf12(f12,f12+sizeof(f12)/sizeof(f12[0]));	
-	PolynomialRing r64(&r4_3,vf12);
-	r64.printTable();	
-if(0){
-	PolynomialRing r64;
+	int f13[] = {2,1,1};
+	Polynomial vf13(f13,f3+sizeof(f13)/sizeof(f13[0]));	
+	int f14[] = {0,0,1};
+	Polynomial vf14(f14,f14+sizeof(f14)/sizeof(f14[0]));		
+	//PolynomialRing r64(&r8_3,vf1);
+	//r64.printTable();	
+	int g1[] = {0,2};
+	int g2[] = {2};	
+	int g3[] = {4,6};
+	int g4[] = {4,7};
+	int g5[] = {6,1};
+	int g6[] = {6,3};	
+	Polynomial vg1(g1,g1+sizeof(g1)/sizeof(g1[0]));
+	Polynomial vg2(g2,g2+sizeof(g2)/sizeof(g2[0]));	
+	Polynomial vg3(g3,g3+sizeof(g3)/sizeof(g3[0]));
+	Polynomial vg4(g4,g4+sizeof(g4)/sizeof(g4[0]));	
+	Polynomial vg5(g5,g5+sizeof(g5)/sizeof(g5[0]));
+	Polynomial vg6(g6,g6+sizeof(g6)/sizeof(g6[0]));		
+	//PolynomialRing r16_118;
+	//r16_118.initFR(&r8_3,vg1,vg2,vf1);
+	//r16_118.printTable();	
+	//PolynomialRing r64(&r8_3,vf2);
+	//PolynomialRing r16_119;
+	//r16_119.initFR(&r8_3,vg1,vg2,vf2);
+	//r16_119.printTable();
+	//PolynomialRing r16_16;
+	//r16_16.initFR(&r8_3,vg3,vg4,vf3);
+	//r16_16.printTable();
+	//PolynomialRing r16_17;
+	//r16_17.initFR(&r8_3,vg5,vg6,vf3);
+	//r16_17.printTable();	
+	//r16_119.printTable();	
+	//PolynomialRing r64(&r8_3,vf3);
+	//PolynomialRing r64(&r8_3,vf4);
+	//r64.printTable();	
+	PolynomialRing r64(&r8_3,vf14);
+	r64.printTable();
+if(1){
+	//PolynomialRing r64;
 	// for(int i=0;i<r64.size();i++)
 	// {
 		// string str=PolynomialRing::sPoly(r64.m_Set[i]);
@@ -624,7 +660,7 @@ if(0){
 		Subring S1i(&r64,v);
 		int ni=S1i.size();
 		int ID=IdRing(&S1i);
-		if(ni==8 && ID==11)   
+		if(ni==16 && ID==-1)   
 		{
 			string str=PolynomialRing::sPoly(r64.m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());
