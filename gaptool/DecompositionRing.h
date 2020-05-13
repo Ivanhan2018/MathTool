@@ -8,7 +8,6 @@ struct DecompositionRing:public IRing
 {
 public:
 	//  静态函数  
-	template<class T> vector<vector<int> > getTable(T *obp,int n,int(T::*p)(int,int));
 	static vector<vector<int> > DirectProduct(const vector<vector<int>> &A,const vector<vector<int>> &B);   
 public:
 	// 实现抽象基类的方法
@@ -22,6 +21,7 @@ public:
 	// 析构函数
 	~DecompositionRing();
 	// 成员函数 
+	template<class T> vector<vector<int> > getTable(T *obp,int n,int(T::*p)(int,int));	
 	void initF(int n);// R4_6、R9_6所在的有限环序列,
 	// 成员变量  
 	IRing *m_r1;
