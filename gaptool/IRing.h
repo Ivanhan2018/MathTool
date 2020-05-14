@@ -128,6 +128,7 @@ Subring::Subring(IRing* r,const vector<int>& gens)
 		cnt1=m_Set.size();
 	}while(cnt1>cnt);
 }
+
 string itos(int i)
 {
   stringstream s;
@@ -816,6 +817,7 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,0,0,16,3,7,7,160,15,4,[1,9,6,0,0],[[2,2,96]]",354));	
 	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,0,0,16,3,3,7,120,15,4,[1,5,6,4,0],[[2,2,136]]",355));
 	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,0,0,16,6,3,3,120,15,4,[1,8,7,0,0],[[2,2,136]]",356));	
+	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,0,0,16,5,3,3,76,15,1,[1,7,8,0,0],[[2,2,180]]",378));	
 	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,0,0,16,1,11,15,144,15,4,[1,11,4,0,0],[[2,2,112]]",379));
 	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,0,1,14,12,1,1,78,13,4,[1,12,3,0,0],[[2,2,178]]",380));	
 	m_RingInvariant.insert(make_pair("[1,15,0,0,0],2,0,0,16,5,3,3,76,3,1,[1,7,8,0,0],[[2,2,180]]",381));

@@ -56,7 +56,6 @@ struct DecompositionRing:public IRing
 {
 public:
 	//  静态函数  
-	template<class T> vector<vector<int> > getTable(T *obp,int n,int(T::*p)(int,int));
 	static vector<vector<int> > DirectProduct(const vector<vector<int>> &A,const vector<vector<int>> &B);   
 public:
 	// 实现抽象基类的方法
@@ -70,6 +69,7 @@ public:
 	// 析构函数
 	~DecompositionRing();
 	// 成员函数 
+	template<class T> vector<vector<int> > getTable(T *obp,int n,int(T::*p)(int,int));
 	void initF(int n);// R4_6、R9_6所在的有限环序列,
 	// 成员变量  
 	IRing *m_r1;
@@ -645,7 +645,8 @@ M2r::M2r(IRing* r)
 	}
 }
 
-typedef vector<vector<unsigned char> > MATRIXi8;
+typedef unsigned int TElem; // unsigned char
+typedef vector<vector<TElem> > MATRIXi8;
 
 // n阶全矩阵环Mn(r)
 struct Mnr:public IRing
@@ -654,7 +655,7 @@ public:
 	// 静态函数
    static int getidx(vector<MATRIXi8> &Arr2,MATRIXi8 &Arr1);
    static bool IsEqual(const MATRIXi8 &t,const MATRIXi8 &m);	
-   static bool nextV1(int m,vector<unsigned char>& v);
+   static bool nextV1(int m,vector<TElem>& v);
    static vector<MATRIXi8> FR(IRing* r,vector<MATRIXi8>& gen); 
    static MATRIXi8 add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m);  
    static MATRIXi8 mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m); 
@@ -700,7 +701,7 @@ Mnr::~Mnr(){
 
 // A:=[[Z(m),Z(m),0*Z(m),0*Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)],[Z(m),Z(m),0*Z(m),0*Z(m)]];;R4_5:=RingByGenerators([A]);;
 void Mnr::initE(int n){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));
+   MATRIXi8 A(4,vector<TElem>(4,0));
    //MATRIXi8 B(4,vector<unsigned char>(4,0));
    A[0][0]=0;
    A[0][1]=1;
@@ -728,7 +729,7 @@ void Mnr::initE(int n){
 
 // A:=[[Z(m),0*Z(m),0*Z(m),Z(m)],[Z(m),0*Z(m),0*Z(m),Z(m)],[0*Z(m),Z(m),Z(m),0*Z(m)],[Z(m),0*Z(m),0*Z(m),Z(m)]];;R4_6:=RingByGenerators([A]);;
 void Mnr::initF(int n){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));
+   MATRIXi8 A(4,vector<TElem>(4,0));
    A[0][0]=1;
    A[0][1]=0;
    A[0][2]=0;
@@ -755,7 +756,7 @@ void Mnr::initF(int n){
 
 // A:=[[0*Z(m),Z(m),0*Z(m),Z(m)],[Z(m),Z(m),0*Z(m),0*Z(m)],[0*Z(m),0*Z(m),Z(m),Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)]];;R8_38:=RingByGenerators([A]);;
 void Mnr::initL(int n){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));
+   MATRIXi8 A(4,vector<TElem>(4,0));
    //MATRIXi8 B(4,vector<unsigned char>(4,0));
    A[0][0]=0;
    A[0][1]=1;
@@ -782,7 +783,7 @@ void Mnr::initL(int n){
 }
 
 void Mnr::initR8(int ID){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));	
+   MATRIXi8 A(4,vector<TElem>(4,0));	
    if(ID==13){
 	   A[0][0]=0;
 	   A[0][1]=1;
@@ -830,7 +831,7 @@ void Mnr::initR8(int ID){
 }
 
 void Mnr::initR16(int ID){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));	
+   MATRIXi8 A(4,vector<TElem>(4,0));	
    if(ID==113){
 	   A[0][0]=1;
 	   A[0][1]=0;
@@ -909,7 +910,7 @@ string Mnr::MStr(const MATRIXi8 &t){
 vector<MATRIXi8> Mnr::FR(IRing* r,vector<MATRIXi8>& gen){
 	vector<MATRIXi8> Set;
 	int n=gen[0].size();
-	MATRIXi8 E(n,vector<unsigned char>(n,0));
+	MATRIXi8 E(n,vector<TElem>(n,0));
 	Set.push_back(E);
 	for(int i=0;i<gen.size();i++)
 	{
@@ -945,7 +946,7 @@ vector<MATRIXi8> Mnr::FR(IRing* r,vector<MATRIXi8>& gen){
 MATRIXi8 Mnr::add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 {
     int n=t.size();
-	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	MATRIXi8 C(n,vector<TElem>(n,0));
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
 			C[i][j]=r->add(t[i][j],m[i][j]);
@@ -957,7 +958,7 @@ MATRIXi8 Mnr::add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 MATRIXi8 Mnr::mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 {
     int n=t.size();
-	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	MATRIXi8 C(n,vector<TElem>(n,0));
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
 			int sum=0;
@@ -970,7 +971,7 @@ MATRIXi8 Mnr::mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 	return C;
 }
 
-bool Mnr::nextV1(int m,vector<unsigned char>& v){
+bool Mnr::nextV1(int m,vector<TElem>& v){
 	int n=v.size();
 	for(int i=n-1;i>=0;i--){
 		if(v[i]<m-1){
@@ -991,11 +992,11 @@ bool Mnr::nextV1(int m,vector<unsigned char>& v){
 
 // 调用m^(n^2)次visit
 int Mnr::visitMnRm(int n,int m){
-	vector<unsigned char> v(n*n,0);
+	vector<TElem> v(n*n,0);
 	int cnt=0;
 	do {
 		++cnt;
-		MATRIXi8 M(n,vector<unsigned char>(n,0));
+		MATRIXi8 M(n,vector<TElem>(n,0));
 		for(int k=0;k<n*n;k++){
 			int i=k/n;
 			int j=k%n;
@@ -1049,7 +1050,7 @@ int Mnr::add(int a,int b)
 	MATRIXi8 A=m_Set[a];
 	MATRIXi8 B=m_Set[b];	
     int n=m_n;
-	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	MATRIXi8 C(n,vector<TElem>(n,0));
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
 			C[i][j]=m_r->add(A[i][j],B[i][j]);
@@ -1064,7 +1065,7 @@ int Mnr::mul(int a,int b)
 	MATRIXi8 A=m_Set[a];
 	MATRIXi8 B=m_Set[b];	
     int n=m_n;
-	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	MATRIXi8 C(n,vector<TElem>(n,0));
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
 			int sum=0;
@@ -1240,5 +1241,259 @@ int test2()
 
 int main()
 { 
+	//M2r K;	   
+	//K.initK(2);
+	//M2r GK(&K);
+	ZmodnZ K(1,2);
+	Mnr GK(&K,3);
+	string I1=calcI1(&GK);
+	string I2=calcI2(&GK);   
+	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());		
+	vector<int> v;
+	//int i=6;
+	//int j=24;
+	int i=2;
+	int j=440;	
+	v.push_back(i);
+	//v.push_back(j);
+	Subring S1i(&GK,v);
+	int ni=S1i.size();
+	int ID=IdRing(&S1i);
+	if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==8||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+	{
+		string str=Mnr::MStr(GK.m_Set[i]);
+		printf("%d->%s=>",i,str.c_str());
+		string strj=Mnr::MStr(GK.m_Set[j]);
+		printf("%d->%s=>",j,strj.c_str());			
+		string strR=calcRingInvariant(&S1i);
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+		S1i.printTable();
+	}
+	else if(ni==32||ni==64)
+	{
+		/*
+		R32_-1:I1I2=[[1,1,1],[2,1,3],[2,2,9],[4,9,3],[4,11,8],[8,51,8]],[[2,1,3],[2,2,9],[4,4,3],[4,7,18],[4,8,18],[4,9,12],[4,10,12],[4,11,20],[8,4
+		5,9],[8,49,36],[8,51,68],[16,378,72]]
+		*/
+		string I1=calcI1(&S1i);
+		string I2=calcI2(&S1i);   
+		printf("R%d_%d:I1I2=%s,%s\n",ni,ID,I1.c_str(),I2.c_str());	
+	}
+	else
+	{
+		printf("R%d_%d:\n",ni,ID);
+	}	
+	if(0)
+	{
+        //R256_-1:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,255,0,0,0,0,0,0,0],2,0,1,76,22,15,15,1636,75,4,[1,36,77,40,102,0,0,0,0],[[2,2,63900]]
+		M2r GK;	
+		MATRIXi A(2,vector<int>(2,0));
+		MATRIXi B(2,vector<int>(2,0));		
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[1][0]=2;
+		B[1][1]=0;
+		vector<MATRIXi> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		GK.m_r=&K;
+		GK.m_flag=0;
+		GK.m_Set=M2r::FR(GK.m_r,gen); 
+		GK.printTable();			
+	}			
+	if(0)
+	{
+	   // R256_-1:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,255,0,0,0,0,0,0,0],2,0,1,76,22,15,15,1636,75,4,[1,36,77,40,102,0,0,0,0],[[2,2,63900]]
+	   M2r GK;	
+	   MATRIXi A(2,vector<int>(2,0));
+	   MATRIXi B(2,vector<int>(2,0));
+	   A[0][0]=0;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=1;
+	   B[0][0]=0;
+	   B[0][1]=2;
+	   B[1][0]=2;
+	   B[1][1]=0;  
+	   vector<MATRIXi> gen;
+	   gen.push_back(A);
+	   gen.push_back(B);
+	   GK.m_r=&K;
+	   GK.m_flag=0;
+	   GK.m_Set=M2r::FR(GK.m_r,gen); 
+	   //GK.printTable();
+		for(int i=0;i<GK.size();i++)
+		for(int j=i+1;j<GK.size();j++)
+		{
+			vector<int> v;
+			v.push_back(i);
+			v.push_back(j);		
+			Subring S1i(&GK,v);
+			int ni=S1i.size();
+			int ID=IdRing(&S1i);
+			if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==8||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+			{
+				string str=M2r::MStr(GK.m_Set[i]);
+				printf("%d->%s=>",i,str.c_str());
+				string strj=M2r::MStr(GK.m_Set[j]);
+				printf("%d->%s=>",j,strj.c_str());			
+				string strR=calcRingInvariant(&S1i);
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+				S1i.printTable();
+				break;
+			}		   
+		}	   
+	} 		
+ 	if(0)  
+	{
+	   // R16_383
+	   M2r GK;	
+	   MATRIXi A(2,vector<int>(2,0));
+	   //MATRIXi B(2,vector<int>(2,0));
+	   A[0][0]=0;
+	   A[0][1]=1;
+	   A[1][0]=1;
+	   A[1][1]=0;   
+	   vector<MATRIXi> gen;
+	   gen.push_back(A);
+	   //gen.push_back(B);
+	   GK.m_r=&K;
+	   GK.m_flag=0;
+	   GK.m_Set=M2r::FR(GK.m_r,gen); 
+	   GK.printTable();   
+	} 		
+	if(0)
+	{
+		// DK(4)=R16_389
+		// DI(4)=R16_384
+		M2r GK;	
+		MATRIXi A(2,vector<int>(2,0));
+		MATRIXi B(2,vector<int>(2,0));		
+		A[0][0]=2;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=0;  
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=2;
+		vector<MATRIXi> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		GK.m_r=&K;
+		GK.m_flag=0;
+		GK.m_Set=M2r::FR(GK.m_r,gen); 
+		GK.printTable();			
+	}
+	if(0)
+	{
+	   // GK(4)=R16_381
+	   M2r GK;	
+	   MATRIXi A(2,vector<int>(2,0));
+	   MATRIXi B(2,vector<int>(2,0));
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=0;  
+	   B[0][0]=1;
+	   B[0][1]=1;
+	   B[1][0]=0;
+	   B[1][1]=0;  
+	   vector<MATRIXi> gen;
+	   gen.push_back(A);
+	   gen.push_back(B);
+	   GK.m_r=&K;
+	   GK.m_flag=0;
+	   GK.m_Set=M2r::FR(GK.m_r,gen); 
+	   GK.printTable();   
+	} 
+	if(0)  
+	{
+	   // HK(4)=R16_378
+	   M2r GK;	
+	   MATRIXi A(2,vector<int>(2,0));
+	   MATRIXi B(2,vector<int>(2,0));
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=0;  
+	   B[0][0]=1;
+	   B[0][1]=0;
+	   B[1][0]=1;
+	   B[1][1]=0;  
+	   vector<MATRIXi> gen;
+	   gen.push_back(A);
+	   gen.push_back(B);
+	   GK.m_r=&K;
+	   GK.m_flag=0;
+	   GK.m_Set=M2r::FR(GK.m_r,gen); 
+	   GK.printTable();   
+	} 
+	if(0)  
+	{
+	   // IK(4)=R16_383
+	   M2r GK;	
+	   MATRIXi A(2,vector<int>(2,0));
+	   MATRIXi B(2,vector<int>(2,0));
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=1;  
+	   B[0][0]=1;
+	   B[0][1]=1;
+	   B[1][0]=0;
+	   B[1][1]=1;    
+	   vector<MATRIXi> gen;
+	   gen.push_back(A);
+	   gen.push_back(B);
+	   GK.m_r=&K;
+	   GK.m_flag=0;
+	   GK.m_Set=M2r::FR(GK.m_r,gen); 
+	   GK.printTable();   
+	} 
+ 	if(0)  
+	{
+	   // JK(4)=R16_389
+	   M2r GK;	
+	   MATRIXi A(2,vector<int>(2,0));
+	   MATRIXi B(2,vector<int>(2,0));
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=1;  
+	   B[0][0]=1;
+	   B[0][1]=0;
+	   B[1][0]=0;
+	   B[1][1]=0;   
+	   vector<MATRIXi> gen;
+	   gen.push_back(A);
+	   gen.push_back(B);
+	   GK.m_r=&K;
+	   GK.m_flag=0;
+	   GK.m_Set=M2r::FR(GK.m_r,gen); 
+	   GK.printTable();   
+	}  
+ 	if(0)  
+	{
+	   // KK(4)=R8_51
+	   M2r GK;	
+	   MATRIXi A(2,vector<int>(2,0));
+	   //MATRIXi B(2,vector<int>(2,0));
+	   A[0][0]=1;
+	   A[0][1]=1;
+	   A[1][0]=1;
+	   A[1][1]=0;   
+	   vector<MATRIXi> gen;
+	   gen.push_back(A);
+	   //gen.push_back(B);
+	   GK.m_r=&K;
+	   GK.m_flag=0;
+	   GK.m_Set=M2r::FR(GK.m_r,gen); 
+	   GK.printTable();   
+	}   	 		
    return 0;
 }

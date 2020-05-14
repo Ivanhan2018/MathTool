@@ -5,6 +5,7 @@
 #include<string.h>
 #include<vector>
 #include<map>
+#include<tuple>
 #include<iterator>
 #include<algorithm>
 using namespace std;
@@ -56,7 +57,7 @@ int getidx(vector<vector<unsigned char> > &Arr2,vector<unsigned char> &Arr1){
 	return -1;	
 }
 
-vector<int> FG(IGroup* g,vector<int>& gen){
+vector<int> FG(IGroup* g,const vector<int>& gen){
 	vector<int> S;
 	S.push_back(0);
 	int R=gen.size();
@@ -81,6 +82,174 @@ vector<int> FG(IGroup* g,vector<int>& gen){
 		cnt1=S.size();
 	}while(cnt1>cnt);	
    return S;
+}
+
+string itos(int i)
+{
+  char sz[40]={0};
+  sprintf(sz,"%d",i);
+  return sz;
+}
+
+string V2S(vector<int>& v){
+   string str="[";
+   int n=v.size();
+   for(int i=0;i<n;i++)
+   {
+	   str+=itos(v[i]);
+	   if(i<n-1)
+		   str+=",";   
+   }	   
+   str+="]";
+   return str;
+}
+
+// 一个群g的子群s
+struct Subgroup:public IGroup
+{
+public:
+	// 静态函数
+public:
+	// 实现抽象基类的方法
+	virtual void printSet(); 
+	virtual void printTable();    
+	virtual int mul(int a,int b);
+	virtual int size();
+	virtual int inv(int a); 
+	// 构造函数
+	Subgroup(IGroup* g,const vector<int>& gens);
+	// 成员函数	
+	// 成员变量
+	vector<int> m_Set;
+	IGroup* m_g;
+};
+
+void Subgroup::printSet()
+{
+    string str=V2S(m_Set);
+	printf("%s\n",str.c_str());
+}
+
+void Subgroup::printTable()
+{
+    int IdGroup(IGroup*);
+	int ID=IdGroup(this);
+	printf("GAP[%d,%d]:\n",size(),ID);
+	printGroup(this);
+}
+
+int Subgroup::inv(int a)
+{
+	int A1=m_g->inv(m_Set[a]);
+	vector<int>::iterator p=std::find(m_Set.begin(),m_Set.end(),A1);
+	int a1=-1;
+	if(p!=m_Set.end()){
+		a1=p-m_Set.begin();
+	}
+	return a1;
+}
+
+int Subgroup::mul(int a,int b)
+{
+	int ij=m_g->mul(m_Set[a],m_Set[b]);
+	vector<int>::iterator p=std::find(m_Set.begin(),m_Set.end(),ij);
+	int IJ=-1;
+	if(p!=m_Set.end()){
+		IJ=p-m_Set.begin();
+	}
+	return IJ;
+}
+
+int Subgroup::size()
+{
+	return m_Set.size();
+}
+
+Subgroup::Subgroup(IGroup* g,const vector<int>& gens)
+{
+	m_g=g;
+	m_Set=FG(g,gens);
+}
+
+vector<tuple<int,int,int> > doN2Vec(vector<pair<int,int> >& v){
+	vector<tuple<int,int,int> > ret;
+	int n=v.size();
+	for(int i=0;i<n;i++){
+		pair<int,int> vi=v[i];
+		vector<tuple<int,int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](tuple<int,int,int>& obj)->bool{if(get<0>(obj)==vi.first && get<1>(obj)==vi.second)return true;return false;});
+		if(it==ret.end()){
+			ret.push_back(make_tuple(vi.first,vi.second,1));
+		}else{
+			int cnt=get<2>(*it);
+			ret[it-ret.begin()]=make_tuple(vi.first,vi.second,cnt+1);
+		}
+	}
+	return ret;
+}
+
+string calcI1(IGroup* g){
+	int IdGroup(IGroup* g);
+	int n=g->size();
+	vector<pair<int,int> > v;
+   for(int i=0;i<n;i++){
+	   vector<int> vi;
+	   vi.push_back(i);
+	   Subgroup si(g,vi);
+	   int ni=si.size();
+	   if(ni<n && ni>0){
+		int ID=IdGroup(&si);
+		v.push_back(make_pair(ni,ID));
+	   }
+   }
+	std::sort(v.begin(),v.end());
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2)
+	{
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
+string calcI2(IGroup* g){
+	int IdGroup(IGroup* g);
+	int n=g->size();
+	vector<pair<int,int> > v;
+   for(int i=0;i<n;i++){
+	   for(int j=i+1;j<n;j++){
+		   vector<int> vi;
+		   vi.push_back(i);
+		   vi.push_back(j);		   
+		   Subgroup si(g,vi);
+		   int ni=si.size();
+		   if(ni<n && ni>0){
+			int ID=IdGroup(&si);
+			v.push_back(make_pair(ni,ID));
+		   }
+	   }
+   }
+	std::sort(v.begin(),v.end());
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2)
+	{
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
 }
 
 // IdGroup只与IGroup有关，可以放到IGroup.h里面去
@@ -458,8 +627,8 @@ string calcN0(vector<vector<int> >& A){
 }
 
 // 两个元素生成的子群的阶的分布
-string calcS2(IGroup* g,vector<vector<int> >& A){
-    int n=A.size();
+string calcS2(IGroup* g){
+	int n=g->size();
 	vector<int> vOrders=Factors(n);
 	vector<int> vCounts(n+1);
 	vector<int> gen(2);
@@ -534,6 +703,32 @@ vector<int> Order(IGroup* g,int m){
 		mi=g->mul(mi,m);
 	}
 	return ret;
+}
+
+string calcN0(IGroup* g){
+    int n=g->size();
+	vector<int> vOrders=Factors(n);
+	vector<int> vCounts(n+1);
+ 	for(int i=0;i<n;i++)
+	{
+		vector<int> S1=Order(g,i);
+		int ord=S1.size();		
+		if(ord<1)
+			return "";
+		vCounts[ord]=vCounts[ord]+1;
+	}
+	string strN0="";
+	for(int i=0;i<vOrders.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"%d,",vCounts[vOrders[i]]);
+		strN0+=sz;
+	}
+	if(strN0.size()>2)
+	{
+		strN0=strN0.substr(0,strN0.size()-1);
+	}
+	return strN0;
 }
 
 bool IsCyclic(IGroup* g){
@@ -879,20 +1074,15 @@ string calckKEZDCANS(IGroup* g){
 
 int IdGroup(IGroup* g){
    int n=g->size();
-   vector<vector<int> > A(n,vector<int>(n,0));
-   for(int i=0;i<n;i++){
-	   for(int j=0;j<n;j++){
-		  int ij=g->mul(i,j);
-		  A[i][j]=ij+1; 
-	   }
-   }
-   string strN0=calcN0(A);
+   if(n<=1)
+	  return 1;  
+   string strN0=calcN0(g);
    IDHelper idHelper;
    vector<int> vID=idHelper.IDFromN0(strN0);
    if(vID.size()<=0)
 	   return -1;//没有N0数据
    if(vID.size()>1){ // 
-       string strS2=calcS2(g,A);
+       string strS2=calcS2(g);
 	   vector<int> vID2=idHelper.IDFromS2(strS2);
 	   vector<int> vID02;
 	   set_intersection(vID.begin(),vID.end(),vID2.begin(),vID2.end(),back_inserter(vID02));
