@@ -14,10 +14,11 @@ using namespace std;
 
 struct IRing
 {
+	virtual ~IRing(){};	
 	virtual void printTable() = 0;
 	virtual int add(int a,int b) = 0;
 	virtual int mul(int a,int b) = 0;
-	virtual int size() = 0; 	   
+	virtual int size() = 0;	   
 };
 
 void printRing(IRing* r){
@@ -53,6 +54,8 @@ public:
 	virtual int size(); 
 	// 构造函数
 	Subring(IRing* r,const vector<int>& gens);
+	// 析构函数
+	~Subring(){};	
 	// 成员函数	
 	// 成员变量
 	vector<int> m_Set;

@@ -24,6 +24,7 @@ enum IsGroupEnum
 struct IGroup
 {
 public:
+   virtual ~IGroup(){};	
    virtual void printSet()=0; 
    virtual void printTable()=0;    
    virtual int mul(int a,int b)=0;
