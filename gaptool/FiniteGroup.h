@@ -17,19 +17,30 @@ public:
 	virtual int inv(int a);
 	// 构造函数
 	FiniteGroup(int n,int* arr,int delt);
+        // 析构函数
+        ~FiniteGroup();
 	// 成员函数
 	vector<int> Order(int m);  
 	// 成员变量  
 	int m_n; 
 	int* m_Arr;
-	int m_delt;   
+	int m_delt;
+	int m_flag;// FiniteGroup对象析构时是否释放m_Arr指向的内存   
 };
 
 FiniteGroup::FiniteGroup(int n,int* arr,int delt)
 {
-    m_n=n;
+    	m_n=n;
 	m_Arr=arr;
-	m_delt=delt;	
+	m_delt=delt;
+	m_flag=0;	
+}
+
+FiniteGroup::~FiniteGroup(){
+	if(m_flag==1 && m_Arr!=NULL){
+		delete[] m_Arr;
+		m_Arr=NULL;
+	}	
 }
 
 void FiniteGroup::printSet()

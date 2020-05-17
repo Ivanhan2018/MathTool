@@ -649,8 +649,16 @@ int main(){
 	int f15[] = {0,0,1,1,1,1};
 	Polynomial vf15(f15,f15+sizeof(f15)/sizeof(f15[0]));	
 	int f16[] = {1,0,0,0,0,1,1};
-	Polynomial vf16(f16,f16+sizeof(f16)/sizeof(f16[0]));	
-	PolynomialRing r64(&r2_2,vf16);
+	Polynomial vf16(f16,f16+sizeof(f16)/sizeof(f16[0]));
+	int f17[] = {1,0,0,0,1,1,1};
+	Polynomial vf17(f17,f17+sizeof(f17)/sizeof(f17[0]));
+	int f18[] = {1,1,0,0,1,1,1};
+	Polynomial vf18(f18,f18+sizeof(f18)/sizeof(f18[0]));	
+	int f19[] = {1,1,0,0,0,1,1};
+	Polynomial vf19(f19,f19+sizeof(f19)/sizeof(f19[0]));
+	int f20[] = {1,1,1,0,0,1,1};
+	Polynomial vf20(f20,f20+sizeof(f20)/sizeof(f20[0]));	
+	PolynomialRing r64(&r2_2,vf20);
 	
 	//PolynomialRing r16_377;
 	//r16_377.initFR(&r2_2,vg7,vg8,vf15);
@@ -664,16 +672,17 @@ if(1){
 	// }
 	string undoS1=calS1(&r64,false);	
 	printf("S1(Œ¥æ≠¥¶¿Ì)=%s\n",undoS1.c_str());	
-	for(int i=0;i<r64.size();i++)
-	for(int j=i+1;j<r64.size();j++)
+	for(int i=0;i<r64.size()-1;i++)
+	//for(int j=i+1;j<r64.size();j++)
 	{
+		int j=i+1;
 		vector<int> v;
 		v.push_back(i);
 		v.push_back(j);		
 		Subring S1i(&r64,v);
 		int ni=S1i.size();
 		int ID=IdRing(&S1i);
-		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==8||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 		{
 			string str=PolynomialRing::sPoly(r64.m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());

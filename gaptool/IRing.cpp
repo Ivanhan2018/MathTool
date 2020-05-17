@@ -371,6 +371,45 @@ void M2r::initR16(int ID){
 		A[1][0]=1;
 		A[1][1]=0; 
 		gen.push_back(A);
+   }else if(ID==18){		
+		//R16_18
+		m_r=new ZmodnZ(1,8);
+		A[0][0]=4;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=0;
+		B[0][1]=3;
+		B[1][0]=0;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);  
+   }else if(ID==19){
+        //R16_19
+		m_r=new ZmodnZ(1,8);	
+		A[0][0]=2;
+		A[0][1]=3;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=0;
+		B[0][1]=6;
+		B[1][0]=0;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==20){
+        //R16_20
+		m_r=new ZmodnZ(1,8);		
+		A[0][0]=1;
+		A[0][1]=4;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=3;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==201){
 		m_r=new ZmodnZ(1,4);
 		A[0][0]=0;
@@ -439,26 +478,159 @@ void M2r::initR16(int ID){
 		A[0][1]=1;
 		A[1][0]=1;
 		A[1][1]=2;	
-		gen.push_back(A);	
+		gen.push_back(A);
+   }else if(ID==378){
+	   // HK(4)=R16_378
+	   M2r *K4=new M2r();
+	   K4->initK(2);
+	   m_r=K4;	
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=0;  
+	   B[0][0]=1;
+	   B[0][1]=0;
+	   B[1][0]=1;
+	   B[1][1]=0;  
+	   gen.push_back(A);
+	   gen.push_back(B);
+   }else if(ID==381){
+	   // GK(4)=R16_381	
+	   M2r *K4=new M2r();
+	   K4->initK(2);
+	   m_r=K4;
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=0;  
+	   B[0][0]=1;
+	   B[0][1]=1;
+	   B[1][0]=0;
+	   B[1][1]=0;  
+	   gen.push_back(A);
+	   gen.push_back(B);	   
+   }else if(ID==383){
+	   // R16_383	
+	   M2r *K4=new M2r();
+	   K4->initK(2);
+	   m_r=K4;
+#if 0	   
+	   A[0][0]=0;
+	   A[0][1]=1;
+	   A[1][0]=1;
+	   A[1][1]=0;   
+	   gen.push_back(A);	  
+	   // IK(4)=R16_383
+#else
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=1;  
+	   B[0][0]=1;
+	   B[0][1]=1;
+	   B[1][0]=0;
+	   B[1][1]=1;    
+	   gen.push_back(A);
+	   gen.push_back(B);
+#endif 	  
+   }else if(ID==384){
+		// DK(4)=R16_389
+		// DI(4)=R16_384
+		M2r *I4=new M2r();
+		I4->initI(2);
+		m_r=I4;	
+		A[0][0]=2;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=0;  
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=2;
+		gen.push_back(A);
+		gen.push_back(B);			 
+   }else if(ID==389){
+	   // JK(4)=R16_389
+	   M2r *K4=new M2r();
+	   K4->initK(2);
+	   m_r=K4;	
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=0;
+	   A[1][1]=1;  
+	   B[0][0]=1;
+	   B[0][1]=0;
+	   B[1][0]=0;
+	   B[1][1]=0;   
+	   gen.push_back(A);
+	   gen.push_back(B);	   
    }else{
-	    initR16(115);
+	    initR16(384);
 		return;
-   }	   
+   }
    m_flag=1;
    m_Set=FR(m_r,gen);   
 }
 
 void M2r::initR8(int ID){
-   MATRIXi A(2,vector<int>(2,0));
-   A[0][0]=0;
-   A[0][1]=1;
-   A[1][0]=1;
-   A[1][1]=0;  
-   vector<MATRIXi> gen;
-   gen.push_back(A);
-   m_r=new ZmodnZ(1,4);
-   m_flag=1;
-   m_Set=FR(m_r,gen);   
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));	
+	if(ID==8){  		
+		//R8_8:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,0,0,8,1,5,7,48,7,2,[1,3,4,0],[[2,4,8],[4,4,8]]	
+		m_r=new ZmodnZ(1,4);
+		A[0][0]=0;
+		A[0][1]=1;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=2;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==13){		
+        //R8_13:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,1,0,8,2,3,3,32,7,8,[1,3,2,2],[[2,4,8],[4,2,8],[4,4,16]]
+		m_r=new ZmodnZ(1,4);		
+		A[0][0]=2;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;  
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=3;
+		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==20){
+        //R8_20:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,0,0,8,3,3,3,28,3,2,[1,3,4,0],[[2,4,8],[4,2,12],[4,4,16]]
+		m_r=new ZmodnZ(1,4);		
+		A[0][0]=0;
+		A[0][1]=2;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=3;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==51){
+	   // KK(4)=R8_51
+	   M2r *K4=new M2r();
+	   K4->initK(2);
+	   m_r=K4;
+	   A[0][0]=1;
+	   A[0][1]=1;
+	   A[1][0]=1;
+	   A[1][1]=0;   
+	   gen.push_back(A); 		
+	}else{
+	    initR8(51);
+		return;
+	}	 
+	m_flag=1;
+	m_Set=FR(m_r,gen);   
 }
 
 M2r::M2r(IRing* r,vector<MATRIXi>& gen){
@@ -837,8 +1009,11 @@ void Mnr::initR8(int ID){
 }
 
 void Mnr::initR16(int ID){
-   MATRIXi8 A(4,vector<TElem>(4,0));	
+   vector<MATRIXi8> gen;	
    if(ID==113){
+	   m_r=new ZmodnZ(1,4);
+	   m_n=4; 	   
+	   MATRIXi8 A(4,vector<TElem>(4,0));	
 	   A[0][0]=1;
 	   A[0][1]=0;
 	   A[0][2]=0;
@@ -854,8 +1029,12 @@ void Mnr::initR16(int ID){
 	   A[3][0]=1;
 	   A[3][1]=0;
 	   A[3][2]=0;
-	   A[3][3]=1;	
+	   A[3][3]=1;
+	   gen.push_back(A); 	   
    }else if(ID==114){
+	   m_r=new ZmodnZ(1,4);
+	   m_n=4; 	   
+	   MATRIXi8 A(4,vector<TElem>(4,0));	
 	   A[0][0]=1;
 	   A[0][1]=1;
 	   A[0][2]=0;
@@ -871,16 +1050,288 @@ void Mnr::initR16(int ID){
 	   A[3][0]=1;
 	   A[3][1]=1;
 	   A[3][2]=0;
-	   A[3][3]=0;   
+	   A[3][3]=0; 
+	   gen.push_back(A); 
+   }else if(ID==257){
+		m_r=new ZmodnZ(1,4);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=2;
+		A[0][1]=0;
+		A[0][2]=2;
+		A[1][0]=1;
+		A[1][1]=2;
+		A[1][2]=2;
+		A[2][0]=2;
+		A[2][1]=2;
+		A[2][2]=0;		
+		B[0][0]=2;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=0;
+		B[1][1]=2;
+		B[1][2]=2;
+		B[2][0]=2;
+		B[2][1]=0;
+		B[2][2]=2;
+		gen.push_back(A); 
+		gen.push_back(B); 	   
+   }else if(ID==258){
+		m_r=new ZmodnZ(1,4);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=2;
+		A[0][2]=0;
+		A[1][0]=2;
+		A[1][1]=0;
+		A[1][2]=2;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=2;		
+		B[0][0]=2;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=0;
+		B[1][1]=2;
+		B[1][2]=0;
+		B[2][0]=2;
+		B[2][1]=2;
+		B[2][2]=0;
+		gen.push_back(A); 
+		gen.push_back(B); 
+   }else if(ID==259){
+		m_r=new ZmodnZ(1,4);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=2;
+		A[0][2]=0;
+		A[1][0]=2;
+		A[1][1]=0;
+		A[1][2]=2;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=2;		
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=2;
+		B[1][1]=2;
+		B[1][2]=0;
+		B[2][0]=0;
+		B[2][1]=2;
+		B[2][2]=2;
+		gen.push_back(A); 
+		gen.push_back(B);
+   }else if(ID==368){
+		m_r=new ZmodnZ(1,2);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=1;
+		A[0][2]=1;
+		A[1][0]=1;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[2][0]=1;
+		A[2][1]=1;
+		A[2][2]=1;		
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=1;
+		B[2][0]=1;
+		B[2][1]=1;
+		B[2][2]=0;
+		gen.push_back(A); 
+		gen.push_back(B);		
+   }else if(ID==369){
+		m_r=new ZmodnZ(1,2);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=1;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=0;
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=0;		
+		B[0][0]=0;
+		B[0][1]=1;
+		B[0][2]=1;
+		B[1][0]=0;
+		B[1][1]=1;
+		B[1][2]=1;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		gen.push_back(A); 
+		gen.push_back(B);		
+   }else if(ID==370){
+		m_r=new ZmodnZ(1,2);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[1][0]=1;
+		A[1][1]=1;
+		A[1][2]=0;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=1;		
+		B[0][0]=1;
+		B[0][1]=1;
+		B[0][2]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=1;
+		B[2][0]=1;
+		B[2][1]=0;
+		B[2][2]=1;
+		gen.push_back(A); 
+		gen.push_back(B);		
+   }else if(ID==371){
+		m_r=new ZmodnZ(1,2);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		A[1][2]=1;
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=0;		
+		B[0][0]=1;
+		B[0][1]=1;
+		B[0][2]=1;
+		B[1][0]=0;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		gen.push_back(A); 
+		gen.push_back(B);		
+   }else if(ID==372){
+		m_r=new ZmodnZ(1,2);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=1;
+		A[0][1]=1;
+		A[0][2]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=0;		
+		B[0][0]=1;
+		B[0][1]=1;
+		B[0][2]=1;
+		B[1][0]=0;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		gen.push_back(A); 
+		gen.push_back(B);		
+   }else if(ID==373){
+		m_r=new ZmodnZ(1,2);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=1;		
+		B[0][0]=1;
+		B[0][1]=1;
+		B[0][2]=0;
+		B[1][0]=0;
+		B[1][1]=1;
+		B[1][2]=0;
+		B[2][0]=0;
+		B[2][1]=1;
+		B[2][2]=0;
+		gen.push_back(A); 
+		gen.push_back(B);		
+   }else if(ID==374){
+		m_r=new ZmodnZ(1,2);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=1;
+		A[0][1]=0;
+		A[0][2]=1;
+		A[1][0]=0;
+		A[1][1]=0;
+		A[1][2]=1;
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=0;		
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=0;
+		B[1][1]=1;
+		B[1][2]=1;
+		B[2][0]=0;
+		B[2][1]=1;
+		B[2][2]=1;
+		gen.push_back(A); 
+		gen.push_back(B);		
+   }else if(ID==375){
+		m_r=new ZmodnZ(1,2);
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=1;
+		A[0][1]=0;
+		A[0][2]=1;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=1;		
+		B[0][0]=1;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=0;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		gen.push_back(A); 
+		gen.push_back(B);			
    }else{
-	   initR16(113);
+	   initR16(368);
        return;  
    }
-   vector<MATRIXi8> gen;
-   gen.push_back(A);
-   m_r=new ZmodnZ(1,4);
    m_flag=1;
-   m_n=4;
    m_Set=FR(m_r,gen);      
 }
 
@@ -1298,14 +1749,19 @@ int main()
 	IRing* r=r4_3;
 	delete r;//M2r对象没有析构	
 	//delete r4_3;	
-	
+    M2r r8;
+    r8.initR8();
+	r8.printTable();	
+    M2r r16;
+    r16.initR16();
+	r16.printTable();	
     return 0;
 #endif	
-
-	//M2r K;	   
-	//K.initK(2);
-	//M2r GK(&K);
-	ZmodnZ K(1,8);
+	//return 0;
+    Mnr r16;
+    r16.initR16();
+	r16.printTable();
+	ZmodnZ K(1,2);
 #if 0	
 	Mnr GK(&K,2);
 	string I1=calcI1(&GK);
@@ -1321,7 +1777,7 @@ int main()
 	Subring S1i(&GK,v);
 	int ni=S1i.size();
 	int ID=IdRing(&S1i);
-	if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==8||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+	if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 	{
 		string str=Mnr::MStr(GK.m_Set[i]);
 		printf("%d->%s=>",i,str.c_str());
@@ -1367,163 +1823,43 @@ int main()
 		GK.m_flag=0;
 		GK.m_Set=M2r::FR(GK.m_r,gen); 
 		GK.printTable();			
-	}	
-	if(0)
-	{
-        //R8_20:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,0,0,8,3,3,3,28,3,2,[1,3,4,0],[[2,4,8],[4,2,12],[4,4,16]]
-		M2r GK;	
-		MATRIXi A(2,vector<int>(2,0));
-		MATRIXi B(2,vector<int>(2,0));		
-		A[0][0]=0;
-		A[0][1]=2;
-		A[1][0]=0;
-		A[1][1]=0;
-		B[0][0]=3;
-		B[0][1]=0;
-		B[1][0]=0;
-		B[1][1]=0;
-		vector<MATRIXi> gen;
-		gen.push_back(A);
-		gen.push_back(B);
-		GK.m_r=&K;
-		GK.m_flag=0;
-		GK.m_Set=M2r::FR(GK.m_r,gen); 
-		GK.printTable();			
-	}
-	if(0)
-	{
-        //R8_13:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,1,0,8,2,3,3,32,7,8,[1,3,2,2],[[2,4,8],[4,2,8],[4,4,16]]
-		M2r GK;	
-		MATRIXi A(2,vector<int>(2,0));
-		MATRIXi B(2,vector<int>(2,0));		
-		A[0][0]=2;
-		A[0][1]=0;
-		A[1][0]=0;
-		A[1][1]=1;  
-		B[0][0]=0;
-		B[0][1]=0;
-		B[1][0]=0;
-		B[1][1]=3;
-		vector<MATRIXi> gen;
-		gen.push_back(A);
-		gen.push_back(B);
-		GK.m_r=&K;
-		GK.m_flag=0;
-		GK.m_Set=M2r::FR(GK.m_r,gen); 
-		GK.printTable();			
-	}	
-	if(0)
-	{
-        //R8_8:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,0,0,8,1,5,7,48,7,2,[1,3,4,0],[[2,4,8],[4,4,8]]
-		M2r GK;	
-		MATRIXi A(2,vector<int>(2,0));
-		MATRIXi B(2,vector<int>(2,0));		
-		A[0][0]=0;
-		A[0][1]=1;
-		A[1][0]=0;
-		A[1][1]=0;
-		B[0][0]=2;
-		B[0][1]=0;
-		B[1][0]=0;
-		B[1][1]=0;
-		vector<MATRIXi> gen;
-		gen.push_back(A);
-		gen.push_back(B);
-		GK.m_r=&K;
-		GK.m_flag=0;
-		GK.m_Set=M2r::FR(GK.m_r,gen); 
-		GK.printTable();			
-	}
-	if(0)
-	{
-        //R16_18
-		M2r GK;	
-		MATRIXi A(2,vector<int>(2,0));
-		MATRIXi B(2,vector<int>(2,0));		
-		A[0][0]=4;
-		A[0][1]=0;
-		A[1][0]=0;
-		A[1][1]=0;
-		B[0][0]=0;
-		B[0][1]=3;
-		B[1][0]=0;
-		B[1][1]=0;
-		vector<MATRIXi> gen;
-		gen.push_back(A);
-		gen.push_back(B);
-		GK.m_r=&K;
-		GK.m_flag=0;
-		GK.m_Set=M2r::FR(GK.m_r,gen); 
-		GK.printTable();			
-	}	
-	if(0)
-	{
-        //R16_19
-		M2r GK;	
-		MATRIXi A(2,vector<int>(2,0));
-		MATRIXi B(2,vector<int>(2,0));		
-		A[0][0]=2;
-		A[0][1]=3;
-		A[1][0]=0;
-		A[1][1]=0;
-		B[0][0]=0;
-		B[0][1]=6;
-		B[1][0]=0;
-		B[1][1]=0;
-		vector<MATRIXi> gen;
-		gen.push_back(A);
-		gen.push_back(B);
-		GK.m_r=&K;
-		GK.m_flag=0;
-		GK.m_Set=M2r::FR(GK.m_r,gen); 
-		GK.printTable();			
-	}	
-	if(1)
-	{
-        //R16_20
-		M2r GK;	
-		MATRIXi A(2,vector<int>(2,0));
-		MATRIXi B(2,vector<int>(2,0));		
-		A[0][0]=1;
-		A[0][1]=4;
-		A[1][0]=0;
-		A[1][1]=0;
-		B[0][0]=3;
-		B[0][1]=0;
-		B[1][0]=0;
-		B[1][1]=0;
-		vector<MATRIXi> gen;
-		gen.push_back(A);
-		gen.push_back(B);
-		GK.m_r=&K;
-		GK.m_flag=0;
-		GK.m_Set=M2r::FR(GK.m_r,gen); 
-		GK.printTable();			
-	}		
+	}			
 	if(1)
 	{
 	   // R256_-1:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,255,0,0,0,0,0,0,0],2,0,1,76,22,15,15,1636,75,4,[1,36,77,40,102,0,0,0,0],[[2,2,63900]]
-	   M2r GK;	
-	   MATRIXi A(2,vector<int>(2,0));
-	   MATRIXi B(2,vector<int>(2,0));
+	   Mnr GK;	
+	   MATRIXi8 A(3,vector<TElem>(3,0));
+	   MATRIXi8 B(3,vector<TElem>(3,0));
 		A[0][0]=0;
-		A[0][1]=2;
-		A[1][0]=0;
+		A[0][1]=1;
+		A[0][2]=0;
+		A[1][0]=1;
 		A[1][1]=0;
-		B[0][0]=1;
+		A[1][2]=1;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=1;		
+		B[0][0]=0;
 		B[0][1]=0;
-		B[1][0]=0;
-		B[1][1]=0;
-	   vector<MATRIXi> gen;
+		B[0][2]=0;
+		B[1][0]=1;
+		B[1][1]=1;
+		B[1][2]=0;
+		B[2][0]=1;
+		B[2][1]=0;
+		B[2][2]=1;
+	   vector<MATRIXi8> gen;
 	   gen.push_back(A);
 	   gen.push_back(B);
+	   GK.m_n=3;
 	   GK.m_r=&K;
 	   GK.m_flag=0;
-	   GK.m_Set=M2r::FR(GK.m_r,gen); 
+	   GK.m_Set=Mnr::FR(GK.m_r,gen); 
 	   GK.printTable();
-		for(int i=0;i<GK.size();i++)
+		for(int i=0;i<GK.size()-1;i++)
 		for(int j=i+1;j<GK.size();j++)
 		{
+			//int j=i+1;
 			vector<int> v;
 			v.push_back(i);
 			v.push_back(j);		
@@ -1532,9 +1868,9 @@ int main()
 			int ID=IdRing(&S1i);
 			if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 			{
-				string str=M2r::MStr(GK.m_Set[i]);
+				string str=Mnr::MStr(GK.m_Set[i]);
 				printf("%d->%s=>",i,str.c_str());
-				string strj=M2r::MStr(GK.m_Set[j]);
+				string strj=Mnr::MStr(GK.m_Set[j]);
 				printf("%d->%s=>",j,strj.c_str());			
 				string strR=calcRingInvariant(&S1i);
 				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
@@ -1542,153 +1878,6 @@ int main()
 				break;
 			}		   
 		}	   
-	} 		
- 	if(0)  
-	{
-	   // R16_383
-	   M2r GK;	
-	   MATRIXi A(2,vector<int>(2,0));
-	   //MATRIXi B(2,vector<int>(2,0));
-	   A[0][0]=0;
-	   A[0][1]=1;
-	   A[1][0]=1;
-	   A[1][1]=0;   
-	   vector<MATRIXi> gen;
-	   gen.push_back(A);
-	   //gen.push_back(B);
-	   GK.m_r=&K;
-	   GK.m_flag=0;
-	   GK.m_Set=M2r::FR(GK.m_r,gen); 
-	   GK.printTable();   
-	} 		
-	if(0)
-	{
-		// DK(4)=R16_389
-		// DI(4)=R16_384
-		M2r GK;	
-		MATRIXi A(2,vector<int>(2,0));
-		MATRIXi B(2,vector<int>(2,0));		
-		A[0][0]=2;
-		A[0][1]=0;
-		A[1][0]=0;
-		A[1][1]=0;  
-		B[0][0]=0;
-		B[0][1]=0;
-		B[1][0]=0;
-		B[1][1]=2;
-		vector<MATRIXi> gen;
-		gen.push_back(A);
-		gen.push_back(B);
-		GK.m_r=&K;
-		GK.m_flag=0;
-		GK.m_Set=M2r::FR(GK.m_r,gen); 
-		GK.printTable();			
-	}
-	if(0)
-	{
-	   // GK(4)=R16_381
-	   M2r GK;	
-	   MATRIXi A(2,vector<int>(2,0));
-	   MATRIXi B(2,vector<int>(2,0));
-	   A[0][0]=1;
-	   A[0][1]=0;
-	   A[1][0]=0;
-	   A[1][1]=0;  
-	   B[0][0]=1;
-	   B[0][1]=1;
-	   B[1][0]=0;
-	   B[1][1]=0;  
-	   vector<MATRIXi> gen;
-	   gen.push_back(A);
-	   gen.push_back(B);
-	   GK.m_r=&K;
-	   GK.m_flag=0;
-	   GK.m_Set=M2r::FR(GK.m_r,gen); 
-	   GK.printTable();   
-	} 
-	if(0)  
-	{
-	   // HK(4)=R16_378
-	   M2r GK;	
-	   MATRIXi A(2,vector<int>(2,0));
-	   MATRIXi B(2,vector<int>(2,0));
-	   A[0][0]=1;
-	   A[0][1]=0;
-	   A[1][0]=0;
-	   A[1][1]=0;  
-	   B[0][0]=1;
-	   B[0][1]=0;
-	   B[1][0]=1;
-	   B[1][1]=0;  
-	   vector<MATRIXi> gen;
-	   gen.push_back(A);
-	   gen.push_back(B);
-	   GK.m_r=&K;
-	   GK.m_flag=0;
-	   GK.m_Set=M2r::FR(GK.m_r,gen); 
-	   GK.printTable();   
-	} 
-	if(0)  
-	{
-	   // IK(4)=R16_383
-	   M2r GK;	
-	   MATRIXi A(2,vector<int>(2,0));
-	   MATRIXi B(2,vector<int>(2,0));
-	   A[0][0]=1;
-	   A[0][1]=0;
-	   A[1][0]=0;
-	   A[1][1]=1;  
-	   B[0][0]=1;
-	   B[0][1]=1;
-	   B[1][0]=0;
-	   B[1][1]=1;    
-	   vector<MATRIXi> gen;
-	   gen.push_back(A);
-	   gen.push_back(B);
-	   GK.m_r=&K;
-	   GK.m_flag=0;
-	   GK.m_Set=M2r::FR(GK.m_r,gen); 
-	   GK.printTable();   
-	} 
- 	if(0)  
-	{
-	   // JK(4)=R16_389
-	   M2r GK;	
-	   MATRIXi A(2,vector<int>(2,0));
-	   MATRIXi B(2,vector<int>(2,0));
-	   A[0][0]=1;
-	   A[0][1]=0;
-	   A[1][0]=0;
-	   A[1][1]=1;  
-	   B[0][0]=1;
-	   B[0][1]=0;
-	   B[1][0]=0;
-	   B[1][1]=0;   
-	   vector<MATRIXi> gen;
-	   gen.push_back(A);
-	   gen.push_back(B);
-	   GK.m_r=&K;
-	   GK.m_flag=0;
-	   GK.m_Set=M2r::FR(GK.m_r,gen); 
-	   GK.printTable();   
-	}  
- 	if(0)  
-	{
-	   // KK(4)=R8_51
-	   M2r GK;	
-	   MATRIXi A(2,vector<int>(2,0));
-	   //MATRIXi B(2,vector<int>(2,0));
-	   A[0][0]=1;
-	   A[0][1]=1;
-	   A[1][0]=1;
-	   A[1][1]=0;   
-	   vector<MATRIXi> gen;
-	   gen.push_back(A);
-	   //gen.push_back(B);
-	   GK.m_r=&K;
-	   GK.m_flag=0;
-	   GK.m_Set=M2r::FR(GK.m_r,gen); 
-	   GK.printTable();   
-	}   	 		
+	} 				  	 		
    return 0;
 }
