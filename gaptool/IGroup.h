@@ -302,7 +302,7 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,7,8,0,0",3));
 	m_N0.insert(make_pair("1,3,12,0,0",4));
 	m_N0.insert(make_pair("1,3,4,8,0",5));	
-	m_N0.insert(make_pair("1,1,2,4,8",6));
+	m_N0.insert(make_pair("1,3,4,8,0",6));
 	m_N0.insert(make_pair("1,9,2,4,0",7));	
 	m_N0.insert(make_pair("1,5,6,4,0",8));
 	m_N0.insert(make_pair("1,1,10,4,0",9));
@@ -326,6 +326,11 @@ IDHelper::IDHelper(){
 	m_S2.insert(make_pair("0,3,33,84,0",12));
 	m_S2.insert(make_pair("0,7,29,84,0",13));
 	m_S2.insert(make_pair("0,15,105,0,0",14));
+	//G16	
+	m_kKEZDCANS.insert(make_pair("16,[16,0,0,0,0],4,16,1,0,1,1,1",2));	
+	m_kKEZDCANS.insert(make_pair("10,[4,6,0,0,0],4,4,2,0,0,1,1",4));
+	m_kKEZDCANS.insert(make_pair("16,[16,0,0,0,0],8,16,1,0,1,1,1",5));
+	m_kKEZDCANS.insert(make_pair("10,[4,6,0,0,0],8,4,2,0,0,1,1",6));	
 	//G24
 	m_N0.insert(make_pair("1,1,2,2,2,12,4,0",1));
 	m_N0.insert(make_pair("1,1,2,2,2,4,4,8",2));	
@@ -1092,14 +1097,16 @@ int IdGroup(IGroup* g){
 		   vector<int> vID3=idHelper.IDFromkKEZDCANS(strkKEZDCANS);
 		   vector<int> vID023;
 		   set_intersection(vID02.begin(),vID02.end(),vID3.begin(),vID3.end(),back_inserter(vID023));
+		#if 1
+			if(vID023.size()!=1){
+				 printf("[");
+				 for(int i=0;i<vID02.size();i++){
+					 printf("%d,",vID02[i]);
+				 }
+				 printf("]\n");
+			}
+		#endif		   
 		   if(vID023.size()>1){
-				#if 1
-						 printf("[");
-						 for(int i=0;i<vID02.size();i++){
-							 printf("%d,",vID02[i]);
-						 }
-						 printf("]\n");
-				#endif
 				return 0;//ID不确定，还需要N0、S2、kKEZDCANS以外的群不变量确定编号
 		   }
 		   else if(vID023.size()<=0){
