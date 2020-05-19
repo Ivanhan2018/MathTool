@@ -7,6 +7,8 @@ using namespace std;
 IGroup* newG(int n,int i){
     //int IDs[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14};
 	int IDs[]={1,2,6,7,3,8,9,10,11,4,12,13,14,5};
+    //int IDs[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+    //int IDs[]={4,1,5,6,7,8,9,10,2,11,12,13,14,15,3};	
 	int cnt=sizeof(IDs)/sizeof(IDs[0]);
 	if(i<=0||i>cnt)
 		return NULL;
@@ -66,6 +68,8 @@ int main(int argc, char* argv[])
 {
     int n=16;
     int m=14;
+	//int n=24;
+	//int m=15;
     for(int i=1;i<=m;i++){
 		IGroup* g=newG(n,i);
 		if(g){
