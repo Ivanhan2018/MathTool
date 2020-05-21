@@ -389,11 +389,15 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,1,2,4,2,4,8,8",4));	
 	//G32
 	m_N0.insert(make_pair("1,1,2,4,8,16",1));
+	m_N0.insert(make_pair("1,7,24,0,0,0",2));	
 	m_N0.insert(make_pair("1,3,12,16,0,0",3));
-	m_N0.insert(make_pair("1,3,12,16,0,0",4));	
+	m_N0.insert(make_pair("1,3,12,16,0,0",4));
+	m_N0.insert(make_pair("1,7,8,16,0,0",5));	
 	m_N0.insert(make_pair("1,11,20,0,0,0",6));
-	m_N0.insert(make_pair("1,11,4,16,0,0",7));	
+	m_N0.insert(make_pair("1,11,4,16,0,0",7));
+	m_N0.insert(make_pair("1,3,12,16,0,0",8));	
 	m_N0.insert(make_pair("1,11,12,8,0,0",9));
+	m_N0.insert(make_pair("1,3,20,8,0,0",10));	
 	m_N0.insert(make_pair("1,7,16,8,0,0",11));	
 	m_N0.insert(make_pair("1,3,12,16,0,0",12));
 	m_N0.insert(make_pair("1,3,20,8,0,0",13));	
@@ -412,7 +416,13 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,3,28,0,0,0",26));
 	m_N0.insert(make_pair("1,19,12,0,0,0",27));
 	m_N0.insert(make_pair("1,15,16,0,0,0",28));	
+	m_N0.insert(make_pair("1,7,24,0,0,0",29));
+	m_N0.insert(make_pair("1,11,20,0,0,0",30));	
+	m_N0.insert(make_pair("1,11,20,0,0,0",31));	
+	m_N0.insert(make_pair("1,3,28,0,0,0",32));
+	m_N0.insert(make_pair("1,7,24,0,0,0",33));	
 	m_N0.insert(make_pair("1,19,12,0,0,0",34));
+	m_N0.insert(make_pair("1,3,28,0,0,0",35));	
 	m_N0.insert(make_pair("1,7,8,16,0,0",36));	
 	m_N0.insert(make_pair("1,7,8,16,0,0",37));
 	m_N0.insert(make_pair("1,7,8,16,0,0",38));	
@@ -420,15 +430,18 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,11,12,8,0,0",40));	
 	m_N0.insert(make_pair("1,3,20,8,0,0",41));
 	m_N0.insert(make_pair("1,11,12,8,0,0",42));	
-	m_N0.insert(make_pair("1,15,8,8,0,0",43));	
+	m_N0.insert(make_pair("1,15,8,8,0,0",43));
+	m_N0.insert(make_pair("1,7,16,8,0,0",44));	
 	m_N0.insert(make_pair("1,15,16,0,0,0",45));	
 	m_N0.insert(make_pair("1,23,8,0,0,0",46));
 	m_N0.insert(make_pair("1,7,24,0,0,0",47));
 	m_N0.insert(make_pair("1,15,16,0,0,0",48));	
 	m_N0.insert(make_pair("1,19,12,0,0,0",49));
+	m_N0.insert(make_pair("1,11,20,0,0,0",50));	
 	m_N0.insert(make_pair("1,31,0,0,0,0",51));	
 	//G32
 	m_S2.insert(make_pair("0,1,5,22,92,376",1));
+	m_S2.insert(make_pair("0,7,81,216,0,192",2));	
 	m_S2.insert(make_pair("0,3,33,124,144,192",3));
 	m_S2.insert(make_pair("0,3,33,124,144,192",4));	
 	m_S2.insert(make_pair("0,11,89,108,96,192",6));
@@ -451,7 +464,8 @@ IDHelper::IDHelper(){
 	m_S2.insert(make_pair("0,11,89,204,192,0",25));	
 	m_S2.insert(make_pair("0,3,73,132,288,0",26));
 	m_S2.insert(make_pair("0,19,153,180,144,0",27));
-	m_S2.insert(make_pair("0,15,97,240,144,0",28));	
+	m_S2.insert(make_pair("0,15,97,240,144,0",28));
+	m_S2.insert(make_pair("0,7,81,168,240,0",29));		
 	m_S2.insert(make_pair("0,19,105,324,48,0",34));
 	m_S2.insert(make_pair("0,7,41,160,288,0",36));	
 	m_S2.insert(make_pair("0,7,41,160,288,0",37));
@@ -467,11 +481,18 @@ IDHelper::IDHelper(){
 	m_S2.insert(make_pair("0,15,97,384,0,0",48));	
 	m_S2.insert(make_pair("0,19,129,348,0,0",49));
 	m_S2.insert(make_pair("0,31,465,0,0,0",51));
-	//G32	
+	//G32
+	m_kKEZDCANS.insert(make_pair("32,[32,0,0,0,0,0],8,32,1,0,1,1,1",3));	
+	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],8,8,2,0,0,1,1",4));	
+	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],8,8,2,0,0,1,1",12));	
+	m_kKEZDCANS.insert(make_pair("14,[4,6,4,0,0,0],8,4,4,0,0,1,1",13));	
+	m_kKEZDCANS.insert(make_pair("14,[4,6,4,0,0,0],8,4,4,0,0,1,1",14));	
 	m_kKEZDCANS.insert(make_pair("32,[32,0,0,0,0,0],4,32,1,0,1,1,1",21));	
 	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],4,8,2,0,0,1,1",23));	
+	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],4,8,2,0,0,1,1",24));	
 	m_kKEZDCANS.insert(make_pair("32,[32,0,0,0,0,0],8,32,1,0,1,1,1",36));	
 	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],8,8,2,0,0,1,1",37));
+	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],4,8,2,0,0,1,1",47));	
 	//G36
 	m_N0.insert(make_pair("1,1,2,18,2,6,0,6,0",1));
 	m_N0.insert(make_pair("1,1,2,2,2,6,4,6,12",2));	
@@ -1151,25 +1172,43 @@ int IdGroup(IGroup* g){
 		   string strkKEZDCANS=calckKEZDCANS(g);
 		   vector<int> vID3=idHelper.IDFromkKEZDCANS(strkKEZDCANS);
 		   vector<int> vID023;
-		   set_intersection(vID02.begin(),vID02.end(),vID3.begin(),vID3.end(),back_inserter(vID023));
+		   set_intersection(vID02.begin(),vID02.end(),vID3.begin(),vID3.end(),back_inserter(vID023));		   
+		   if(vID023.size()>1){
 		#if 1
-			if(vID023.size()!=1){
+			if(vID023.size()>1){
+				 printf("[");
+				 for(int i=0;i<vID023.size();i++){
+					 printf("%d,",vID023[i]);
+				 }
+				 printf("]\n");
+			}
+		#endif
+				return 0;//ID不确定，还需要N0、S2、kKEZDCANS以外的群不变量确定编号
+		   }
+		   else if(vID023.size()<=0){
+		#if 1
 				 printf("[");
 				 for(int i=0;i<vID02.size();i++){
 					 printf("%d,",vID02[i]);
 				 }
 				 printf("]\n");
-			}
-		#endif		   
-		   if(vID023.size()>1){
-				return 0;//ID不确定，还需要N0、S2、kKEZDCANS以外的群不变量确定编号
-		   }
-		   else if(vID023.size()<=0){
+		#endif
 			   printf("出错了，群不变量数据kKEZDCANS有误！\n");
 			   return 0;
 		   }
 		   return vID023[0];
-	   }
+		}
+		else if(vID02.size()<=0){
+		#if 1
+				 printf("[");
+				 for(int i=0;i<vID.size();i++){
+					 printf("%d,",vID[i]);
+				 }
+				 printf("]\n");
+		#endif
+			printf("出错了，群不变量数据S2有误！\n");
+			return 0;
+		}
 	   return vID02[0];
    }   
    return vID[0];   
