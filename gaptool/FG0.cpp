@@ -1,132 +1,90 @@
-#include<iostream>
-#include"IGroup.h"
-using namespace std;
+#include"PermGroup.h"
+#include <fstream>
+#include <iostream>
+#include <complex>
+//#include <ctime>
 
-// Sn
-struct Sn:public IGroup
+std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
 {
-public:
-   //  静态函数
-   static vector<unsigned char> mul(const vector<unsigned char> &t,const vector<unsigned char> &m);  
-   static vector<unsigned char> inv(const vector<unsigned char> &t);
-   static vector<vector<unsigned char> > Order(const vector<unsigned char> & m);   
-public:
-   // 实现抽象基类的方法
-   virtual void printSet();
-   virtual void printTable();     
-   virtual int mul(int a,int b);
-   virtual int size();
-   virtual int inv(int a);
-   // 构造函数
-   Sn(int n);
-   // 成员函数
-   // 成员变量
-   vector<vector<unsigned char> > s_Arr;   
-   int m_n;   
-};
-
-Sn::Sn(int n)
-{
-   m_n=n;
-   vector<unsigned char> v(n);
-   for(int i=0;i<n;i++)
-		v[i]=i+1;
-   do { 
-     s_Arr.push_back(v);    
-   }while( next_permutation(v.begin(),v.end()));
-}
-
-void Sn::printSet()
-{
-   printf("%d阶群S_%d:\n",size(),m_n);
-   if(m_n<5)
-   {
-		for(int i=0;i<size();i++){
-			int i1=inv(i);
-			printf("%d=>%d\n",i,i1);
-		}	   
-   }
-   else
-   {
-	   printf("群的阶太大，不在控制台打印\n");
-   }
-}
-
-void Sn::printTable()
-{
-   if(m_n<5)
-		printGroup(this);
-}
-
-int Sn::mul(int a,int b)
-{
-	vector<unsigned char> A=s_Arr[a];
-	vector<unsigned char> B=s_Arr[b];
-	vector<unsigned char> C=mul(A,B);
-	int idx=getidx(s_Arr,C);
-	return idx;
-}
-
-int Sn::inv(int a)
-{
-	vector<unsigned char> v=inv(s_Arr[a]);
-	int idx=getidx(s_Arr,v);
-	return idx;
-}
-
-int Sn::size()
-{
-	return s_Arr.size();	
-}
-
-vector<unsigned char> Sn::mul(const vector<unsigned char> &t,const vector<unsigned char> &m)
-{
-	int n=t.size();
-	int nm=m.size();	
-	vector<unsigned char> ret(n);
-	if(n!=nm)
-		return ret;
-	for(int i=0;i<n;i++)
-		ret[i]=m[t[i]-1];
+	std::vector<string> ret;
+	unsigned int numSplits = 0;
+	// Use STL methods 
+	size_t start, pos;
+	start = 0;
+	do 
+	{
+		pos = str.find_first_of(delims, start);
+		if (pos == start)
+		{
+			// Do nothing
+			start = pos + 1;
+		}
+		else if (pos == std::string::npos || (maxSplits && numSplits == maxSplits))
+		{
+			// Copy the rest of the std::string
+			ret.push_back( str.substr(start) );
+			break;
+		}
+		else
+		{
+			// Copy up to delimiter
+			ret.push_back( str.substr(start, pos - start) );
+			start = pos + 1;
+		}
+		// parse up to next real data
+		start = str.find_first_not_of(delims, start);
+		++numSplits;
+	} while (pos != std::string::npos);
 	return ret;
 }
 
-vector<unsigned char> Sn::inv(const vector<unsigned char> &t)
-{
-	vector<vector<unsigned char> > S1=Order(t);
-	int ord=S1.size();	
-	return S1[ord-1];	
+vector<SnE> readGens(const char *path){
+    vector<SnE> S;
+	ifstream fin(path);
+	if(fin){
+		string strLine;
+		fin >> strLine;
+		vector<string> vN=split(strLine,",");
+		int N=vN.size();
+		while(strLine!=""){
+			strLine="";
+		    fin >> strLine;
+
+			vector<string> vN1=split(strLine,",");
+			int N1=vN1.size();
+			if(N1==N){
+				SnE viN1(N);
+				for(int i=0;i<N;i++){
+					viN1[i]=atoi(vN1[i].c_str());
+				}
+				S.push_back(viN1);
+			}
+		}
+	}
+	return S;
 }
 
-vector<vector<unsigned char> > Sn::Order(const vector<unsigned char> & m)
-{
-	vector<vector<unsigned char> > ret;
-    int n=m.size();
-	vector<unsigned char> mi=m;
-	vector<unsigned char> m0(n);
-	for(int i=0;i<n;i++)
-	{
-		m0[i]=i+1;
+void writeTable(IGroup* g,const char *path){
+	ofstream fout(path);
+	int n=g->size();  
+	for(int i=0;i<n;i++){
+	   for(int j=0;j<n;j++){
+		  int ij=g->mul(i,j);
+		  fout<<ij+1<<" ";
+	   }
+	   fout<<endl;
 	}
-	while(memcmp(&mi[0],&m0[0],sizeof(unsigned char)*n)!=0)
-	{
-		ret.push_back(mi);
-		mi=mul(mi,m);
-	}
-	ret.push_back(mi);
-	return ret;
 }
 
-int main(){
-	
+void test1(){
     Sn s9(9);
 	s9.printSet();	
     s9.printTable();
 	
 	unsigned char s9a[]={4,5,6,9,3,2,7,1,8};
 	unsigned char s9b[]={6,1,7,4,2,5,9,3,8};	
-	vector<unsigned char> a(s9a,s9a+9);
-	vector<unsigned char> b(s9b,s9b+9);	
+	SnE a(s9a,s9a+9);
+	SnE b(s9b,s9b+9);	
 	vector<int> A(1);
 	A[0]=getidx(s9.s_Arr,a);
 	vector<int> B(1);
@@ -139,7 +97,88 @@ int main(){
 	vector<int> fgB=FG(&s9,B);
 	printSubGroup(&s9,fgB);	
 	vector<int> fgAB=FG(&s9,AB);
-	printSubGroup(&s9,fgAB);
+	printSubGroup(&s9,fgAB);	
+}
+
+void test2(){
+	unsigned char s9a[]={4,5,6,9,3,2,7,1,8};
+	unsigned char s9b[]={6,1,7,4,2,5,9,3,8};
+    Sn M9(9,s9a,s9b);	
+	M9.printSet();	
+    M9.printTable();
+}
+
+int oldFG(int argc, char* argv[])
+{
+	char sz[100]={0};
+	char sz1[100]={0};
+	if(argc<2)
+	{
+		printf("请输入有限生成置换群A的生成元文件名：");
+		scanf("%s",sz);
+	}
+	else
+		strcpy(sz,argv[1]);
+
+    if(strspn(sz,"Set")==0)
+	{
+	   	string strDes=sz;
+		strDes.replace(strDes.find("Set",0),strlen("Set"),"");
+		strcpy(sz1,strDes.c_str());
+	}
+	else
+	{
+		strcpy(sz1,sz);
+		strcat(sz1,".txt");	
+	}
+
+	vector<SnE> gen=readGens(sz);
+    Sn G;
+	G.init(gen);
+	G.printSet();	
+    G.printTable();	
+	
+	writeTable(&G,sz1);
+
+    if(argc<2)
+		system("pause");	
+	
+	return 0;
+}
+
+int main(int argc, char* argv[])
+{
+    //if(strspn(argv[0],"FG")==0)
+	if(string(argv[0]).find("FG",0)!=string::npos)
+		return oldFG(argc,argv);
+
+	if(argc<2)
+	{
+		printf("Usage:  PermGroup arg1\n");
+		printf("eg:PermGroup 4,5,6,9,3,2,7,1,8;6,1,7,4,2,5,9,3,8\n");
+		return 0;
+	}
+	
+	vector<SnE> S;
+	vector<string> vN=split(argv[1],";");
+	for(int i=0;i<vN.size();i++)
+	{
+		vector<string> vNi=split(vN[i],",");
+		int N=vNi.size();
+		SnE viN1(N);
+		for(int j=0;j<N;j++){
+			viN1[j]=atoi(vNi[j].c_str());
+		}
+		S.push_back(viN1);		
+	}
+	Sn G;
+	G.init(S);
+	G.printSet();	
+	G.printTable();	
+	int ID=IdGroup(&G);
+	char sz[128]={0};   
+	sprintf(sz,"G%d.%d.txt",G.size(),ID);
+	writeTable(&G,sz);
 	
 	return 0;
 }

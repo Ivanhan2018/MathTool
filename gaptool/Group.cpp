@@ -105,7 +105,8 @@ std::vector<string> split( const std::string& str, const std::string& delims, un
 
 int main(int argc, char* argv[])
 {
-    if(strspn(argv[0],"Gnm")==0)
+    //if(strspn(argv[0],"Gnm")==0)//Error
+	if(string(argv[0]).find("Gnm",0)!=string::npos)	
 		usecomma=true;
 	
 	char sz[100]={0};

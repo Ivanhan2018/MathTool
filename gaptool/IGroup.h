@@ -471,7 +471,22 @@ IDHelper::IDHelper(){
 	m_kKEZDCANS.insert(make_pair("32,[32,0,0,0,0,0],4,32,1,0,1,1,1",21));	
 	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],4,8,2,0,0,1,1",23));	
 	m_kKEZDCANS.insert(make_pair("32,[32,0,0,0,0,0],8,32,1,0,1,1,1",36));	
-	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],8,8,2,0,0,1,1",37));	
+	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],8,8,2,0,0,1,1",37));
+	//G36
+	m_N0.insert(make_pair("1,1,2,18,2,6,0,6,0",1));
+	m_N0.insert(make_pair("1,1,2,2,2,6,4,6,12",2));	
+	m_N0.insert(make_pair("1,3,2,0,6,24,0,0,0",3));
+	m_N0.insert(make_pair("1,19,2,0,2,6,0,6,0",4));
+	m_N0.insert(make_pair("1,3,2,0,6,6,0,18,0",5));	
+	m_N0.insert(make_pair("1,1,8,6,8,0,12,0,0",6));
+	m_N0.insert(make_pair("1,1,8,18,8,0,0,0,0",7));	
+	m_N0.insert(make_pair("1,1,8,2,8,0,16,0,0",8));
+	m_N0.insert(make_pair("1,9,8,18,0,0,0,0,0",9));
+	m_N0.insert(make_pair("1,15,8,0,12,0,0,0,0",10));
+	m_N0.insert(make_pair("1,3,26,0,6,0,0,0,0",11));	
+	m_N0.insert(make_pair("1,7,8,0,20,0,0,0,0",12));
+	m_N0.insert(make_pair("1,19,8,0,8,0,0,0,0",13));
+	m_N0.insert(make_pair("1,3,8,0,24,0,0,0,0",14));	
 	//G48
 	m_N0.insert(make_pair("1,1,2,2,2,4,4,24,8,0",1));
 	m_N0.insert(make_pair("1,1,2,2,2,4,4,8,8,16",2));

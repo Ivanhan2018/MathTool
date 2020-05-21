@@ -789,6 +789,15 @@ function QGroup(m,n)
 	return TableByPermuteSet(ret)
 end
 
+--DDD(m,n,k)=<a,b|a^m=b^k=1,bab^-1=a^n>
+function DDDGroup(m,n,k)
+    local ret={}
+	if m==15 and n==2 and k==4 then
+		ret=FG({40,43,48,29,16,34,32,19,38,25,18,7,51,23,11,21,9,53,27,14,56,2,41,28,13,4,46,3,44,31,6,49,37,30,17,58,1,35,22,33,20,59,39,26,60,8,52,24,12,55,10,54,15,57,42,5,47,45,50,36},{59,60,55,45,53,58,50,56,36,46,54,33,43,42,51,57,39,48,47,24,34,44,21,31,52,30,40,49,27,37,35,13,22,32,10,19,41,18,28,38,15,25,23,5,11,20,3,29,8,16,26,6,12,1,9,17,2,14,4,7})
+	end	
+	return TableByPermuteSet(ret)
+end
+
 local g_Gn={
     {4,2},
     {6,2},	
@@ -914,7 +923,7 @@ local g_G={
 	{36,5,AbelianGroup({18,2})},
 	{36,6,DirectProduct(QuaternionGroup(12),CyclicGroup(3))},	
 	{36,8,AbelianGroup({12,3})},
-	{36,9,TableByPermuteSet(FG({1,3,8,7,9,2,5,6,4},{2,1,5,7,3,9,4,8,6}))},--IdGroup(Group([(2,3,8,6)(4,7,5,9),(1,2)(3,5)(4,7)(6,9)]));	
+	{36,9,TableByPermuteSet(FG({1,3,8,7,9,2,5,6,4},{2,1,5,7,3,9,4,8,6}))},--Zmn(1,3),IdGroup(Group([(2,3,8,6)(4,7,5,9),(1,2)(3,5)(4,7)(6,9)]));	
 	{36,10,DirectProduct(SymmetricGroup(3),SymmetricGroup(3))},
 	{36,11,DirectProduct(AlternatingGroup(4),CyclicGroup(3))},	
 	{36,12,DirectProduct(CyclicGroup(6),SymmetricGroup(3))},
@@ -969,6 +978,7 @@ local g_G={
 	{60,4,CyclicGroup(60)},		
 	{60,5,AlternatingGroup(5)},	
 	{60,6,DirectProduct(F20Group(),CyclicGroup(3))},	
+	{60,7,DDDGroup(15,2,4)},		
 	{60,8,DirectProduct(SymmetricGroup(3),DihedralGroup(10))},	
 	{60,9,DirectProduct(AlternatingGroup(4),CyclicGroup(5))},	
 	{60,10,DirectProduct(CyclicGroup(6),DihedralGroup(10))},		
@@ -1139,9 +1149,9 @@ for k,v in pairs(g_N) do
 			--PrintArr2(G8_i)
 			local G8_icalG=calG(G8_i)
 			--io.write("GAP[",v,",",i,"]群元阶的分布:",G8_icalG,"\n\n")
-			--io.write("GAP[",v,",",i,"]群元阶的分布:",G8_icalG,"\n")
-			local G8_icalS2=calS(G8_i,calS2Undo(G8_i))
-			io.write("GAP[",v,",",i,"]群元阶的分布:",G8_icalG,",S2=",G8_icalS2,"\n")
+			io.write("GAP[",v,",",i,"]群元阶的分布:",G8_icalG,"\n")
+			--local G8_icalS2=calS(G8_i,calS2Undo(G8_i))
+			--io.write("GAP[",v,",",i,"]群元阶的分布:",G8_icalG,",S2=",G8_icalS2,"\n")
 		end
 	end
 end
