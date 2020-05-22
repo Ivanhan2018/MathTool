@@ -174,12 +174,12 @@ vector<SnE> Sn::Order(const SnE & m)
 	{
 		m0[i]=i+1;
 	}
+	ret.push_back(m0);
 	while(memcmp(&mi[0],&m0[0],sizeof(TSnE)*n)!=0)
 	{
 		ret.push_back(mi);
 		mi=mul(mi,m);
-	}
-	ret.push_back(mi);
+	}	
 	return ret;
 }
 

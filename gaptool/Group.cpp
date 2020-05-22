@@ -40,11 +40,13 @@ else
 
 void print(IGroup* g){
 	int ID=IdGroup(g);
-	string N0=calcN0(g);   
+	string N0=calcN0(g); 
+	string C1=calcC1(g);
+ 	string Nk=calcNk(g);		
 	string S2=calcS2(g);
 	string kKEZDCANS=calckKEZDCANS(g);
 	printf("GAP[%d,%d]:\n",g->size(),ID); 
-	printf("N0=%s\n",N0.c_str());  
+	printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
 	printf("S2=%s\n",S2.c_str());
 	printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());
 	string I1=calcI1(g);

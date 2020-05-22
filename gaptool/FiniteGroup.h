@@ -17,8 +17,8 @@ public:
 	virtual int inv(int a);
 	// 构造函数
 	FiniteGroup(int n,int* arr,int delt);
-        // 析构函数
-        ~FiniteGroup();
+	// 析构函数
+	~FiniteGroup();
 	// 成员函数
 	vector<int> Order(int m);  
 	// 成员变量  
@@ -30,7 +30,7 @@ public:
 
 FiniteGroup::FiniteGroup(int n,int* arr,int delt)
 {
-    	m_n=n;
+	m_n=n;
 	m_Arr=arr;
 	m_delt=delt;
 	m_flag=0;	
@@ -58,11 +58,13 @@ void FiniteGroup::printSet()
 void FiniteGroup::printTable()
 {
 	int ID=IdGroup(this);
-	string N0=calcN0(this);   
+	string N0=calcN0(this);  
+	string C1=calcC1(this);	
+	string Nk=calcNk(this);	
 	string S2=calcS2(this);
 	string kKEZDCANS=calckKEZDCANS(this);
 	printf("GAP[%d,%d]:\n",m_n,ID); 
-	printf("N0=%s\n",N0.c_str());  
+	printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
 	printf("S2=%s\n",S2.c_str());
 	printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());
 	string I1=calcI1(this);

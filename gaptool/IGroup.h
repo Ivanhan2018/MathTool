@@ -1,8 +1,9 @@
 #ifndef IGROUP_H
 #define IGROUP_H
 
-#include<stdio.h>
-#include<string.h>
+#include<cstdio>
+#include<cstring>
+#include<string>
 #include<vector>
 #include<map>
 #include<tuple>
@@ -253,6 +254,89 @@ string calcI2(IGroup* g){
 	return str;
 }
 
+vector<pair<int,int> > doN1Vec(vector<int>& v){
+	vector<pair<int,int> > ret;
+	int n=v.size();
+	for(int i=0;i<n;i++){
+		int vi=v[i];
+		vector<pair<int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](pair<int,int>& obj)->bool{if(vi==obj.first)return true;return false;});
+		if(it==ret.end()){
+			ret.push_back(make_pair(vi,1));
+		}else{
+			int cnt=(*it).second;
+			ret[it-ret.begin()]=make_pair(vi,cnt+1);
+		}
+	}
+	return ret;
+}
+
+string calcC1(IGroup* g){
+	int IdGroup(IGroup* g);
+	bool IsConjugacy(IGroup* g,int a,int b);
+	int n=g->size();
+	vector<int> v;
+   for(int i=0;i<n;i++){
+	   int i2=g->mul(i,i);
+	   int i3=g->mul(i2,i);
+	   int I1=IsConjugacy(g,i,i3);
+	   v.push_back(I1);
+   }
+	std::sort(v.begin(),v.end());
+	vector<pair<int,int> > v1=doN1Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++){
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
+		str+=sz;
+	}
+	if(str.size()>2){
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
+int calk(vector<vector<int> >& vv,int i){
+    int k=vv.size();
+ 	for(int j=0;j<k;j++)
+	{
+		int kj=vv[j].size();
+		vector<int>::iterator p=std::find(vv[j].begin(),vv[j].end(),i);
+		if(p!=vv[j].end()){
+			return kj;
+		}
+	}
+	return 0;
+}
+
+string calcNk(IGroup* g){
+	int IdGroup(IGroup* g);
+	vector<vector<int> > ConjugacyClasses(IGroup* g);
+	vector<int> Order(IGroup* g,int m);
+	int n=g->size();
+	vector<pair<int,int> > v;
+	vector<vector<int> > vv=ConjugacyClasses(g);
+	for(int i=0;i<n;i++){
+		vector<int> S1=Order(g,i);
+		int I1=S1.size();
+		int I2=calk(vv,i);
+		v.push_back(make_pair(I1,I2));
+	}
+	std::sort(v.begin(),v.end());
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++){
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2){
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
 // IdGroup只与IGroup有关，可以放到IGroup.h里面去
 //-----------------------------Begin of IdGroup---------------------------------
 class IDHelper
@@ -265,7 +349,7 @@ private:
 	multimap<string,int> m_S2;	
 	multimap<string,int> m_kKEZDCANS;	
 public:
-	vector<int> IDFromN0(string& N0);//根据N0返回ID编号列表
+	vector<int> IDFromN0C1Nk(string& N0,string& C1Nk);//根据N0C1Nk返回ID编号列表
 	vector<int> IDFromS2(string& S2);//根据S2返回ID编号列表	
 	vector<int> IDFromkKEZDCANS(string& kKEZDCANS);//根据kKEZDCANS返回ID编号列表		
 };
@@ -391,17 +475,17 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,1,2,4,8,16",1));
 	m_N0.insert(make_pair("1,7,24,0,0,0",2));	
 	m_N0.insert(make_pair("1,3,12,16,0,0",3));
-	m_N0.insert(make_pair("1,3,12,16,0,0",4));
+	m_N0.insert(make_pair("1,3,12,16,0,0,[[0,28],[1,4]],[[1,1,1],[2,1,3],[4,1,4],[4,2,8],[8,2,16]]",4));
 	m_N0.insert(make_pair("1,7,8,16,0,0",5));	
 	m_N0.insert(make_pair("1,11,20,0,0,0",6));
 	m_N0.insert(make_pair("1,11,4,16,0,0",7));
 	m_N0.insert(make_pair("1,3,12,16,0,0",8));	
 	m_N0.insert(make_pair("1,11,12,8,0,0",9));
-	m_N0.insert(make_pair("1,3,20,8,0,0",10));	
+	m_N0.insert(make_pair("1,3,20,8,0,0,[[0,16],[1,16]],[[1,1,1],[2,1,3],[4,2,4],[4,4,16],[8,2,8]]",10));	
 	m_N0.insert(make_pair("1,7,16,8,0,0",11));	
-	m_N0.insert(make_pair("1,3,12,16,0,0",12));
-	m_N0.insert(make_pair("1,3,20,8,0,0",13));	
-	m_N0.insert(make_pair("1,3,20,8,0,0",14));	
+	m_N0.insert(make_pair("1,3,12,16,0,0,[[0,24],[1,8]],[[1,1,1],[2,1,3],[4,1,4],[4,2,8],[8,2,16]]",12));
+	m_N0.insert(make_pair("1,3,20,8,0,0,[[0,16],[1,16]],[[1,1,1],[2,1,3],[4,2,4],[4,4,16],[8,2,8]]",13));	
+	m_N0.insert(make_pair("1,3,20,8,0,0,[[0,24],[1,8]],[[1,1,1],[2,1,3],[4,2,4],[4,4,16],[8,2,8]]",14));	
 	m_N0.insert(make_pair("1,3,4,24,0,0",15));
 	m_N0.insert(make_pair("1,3,4,8,16,0",16));
 	m_N0.insert(make_pair("1,3,4,8,16,0",17));
@@ -417,8 +501,8 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,19,12,0,0,0",27));
 	m_N0.insert(make_pair("1,15,16,0,0,0",28));	
 	m_N0.insert(make_pair("1,7,24,0,0,0",29));
-	m_N0.insert(make_pair("1,11,20,0,0,0",30));	
-	m_N0.insert(make_pair("1,11,20,0,0,0",31));	
+	m_N0.insert(make_pair("1,11,20,0,0,0,[[0,8],[1,24]],[[1,1,1],[2,1,3],[2,2,4],[2,4,4],[4,2,8],[4,4,12]]",30));	
+	m_N0.insert(make_pair("1,11,20,0,0,0,[[0,8],[1,24]],[[1,1,1],[2,1,3],[2,4,8],[4,2,12],[4,4,8]]",31));	
 	m_N0.insert(make_pair("1,3,28,0,0,0",32));
 	m_N0.insert(make_pair("1,7,24,0,0,0",33));	
 	m_N0.insert(make_pair("1,19,12,0,0,0",34));
@@ -443,10 +527,13 @@ IDHelper::IDHelper(){
 	m_S2.insert(make_pair("0,1,5,22,92,376",1));
 	m_S2.insert(make_pair("0,7,81,216,0,192",2));	
 	m_S2.insert(make_pair("0,3,33,124,144,192",3));
-	m_S2.insert(make_pair("0,3,33,124,144,192",4));	
+	m_S2.insert(make_pair("0,3,33,124,144,192",4));
+	m_S2.insert(make_pair("0,7,41,160,96,192",5));	
 	m_S2.insert(make_pair("0,11,89,108,96,192",6));
 	m_S2.insert(make_pair("0,11,49,148,96,192",7));	
+	m_S2.insert(make_pair("0,3,33,172,96,192",8));	
 	m_S2.insert(make_pair("0,11,69,128,96,192",9));
+	m_S2.insert(make_pair("0,3,53,152,96,192",10));	
 	m_S2.insert(make_pair("0,7,49,152,96,192",11));	
 	m_S2.insert(make_pair("0,3,33,124,144,192",12));
 	m_S2.insert(make_pair("0,3,53,104,144,192",13));	
@@ -465,8 +552,13 @@ IDHelper::IDHelper(){
 	m_S2.insert(make_pair("0,3,73,132,288,0",26));
 	m_S2.insert(make_pair("0,19,153,180,144,0",27));
 	m_S2.insert(make_pair("0,15,97,240,144,0",28));
-	m_S2.insert(make_pair("0,7,81,168,240,0",29));		
+	m_S2.insert(make_pair("0,7,81,168,240,0",29));
+	m_S2.insert(make_pair("0,11,89,156,240,0",30));	
+	m_S2.insert(make_pair("0,11,89,156,240,0",31));	
+	m_S2.insert(make_pair("0,3,73,84,336,0",32));
+	m_S2.insert(make_pair("0,7,81,72,336,0",33));	
 	m_S2.insert(make_pair("0,19,105,324,48,0",34));
+	m_S2.insert(make_pair("0,3,73,180,240,0",35));	
 	m_S2.insert(make_pair("0,7,41,160,288,0",36));	
 	m_S2.insert(make_pair("0,7,41,160,288,0",37));
 	m_S2.insert(make_pair("0,7,29,172,288,0",38));	
@@ -475,18 +567,22 @@ IDHelper::IDHelper(){
 	m_S2.insert(make_pair("0,3,53,200,240,0",41));
 	m_S2.insert(make_pair("0,11,45,200,240,0",42));	
 	m_S2.insert(make_pair("0,15,65,176,240,0",43));	
+	m_S2.insert(make_pair("0,7,49,200,240,0",44));	
 	m_S2.insert(make_pair("0,15,145,336,0,0",45));	
 	m_S2.insert(make_pair("0,23,209,264,0,0",46));
 	m_S2.insert(make_pair("0,7,81,408,0,0",47));
 	m_S2.insert(make_pair("0,15,97,384,0,0",48));	
 	m_S2.insert(make_pair("0,19,129,348,0,0",49));
+	m_S2.insert(make_pair("0,11,65,420,0,0",50));	
 	m_S2.insert(make_pair("0,31,465,0,0,0",51));
 	//G32
 	m_kKEZDCANS.insert(make_pair("32,[32,0,0,0,0,0],8,32,1,0,1,1,1",3));	
 	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],8,8,2,0,0,1,1",4));	
 	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],8,8,2,0,0,1,1",12));	
 	m_kKEZDCANS.insert(make_pair("14,[4,6,4,0,0,0],8,4,4,0,0,1,1",13));	
-	m_kKEZDCANS.insert(make_pair("14,[4,6,4,0,0,0],8,4,4,0,0,1,1",14));	
+	m_kKEZDCANS.insert(make_pair("14,[4,6,4,0,0,0],8,4,4,0,0,1,1",14));
+	m_kKEZDCANS.insert(make_pair("32,[32,0,0,0,0,0],16,32,1,0,1,1,1",16));	
+	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],16,8,2,0,0,1,1",17));
 	m_kKEZDCANS.insert(make_pair("32,[32,0,0,0,0,0],4,32,1,0,1,1,1",21));	
 	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],4,8,2,0,0,1,1",23));	
 	m_kKEZDCANS.insert(make_pair("20,[8,12,0,0,0,0],4,8,2,0,0,1,1",24));	
@@ -621,13 +717,20 @@ IDHelper::~IDHelper(){
 	m_kKEZDCANS.clear();	
 }
 
-vector<int>  IDHelper::IDFromN0(string& N0){
+vector<int>  IDHelper::IDFromN0C1Nk(string& N0,string& C1Nk){
 	std::multimap<string,int>::iterator it;
 	std::pair<std::multimap<string,int>::iterator, std::multimap<string,int>::iterator> pa;
-	pa = m_N0.equal_range(N0);	
     vector<int> v;
+	string strN0C1Nk=N0+","+C1Nk;
+	pa = m_N0.equal_range(strN0C1Nk);		
 	for( it = pa.first; it != m_N0.end() && it != pa.second; ++it){
 		v.push_back(it->second);
+	}
+    if(v.size()<=0){
+		pa = m_N0.equal_range(N0);		
+		for( it = pa.first; it != m_N0.end() && it != pa.second; ++it){
+			v.push_back(it->second);
+		}
 	}
 	return v;
 }
@@ -1159,8 +1262,11 @@ int IdGroup(IGroup* g){
    if(n<=1)
 	  return 1;  
    string strN0=calcN0(g);
+   string strC1=calcC1(g);  
+   string strNk=calcNk(g);
+   string strC1Nk=strC1+","+strNk;   
    IDHelper idHelper;
-   vector<int> vID=idHelper.IDFromN0(strN0);
+   vector<int> vID=idHelper.IDFromN0C1Nk(strN0,strC1Nk);
    if(vID.size()<=0)
 	   return -1;//没有N0数据
    if(vID.size()>1){ // 
