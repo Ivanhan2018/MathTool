@@ -72,6 +72,7 @@ public:
    static float DeterminantMat(const MATRIXf &m);
    static float TraceMat(const MATRIXf &m);   
    static GLnR CyclicGroup(int n);
+   static GLnR D2nGroup(int n);   
    static GLnR TestGroup();   
 public:
    // 实现抽象基类的方法
@@ -169,6 +170,26 @@ GLnR GLnR::TestGroup(){
 	GLnR G;
 	G.s_Arr=FG(gen);
     G.m_n=3;
+    return G;
+}
+
+GLnR GLnR::D2nGroup(int n){
+	MATRIXf a(2,vector<float>(2,0));
+	MATRIXf b(2,vector<float>(2,0));	
+    a[0][0]=cos(2*3.141592654/n);
+	a[0][1]=-sin(2*3.141592654/n);
+    a[1][0]=-a[0][1];
+	a[1][1]=a[0][0];
+    b[0][0]=-1;
+	b[0][1]=0;
+    b[1][0]=0;
+	b[1][1]=1;	
+	vector<MATRIXf> gen;
+	gen.push_back(a);
+	gen.push_back(b);
+	GLnR G;
+	G.s_Arr=FG(gen);
+    G.m_n=2;
     return G;
 }
 
@@ -408,6 +429,15 @@ int GLnR::size(){
 }
 
 int main(){
+	GLnR D3=GLnR::D2nGroup(3);
+	D3.printSet();	
+	D3.printTable();
+	
+	GLnR D24=GLnR::D2nGroup(24);
+	D24.printSet();	
+	D24.printTable();	
+    return 0;	
+	
 	GLnR G=GLnR::TestGroup();
 	G.printSet();	
 	G.printTable();
