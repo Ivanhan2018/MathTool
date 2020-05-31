@@ -44,7 +44,8 @@ public:
 	int visitVnRm(int n,int m);
 	void initR4(int ID=0);	
 	void initR8(int ID=0);
-	void initR16(int ID=0);		
+	void initR16(int ID=0);
+	void initR36(int ID=0);		
 	// 成员变量
 	vector<Polynomial> m_Set;
 	Polynomial m_a;// 运算为模a加法和模a乘法
@@ -185,7 +186,13 @@ void PolynomialRing::initR16(int ID){
 		vf.push_back(0);
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,4);
-		init(m_r,vf);  		
+		init(m_r,vf);  
+   }else if(ID==115){	
+		vf.push_back(0);
+		vf.push_back(2);
+		vf.push_back(1);
+		m_r=new ZmodnZ(1,4);
+		init(m_r,vf);		
    }else if(ID==118){	
 		vm1.push_back(0);
 		vm1.push_back(2);
@@ -204,6 +211,90 @@ void PolynomialRing::initR16(int ID){
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,8);
 		initFR(m_r,vm1,vm2,vf); 
+   }else if(ID==124){
+		vm1.push_back(1);
+		vm1.push_back(0);
+		vm1.push_back(1);  
+		vm2.push_back(0);
+		vm2.push_back(1);
+		vm2.push_back(1);
+		vm2.push_back(0);
+		vf.push_back(0);   
+		vf.push_back(0);	
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		init(m_r,vf); 
+   }else if(ID==302){	
+		vm1.push_back(1);
+		vm1.push_back(1);
+		vm1.push_back(1);  
+		vm2.push_back(1);
+		vm2.push_back(1);
+		vm2.push_back(1);
+		vm2.push_back(1);
+		vm2.push_back(1);   
+		vf.push_back(0);	
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(0);
+		vf.push_back(1);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		initFR(m_r,vm1,vm2,vf); 
+   }else if(ID==315){	
+		vm1.push_back(0);
+		vm1.push_back(1);
+		vm1.push_back(1);  
+		vm2.push_back(1);
+		vm2.push_back(1);
+		vm2.push_back(1);
+		vm2.push_back(0);
+		vm2.push_back(1);   
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(1);		
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		initFR(m_r,vm1,vm2,vf); 		
+   }else if(ID==326){	
+		vm1.push_back(0);
+		vm1.push_back(1);
+		vm1.push_back(1);  
+		vm2.push_back(1);
+		vm2.push_back(1);
+		vm2.push_back(1);
+		vm2.push_back(0);
+		vm2.push_back(1);   
+		vf.push_back(0);	
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(0);
+		vf.push_back(1);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		initFR(m_r,vm1,vm2,vf);
+   }else if(ID==331){	
+		vm1.push_back(0);
+		vm1.push_back(1);
+		vm1.push_back(1);  
+		vm2.push_back(1);
+		vm2.push_back(0);
+		vm2.push_back(0);
+		vm2.push_back(1);   
+		vf.push_back(1);
+		vf.push_back(0);
+		vf.push_back(0);		
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		initFR(m_r,vm1,vm2,vf);  		
    }else if(ID==377){	
 		vm1.push_back(1);
 		vm1.push_back(1);
@@ -220,13 +311,67 @@ void PolynomialRing::initR16(int ID){
 		vf.push_back(1);
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,2);
-		initFR(m_r,vm1,vm2,vf); 		
+		initFR(m_r,vm1,vm2,vf); 
+   }else if(ID==383){	
+		vf.push_back(1);	
+		vf.push_back(0);
+		vf.push_back(1);
+		vf.push_back(0);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		init(m_r,vf);		
+   }else if(ID==385){	
+		vf.push_back(1);	
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		init(m_r,vf);			
+   }else if(ID==387){	
+		vf.push_back(0);	
+		vf.push_back(1);
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		init(m_r,vf);		
+   }else if(ID==388){	
+		vf.push_back(0);	
+		vf.push_back(1);
+		vf.push_back(0);
+		vf.push_back(1);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		init(m_r,vf); 			
    }else{
-	   initR16(16);
+	   initR16(124);
 	   return;
    }
    m_flag=1;	
 }	
+
+void PolynomialRing::initR36(int ID){
+   Polynomial vf,vm1,vm2;
+   if(ID==1){  
+   }else if(ID==99){	
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(1);
+		m_r=new ZmodnZ(1,6);
+		init(m_r,vf);	
+   }else if(ID==119){	
+		vf.push_back(1);
+		vf.push_back(0);
+		vf.push_back(1);
+		m_r=new ZmodnZ(1,6);
+		init(m_r,vf); 	
+   }else{
+	   initR36(119);
+	   return;
+   }
+   m_flag=1;
+}
 
 void PolynomialRing::initFR(IRing *r,Polynomial &m,Polynomial &n)
 {
@@ -654,6 +799,8 @@ void findsubring(PolynomialRing *r){
 		v.push_back(j);		
 		Subring S1i(r,v);
 		int ni=S1i.size();
+		if(ni!=8 && ni!=16)
+			continue;
 		int ID=IdRing(&S1i);
 		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 		{
@@ -670,16 +817,18 @@ void findsubring(PolynomialRing *r){
 }
 
 int main(){
-	PolynomialRing r4;
-	r4.initR4(5);
-	r4.printTable();	
-	
-	PolynomialRing r8;
-	r8.initR8(11);
-	r8.printTable();
-	
+	if(0){
+		PolynomialRing r4;
+		r4.initR4(5);
+		r4.printTable();
+	}	
+	if(0){	
+		PolynomialRing r8;
+		r8.initR8(11);
+		r8.printTable();
+	}
 	PolynomialRing r16;
-	r16.initR16(377);
+	r16.initR16();
 	r16.printTable();	
 	
 	return 0;

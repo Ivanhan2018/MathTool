@@ -1,4 +1,6 @@
 #include"IRing.h"
+#include <ctime>
+#include <fstream>
 
 // 有限循环环mZ/nZ，这里限制m|n
 struct ZmodnZ:public IRing
@@ -409,7 +411,28 @@ void M2r::initR16(int ID){
 		B[1][0]=0;
 		B[1][1]=0;
 		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==21){
+        //R16_21
+		m_r=new ZmodnZ(1,8);		
+		A[0][0]=4;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=3;
+		B[1][1]=0;
+		gen.push_back(A);
 		gen.push_back(B);		
+   }else if(ID==11){
+        //R16_11
+		m_r=new ZmodnZ(1,8);		
+		A[0][0]=4;
+		A[0][1]=0;
+		A[1][0]=3;
+		A[1][1]=1;
+		gen.push_back(A);		
    }else if(ID==201){
 		m_r=new ZmodnZ(1,4);
 		A[0][0]=0;
@@ -479,6 +502,28 @@ void M2r::initR16(int ID){
 		A[1][0]=1;
 		A[1][1]=2;	
 		gen.push_back(A);
+   }else if(ID==363){	
+	   M2r *K4=new M2r();
+	   K4->initK(2);
+	   m_r=K4;
+	   A[0][0]=1;
+	   A[0][1]=0;
+	   A[1][0]=1;
+	   A[1][1]=0;  
+	   B[0][0]=3;
+	   B[0][1]=2;
+	   B[1][0]=0;
+	   B[1][1]=3;  
+	   // A[0][0]=1;
+	   // A[0][1]=0;
+	   // A[1][0]=0;
+	   // A[1][1]=0;  
+	   // B[0][0]=1;
+	   // B[0][1]=0;
+	   // B[1][0]=1;
+	   // B[1][1]=0; 	   
+	   gen.push_back(A);
+	   gen.push_back(B);		
    }else if(ID==364){	
 	   M2r *K4=new M2r();
 	   K4->initK(2);
@@ -607,7 +652,7 @@ void M2r::initR16(int ID){
 	   gen.push_back(A);
 	   gen.push_back(B);	   
    }else{
-	    initR16(364);
+	    initR16(363);
 		return;
    }
    m_flag=1;
@@ -808,6 +853,9 @@ void M2r::printTable()
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
 	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());	
+	string I1=calcI1(this);
+	string I2=calcI2(this);   
+	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
 	//string S1=calS1(this,true);
 	//string undoS1=calS1(this,false);	
 	//printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
@@ -1065,8 +1113,71 @@ void Mnr::initR8(int ID){
 }
 
 void Mnr::initR16(int ID){
-   vector<MATRIXi8> gen;	
-   if(ID==113){
+   vector<MATRIXi8> gen;   
+   if(ID==106){
+	   m_r=new ZmodnZ(1,4);
+	   m_n=4; 	   
+	   MATRIXi8 A(4,vector<TElem>(4,0)); 
+	   A[0][0]=2;
+	   A[0][1]=0;
+	   A[0][2]=0;
+	   A[0][3]=3;
+	   A[1][0]=0;
+	   A[1][1]=1;
+	   A[1][2]=0;
+	   A[1][3]=3; 
+	   A[2][0]=0;
+	   A[2][1]=1;
+	   A[2][2]=2;
+	   A[2][3]=0;
+	   A[3][0]=0;
+	   A[3][1]=1;
+	   A[3][2]=0;
+	   A[3][3]=1;	
+	   gen.push_back(A); 
+   }else if(ID==22){
+		m_r=new ZmodnZ(1,8);
+		m_n=4; 	   
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		A[0][0]=4;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=0;
+		A[2][0]=3;
+		A[2][1]=0;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=0;
+		gen.push_back(A); 	   
+   }else if(ID==109){
+		m_r=new ZmodnZ(1,4);
+		m_n=4; 	   
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=1;
+		A[0][2]=0;
+		A[0][3]=1;
+		A[1][0]=3;
+		A[1][1]=2;
+		A[1][2]=0;
+		A[1][3]=0; 
+		A[2][0]=3;
+		A[2][1]=2;
+		A[2][2]=0;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=1;
+		A[3][2]=0;
+		A[3][3]=1;
+		gen.push_back(A);	   
+    }else if(ID==113){
 	   m_r=new ZmodnZ(1,4);
 	   m_n=4; 	   
 	   MATRIXi8 A(4,vector<TElem>(4,0));	
@@ -1086,7 +1197,7 @@ void Mnr::initR16(int ID){
 	   A[3][1]=0;
 	   A[3][2]=0;
 	   A[3][3]=1;
-	   gen.push_back(A); 	   
+	   gen.push_back(A);			   
    }else if(ID==114){
 	   m_r=new ZmodnZ(1,4);
 	   m_n=4; 	   
@@ -1221,7 +1332,28 @@ void Mnr::initR16(int ID){
 		B[2][1]=0;
 		B[2][2]=2;
 		gen.push_back(A); 
-		gen.push_back(B); 			
+		gen.push_back(B); 
+   }else if(ID==251){	
+	   m_r=new ZmodnZ(1,4);
+	   m_n=4; 	   
+	   MATRIXi8 A(4,vector<TElem>(4,0)); 
+	   A[0][0]=2;
+	   A[0][1]=0;
+	   A[0][2]=0;
+	   A[0][3]=1;
+	   A[1][0]=0;
+	   A[1][1]=1;
+	   A[1][2]=2;
+	   A[1][3]=2; 
+	   A[2][0]=0;
+	   A[2][1]=0;
+	   A[2][2]=2;
+	   A[2][3]=0;
+	   A[3][0]=2;
+	   A[3][1]=2;
+	   A[3][2]=0;
+	   A[3][3]=1;	
+	   gen.push_back(A);		
    }else if(ID==257){
 		m_r=new ZmodnZ(1,4);
 		m_n=3; 	   
@@ -1416,6 +1548,84 @@ void Mnr::initR16(int ID){
 		B[2][0]=2;
 		B[2][1]=0;
 		B[2][2]=2;
+		gen.push_back(A); 
+		gen.push_back(B);	
+   }else if(ID==265){
+		m_r=new ZmodnZ(1,4);
+		m_n=4; 	   
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		MATRIXi8 B(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[1][3]=1;
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=1;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=1;
+		A[3][3]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[0][3]=0;
+		B[1][0]=2;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[1][3]=0;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		B[2][3]=0;
+		B[3][0]=0;
+		B[3][1]=0;
+		B[3][2]=0;
+		B[3][3]=0;
+		gen.push_back(A); 
+		gen.push_back(B);	
+   }else if(ID==266){
+		m_r=new ZmodnZ(1,4);
+		m_n=4; 	   
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		MATRIXi8 B(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=2;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=2;
+		A[1][1]=1;
+		A[1][2]=0;
+		A[1][3]=0;
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=0;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=1;
+		B[0][0]=0;
+		B[0][1]=2;
+		B[0][2]=0;
+		B[0][3]=0;
+		B[1][0]=0;
+		B[1][1]=2;
+		B[1][2]=0;
+		B[1][3]=0;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		B[2][3]=0;
+		B[3][0]=0;
+		B[3][1]=0;
+		B[3][2]=0;
+		B[3][3]=0;
 		gen.push_back(A); 
 		gen.push_back(B);		
    }else if(ID==357){
@@ -1803,6 +2013,45 @@ void Mnr::initR16(int ID){
 		B[2][1]=0;
 		B[2][2]=0;
 		gen.push_back(A); 
+		gen.push_back(B);	
+   }else if(ID==380){  
+		m_r=new ZmodnZ(1,2);
+		m_n=4; 	   
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		MATRIXi8 B(4,vector<TElem>(4,0)); 	   
+		A[0][0]=1;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=1;		
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=0;
+		A[1][3]=0;	
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=0;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=0;	   
+		B[0][0]=1;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[0][3]=0;		
+		B[1][0]=0;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[1][3]=1;		
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		B[2][3]=0;
+		B[3][0]=0;
+		B[3][1]=0;
+		B[3][2]=0;
+		B[3][3]=1;		
+		gen.push_back(A);
 		gen.push_back(B);		
    }else{
 	   initR16(121);
@@ -1969,6 +2218,9 @@ void Mnr::printTable()
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
 	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());
+	string I1=calcI1(this);
+	string I2=calcI2(this);   
+	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
 	//string undoS1=calS1(this,false);	
 	//printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
 	if(size()<100){
@@ -2027,152 +2279,6 @@ Mnr::Mnr(IRing* r,int n)
 	printf("cnt=%d\n",cnt);
 }
 
-void test1()
-{
-   ZmodnZ r2_1(2,4);
-   r2_1.printTable();  
-
-   ZmodnZ r2_2(1,2);  
-   r2_2.printTable();
-
-   ZmodnZ r4_2(2,8);
-   r4_2.printTable();  
-
-   ZmodnZ r4_3(1,4);  
-   r4_3.printTable();
-   
-   M2r m2r4_2(&r4_2);
-   m2r4_2.printTable(); 
-
-   M2r m2r4_3(&r4_3);
-   m2r4_3.printTable(); 
-
-   vector<int> v;
-   v.push_back(2);
-   Subring r2_1a(&r4_3,v);
-   r2_1a.printTable();
-   
-   Mnr m2r2_1(&r2_1,2);
-   m2r2_1.printTable(); 
-
-   Mnr m3r2_1(&r2_1,3);
-   m3r2_1.printTable();   
-   
-   Mnr m2r2_2(&r2_2,2);
-   m2r2_2.printTable(); 
-
-   Mnr m3r2_2(&r2_2,3);
-   m3r2_2.printTable();     
-}
-
-int test2()
-{
-   ZmodnZ r2_1(2,4);  
-   M2r G4;
-   G4.initG(2);
-   M2r H4;
-   H4.initH(2);   
-   DecompositionRing r8_29(&G4,&r2_1);
-   DecompositionRing r8_34(&H4,&r2_1); 
-   string I1=calcI1(&r8_29);
-   string I2=calcI2(&r8_29);   
-   printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
-   r8_29.printTable();
-   I1=calcI1(&r8_34);
-   I2=calcI2(&r8_34);   
-   printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());  
-   r8_34.printTable();
-   
-   //int IDs[]={115,201,202,203,204,205};
-   int IDs[]={201};
-   for(int i=0;i<sizeof(IDs)/sizeof(IDs[0]);i++){
-	   M2r R16;
-	   R16.initR16(IDs[i]);
-	   R16.printTable();
-	   for(int j=0;j<R16.size();j++){				
-			string str=M2r::MStr(R16.m_Set[j]);
-			printf("%d->%s\n",j+1,str.c_str());
-		}	   
-   }
-   return 0;
-   int nIDs[]={113,114};
-   for(int i=0;i<sizeof(nIDs)/sizeof(nIDs[0]);i++){
-	   Mnr R16;
-	   R16.initR16(nIDs[i]);
-	   R16.printTable();
-   } 
-   {
-	   Mnr R16;
-	   R16.initE(4);
-	   R16.printTable();
-   }  
-   {
-	   Mnr R16;
-	   R16.initF(4);
-	   R16.printTable();
-   }    
-   return 0;
-
-   test1();
-   for(int i=2;i<10;i++)
-   {
-	   if(i!=4)
-		   continue;
-	   // A、B、C系列的有限环是1阶矩阵表示
-	   ZmodnZ A(i*i,i*i*i*i);
-	   printf("A%d=",i*i);
-	   A.printTable();	
-	   ZmodnZ B(i,i*i*i);
-	   printf("B%d=",i*i);
-	   B.printTable();	
-	   ZmodnZ C(1,i*i);
-	   printf("C%d=",i*i);
-	   C.printTable();
-
-	   // D、G、H、I、J、K系列的有限环是2阶矩阵表示
-	   M2r D;
-	   D.initD(i);
-	   printf("D%d=",i*i);
-	   D.printTable();
-
-	   // E、F系列的有限环是4阶矩阵表示
-	   Mnr E;
-	   E.initE(i);
-	   printf("E%d=",i*i);
-	   E.printTable();	 
-	   Mnr F;
-	   F.initF(i);
-	   printf("F%d=",i*i);
-	   F.printTable();	
-	   DecompositionRing Fa;
-	   Fa.initF(i);
-	   printf("F%d=",i*i);
-	   Fa.printTable(); 
-
-	   M2r G;
-	   G.initG(i);
-	   printf("G%d=",i*i);
-	   G.printTable();	   
-	   M2r H;
-	   printf("H%d=",i*i);	   
-	   H.initH(i);
-	   H.printTable(); 
-	   M2r I;
-	   printf("I%d=",i*i);	   
-	   I.initI(i);
-	   I.printTable(); 
-	   M2r J;
-	   printf("J%d=",i*i);	   
-	   J.initJ(i);
-	   J.printTable(); 	
-	   M2r K;
-	   printf("K%d=",i*i);	   
-	   K.initK(i);
-	   K.printTable();	  
-   }	
-   return 0;
-}
-
 string calcI2a(IRing* r){
 	int IdRing(IRing* r);
 	int n=r->size();
@@ -2212,148 +2318,144 @@ string calcI2a(IRing* r){
 	return str;
 }
 
+void findsubring(M2r *r)
+{
+	for(int i=0;i<r->size()-1;i++)
+	for(int j=i+1;j<r->size();j++)
+	{
+		//int j=i+1;
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);		
+		Subring S1i(r,v);
+		int ni=S1i.size();
+		int ID=IdRing(&S1i);
+		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		{
+			string str=M2r::MStr(r->m_Set[i]);
+			printf("%d->%s=>",i,str.c_str());
+			string strj=M2r::MStr(r->m_Set[j]);
+			printf("%d->%s=>",j,strj.c_str());			
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			S1i.printTable();
+			break;
+		}		   
+	}	   	
+}
+
+void findsubring(Mnr *r)
+{
+#define PRINT_LOG 1	
+	bool bFind=false;	
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	for(int i=0;i<r->size()-1;i++)		
+	for(int j=i+1;j<r->size();j++)
+	{
+		//int j=i+1;
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);			
+		Subring S1i(r,v);
+		int ni=S1i.size();
+		int ID=IdRing(&S1i);
+		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		{
+			string str=Mnr::MStr(r->m_Set[i]);
+			printf("%d->%s=>",i,str.c_str());
+			string strj=Mnr::MStr(r->m_Set[j]);
+			printf("%d->%s=>",j,strj.c_str());			
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			S1i.printTable();
+#if PRINT_LOG			
+			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<"=>";
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			bFind=true;
+#endif
+			break;
+		}		   
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("子环表示已输出到文件%s\n",sz);
+#endif	
+}
+
+void findsubring3(Mnr *r)
+{
+#define PRINT_LOG 1	
+	bool bFind=false;	
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	for(int i=0;i<r->size()-2;i++)		
+	for(int j=i+1;j<r->size()-1;j++)
+	for(int k=i+2;k<r->size();k++)		
+	{
+		//int j=i+1;
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);	
+		v.push_back(k);			
+		Subring S1i(r,v);
+		int ni=S1i.size();
+		int ID=IdRing(&S1i);
+		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		{
+			string str=Mnr::MStr(r->m_Set[i]);
+			printf("%d->%s=>",i,str.c_str());
+			string strj=Mnr::MStr(r->m_Set[j]);
+			printf("%d->%s=>",j,strj.c_str());			
+			string strk=Mnr::MStr(r->m_Set[k]);
+			printf("%d->%s=>",k,strk.c_str());			
+			string strR=calcRingInvariant(&S1i);			
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			S1i.printTable();
+#if PRINT_LOG			
+			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<","<<k<<"->"<<strk<<"=>";
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			bFind=true;
+#endif
+			break;
+		}		   
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("子环表示已输出到文件%s\n",sz);
+#endif	
+}
+
 int main()
 { 
-#if 0
-	M2r* r4_7=new M2r();
-	r4_7->initG(2);
-	IRing* r=r4_7;
-	delete r;//M2r对象没有析构
-	//delete r4_7;//M2r对象析构了
-#endif	
-#if 0
-	ZmodnZ* r4_3=new ZmodnZ(1,4);
-	IRing* r=r4_3;
-	delete r;//M2r对象没有析构	
-	//delete r4_3;	
-    M2r r8;
-    r8.initR8();
-	r8.printTable();	
-    M2r r16;
-    r16.initR16();
-	r16.printTable();	
-    return 0;
-#endif	
-	//return 0;
-    Mnr r16;
-    r16.initR16();
-	r16.printTable();
-	ZmodnZ K(1,2);
-#if 0	
-	Mnr GK(&K,2);
-	string I1=calcI1(&GK);
-	string I2=calcI2a(&GK);   
-	printf("I1I2a=%s,%s\n",I1.c_str(),I2.c_str());		
-	vector<int> v;
-	//int i=6;
-	//int j=24;
-	int i=12;
-	int j=13;	
-	v.push_back(i);
-	v.push_back(j);
-	Subring S1i(&GK,v);
-	int ni=S1i.size();
-	int ID=IdRing(&S1i);
-	if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
-	{
-		string str=Mnr::MStr(GK.m_Set[i]);
-		printf("%d->%s=>",i,str.c_str());
-		string strj=Mnr::MStr(GK.m_Set[j]);
-		printf("%d->%s=>",j,strj.c_str());			
-		string strR=calcRingInvariant(&S1i);
-		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
-		S1i.printTable();
+	if(0){
+	   Mnr r16;
+	   r16.initR16(266);
+	   r16.printTable(); 
+	   findsubring3(&r16);
 	}
-	else if(ni==32||ni==64)
-	{
-		/*
-		R32_-1:I1I2=[[1,1,1],[2,1,3],[2,2,9],[4,9,3],[4,11,8],[8,51,8]],[[2,1,3],[2,2,9],[4,4,3],[4,7,18],[4,8,18],[4,9,12],[4,10,12],[4,11,20],[8,4
-		5,9],[8,49,36],[8,51,68],[16,378,72]]
-		*/
-		string I1=calcI1(&S1i);
-		string I2=calcI2(&S1i);   
-		printf("R%d_%d:I1I2=%s,%s\n",ni,ID,I1.c_str(),I2.c_str());	
+	if(1){
+	   M2r r16;
+	   r16.initR16(115);
+	   r16.printTable(); 
+	   findsubring(&r16);		
 	}
-	else
-	{
-		printf("R%d_%d:\n",ni,ID);
-	}	
-#endif	
-	if(1)
-	{
-        //R8_31:
-		M2r r8;	
-		r8.initR8(); 
-		r8.printTable();			
-	}			
-	if(0)
-	{
-	   // R256_-1:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,255,0,0,0,0,0,0,0],2,0,1,76,22,15,15,1636,75,4,[1,36,77,40,102,0,0,0,0],[[2,2,63900]]
-	   Mnr GK;	
-		MATRIXi8 A(4,vector<TElem>(4,0));
-		MATRIXi8 B(4,vector<TElem>(4,0));
-		A[0][0]=0;
-		A[0][1]=1;
-		A[0][2]=0;
-		A[0][3]=1;
-		A[1][0]=1;
-		A[1][1]=0;
-		A[1][2]=0;
-		A[1][3]=1;
-		A[2][0]=0;
-		A[2][1]=1;
-		A[2][2]=1;
-		A[2][3]=0;
-		A[3][0]=1;
-		A[3][1]=1;
-		A[3][2]=0;
-		A[3][3]=0;
-		B[0][0]=0;
-		B[0][1]=1;
-		B[0][2]=1;
-		B[0][3]=0;
-		B[1][0]=1;
-		B[1][1]=0;
-		B[1][2]=1;
-		B[1][3]=0;
-		B[2][0]=1;
-		B[2][1]=1;
-		B[2][2]=0;
-		B[2][3]=0;
-		B[3][0]=1;
-		B[3][1]=1;
-		B[3][2]=0;
-		B[3][3]=1;	   			
-	   vector<MATRIXi8> gen;
-		gen.push_back(A); 
-		gen.push_back(B);
-	   GK.m_n=4;
-	   GK.m_r=&K;
-	   GK.m_flag=0;
-	   GK.m_Set=Mnr::FR(GK.m_r,gen); 
-	   GK.printTable();
-		for(int i=0;i<GK.size()-1;i++)
-		for(int j=i+1;j<GK.size();j++)
-		{
-			//int j=i+1;
-			vector<int> v;
-			v.push_back(i);
-			v.push_back(j);		
-			Subring S1i(&GK,v);
-			int ni=S1i.size();
-			int ID=IdRing(&S1i);
-			if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
-			{
-				string str=Mnr::MStr(GK.m_Set[i]);
-				printf("%d->%s=>",i,str.c_str());
-				string strj=Mnr::MStr(GK.m_Set[j]);
-				printf("%d->%s=>",j,strj.c_str());			
-				string strR=calcRingInvariant(&S1i);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
-				S1i.printTable();
-				break;
-			}		   
-		}	   
-	} 				  	 		
+   
    return 0;
 }
