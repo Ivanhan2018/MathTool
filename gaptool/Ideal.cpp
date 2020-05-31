@@ -355,6 +355,8 @@ void test3()
 	r4_7.initG(2);
 	M2r r4_8;
 	r4_8.initH(2);
+	//ZmodnZ r4_3(1,4);
+	//Mnr M3Z4(&r4_3,3);	
 	IRing* zn[]={&r4_7,&r4_8};
 	int cnt=sizeof(zn)/sizeof(zn[0]);
 	print(zn,cnt);	
@@ -362,8 +364,8 @@ void test3()
 
 int main()
 {
-	test1();
-	test2();
+	//test1();
+	//test2();
 	test3();
 	
 	return 0;

@@ -167,7 +167,7 @@ void GL2Zn::printTable()
 {
    int ID=IdGroup(this);	
    printf("GL(2,%d)µÄ%d½××ÓÈºGAP[%d,%d]:\n",m_n,size(),size(),ID);
-   if(size()<20)   
+   if(size()<73)   
 		printGroup(this);
 }
 

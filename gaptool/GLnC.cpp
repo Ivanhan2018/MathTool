@@ -408,6 +408,11 @@ int GLnC::size(){
 }
 
 int main(){
+	GLnC Q72=GLnC::QuaternionGroup(72);
+	Q72.printSet();	
+	Q72.printTable();	
+	return 0;
+	
 	GLnC Q8=GLnC::QuaternionGroup(8);
 	Q8.printSet();	
 	Q8.printTable();	

@@ -105,7 +105,7 @@ void Sn::printSet()
 {
    int ID=IdGroup(this);
    printf("GAP[%d,%d]:\n",size(),ID);
-   if(size()<25)
+   if(size()<73)
    {
 		for(int i=0;i<size();i++){
 			int i1=inv(i);
@@ -120,7 +120,7 @@ void Sn::printSet()
 
 void Sn::printTable()
 {
-   if(size()<25)
+   if(size()<73)
 		printGroup(this);
 }
 

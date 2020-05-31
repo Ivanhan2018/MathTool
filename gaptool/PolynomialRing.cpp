@@ -3,6 +3,7 @@
 #include<iostream>
 #include<fstream> 
 #include<string> 
+#include<ctime>
 using namespace std;
 
 typedef vector<int> Polynomial;// 用向量表示多项式
@@ -213,21 +214,17 @@ void PolynomialRing::initR16(int ID){
 		initFR(m_r,vm1,vm2,vf); 
    }else if(ID==124){
 		vm1.push_back(1);
-		vm1.push_back(0);
-		vm1.push_back(1);  
+		vm1.push_back(2);  
 		vm2.push_back(0);
 		vm2.push_back(1);
 		vm2.push_back(1);
-		vm2.push_back(0);
-		vf.push_back(0);   
-		vf.push_back(0);	
+		vf.push_back(0);  
+		vf.push_back(1);
 		vf.push_back(0);
-		vf.push_back(0);
-		vf.push_back(0);
-		vf.push_back(0);
-		vf.push_back(1);		
-		m_r=new ZmodnZ(1,2);
-		init(m_r,vf); 
+		vf.push_back(1);
+		m_r=new ZmodnZ(1,4);
+		init(m_r,vf);
+		//initFR(m_r,vm1,vf); 
    }else if(ID==302){	
 		vm1.push_back(1);
 		vm1.push_back(1);
@@ -816,6 +813,54 @@ void findsubring(PolynomialRing *r){
 	}	
 }
 
+void findsubring(PolynomialRing *r,int n){
+#define PRINT_LOG 1	
+	bool bFind=false;	
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	for(int i=0;i<r->size()-1;i++)
+	for(int j=i+1;j<r->size();j++)
+	{
+		//int j=i+1;
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);		
+		Subring S1i(r,v);
+		int ni=S1i.size();
+		if(n>0 && ni!=n)
+			continue;
+		int ID=IdRing(&S1i);
+		if(n<r->size() && ni==n && ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		{
+			string str=PolynomialRing::sPoly(r->m_Set[i]);
+			printf("%d->%s=>",i,str.c_str());
+			string strj=PolynomialRing::sPoly(r->m_Set[j]);
+			printf("%d->%s=>",j,strj.c_str());			
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			S1i.printTable();
+#if PRINT_LOG			
+			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<"=>";
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			bFind=true;
+#endif			
+			break;
+		}		   
+	}	
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("子环表示已输出到文件%s\n",sz);
+#endif		
+}
+
 int main(){
 	if(0){
 		PolynomialRing r4;
@@ -829,7 +874,8 @@ int main(){
 	}
 	PolynomialRing r16;
 	r16.initR16();
-	r16.printTable();	
+	r16.printTable();
+	findsubring(&r16,32);
 	
 	return 0;
 }
