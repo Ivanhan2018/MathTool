@@ -367,6 +367,8 @@ IDHelper::IDHelper(){
 	//G6
 	m_N0.insert(make_pair("1,3,2,0",1));
 	m_N0.insert(make_pair("1,1,2,2",2));
+	//G7
+	m_N0.insert(make_pair("1,6,[[0,6],[1,1]],[[1,1,1],[7,1,6]]",1));	
 	//G8
 	m_N0.insert(make_pair("1,1,2,4",1));
 	m_N0.insert(make_pair("1,3,4,0",2));
@@ -385,6 +387,9 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,3,8,0,0,0",3));
 	m_N0.insert(make_pair("1,7,2,0,2,0",4));
 	m_N0.insert(make_pair("1,3,2,0,6,0",5));
+	//G14
+	m_N0.insert(make_pair("1,7,6,0,[[0,6],[1,8]],[[1,1,1],[2,7,7],[7,2,6]]",1));
+	m_N0.insert(make_pair("1,1,6,6,[[0,12],[1,2]],[[1,1,1],[2,1,1],[7,1,6],[14,1,6]]",2));	
 	//G15	
 	m_N0.insert(make_pair("1,2,4,8",1));	
 	//G16
@@ -603,7 +608,9 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,3,26,0,6,0,0,0,0",11));	
 	m_N0.insert(make_pair("1,7,8,0,20,0,0,0,0",12));
 	m_N0.insert(make_pair("1,19,8,0,8,0,0,0,0",13));
-	m_N0.insert(make_pair("1,3,8,0,24,0,0,0,0",14));	
+	m_N0.insert(make_pair("1,3,8,0,24,0,0,0,0",14));
+	//G37
+	m_N0.insert(make_pair("1,36,[[0,36],[1,1]],[[1,1,1],[37,1,36]]",1));
 	//G48
 	m_N0.insert(make_pair("1,1,2,2,2,4,4,24,8,0",1));
 	m_N0.insert(make_pair("1,1,2,2,2,4,4,8,8,16",2));
