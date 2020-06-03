@@ -424,6 +424,18 @@ void M2r::initR16(int ID){
 		B[1][0]=3;
 		B[1][1]=0;
 		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==23){		
+		m_r=new ZmodnZ(1,8);		
+		A[0][0]=0;
+		A[0][1]=2;
+		A[1][0]=0;
+		A[1][1]=1;  
+		B[0][0]=0;
+		B[0][1]=2;
+		B[1][0]=0;
+		B[1][1]=3;
+		gen.push_back(A);
 		gen.push_back(B);		
    }else if(ID==11){
         //R16_11
@@ -432,7 +444,31 @@ void M2r::initR16(int ID){
 		A[0][1]=0;
 		A[1][0]=3;
 		A[1][1]=1;
-		gen.push_back(A);		
+		gen.push_back(A);	
+   }else if(ID==101){
+		m_r=new ZmodnZ(1,4);		
+		A[0][0]=1;
+		A[0][1]=2;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=3;
+		B[0][1]=3;
+		B[1][0]=0;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==104){
+		m_r=new ZmodnZ(1,4);		
+		A[0][0]=1;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==201){
 		m_r=new ZmodnZ(1,4);
 		A[0][0]=0;
@@ -491,6 +527,18 @@ void M2r::initR16(int ID){
 		B[0][1]=0;
 		B[1][0]=2;
 		B[1][1]=1;	
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==300){
+		m_r=new ZmodnZ(1,2);		
+		A[0][0]=1;
+		A[0][1]=1;
+		A[1][0]=1;
+		A[1][1]=0;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[1][0]=0;
+		B[1][1]=0;
 		gen.push_back(A);
 		gen.push_back(B);		
    }else if(ID==302){
