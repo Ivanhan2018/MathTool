@@ -372,7 +372,19 @@ void M2r::initR16(int ID){
 		A[0][1]=1;
 		A[1][0]=1;
 		A[1][1]=0; 
-		gen.push_back(A);
+		gen.push_back(A);		
+   }else if(ID==110){		
+		initI(4);
+        return;		
+   }else if(ID==102){		
+		initH(4);
+        return;	
+   }else if(ID==106){		
+		initK(4);
+        return; 		
+   }else if(ID==107){		
+		initD(4);
+        return;			
    }else if(ID==18){		
 		//R16_18
 		m_r=new ZmodnZ(1,8);
@@ -445,7 +457,7 @@ void M2r::initR16(int ID){
 		A[1][0]=3;
 		A[1][1]=1;
 		gen.push_back(A);	
-   }else if(ID==101){
+   }else if(ID==101){//initG(4)
 		m_r=new ZmodnZ(1,4);		
 		A[0][0]=1;
 		A[0][1]=2;
@@ -457,7 +469,7 @@ void M2r::initR16(int ID){
 		B[1][1]=0;
 		gen.push_back(A);
 		gen.push_back(B);
-   }else if(ID==104){
+   }else if(ID==104){//initJ(4)
 		m_r=new ZmodnZ(1,4);		
 		A[0][0]=1;
 		A[0][1]=0;
@@ -549,29 +561,7 @@ void M2r::initR16(int ID){
 		A[0][1]=1;
 		A[1][0]=1;
 		A[1][1]=2;	
-		gen.push_back(A);
-   }else if(ID==363){	
-	   M2r *K4=new M2r();
-	   K4->initK(2);
-	   m_r=K4;
-	   A[0][0]=1;
-	   A[0][1]=0;
-	   A[1][0]=1;
-	   A[1][1]=0;  
-	   B[0][0]=3;
-	   B[0][1]=2;
-	   B[1][0]=0;
-	   B[1][1]=3;  
-	   // A[0][0]=1;
-	   // A[0][1]=0;
-	   // A[1][0]=0;
-	   // A[1][1]=0;  
-	   // B[0][0]=1;
-	   // B[0][1]=0;
-	   // B[1][0]=1;
-	   // B[1][1]=0; 	   
-	   gen.push_back(A);
-	   gen.push_back(B);		
+		gen.push_back(A);		
    }else if(ID==364){	
 	   M2r *K4=new M2r();
 	   K4->initK(2);
@@ -698,9 +688,9 @@ void M2r::initR16(int ID){
 	   B[1][0]=0;
 	   B[1][1]=0;   
 	   gen.push_back(A);
-	   gen.push_back(B);	   
+	   gen.push_back(B);		   
    }else{
-	    initR16(363);
+	    initR16(389);
 		return;
    }
    m_flag=1;
@@ -1162,7 +1152,7 @@ void Mnr::initR8(int ID){
 
 void Mnr::initR16(int ID){
    vector<MATRIXi8> gen;   
-   if(ID==106){
+   if(ID==109){
 	   m_r=new ZmodnZ(1,4);
 	   m_n=4; 	   
 	   MATRIXi8 A(4,vector<TElem>(4,0)); 
@@ -1182,7 +1172,7 @@ void Mnr::initR16(int ID){
 	   A[3][1]=1;
 	   A[3][2]=0;
 	   A[3][3]=1;	
-	   gen.push_back(A); 
+	   gen.push_back(A);    
    }else if(ID==22){
 		m_r=new ZmodnZ(1,8);
 		m_n=4; 	   
@@ -1204,7 +1194,7 @@ void Mnr::initR16(int ID){
 		A[3][2]=0;
 		A[3][3]=0;
 		gen.push_back(A); 	   
-   }else if(ID==109){
+   }else if(ID==106){
 		m_r=new ZmodnZ(1,4);
 		m_n=4; 	   
 		MATRIXi8 A(4,vector<TElem>(4,0));
@@ -1224,7 +1214,13 @@ void Mnr::initR16(int ID){
 		A[3][1]=1;
 		A[3][2]=0;
 		A[3][3]=1;
-		gen.push_back(A);	   
+		gen.push_back(A);
+   }else if(ID==111){
+	   initE(4);
+	   return;
+   }else if(ID==112){
+	   initF(4);
+       return;			
     }else if(ID==113){
 	   m_r=new ZmodnZ(1,4);
 	   m_n=4; 	   
@@ -1305,7 +1301,7 @@ void Mnr::initR16(int ID){
 		B[3][2]=2;
 		B[3][3]=0;
 		gen.push_back(A); 
-		gen.push_back(B);	
+		gen.push_back(B);		
    }else if(ID==121){
 		m_r=new ZmodnZ(1,4);
 		m_n=3; 	   
@@ -1961,7 +1957,7 @@ void Mnr::initR16(int ID){
 		B[2][1]=0;
 		B[2][2]=0;
 		gen.push_back(A); 
-		gen.push_back(B);		
+		gen.push_back(B);			
    }else if(ID==372){
 		m_r=new ZmodnZ(1,2);
 		m_n=3; 	   
@@ -2061,7 +2057,7 @@ void Mnr::initR16(int ID){
 		B[2][1]=0;
 		B[2][2]=0;
 		gen.push_back(A); 
-		gen.push_back(B);	
+		gen.push_back(B);				
    }else if(ID==380){  
 		m_r=new ZmodnZ(1,2);
 		m_n=4; 	   
@@ -2102,7 +2098,7 @@ void Mnr::initR16(int ID){
 		gen.push_back(A);
 		gen.push_back(B);		
    }else{
-	   initR16(121);
+	   initR16(380);
        return;  
    }
    m_flag=1;
@@ -2366,7 +2362,7 @@ string calcI2a(IRing* r){
 	return str;
 }
 
-void findsubring(M2r *r)
+void findsubring(M2r *r,int n)
 {
 	for(int i=0;i<r->size()-1;i++)
 	for(int j=i+1;j<r->size();j++)
@@ -2378,7 +2374,8 @@ void findsubring(M2r *r)
 		Subring S1i(r,v);
 		int ni=S1i.size();
 		int ID=IdRing(&S1i);
-		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		//if(ni==n && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))
+		if(ni==n && ni<r->size() && (ID==-1||(ID>5 && ID!=8 && ID!=10 && ID!=11 && ID!=13 && ID!=15 && ID!=16 && ID!=20 && ID!=21 && ID!=23 && ID!=24 && ID!=25 && ID!=49 && ID!=51)))	
 		{
 			string str=M2r::MStr(r->m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());
@@ -2386,13 +2383,13 @@ void findsubring(M2r *r)
 			printf("%d->%s=>",j,strj.c_str());			
 			string strR=calcRingInvariant(&S1i);
 			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
-			S1i.printTable();
+			//S1i.printTable();
 			break;
 		}		   
 	}	   	
 }
 
-void findsubring(Mnr *r)
+void findsubring(Mnr *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
@@ -2413,7 +2410,8 @@ void findsubring(Mnr *r)
 		Subring S1i(r,v);
 		int ni=S1i.size();
 		int ID=IdRing(&S1i);
-		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		//if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		if(((ID==-1&& ni<=32)|| ni==n) && ni<r->size() && ((ID>5 && ID!=8 && ID!=10 && ID!=11 && ID!=13 && ID!=15 && ID!=16 && ID!=19 && ID!=20 && ID!=21 && ID!=23 && ID!=24 && ID!=25 && ID!=28 && ID!=29 && ID!=34 && ID!=37 && ID!=41 && ID<44 && ID>51)))	
 		{
 			string str=Mnr::MStr(r->m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());
@@ -2421,7 +2419,7 @@ void findsubring(Mnr *r)
 			printf("%d->%s=>",j,strj.c_str());			
 			string strR=calcRingInvariant(&S1i);
 			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
-			S1i.printTable();
+			//S1i.printTable();
 #if PRINT_LOG			
 			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<"=>";
 			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
@@ -2492,17 +2490,17 @@ void findsubring3(Mnr *r)
 
 int main()
 { 
-	if(0){
-	   Mnr r16;
-	   r16.initR16(266);
-	   r16.printTable(); 
-	   findsubring3(&r16);
-	}
 	if(1){
-	   M2r r16;
-	   r16.initR16(115);
+	   Mnr r16;
+	   r16.initR16();
 	   r16.printTable(); 
-	   findsubring(&r16);		
+	   findsubring(&r16,8);
+	}
+	if(0){
+	   M2r r16;
+	   r16.initR16();
+	   r16.printTable(); 
+	   findsubring(&r16,8);		
 	}
    
    return 0;
