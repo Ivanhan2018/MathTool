@@ -2,6 +2,7 @@
 #define M2R_H
 
 #include"IRing.h"
+#include"Mnr.h"//newR4
 
 typedef vector<vector<int> > MATRIXi;
 
@@ -10,12 +11,20 @@ struct M2r:public IRing
 {
 public:
 	// 静态函数
-   static int getidx(vector<MATRIXi> &Arr2,MATRIXi &Arr1);
-   static bool IsEqual(const MATRIXi &t,const MATRIXi &m);
-   static vector<MATRIXi> FR(IRing* r,vector<MATRIXi>& gen); 
-   static MATRIXi add(IRing* r,const MATRIXi &t,const MATRIXi &m);  
-   static MATRIXi mul(IRing* r,const MATRIXi &t,const MATRIXi &m);
-   static string MStr(const MATRIXi &t);   
+	// 同一个ID可以对应多个sID，例如GAP中的SmallRing(4,11)和GF(4)的ID相同，但是sID不同
+	// 规定sID=0表示本软件系统中的A4~K4，sID=1表示GAP中的SmallRing(4,i)
+	static IRing* newR4(int ID,int sID=0);
+	static IRing* newRing(IRing* r,const vector<int> & m,int flag);	
+	static int M1toM0(int ID,int M1,int k);	
+	static vector<int> Mul(int N,const vector<int> & m,const vector<int> & n);
+	static vector<vector<int> > Order(const vector<int> & m);
+	static vector<int> inv(const vector<int> &t);	
+	static int getidx(vector<MATRIXi> &Arr2,MATRIXi &Arr1);
+	static bool IsEqual(const MATRIXi &t,const MATRIXi &m);
+	static vector<MATRIXi> FR(IRing* r,vector<MATRIXi>& gen); 
+	static MATRIXi add(IRing* r,const MATRIXi &t,const MATRIXi &m);  
+	static MATRIXi mul(IRing* r,const MATRIXi &t,const MATRIXi &m);
+	static string MStr(const MATRIXi &t);   
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -40,6 +49,13 @@ public:
     void initK(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_11所在的有限环序列,K=GF(p^2)=p^2阶有限域
 	void initR8(int ID=0);
 	void initR16(int ID=0);		
+	void initJK(int ID,int sID);	
+	void initKW(int ID,int sID);
+	void initKW1(int ID,int sID);
+	void initKA(int ID,int sID);
+	void initKA1(int ID,int sID);	
+	void initKe(int ID,int sID);
+	void initKo(int ID,int sID);	
 	// 成员变量
 	vector<MATRIXi> m_Set;
 	IRing* m_r;
@@ -277,6 +293,402 @@ void M2r::initR8(int ID){
    m_flag=1;
    m_Set=FR(m_r,gen);   
 }
+
+IRing* M2r::newRing(IRing* r,const vector<int> & m,int flag){
+	Subring *r1=new Subring(r,m);
+	r1->m_flag=flag;
+	return r1;
+}
+
+IRing* M2r::newR4(int ID,int sID){
+   if(ID==1){
+		return new ZmodnZ(4,16); 
+   }else if(ID==2){
+		return new ZmodnZ(2,8);	
+   }else if(ID==3){ 
+		return new ZmodnZ(1,4);
+   }else if(ID==4){
+		M2r *r4=new M2r();
+		r4->initD(2);
+		return r4;	
+   }else if(ID==5){
+		Mnr *r4=new Mnr();
+		r4->initE(2);
+		if(sID==1){
+			vector<int> gens;			
+			gens.push_back(0);
+			gens.push_back(2);	
+			gens.push_back(1);
+			gens.push_back(3);			
+			IRing *r4a=newRing(r4,gens,1);
+			return r4a;
+		}		
+		return r4;
+   }else if(ID==6){
+		Mnr *r4=new Mnr();
+		r4->initF(2);
+		if(sID==1){
+			vector<int> gens;			
+			gens.push_back(0);
+			gens.push_back(3);	
+			gens.push_back(2);
+			gens.push_back(1);		
+			IRing *r4a=newRing(r4,gens,1);
+			return r4a;
+		}		
+		return r4;	
+   }else if(ID==7){
+		M2r *r4=new M2r();
+		r4->initG(2);
+		if(sID==1){
+			vector<int> gens;			
+			gens.push_back(0);
+			gens.push_back(3);	
+			gens.push_back(2);
+			gens.push_back(1);		
+			IRing *r4a=newRing(r4,gens,1);
+			return r4a;
+		}		
+		return r4;	
+   }else if(ID==8){
+		M2r *r4=new M2r();
+		r4->initH(2);
+		if(sID==1){
+			vector<int> gens;			
+			gens.push_back(0);
+			gens.push_back(3);	
+			gens.push_back(2);
+			gens.push_back(1);		
+			IRing *r4a=newRing(r4,gens,1);
+			return r4a;
+		}		
+		return r4;	
+   }else if(ID==9){
+		M2r *r4=new M2r();
+		r4->initI(2);
+		if(sID==1){
+			vector<int> gens;		
+			gens.push_back(0);
+			gens.push_back(2);	
+			gens.push_back(1);
+			gens.push_back(3);		
+			IRing *r4a=newRing(r4,gens,1);
+			return r4a;
+		}		
+		return r4;	
+   }else if(ID==10){
+		M2r *r4=new M2r();
+		r4->initJ(2);
+		if(sID==1){
+			vector<int> gens;		
+			gens.push_back(0);
+			gens.push_back(2);	
+			gens.push_back(1);
+			gens.push_back(3);		
+			IRing *r4a=newRing(r4,gens,1);
+			return r4a;
+		}	
+		return r4;		
+   }else if(ID==11){
+		M2r *r4=new M2r();
+		r4->initK(2);
+		if(sID==1){
+			vector<int> gens;
+			gens.push_back(0);
+			gens.push_back(2);	
+			gens.push_back(3);
+			gens.push_back(1);			
+			IRing *r4a=newRing(r4,gens,1);
+			return r4a;
+		}
+		return r4;	
+   }else{
+		return NULL;
+   }	
+}
+
+// S_N中置换乘法m*n
+vector<int> M2r::Mul(int N,const vector<int> & m,const vector<int> & n)
+{
+	vector<int> tArr(N);
+	vector<int> aArr(N);
+	vector<int> taArr(N);
+	memcpy(&tArr[0],&m[0],sizeof(tArr[0])*N);
+	memcpy(&aArr[0],&n[0],sizeof(aArr[0])*N);
+	for(int i=0;i<N;i++)
+		taArr[i]=aArr[tArr[i]];
+	vector<int> ret(N);
+	memcpy(&ret[0],&taArr[0],sizeof(taArr[0])*N);
+	return ret;
+}
+
+vector<vector<int> > M2r::Order(const vector<int> & m)
+{
+	vector<vector<int> > ret;
+    int n=m.size();
+	vector<int> mi=m;
+	vector<int> m0(n);
+	for(int i=0;i<n;i++)
+	{
+		m0[i]=i;
+	}
+	ret.push_back(m0);
+	while(memcmp(&mi[0],&m0[0],sizeof(int)*n)!=0)
+	{
+		ret.push_back(mi);
+		mi=Mul(n,mi,m);
+	}
+	return ret;
+}
+
+vector<int> M2r::inv(const vector<int> &t)
+{
+	vector<vector<int> > S1=Order(t);
+	int ord=S1.size();	
+	return S1[ord-1];	
+}
+
+//k=1,2
+int M2r::M1toM0(int ID,int M1,int k){
+   if(ID==1||ID==2||ID==3||ID==4){
+		return M1;	
+   }else if(ID==5||ID==9||ID==10){
+		if(M1==1||M1==2){
+			return 3-M1;
+		}		
+		return M1;
+   }else if(ID==6||ID==7||ID==8){
+		if(M1==1||M1==3){
+			return 4-M1;
+		}		
+		return M1;		
+   }else if(ID==11){
+		if(M1==0){
+			return 0;
+		}
+		return (M1+k)%3==0?3:(M1+k)%3;	
+   }else{
+		return M1;
+   }	
+}
+
+//sID=0:R4_4,R4_4,R4_4,R4_4,R16_304,R4_10,R4_10,R4_10,R4_10,R4_10,R4_10,
+//sID=1:R4_4,R4_4,R4_4,R4_4,R16_304,R4_10,R4_10,R4_10,R4_10,R4_10,R4_10,
+void M2r::initJK(int ID,int sID){
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));
+	A[0][0]=0;
+	A[0][1]=2;
+	A[1][0]=0;
+	A[1][1]=2;
+	B[0][0]=2;
+	B[0][1]=2;
+	B[1][0]=0;
+	B[1][1]=0; 
+	if(sID==0){  
+		int k=1;
+		A[0][0]=M1toM0(ID,A[0][0],k);
+		A[0][1]=M1toM0(ID,A[0][1],k);
+		A[1][0]=M1toM0(ID,A[1][0],k);
+		A[1][1]=M1toM0(ID,A[1][1],k);
+		B[0][0]=M1toM0(ID,B[0][0],k);
+		B[0][1]=M1toM0(ID,B[0][1],k);
+		B[1][0]=M1toM0(ID,B[1][0],k);
+		B[1][1]=M1toM0(ID,B[1][1],k);  
+	}
+	gen.push_back(A);
+	gen.push_back(B);
+	m_r=newR4(ID,sID);
+	m_flag=1;
+	m_Set=FR(m_r,gen);   
+}
+
+//R4_4,R4_4,R4_4,R4_4,R32_5029,R8_49,R8_49,R8_49,R8_49,R8_49,R8_49,
+void M2r::initKW(int ID,int sID){
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));
+	A[0][0]=0;
+	A[0][1]=2;
+	A[1][0]=2;
+	A[1][1]=0;
+	B[0][0]=2;
+	B[0][1]=2;
+	B[1][0]=0;
+	B[1][1]=0; 
+	if(sID==0){  
+		int k=1;
+		A[0][0]=M1toM0(ID,A[0][0],k);
+		A[0][1]=M1toM0(ID,A[0][1],k);
+		A[1][0]=M1toM0(ID,A[1][0],k);
+		A[1][1]=M1toM0(ID,A[1][1],k);
+		B[0][0]=M1toM0(ID,B[0][0],k);
+		B[0][1]=M1toM0(ID,B[0][1],k);
+		B[1][0]=M1toM0(ID,B[1][0],k);
+		B[1][1]=M1toM0(ID,B[1][1],k);  
+	}
+	gen.push_back(A);
+	gen.push_back(B);
+	m_r=newR4(ID,sID);
+	m_flag=1;
+	m_Set=FR(m_r,gen);   
+}	
+
+//R16_107,R32_3016,R64_-1,R4_4,R4_4,R4_4,R4_4,R4_4,R64_-1,R8_49,R64_-1,
+void M2r::initKW1(int ID,int sID){
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));
+	A[0][0]=0;
+	A[0][1]=1;
+	A[1][0]=1;
+	A[1][1]=0;
+	B[0][0]=1;
+	B[0][1]=1;
+	B[1][0]=0;
+	B[1][1]=0; 
+	if(sID==0){  
+		int k=1;
+		A[0][0]=M1toM0(ID,A[0][0],k);
+		A[0][1]=M1toM0(ID,A[0][1],k);
+		A[1][0]=M1toM0(ID,A[1][0],k);
+		A[1][1]=M1toM0(ID,A[1][1],k);
+		B[0][0]=M1toM0(ID,B[0][0],k);
+		B[0][1]=M1toM0(ID,B[0][1],k);
+		B[1][0]=M1toM0(ID,B[1][0],k);
+		B[1][1]=M1toM0(ID,B[1][1],k);  
+	}
+	gen.push_back(A);
+	gen.push_back(B);
+	m_r=newR4(ID,sID);
+	m_flag=1;
+	m_Set=FR(m_r,gen);   
+}	
+
+//R16_107,R16_108,R16_101,R4_4,R8_26,R8_27,R4_7,R8_34,R8_37,R4_10,R16_381,
+void M2r::initKA(int ID,int sID){
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));
+	A[0][0]=1;
+	A[0][1]=0;
+	A[1][0]=1;
+	A[1][1]=0;
+	B[0][0]=1;
+	B[0][1]=3;
+	B[1][0]=1;
+	B[1][1]=3; 
+	if(sID==0){  
+		int k=1;
+		A[0][0]=M1toM0(ID,A[0][0],k);
+		A[0][1]=M1toM0(ID,A[0][1],k);
+		A[1][0]=M1toM0(ID,A[1][0],k);
+		A[1][1]=M1toM0(ID,A[1][1],k);
+		B[0][0]=M1toM0(ID,B[0][0],k);
+		B[0][1]=M1toM0(ID,B[0][1],k);
+		B[1][0]=M1toM0(ID,B[1][0],k);
+		B[1][1]=M1toM0(ID,B[1][1],k);  
+	}
+	gen.push_back(A);
+	gen.push_back(B);
+	m_r=newR4(ID,sID);
+	m_flag=1;
+	m_Set=FR(m_r,gen);   
+}	
+
+//R16_107,R64_-1,R256_-1,R4_4,R8_26,R8_27,R8_29,R8_34,R8_49,R16_380,R256_-1,
+void M2r::initKA1(int ID,int sID){
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));
+	A[0][0]=0;
+	A[0][1]=1;
+	A[1][0]=1;
+	A[1][1]=0;
+	B[0][0]=0;
+	B[0][1]=1;
+	B[1][0]=0;
+	B[1][1]=2; 
+	if(sID==0){  
+		int k=1;
+		A[0][0]=M1toM0(ID,A[0][0],k);
+		A[0][1]=M1toM0(ID,A[0][1],k);
+		A[1][0]=M1toM0(ID,A[1][0],k);
+		A[1][1]=M1toM0(ID,A[1][1],k);
+		B[0][0]=M1toM0(ID,B[0][0],k);
+		B[0][1]=M1toM0(ID,B[0][1],k);
+		B[1][0]=M1toM0(ID,B[1][0],k);
+		B[1][1]=M1toM0(ID,B[1][1],k);  
+	}
+	gen.push_back(A);
+	gen.push_back(B);
+	m_r=newR4(ID,sID);
+	m_flag=1;
+	m_Set=FR(m_r,gen);   
+}	
+
+//R8_5,R16_200,R32_3003,R4_4,R8_26,R4_6,R8_29,R8_34,R64_-1,R16_380,R64_-1,
+void M2r::initKe(int ID,int sID){
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));
+	A[0][0]=0;
+	A[0][1]=2;
+	A[1][0]=0;
+	A[1][1]=2;
+	B[0][0]=0;
+	B[0][1]=1;
+	B[1][0]=1;
+	B[1][1]=0; 
+	if(sID==0){  
+		int k=1;
+		A[0][0]=M1toM0(ID,A[0][0],k);
+		A[0][1]=M1toM0(ID,A[0][1],k);
+		A[1][0]=M1toM0(ID,A[1][0],k);
+		A[1][1]=M1toM0(ID,A[1][1],k);
+		B[0][0]=M1toM0(ID,B[0][0],k);
+		B[0][1]=M1toM0(ID,B[0][1],k);
+		B[1][0]=M1toM0(ID,B[1][0],k);
+		B[1][1]=M1toM0(ID,B[1][1],k);  
+	}
+	gen.push_back(A);
+	gen.push_back(B);
+	m_r=newR4(ID,sID);
+	m_flag=1;
+	m_Set=FR(m_r,gen);   
+}	
+
+//R8_5,R8_16,R8_15,R4_4,R16_379,R32_5021,R16_300,R64_-1,R256_-1,R256_-1,R256_-1,
+void M2r::initKo(int ID,int sID){
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));
+	A[0][0]=2;
+	A[0][1]=2;
+	A[1][0]=1;
+	A[1][1]=3;
+	B[0][0]=2;
+	B[0][1]=2;
+	B[1][0]=2;
+	B[1][1]=2; 
+	if(sID==0){  
+		int k=1;
+		A[0][0]=M1toM0(ID,A[0][0],k);
+		A[0][1]=M1toM0(ID,A[0][1],k);
+		A[1][0]=M1toM0(ID,A[1][0],k);
+		A[1][1]=M1toM0(ID,A[1][1],k);
+		B[0][0]=M1toM0(ID,B[0][0],k);
+		B[0][1]=M1toM0(ID,B[0][1],k);
+		B[1][0]=M1toM0(ID,B[1][0],k);
+		B[1][1]=M1toM0(ID,B[1][1],k);  
+	}
+	gen.push_back(A);
+	gen.push_back(B);
+	m_r=newR4(ID,sID);
+	m_flag=1;
+	m_Set=FR(m_r,gen);   
+}	
 
 M2r::M2r(IRing* r,vector<MATRIXi>& gen){
 	m_r=r;

@@ -3,6 +3,9 @@
 
 #include"IRing.h"
 
+typedef unsigned char TElem; // unsigned int
+typedef vector<vector<TElem> > MATRIXi8;
+
 typedef vector<vector<unsigned char> > MATRIXi8;
 
 // n阶全矩阵环Mn(r)
