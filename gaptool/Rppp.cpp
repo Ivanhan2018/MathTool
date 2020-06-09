@@ -153,7 +153,7 @@ void findsubring(Mnr *r,int n)
 }
 
 IRing* newRppp(int ID,int p,int sID){	
-   if(/* ID!=29 && ID!=46 ID!=26 && ID!=34 && ID!=49ID!=44*/ID!=29)
+   if(/* ID!=29 && ID!=46 ID!=26 && ID!=44*/ID!=36 && ID!=40)
 	   return NULL;
 	//p=2;
    if(ID==1){
@@ -488,6 +488,21 @@ Rppp':
 		gen.push_back(B);
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
+		return r;	
+   }else if(ID==27){
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		MATRIXi8 B(4,vector<TElem>(4,0)); 		
+		A[3][2]=1;
+		B[1][1]=1;
+		B[3][0]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 	
 		return r;		
    }else if(ID==28){	
 		Mnr* r=new Mnr();   
@@ -713,6 +728,48 @@ Rppp':
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;	
+   }else if(ID==35){	
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=1; 
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=1;
+		A[2][3]=0;
+		A[3][0]=1;
+		A[3][1]=0;
+		A[3][2]=1;
+		A[3][3]=1;	
+		gen.push_back(A);
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+		return r;	
+   }else if(ID==36){
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		MATRIXi8 B(4,vector<TElem>(4,0)); 		
+		A[2][2]=1;
+		A[3][3]=1;		
+		B[1][3]=1;
+		B[2][0]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 	
+		return r;		
    }else if(ID==37){	
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -768,7 +825,23 @@ Rppp':
 		gen.push_back(A);
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
-		return r;			
+		return r;	
+   }else if(ID==40){//Rppp(40,2)=R8_40£¬µ«Rppp(40,3)=R27_38
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		MATRIXi8 B(4,vector<TElem>(4,0)); 		
+		A[3][3]=1;
+		B[1][2]=1;
+		B[2][0]=1;
+		B[2][2]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 	
+		return r;		
    }else if(ID==41){	
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -1212,7 +1285,7 @@ int main()
 			   continue;
 			int ID8=IdRing(r8);
 			int ID27=IdRing(r27);			
-			#if 1
+			#if 0
 			    printf("Rppp(%d,2)=R%d_%d,Rppp(%d,3)=R%d_%d\n",i,r8->size(),ID8,i,r27->size(),ID27);
 			#else
 				string str=calcRingInvariant(r8);
