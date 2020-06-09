@@ -127,14 +127,40 @@ void PolynomialRing::initR8(int ID){
 		vf.push_back(1);
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,4);
-		initFR(m_r,vm1,vm2,vf);  
+		initFR(m_r,vm1,vm2,vf);
+   }else if(ID==26){
+		vm1.push_back(0);
+		vm1.push_back(0);
+		vm1.push_back(0);	
+		vm1.push_back(1);
+		vm1.push_back(1);
+		vm2.push_back(0);
+		vm2.push_back(1);
+		vm2.push_back(0);
+		vm2.push_back(0);
+		vm2.push_back(1);		
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,2);
+		initFR(m_r,vm1,vm2,vf);	   
    }else if(ID==51){	
 		vf.push_back(1);
 		vf.push_back(0);
 		vf.push_back(0);
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,2);
-		init(m_r,vf); 	
+		init(m_r,vf);
+   }else if(ID==52){	
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(0);
+		vf.push_back(1);
+		m_r=new ZmodnZ(1,2);
+		init(m_r,vf); 		
    }else{
 	   initR8(11);
 	   return;
@@ -212,18 +238,6 @@ void PolynomialRing::initR16(int ID){
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,8);
 		initFR(m_r,vm1,vm2,vf); 
-   }else if(ID==124){
-		vf.push_back(0);	   
-		vf.push_back(1);
-		vf.push_back(1);		
-		vf.push_back(0);
-		vf.push_back(1);		
-		vf.push_back(0);		
-		vf.push_back(1);
-		vf.push_back(1);			
-		m_r=new ZmodnZ(1,2);
-		init(m_r,vf);
-		//initFR(m_r,vm1,vf); 
    }else if(ID==302){	
 		vm1.push_back(1);
 		vm1.push_back(1);
@@ -356,9 +370,15 @@ void PolynomialRing::initR16(int ID){
 		vf.push_back(1);
 		vf.push_back(1);		
 		m_r=new ZmodnZ(1,2);
-		init(m_r,vf); 			
+		init(m_r,vf); 
+   }else if(ID==0){	
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(1);		
+		m_r=new ZmodnZ(1,12);
+		init(m_r,vf); 		
    }else{
-	   initR16(124);
+	   initR16(0);
 	   return;
    }
    m_flag=1;	
@@ -851,7 +871,8 @@ void findsubring(PolynomialRing *r,int n){
 		if(n>0 && ni!=n)
 			continue;
 		int ID=IdRing(&S1i);
-		if(n<r->size() && ni==n && ID==386 || ID==5417 || ID==5527 || ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		if(ni==n && ID==-1||(ID==302||ID==364||ID==365||ID==366||ID==378||ID==381||ID==383||ID==384||ID==389||ID==390)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==26||ID==34||ID==39||ID==52||ID==42||ID==39||ID==40||ID==35||ID==36||ID==27||ID==22||ID==17||ID==14||ID==7)))
+		//if(n<r->size() && ni==n && ID==386 || ID==5417 || ID==5527 || ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 		{
 			string str=PolynomialRing::sPoly(r->m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());
@@ -885,13 +906,13 @@ int main(){
 	}	
 	if(0){	
 		PolynomialRing r8;
-		r8.initR8(11);
+		r8.initR8();
 		r8.printTable();
 	}
 	PolynomialRing r16;
 	r16.initR16();
-	//r16.printTable();
-	findsubring(&r16,32);
+	r16.printTable();
+	findsubring(&r16,16);
 	
 	return 0;
 }

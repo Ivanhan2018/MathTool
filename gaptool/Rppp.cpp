@@ -153,9 +153,9 @@ void findsubring(Mnr *r,int n)
 }
 
 IRing* newRppp(int ID,int p,int sID){	
-   //if(/* ID!=29 && ID!=46 ID!=26 && ID!=34 && ID!=49*/ID!=44)
-	   //return NULL;
-   //p=2;
+   if(/* ID!=29 && ID!=46 ID!=26 && ID!=34 && ID!=49ID!=44*/ID!=29)
+	   return NULL;
+	//p=2;
    if(ID==1){
 		return new ZmodnZ(p*p*p,p*p*p*p*p*p); 
    }else if(ID==2){
@@ -518,7 +518,7 @@ Rppp':
 		gen.push_back(B);
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
-        return r;
+        return r;			
    }else if(ID==29){//Rppp(29,2)=R8_29，但Rppp(29,3)=R27_49	
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -768,7 +768,7 @@ Rppp':
 		gen.push_back(A);
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
-		return r;		
+		return r;			
    }else if(ID==41){	
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -787,6 +787,32 @@ Rppp':
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;
+   }else if(ID==42){	
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		A[0][0]=1;
+		A[0][1]=1;
+		A[0][2]=0;
+		A[0][3]=1;
+		A[1][0]=1;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=1; 
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=1;
+		A[2][3]=0;
+		A[3][0]=1;
+		A[3][1]=0;
+		A[3][2]=1;
+		A[3][3]=1;		
+		gen.push_back(A);
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;		
    }else if(ID==43){// 必须有3个生成元
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -1074,15 +1100,111 @@ Rppp':
 			printf("%d->%s=>",i,str.c_str()); 
 		}		
 #endif		
-        return r;		
+        return r;
+   }else if(ID==52){	
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		A[0][0]=1;
+		A[0][1]=1;
+		A[0][2]=1;
+		A[0][3]=1;
+		A[1][0]=1;
+		A[1][1]=0;
+		A[1][2]=1;
+		A[1][3]=1; 
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=1;
+		A[2][3]=0;
+		A[3][0]=1;
+		A[3][1]=0;
+		A[3][2]=1;
+		A[3][3]=1;		
+		gen.push_back(A);
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+		return r;		
+   }else if(ID==59){//Rppp(59,3)=R27_59,但Rppp(59,2)=R4_6
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 		
+		A[0][0]=0;
+		A[0][1]=1;
+		A[0][2]=1;
+		A[0][3]=1;		
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[1][3]=1;	
+		A[2][0]=1;
+		A[2][1]=1;
+		A[2][2]=1;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=1;
+		A[3][3]=0;	   	
+		gen.push_back(A);
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+		return r;			
    }else{
 		return NULL;
    }		
 }
 
+IRing* newRpp(int ID,int p){
+   if(ID==1){
+		return new ZmodnZ(p*p,p*p*p*p); 
+   }else if(ID==2){
+		return new ZmodnZ(p,p*p*p);	
+   }else if(ID==3){ 
+		return new ZmodnZ(1,p*p);
+   }else if(ID==4){
+		M2r *r4=new M2r();
+		r4->initD(p);
+		return r4;	
+   }else if(ID==5){
+		Mnr *r4=new Mnr();
+		r4->initE(p);	
+		return r4;
+   }else if(ID==6){
+		Mnr *r4=new Mnr();
+		r4->initF(p);	
+		return r4;	
+   }else if(ID==7){
+		M2r *r4=new M2r();
+		r4->initG(p);	
+		return r4;	
+   }else if(ID==8){
+		M2r *r4=new M2r();
+		r4->initH(p);	
+		return r4;	
+   }else if(ID==9){
+		M2r *r4=new M2r();
+		r4->initI(p);	
+		return r4;	
+   }else if(ID==10){
+		M2r *r4=new M2r();
+		r4->initJ(p);
+		return r4;		
+   }else if(ID==11){
+		M2r *r4=new M2r();
+		r4->initK(p);
+		return r4;	
+   }else{
+		return NULL;
+   }	
+}
+
 int main()
 { 
-	{
+	if(1){
 		for(int i=1;i<=59;i++){
 		   IRing* r8=newRppp(i,2);
 		   IRing* r27=newRppp(i,3);		   
@@ -1106,5 +1228,18 @@ int main()
 			#endif		
 		}
 	}
+	if(0){
+		for(int i=1;i<=11;i++){
+		   IRing* r64=newRpp(i,8);		   
+		   if(!r64)
+			   continue;
+			int ID64=IdRing(r64);			
+				string str=calcRingInvariant(r64);
+				printf("Rpp(%d,4)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",i,r64->size(),ID64,str.c_str());
+				string I1=calcI1(r64);
+				string I2=calcI2(r64);   
+				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+		}
+	}	
     return 0;
 }
