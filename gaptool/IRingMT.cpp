@@ -205,11 +205,83 @@ DWORD WINAPI M2I4ij( void* lpParameter ){
 	return 0;
 };
 
+DWORD WINAPI M3B4ij( void* lpParameter ){
+	ZmodnZ r(2,8);
+	Mnr m2r(&r,3);
+	fsubring2(&m2r,16);
+	ExitThread(0);
+	return 0;
+};
+
+DWORD WINAPI M3E4ij( void* lpParameter ){
+	Mnr r;
+	r.initE(2);
+	Mnr m2r(&r,3);
+	fsubring2(&m2r,16);
+	ExitThread(0);
+	return 0;
+};
+
+DWORD WINAPI M3F4ij( void* lpParameter ){
+	Mnr r;
+	r.initF(2);
+	Mnr m2r(&r,3);
+	fsubring2(&m2r,16);
+	ExitThread(0);
+	return 0;
+};
+
+DWORD WINAPI M3I4ij( void* lpParameter ){
+	M2r r;
+	r.initI(2);
+	Mnr m2r(&r,3);
+	fsubring2(&m2r,16);
+	ExitThread(0);
+	return 0;
+};
+
+DWORD WINAPI M3J4ij( void* lpParameter ){
+	M2r r;
+	r.initJ(2);
+	Mnr m2r(&r,3);
+	fsubring2(&m2r,16);
+	ExitThread(0);
+	return 0;
+};
+
+DWORD WINAPI M4Z2ij( void* lpParameter ){
+	ZmodnZ r(1,2);
+	Mnr m2r(&r,4);
+	fsubring2(&m2r,16);
+	ExitThread(0);
+	return 0;
+};
+
+DWORD WINAPI M2I4ijk( void* lpParameter ){
+	M2r r;
+	r.initI(2);
+	Mnr m2r(&r,2);
+	fsubring3(&m2r,16);
+	ExitThread(0);
+	return 0;
+};
+
+DWORD WINAPI M2J4ijk( void* lpParameter ){
+	M2r r;
+	r.initJ(2);
+	Mnr m2r(&r,2);
+	fsubring3(&m2r,16);
+	ExitThread(0);
+	return 0;
+};
+
 int main(int argc, char* argv[]){ 
 	if(argc>1)
 		g_i=atoi(argv[1]);
 
-	PTHREAD_START_ROUTINE tfun[]={M3Z4ijk,M3Z4ij,M2I4ij};
+	PTHREAD_START_ROUTINE tfun[]={M3Z4ijk,M3B4ij,M2I4ijk};
+	//PTHREAD_START_ROUTINE tfun[]={M3B4ij,M3E4ij,M3F4ij};
+	//PTHREAD_START_ROUTINE tfun[]={M3I4ij,M3J4ij,M4Z2ij};	
 	unsigned long threadID[]={0,0,0};
 	HANDLE h_thread[]={0,0,0};//句柄数组
 	DWORD maskArr[]={0x02,0x04,0x08};//i7-6500U CPU，绑定线程到指定的CPU核心（CPU 1~3）

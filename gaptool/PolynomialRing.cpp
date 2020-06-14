@@ -822,6 +822,7 @@ Polynomial PolynomialRing::mod(Polynomial& a,Polynomial& b,int ord)
 	return m; 
 }
 
+int g_i=0;
 void findsubring(PolynomialRing *r){
 	for(int i=0;i<r->size()-1;i++)
 	//for(int j=i+1;j<r->size();j++)
@@ -859,19 +860,35 @@ void findsubring(PolynomialRing *r,int n){
 #endif	
     string strCmd="del ";
 	strCmd+=sz;
-	for(int i=0;i<r->size()-1;i++)
+	map<pair<int,int>,pair<int,int>> M;
+	int ID=IdRing(r);
+	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
+	for(int i=g_i;i<r->size()-1;i++)
 	for(int j=i+1;j<r->size();j++)
 	{
 		//int j=i+1;
 		vector<int> v;
 		v.push_back(i);
 		v.push_back(j);		
-		Subring S1i(r,v);
+		Subring S1i;
+		bool bn=S1i.init(r,v,16);
+		if(!bn)
+			continue;
+		//Subring S1i(r,v);
 		int ni=S1i.size();
-		if(n>0 && ni!=n)
+		if(ni>16)
 			continue;
 		int ID=IdRing(&S1i);
-		if(ni==n && ID==-1||(ID==302||ID==364||ID==365||ID==366||ID==378||ID==381||ID==383||ID==384||ID==389||ID==390)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==26||ID==34||ID==39||ID==52||ID==42||ID==39||ID==40||ID==35||ID==36||ID==27||ID==22||ID==17||ID==14||ID==7)))
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
+			string I1=calcI1(&S1i);
+			string I2=calcI2(&S1i);   
+			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+		}
+		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
 		//if(n<r->size() && ni==n && ID==386 || ID==5417 || ID==5527 || ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 		{
 			string str=PolynomialRing::sPoly(r->m_Set[i]);
@@ -886,7 +903,7 @@ void findsubring(PolynomialRing *r,int n){
 			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
 			bFind=true;
 #endif			
-			break;
+			//break;
 		}		   
 	}	
 #if PRINT_LOG
@@ -898,7 +915,131 @@ void findsubring(PolynomialRing *r,int n){
 #endif		
 }
 
-int main(){
+void findsubring3(PolynomialRing *r,int n){
+#define PRINT_LOG 1	
+	bool bFind=false;	
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	map<pair<int,int>,pair<int,int>> M;
+	int ID=IdRing(r);
+	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
+	for(int i=g_i;i<r->size()-2;i++)
+	for(int j=i+1;j<r->size()-1;j++)
+	for(int k=j+1;k<r->size();k++)		
+	{
+		//int j=i+1;
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);		
+		v.push_back(k);			
+		Subring S1i;
+		bool bn=S1i.init(r,v,16);
+		if(!bn)
+			continue;
+		//Subring S1i(r,v);
+		int ni=S1i.size();
+		if(ni>16)
+			continue;
+		int ID=IdRing(&S1i);
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d\n",cnt1,ni,ID,i,j,k);
+			string I1=calcI1(&S1i);
+			string I2=calcI2(&S1i);   
+			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+		}
+		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
+		//if(n<r->size() && ni==n && ID==386 || ID==5417 || ID==5527 || ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		{
+			string str=PolynomialRing::sPoly(r->m_Set[i]);
+			printf("%d->%s=>",i,str.c_str());
+			string strj=PolynomialRing::sPoly(r->m_Set[j]);
+			printf("%d->%s=>",j,strj.c_str());	
+			string strk=PolynomialRing::sPoly(r->m_Set[k]);
+			printf("%d->%s=>",k,strk.c_str());				
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			//S1i.printTable();
+#if PRINT_LOG			
+			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<","<<k<<"->"<<strk<<"=>";
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			bFind=true;
+#endif			
+			//break;
+		}		   
+	}	
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("子环表示已输出到文件%s\n",sz);
+#endif		
+}
+
+std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
+{
+	std::vector<string> ret;
+	unsigned int numSplits = 0;
+	// Use STL methods 
+	size_t start, pos;
+	start = 0;
+	do 
+	{
+		pos = str.find_first_of(delims, start);
+		if (pos == start)
+		{
+			// Do nothing
+			start = pos + 1;
+		}
+		else if (pos == std::string::npos || (maxSplits && numSplits == maxSplits))
+		{
+			// Copy the rest of the std::string
+			ret.push_back( str.substr(start) );
+			break;
+		}
+		else
+		{
+			// Copy up to delimiter
+			ret.push_back( str.substr(start, pos - start) );
+			start = pos + 1;
+		}
+		// parse up to next real data
+		start = str.find_first_not_of(delims, start);
+		++numSplits;
+	} while (pos != std::string::npos);
+	return ret;
+}
+
+int main(int argc, char* argv[])
+{ 
+	if(argc>3){
+		g_i=atoi(argv[3]);	
+	}
+	if(1){
+		if(argc<3)
+		{
+			printf("Usage:  PolynomialRing vf n [g_i]\n");
+			return 0;
+		}		
+		int n=atoi(argv[1]);
+		ZmodnZ r(1,n);
+		Polynomial vf;
+		vector<string> v=split(argv[2],",");
+		for(int i=0;i<v.size();i++){
+			int vi=atoi(v[i].c_str());	
+			vf.push_back(vi);
+		}			
+		PolynomialRing pr(&r,vf);
+		argc>4?findsubring3(&pr,16):findsubring(&pr,16);	
+	}
 	if(0){
 		PolynomialRing r4;
 		r4.initR4(5);
@@ -909,10 +1050,11 @@ int main(){
 		r8.initR8();
 		r8.printTable();
 	}
-	PolynomialRing r16;
-	r16.initR16();
-	r16.printTable();
-	findsubring(&r16,16);
-	
+	if(0){	
+		PolynomialRing r16;
+		r16.initR16();
+		r16.printTable();
+		findsubring(&r16,16);
+	}
 	return 0;
 }
