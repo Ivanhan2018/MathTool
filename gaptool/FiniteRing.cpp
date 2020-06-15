@@ -1050,6 +1050,23 @@ IRing* newR8R4(int ij)
 	return r;
 }
 
+IRing* newR8R8(int ij)
+{
+	int i=(ij-1)%52+1;
+	int j=(ij-1)/52+1;
+    IRing* ri=newR8(i);
+	if(!ri)
+		return NULL;
+    IRing* rj=newR8(j);
+	if(!rj){
+		delete ri;
+		return NULL;
+	}
+	DecompositionRing* r= new DecompositionRing(ri,rj);
+	r->m_flag=1;
+	return r;
+}
+
 int test2()
 {
    set<int> vID;
@@ -1158,11 +1175,11 @@ void findsubring(IRing *r,int n)
 
 int main(int argc, char* argv[])
 {   
-   for(int i=186;i<=250&& i<=572;i++)
+   for(int i=1;i<=2704;i++)
    {
-	   IRing* r=newR8R4(i);
+	   IRing* r=newR8R8(i);
 	   if(r){
-		   printf("R8R4_%d\n",i);
+		   printf("R8R8_%d\n",i);
 		   findsubring(r,16);
 		   delete r;
 		   r=NULL;
