@@ -1,10 +1,12 @@
-//#include"IRing.h"
+#include<ctime>
+#include<fstream>
 #include<set>
 #include"DecompositionRing.h"
 #include"Rn.h"
 #include"M2r.h"
 #include"Mnr.h"
 #include"PolynomialRing.h"
+#include"quotientRing.h"
 
 #ifndef Rn_H
 int g_M2Add[2][2]={
@@ -1031,7 +1033,24 @@ IRing* newR4R4(int ij)
 	return r;
 }
 
-int main()
+IRing* newR8R4(int ij)
+{
+	int i=(ij-1)%52+1;
+	int j=(ij-1)/52+1;
+    IRing* ri=newR8(i);
+	if(!ri)
+		return NULL;
+    IRing* rj=newR4(j);
+	if(!rj){
+		delete ri;
+		return NULL;
+	}
+	DecompositionRing* r= new DecompositionRing(ri,rj);
+	r->m_flag=1;
+	return r;
+}
+
+int test2()
 {
    set<int> vID;
    int cnt=0;
@@ -1074,6 +1093,81 @@ int main()
 	   }	   
    }
    printf("%d种16阶可分解环\n",vID.size());
-   system("pause");
+   return 0;
+}
+
+
+void findsubring(IRing *r,int n)
+{
+#define PRINT_LOG 1	
+	bool bFind=false;	
+	int ID=IdRing(r);
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	map<pair<int,int>,pair<int,int>> M;	
+	for(int i=0;i<r->size()-1;i++)		
+	for(int j=i+1;j<r->size();j++)
+	{
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);
+		Subring S1i;
+		bool bn=S1i.init(r,v,16);
+		if(!bn)
+			continue;
+		//Subring S1i(r,v);
+		int ni=S1i.size();
+		if(ni>16)
+			continue;
+		int ID=IdRing(&S1i);
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
+			//string I1=calcI1(&S1i);
+			//string I2=calcI2(&S1i);   
+			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+		}		
+		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
+		{		
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			//S1i.printTable();
+#if PRINT_LOG			
+			fout<<i<<","<<j<<"=>";
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			bFind=true;
+#endif
+			break;
+		}		   
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("子环表示已输出到文件%s\n",sz);
+#endif	
+}
+
+int main(int argc, char* argv[])
+{   
+   for(int i=186;i<=250&& i<=572;i++)
+   {
+	   IRing* r=newR8R4(i);
+	   if(r){
+		   printf("R8R4_%d\n",i);
+		   findsubring(r,16);
+		   delete r;
+		   r=NULL;
+	   }	   
+   }
+   //system("pause");
    return 0;
 }

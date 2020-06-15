@@ -156,12 +156,67 @@ Subring::Subring(IRing* r,const vector<int>& gens)
 	init(r,gens,0);
 }
 
+bool IsEqual(vector<int>& a,vector<int>& b){
+    int na=a.size();
+	int nb=b.size();
+	if(na!=nb)
+		return false;
+	for(int i=0;i<na;i++)
+		if(a[i]!=b[i])
+			return false;
+	return true;
+}
+
+// 判断集合I是否是环r的理想
+int IsIdeal(IRing* r,vector<int> &I){
+ //I是r的子环
+ Subring s(r,I);
+ bool bE=IsEqual(I,s.m_Set);
+  if(!bE){
+   return 0;// 子环也不是
+  }
+ //进一步判断是否是理想
+ for(int i=0;i<r->size();i++){//任意纯量环元素c
+  for(int j=0;j<I.size();j++){//任意向量模元素a
+   int ca=r->mul(i,I[j]);
+   int ac=r->mul(I[j],i);
+	vector<int>::iterator p=std::find(I.begin(),I.end(),ca);
+	if(p==I.end()){
+		return 2;// 是子环但不是理想
+	}   
+	vector<int>::iterator p1=std::find(I.begin(),I.end(),ac);
+	if(p1==I.end()){
+		return 2;// 是子环但不是理想
+	}
+  }
+ }
+ return 1;//是理想
+}
+
+const char* IsIdealRetInfo(int iret){
+	const char* sz[]={"不构成环","构成理想","构成非理想子环"};
+	return sz[iret];
+}
+
 #ifndef IGROUP_H
 string itos(int i)
 {
   stringstream s;
   s << i;
   return s.str();
+}
+
+string V2S(vector<int>& v){
+   string str="[";
+   int n=v.size();
+   for(int i=0;i<n;i++)
+   {
+	   str+=itos(v[i]);
+	   if(i<n-1)
+		   str+=",";   
+   }	   
+   str+="]";
+   return str;
 }
 #endif
 
@@ -474,6 +529,44 @@ int Nil3Num(IRing* r){
 	return iRet;
 }
 
+// n2代表幂等元个数
+// Idem代表环r的幂等元集合（N2已代表另外一个环不变量）
+vector<int> calIdem(IRing* r){
+    int n=r->size();
+	vector<int> Idem;
+	for(int i2=0;i2<n;i2++){
+		if(IsIdempotent(r,i2))
+			Idem.push_back(i2);
+	}
+	return Idem;
+}
+
+// n4,n5代表2次幂零元个数、2~3次幂零元个数
+// n9=N9.size()代表幂零元个数
+int IsNil(IRing* r,int i){
+    int n=r->size();
+	int iRet=i;
+	if(iRet==0)
+		return 1;// i=0是环r的1次幂零元
+	for(int k=0;k<n;k++){// 最多n+1次幂零元
+		iRet=r->mul(iRet,i);
+		if(iRet==0)
+			return k+2;// i是环r的k+2次幂零元
+	}
+	return 0;// i不是环r的幂零元
+}
+
+// N9代表环r的幂零元集合,处理过的N9代表[IdRing(N9),IdRing(r/N9)]或[IdRing(N9)]
+vector<int> calN9(IRing* r){
+    int n=r->size();
+	vector<int> N9;
+	for(int i9=0;i9<n;i9++){
+		if(IsNil(r,i9)>0)
+			N9.push_back(i9);
+	}
+	return N9;
+}
+
 bool IsAbelian(IRing* r){
     int n=r->size();
 	for (int i=0; i<n; i++)for (int j=0; j<n; j++){if(r->mul(i,j)!=r->mul(j,i))return false;}
@@ -727,6 +820,11 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("[1,3,4,8,0],8,0,0,16,1,7,7,128,15,4,[1,3,4,8,0],[[4,8,32],[8,2,16],[8,4,16],[8,8,64]]",25));//[[2,0],[1,0]],[[4,0],[0,0]]
 	m_RingInvariant.insert(make_pair("[1,3,4,8,0],8,1,0,16,1,7,15,160,15,16,[1,3,4,8,0],[[2,8,16],[4,8,16],[8,2,16],[8,4,16],[8,8,32]]",26));//[[4,0],[0,4]],[[0,0],[7,4]]
 	m_RingInvariant.insert(make_pair("[1,3,4,8,0],8,1,0,16,1,7,15,128,15,16,[1,3,4,0,8],[[2,8,16],[4,8,16],[8,2,16],[8,4,16],[8,8,64]]",27));//[[0,4],[3,2]]
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,1,12,4,3,3,72,11,16,[1,3,6,6,0],[[2,4,24],[4,2,24],[4,4,136]]",96));//R8R4_118的子环
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,1,12,4,3,3,64,11,16,[1,3,4,8,0],[[2,4,28],[4,2,28],[4,4,136]]",97));//R8R4_118的子环
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,0,16,4,3,3,96,15,16,[1,3,4,8,0],[[2,4,16],[4,2,16],[4,4,128]]",98));//R8R4_118的子环
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,0,16,2,3,7,144,15,16,[1,3,6,2,4],[[4,4,112]]",99));//R8R4_66的子环
+	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,0,16,2,7,7,192,15,16,[1,3,6,2,4],[[4,4,64]]",100));//R8R4_14的子环
 	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,0,0,16,5,5,7,88,7,1,[1,3,12,0,0],[[2,4,24],[4,2,24],[4,4,120]]",101));//G16
 	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,0,0,16,5,5,7,88,15,1,[1,3,12,0,0],[[2,4,24],[4,2,24],[4,4,120]]",102));//H16	
 	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,0,16,1,3,15,144,15,16,[1,3,12,0,0],[[4,4,112]]",103));
@@ -767,6 +865,14 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,0,0,16,1,3,15,144,15,4,[1,3,0,12,0],[[4,4,112]]",138));//[[0,0,0],[0,2,2],[1,2,2]],[[0,0,0],[1,0,0],[0,2,0]]
 	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,1,0,16,1,3,15,144,15,16,[1,3,0,12,0],[[4,4,112]]",139));//[[0,0,0],[0,2,2],[1,2,2]],[[0,0,0],[1,0,2],[0,2,2]]
 	m_RingInvariant.insert(make_pair("[1,3,12,0,0],4,0,0,16,1,3,15,128,15,4,[1,3,0,12,0],[[4,4,128]]",140));//[[0,0,0],[0,0,2],[1,0,2]],[[0,0,0],[1,2,0],[0,2,2]]
+	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,1,0,16,2,7,7,192,15,16,[1,7,2,6,0],[[4,4,64]]",190));//R8R4_170的子环
+	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,0,1,12,6,3,3,72,11,4,[1,5,8,2,0],[[2,2,24],[2,4,44],[4,2,52],[4,4,64]]",191));//R8R4_153的子环
+	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,0,1,12,6,3,3,72,11,4,[1,5,8,2,0],[[2,2,24],[2,4,52],[4,2,44],[4,4,64]]",192));//R8R4_153的子环
+	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,1,1,8,2,3,7,64,7,16,[1,3,6,2,4],[[2,2,16],[2,4,56],[4,2,56],[4,4,64]]",193));//R8R4_150的子环
+	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,0,0,16,1,3,15,144,15,4,[1,3,12,0,0],[[2,2,16],[2,4,16],[4,2,16],[4,4,64]]",194));//R8R4_70的子环
+	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,0,0,16,1,3,15,144,15,4,[1,3,4,8,0],[[2,2,16],[2,4,16],[4,2,16],[4,4,64]]",195));//R8R4_61的子环
+	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,0,0,16,1,3,15,160,15,4,[1,3,4,8,0],[[2,2,16],[2,4,16],[4,2,16],[4,4,48]]",196));//R8R4_18的子环
+	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,1,0,16,1,7,15,160,15,16,[1,3,8,4,0],[[2,2,16],[2,4,16],[4,2,16],[4,4,48]]",197));//R8R4_12的子环
 	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,0,0,16,5,7,7,104,7,2,[1,7,8,0,0],[[2,4,32],[4,2,56],[4,4,64]]",198));//[[0,0,0],[0,0,0],[2,0,0]],[[0,0,0],[0,0,0],[2,0,1]],[[0,0,0],[0,0,0],[2,2,0]]
 	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,0,0,16,1,11,15,160,15,4,[1,7,8,0,0],[[2,4,32],[4,2,32],[4,4,32]]",199));//[[0,0],[0,2]],[[2,1],[0,0]],[[2,2],[0,0]]	
 	m_RingInvariant.insert(make_pair("[1,7,8,0,0],4,1,0,16,1,7,15,192,15,16,[1,7,0,8,0],[[4,4,64]]",200));	

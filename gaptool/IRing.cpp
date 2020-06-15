@@ -3034,12 +3034,12 @@ int main(int argc, char* argv[])
 	if(argc>1)
 		g_i=atoi(argv[1]);
 	
-	if(0){
-		ZmodnZ r(4,32);
-		//M2r r4;
-		//r4.initH(2);
-		//M2r m2r(&r);
-		Mnr m2r(&r,2);
+	if(1){
+		//ZmodnZ r(4,32);
+		M2r r4;
+		r4.initJ(2);
+		//M2r m2r(&r4);
+		Mnr m2r(&r4,3);
 		findsubring(&m2r,16);
 	}
 	
@@ -3049,7 +3049,7 @@ int main(int argc, char* argv[])
 	   //r16.printTable(); 
 	   findsubring3(&r16,16);
 	}
-	if(1){
+	if(0){
 	   M2r r16;
 	   r16.initR8();
 	   //r16.printTable(); 
