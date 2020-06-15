@@ -1139,7 +1139,7 @@ void findsubring(IRing *r,int n)
 			continue;
 		//Subring S1i(r,v);
 		int ni=S1i.size();
-		if(ni>16)
+		if(ni!=16)
 			continue;
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
@@ -1151,7 +1151,7 @@ void findsubring(IRing *r,int n)
 			//string I2=calcI2(&S1i);   
 			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 		}		
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
+		if(ni==n && ID==-1)//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
 		{		
 			string strR=calcRingInvariant(&S1i);
 			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
@@ -1173,9 +1173,15 @@ void findsubring(IRing *r,int n)
 #endif	
 }
 
+int g_i=1;
+int g_a=2704;
 int main(int argc, char* argv[])
 {   
-   for(int i=1;i<=2704;i++)
+   if(argc>1)
+	   g_i=atoi(argv[1]);
+   if(argc>2)
+	   g_a=atoi(argv[2]);   
+   for(int i=g_i;i<=g_a;i++)//1~496,2570~2704
    {
 	   IRing* r=newR8R8(i);
 	   if(r){
