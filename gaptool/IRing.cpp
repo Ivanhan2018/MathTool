@@ -220,7 +220,7 @@ public:
     void initJ(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_10所在的有限环序列,D=<a,b;pa=pb=0,a^2=a,b^2=b,ab=ba=0>=Z_p+Z_p	
     void initK(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_11所在的有限环序列,K=GF(p^2)=p^2阶有限域
 	void initR8(int ID=0);
-	void initR16(int ID=0);		
+	bool initR16(int ID=0);		
 	// 成员变量
 	vector<MATRIXi> m_Set;
 	IRing* m_r;
@@ -362,7 +362,7 @@ void M2r::initK(int n){
    m_Set=FR(m_r,gen);   
 }
 
-void M2r::initR16(int ID){
+bool M2r::initR16(int ID){
    vector<MATRIXi> gen;	
    MATRIXi A(2,vector<int>(2,0));
    MATRIXi B(2,vector<int>(2,0));
@@ -382,16 +382,16 @@ void M2r::initR16(int ID){
 		gen.push_back(A);		
    }else if(ID==110){		
 		initI(4);
-        return;		
+        return true;		
    }else if(ID==102){		
 		initH(4);
-        return;	
+        return true;	
    }else if(ID==106){		
 		initK(4);
-        return; 		
+        return true; 		
    }else if(ID==107){		
 		initD(4);
-        return;			
+        return true;			
    }else if(ID==8){
 		m_r=new ZmodnZ(1,16);		
 		A[0][0]=2;
@@ -430,19 +430,7 @@ void M2r::initR16(int ID){
 		A[0][1]=0;
 		A[1][0]=3;
 		A[1][1]=1;
-		gen.push_back(A);
-   }else if(ID==12){
-		m_r=new ZmodnZ(2,32);		
-		A[0][0]=2;
-		A[0][1]=0;
-		A[1][0]=0;
-		A[1][1]=6;
-		B[0][0]=8;
-		B[0][1]=8;
-		B[1][0]=8;
-		B[1][1]=8;
-		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(A);		
    }else if(ID==17){
 		m_r=new ZmodnZ(1,8);		
 		A[0][0]=6;
@@ -814,13 +802,16 @@ void M2r::initR16(int ID){
 	   B[1][0]=0;
 	   B[1][1]=0;   
 	   gen.push_back(A);
-	   gen.push_back(B);   
+	   gen.push_back(B); 
+   }else if(ID==0){	   
+ 	    initR16(389);
+		return true;  
    }else{
-	    initR16(389);
-		return;
+		return false;
    }
    m_flag=1;
-   m_Set=FR(m_r,gen);   
+   m_Set=FR(m_r,gen); 
+   return true; 
 }
 
 void M2r::initR8(int ID){
@@ -1195,7 +1186,7 @@ public:
 	void initF(int n);// R4_6、R9_6所在的n^2阶有限环序列,		
 	void initL(int n);// R8_38所在的n^3阶有限环序列,
 	void initR8(int ID=0);
-	void initR16(int ID=0);	
+	bool initR16(int ID=0);	
 	// 成员变量
 	vector<MATRIXi8> m_Set;
 	IRing* m_r;
@@ -1396,7 +1387,7 @@ void Mnr::initR8(int ID){
    m_Set=FR(m_r,gen);      
 }
 
-void Mnr::initR16(int ID){
+bool Mnr::initR16(int ID){
    vector<MATRIXi8> gen;     
    if(ID==109){
 	   m_r=new ZmodnZ(1,4);
@@ -1558,10 +1549,10 @@ void Mnr::initR16(int ID){
 		gen.push_back(B);			
    }else if(ID==111){
 	   initE(4);
-	   return;
+	   return true;
    }else if(ID==112){
 	   initF(4);
-       return;			
+       return true;			
     }else if(ID==113){
 	   m_r=new ZmodnZ(1,4);
 	   m_n=4; 	   
@@ -1643,7 +1634,7 @@ void Mnr::initR16(int ID){
 		B[3][3]=0;
 		gen.push_back(A); 
 		gen.push_back(B);		
-   }else if(ID==121){
+   }else if(ID==81){
 		m_r=new ZmodnZ(1,4);
 		m_n=3; 	   
 		MATRIXi8 A(3,vector<TElem>(3,0));
@@ -1668,7 +1659,7 @@ void Mnr::initR16(int ID){
 		B[2][2]=0;
 		gen.push_back(A); 
 		gen.push_back(B); 	
-   }else if(ID==122){
+   }else if(ID==82){
 		m_r=new ZmodnZ(1,4);
 		m_n=3; 	   
 		MATRIXi8 A(3,vector<TElem>(3,0));
@@ -1693,7 +1684,7 @@ void Mnr::initR16(int ID){
 		B[2][2]=0;
 		gen.push_back(A); 
 		gen.push_back(B); 	 		
-   }else if(ID==123){
+   }else if(ID==83){
 		m_r=new ZmodnZ(1,4);
 		m_n=3; 	   
 		MATRIXi8 A(3,vector<TElem>(3,0));
@@ -2579,13 +2570,16 @@ void Mnr::initR16(int ID){
 		B[3][2]=0;
 		B[3][3]=1;		
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);
+   }else if(ID==0){  	
+ 	   initR16(380);
+       return true;   
    }else{
-	   initR16(380);
-       return;  
+       return false; 
    }
    m_flag=1;
-   m_Set=FR(m_r,gen);      
+   m_Set=FR(m_r,gen);  
+   return true;    
 }
 
 Mnr::Mnr(IRing* r,int n,vector<MATRIXi8>& gen){
@@ -3034,7 +3028,23 @@ int main(int argc, char* argv[])
 	if(argc>1)
 		g_i=atoi(argv[1]);
 	
-	if(1){
+	for(int i=1;i<=390;i++){
+	   M2r r16;
+	   bool b=r16.initR16(i);
+       if(b){
+		   int ID=IdRing(&r16);
+		   printf("%d:R16_%d\n",i,ID);
+	   }else{
+			Mnr r16a;
+			bool ba=r16a.initR16(i);
+			if(ba){
+			   int ID=IdRing(&r16a);
+			   printf("%d:R16_%d\n",i,ID);
+			}		   
+	   }
+	}
+	
+	if(0){
 		//ZmodnZ r(4,32);
 		M2r r4;
 		r4.initJ(2);
