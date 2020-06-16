@@ -1054,6 +1054,8 @@ IRing* newR8R8(int ij)
 {
 	int i=(ij-1)%52+1;
 	int j=(ij-1)/52+1;
+	//if(i>j)
+		//return NULL;	
     IRing* ri=newR8(i);
 	if(!ri)
 		return NULL;
@@ -1173,6 +1175,61 @@ void findsubring(IRing *r,int n)
 #endif	
 }
 
+void findsubring3(IRing *r,int n)
+{
+#define PRINT_LOG 1	
+	bool bFind=false;	
+	int ID=IdRing(r);
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	set<string> S;	
+	for(int i=0;i<r->size()-2;i++)		
+	for(int j=i+1;j<r->size()-1;j++){
+	for(int k=j+1;k<r->size();k++){		
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);
+		v.push_back(k);		
+		Subring S1i;
+		bool bn=S1i.init(r,v,16);
+		if(!bn)
+			continue;
+		//Subring S1i(r,v);
+		int ni=S1i.size();
+		if(ni!=16)
+			continue;
+		ID=IdRing(&S1i);
+		if(ni==16 && ID==-1)
+		{		
+			string strR=calcRingInvariant(&S1i);
+			if(S.find(strR)==S.end()){
+				//printf("%d,%d,%d=>R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",i,j,k,ni,ID,strR.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());
+	#if 0//PRINT_LOG			
+				fout<<i<<","<<j<<","<<k<<"=>";
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+				bFind=true;
+	#endif				
+			}
+			S.insert(strR);						
+			//break;
+		}		   
+	}
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("子环表示已输出到文件%s\n",sz);
+#endif	
+}
+
 void findquotientring(IRing *r,int n)
 {
 #define PRINT_LOG 1	
@@ -1197,6 +1254,10 @@ void findquotientring(IRing *r,int n)
 		bool bn=S1i0.init(r,v,4);
 		if(!bn)
 			continue;
+		if(S1i0.m_Set.size()!=4)
+			continue;
+		vector<int> v0=v;
+		v=S1i0.m_Set;
 		int iret1=IsIdeal(r,v); 
 		if(iret1!=1)
 			continue;
@@ -1207,7 +1268,7 @@ void findquotientring(IRing *r,int n)
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){		
-			int IDr=0;//IdRing(r);
+            int IDr=0;//IdRing(r);
 			int IDr0=IdRing(&S1i0);
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
 		}	
@@ -1235,17 +1296,19 @@ void findquotientring(IRing *r,int n)
 }
 
 int g_i=1;
-int g_a=576;
+int g_a=572;
 void testR8R4()
 {
-   //R8R4:1~236
+   //R8R4:1~572
    //R8R8:1~2400,2570~2704
+   //R8R8:1~1520
    for(int i=g_i;i<=g_a;i++)
    {
 	   IRing* r=newR8R4(i);
-	   if(r){
+	   if(r){		   
 		   printf("R8R4_%d\n",i);
-		   findquotientring(r,16);
+		   findsubring3(r,16);		   
+		   //findquotientring(r,16);
 		   delete r;
 		   r=NULL;
 	   }	   
