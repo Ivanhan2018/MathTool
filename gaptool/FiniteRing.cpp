@@ -1181,7 +1181,7 @@ int main(int argc, char* argv[])
 	   g_i=atoi(argv[1]);
    if(argc>2)
 	   g_a=atoi(argv[2]);   
-   for(int i=g_i;i<=g_a;i++)//1~496,2570~2704
+   for(int i=g_i;i<=g_a;i++)//1~516,520~548,580~1000,1900~2200,2570~2704
    {
 	   IRing* r=newR8R8(i);
 	   if(r){
