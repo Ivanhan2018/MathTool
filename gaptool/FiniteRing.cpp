@@ -1301,7 +1301,7 @@ void findquotientring(IRing *r,int n)
 
 int g_i=1;
 int g_a=572;
-void testR8R4()
+void testR8R4(int func)
 {
    //R8R4:1~572
    //R8R8:1~2400,2570~2704
@@ -1310,16 +1310,18 @@ void testR8R4()
    {
 	   IRing* r=newR8R4(i);
 	   if(r){		   
-		   printf("R8R4_%d\n",i);
-		   //findsubring3(r,16);		   
-		   findquotientring(r,16);
+		   printf("R8R4_%d\n",i);	   
+		   if(func==0)
+			   findquotientring(r,16);
+		   else
+			   findsubring3(r,16);
 		   delete r;
 		   r=NULL;
 	   }	   
    }	
 }
 
-void testR8R8()
+void testR8R8(int func)
 {
    //R8R4:1~572
    //R8R8:1~2400,2570~2704
@@ -1329,8 +1331,10 @@ void testR8R8()
 	   IRing* r=newR8R8(i);
 	   if(r){		   
 		   printf("R8R8_%d\n",i);
-		   //findsubring3(r,16);		   
-		   findquotientring(r,16);
+		   if(func==0)
+			   findquotientring(r,16);
+		   else
+			   findsubring3(r,16);
 		   delete r;
 		   r=NULL;
 	   }	   
@@ -1374,7 +1378,7 @@ int main(int argc, char* argv[])
 	   g_i=atoi(argv[1]);
    if(argc>2)
 	   g_a=atoi(argv[2]);   
-   testR8R8();
+   testR8R4(1);
    //system("pause");
    return 0;
 }
