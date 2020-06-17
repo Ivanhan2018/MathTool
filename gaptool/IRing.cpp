@@ -1,4 +1,4 @@
-#include"IRing.h"
+#include"quotientRing.h"
 #include <ctime>
 #include <fstream>
 
@@ -2865,13 +2865,13 @@ void findsubring(M2r *r,int n)
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
-			string I1=calcI1(&S1i);
-			string I2=calcI2(&S1i);   
-			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+			//printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
+			//string I1=calcI1(&S1i);
+			//string I2=calcI2(&S1i);   
+			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 		}		
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337||ID==384||ID==389||ID==390)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==26||ID==34||ID==39||ID==52||ID==42||ID==39||ID==40||ID==35||ID==36||ID==27||ID==22||ID==17||ID==14||ID==7)))   
-		//if(ni==n && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))
+		//if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337||ID==384||ID==389||ID==390)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==26||ID==34||ID==39||ID==52||ID==42||ID==39||ID==40||ID==35||ID==36||ID==27||ID==22||ID==17||ID==14||ID==7)))   
+		if(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))
 		//if(ni==n && ni<r->size() && (ID==-1||(ID>5 && ID!=8 && ID!=10 && ID!=11 && ID!=13 && ID!=15 && ID!=16 && ID!=20 && ID!=21 && ID!=23 && ID!=24 && ID!=25 && ID!=49 && ID!=51)))	
 		{
 			string str=M2r::MStr(r->m_Set[i]);
@@ -2908,12 +2908,12 @@ void findsubring(Mnr *r,int n)
 		v.push_back(i);		
 		v.push_back(j);
 		Subring S1i;
-		bool bn=S1i.init(r,v,16);
+		bool bn=S1i.init(r,v,8);
 		if(!bn)
 			continue;
 		//Subring S1i(r,v);
 		int ni=S1i.size();
-		if(ni>16)
+		if(ni!=8)
 			continue;
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
@@ -2925,7 +2925,7 @@ void findsubring(Mnr *r,int n)
 			string I2=calcI2(&S1i);   
 			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 		}		
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337||ID==384||ID==389||ID==390)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==26||ID==39||ID==42||ID==39||ID==22||ID==17||ID==14||ID==7)))   
+		if(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))   
 		//if(ID==126||ni==n && ID==-1||(ni==8 && (ID==302||ID==364||ID==365||ID==366||ID==378||ID==381||ID==383||ID==384||ID==389||ID==390)||(ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==26||ID==29||ID==34||ID==39||ID==40||ID==35||ID==36||ID==27||ID==22||ID==17||ID==14||ID==7)))   
 		//if((ni<=32 && ID==-1)||(ni==8 && ID>5 && ID!=8 && ID!=10 && ID!=11 && ID!=13 && ID!=15 && ID!=16 && ID!=19 && ID!=20 && ID!=21 && ID!=23 && ID!=24 && ID!=25 && ID!=28 && ID!=29 && ID!=37 && ID!=41 && ID<44 && ID>51))	
 		{
@@ -2977,25 +2977,25 @@ void findsubring3(Mnr *r,int n)
 		v.push_back(j);	
 		v.push_back(k);			
 		Subring S1i;
-		bool bn=S1i.init(r,v,16);
+		bool bn=S1i.init(r,v,8);
 		if(!bn)
 			continue;
 		//Subring S1i(r,v);
 		int ni=S1i.size();
-		if(ni>16)
+		if(ni!=8)
 			continue;
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d\n",cnt1,ni,ID,i,j,k);
-			string I1=calcI1(&S1i);
-			string I2=calcI2(&S1i);   
-			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+			//printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d\n",cnt1,ni,ID,i,j,k);
+			//string I1=calcI1(&S1i);
+			//string I2=calcI2(&S1i);   
+			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 		}	
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337||ID==384||ID==389||ID==390)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39||ID==22||ID==17||ID==14||ID==7)))   
-		//if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
+		//if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337||ID==384||ID==389||ID==390)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39||ID==22||ID==17||ID==14||ID==7)))   
+		if(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))   
 		{
 			string str=Mnr::MStr(r->m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());
@@ -3023,25 +3023,208 @@ void findsubring3(Mnr *r,int n)
 #endif	
 }
 
+void findsubring(IRing *r,int n)
+{
+#define PRINT_LOG 1	
+	bool bFind=false;	
+	int ID=IdRing(r);
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	map<pair<int,int>,pair<int,int>> M;		
+	for(int i=0;i<r->size()-1;i++)		
+	for(int j=i+1;j<r->size();j++)
+	{
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);
+		Subring S1i;
+		bool bn=S1i.init(r,v,16);
+		if(!bn)
+			continue;
+		//Subring S1i(r,v);
+		int ni=S1i.size();
+		if(ni!=16)
+			continue;
+		int ID=IdRing(&S1i);
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
+			//string I1=calcI1(&S1i);
+			//string I2=calcI2(&S1i);   
+			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+		}		
+		if(ni==16 && ID==-1)//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
+        //if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
+		{		
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			//S1i.printTable();
+#if PRINT_LOG			
+			fout<<i<<","<<j<<"=>";
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			bFind=true;
+#endif
+			//break;
+		}		   
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("子环表示已输出到文件%s\n",sz);
+#endif	
+}
+
+void findquotientring(IRing *r,int n)
+{
+#define PRINT_LOG 1	
+	bool bFind=false;	
+	int ID=0;//IdRing(r);
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	map<pair<int,int>,pair<int,int>> M;	
+	for(int i=0;i<r->size()-1;i++)		
+    //int i=0;
+	for(int j=i+1;j<r->size();j++)
+	{
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);
+		Subring S1i0;
+		bool bn=S1i0.init(r,v,4);
+		if(!bn)
+			continue;
+		if(S1i0.m_Set.size()!=4)
+			continue;
+		vector<int> v0=v;
+		v=S1i0.m_Set;
+		int iret1=IsIdeal(r,v); 
+		if(iret1!=1)
+			continue;
+		quotientRing S1i(r,v);
+		int ni=S1i.size();		
+		int ID=IdRing(&S1i);	
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){		
+            int IDr=0;//IdRing(r);
+			int IDr0=IdRing(&S1i0);
+			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
+		}	
+		//if(ni==16 && ID==-1)
+		if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 	
+		{		
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			//S1i.printTable();
+#if PRINT_LOG			
+			fout<<i<<","<<j<<"=>";
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			bFind=true;
+#endif
+			//break;
+		}
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("商环表示已输出到文件%s\n",sz);
+#endif	
+}
+
+IRing* newR16R2(int ij)
+{
+	int i=(ij-1)%390+1;
+	int j=(ij-1)/390+1;
+	IRing* ri=NULL;
+	M2r* r16=new M2r;
+	bool b=r16->initR16(i);
+	if(b){
+	   ri=r16;
+	}else{
+		delete r16;
+		r16=NULL;
+		Mnr* r16a=new Mnr;
+		bool ba=r16a->initR16(i);
+		if(ba){
+		   ri=r16a;
+		}	
+		else{
+			delete r16a;
+			r16a=NULL;
+		}				
+	}	
+	if(!ri)
+		return NULL;
+	if(j!=1 && j!=2){
+		delete ri;
+		return NULL;		
+	}
+    IRing* rj=new ZmodnZ(3-j,2*(3-j));
+	if(!rj){
+		delete ri;
+		return NULL;
+	}
+	DecompositionRing* r= new DecompositionRing(ri,rj);
+	r->m_flag=1;
+	return r;
+}
+
 int main(int argc, char* argv[])
 { 
 	if(argc>1)
 		g_i=atoi(argv[1]);
-	
-	for(int i=1;i<=390;i++){
-	   M2r r16;
-	   bool b=r16.initR16(i);
-       if(b){
-		   int ID=IdRing(&r16);
-		   printf("%d:R16_%d\n",i,ID);
-	   }else{
-			Mnr r16a;
-			bool ba=r16a.initR16(i);
-			if(ba){
-			   int ID=IdRing(&r16a);
-			   printf("%d:R16_%d\n",i,ID);
-			}		   
+
+	if(1){	
+	   for(int i=1;i<=780;i++)
+	   {
+		   IRing* r=newR16R2(i);
+		   if(r){
+			   printf("R16R2_%d\n",i);
+			   //findsubring(r,16);
+			   findquotientring(r,16);
+			   delete r;
+			   r=NULL;
+		   }
 	   }
+	}   
+	
+	if(0){
+		for(int i=1;i<=390;i++){
+		   M2r r16;
+		   bool b=r16.initR16(i);
+		   if(b){
+			   int ID=IdRing(&r16);
+			   printf("%d:R16_%d\n",i,ID);
+			   //findquotientring(&r16,8);
+			   findsubring(&r16,8);
+		   }else{
+				Mnr r16a;
+				bool ba=r16a.initR16(i);
+				if(ba){
+				   int ID=IdRing(&r16a);
+				   printf("%d:R16_%d\n",i,ID);
+				   //findquotientring(&r16a,8);
+				   findsubring3(&r16a,8);
+				}		   
+		   }
+		}
 	}
 	
 	if(0){

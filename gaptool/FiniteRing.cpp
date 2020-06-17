@@ -1,3 +1,4 @@
+#define R32_DEL
 #include<ctime>
 #include<fstream>
 #include<set>
@@ -1054,8 +1055,8 @@ IRing* newR8R8(int ij)
 {
 	int i=(ij-1)%52+1;
 	int j=(ij-1)/52+1;
-	//if(i>j)
-		//return NULL;	
+	if(i>j)
+		return NULL;	
     IRing* ri=newR8(i);
 	if(!ri)
 		return NULL;
@@ -1251,10 +1252,10 @@ void findquotientring(IRing *r,int n)
 		v.push_back(i);		
 		v.push_back(j);
 		Subring S1i0;
-		bool bn=S1i0.init(r,v,4);
+		bool bn=S1i0.init(r,v,r->size()/n);
 		if(!bn)
 			continue;
-		if(S1i0.m_Set.size()!=4)
+		if(S1i0.m_Set.size()!=r->size()/n)
 			continue;
 		vector<int> v0=v;
 		v=S1i0.m_Set;
@@ -1270,10 +1271,13 @@ void findquotientring(IRing *r,int n)
 		if(cnt1>cnt){		
             int IDr=0;//IdRing(r);
 			int IDr0=IdRing(&S1i0);
+			if(S1i0.size()==4 && IDr0==-1){
+				Subring S1i00(r,S1i.m_I);
+				printRing(&S1i00);
+			}
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
 		}	
-		if(ni==16 && ID==-1)
-		//if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 	
+		if(ni==n && ((ni==16 && ID==-1)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
 			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
@@ -1307,8 +1311,26 @@ void testR8R4()
 	   IRing* r=newR8R4(i);
 	   if(r){		   
 		   printf("R8R4_%d\n",i);
-		   findsubring3(r,16);		   
-		   //findquotientring(r,16);
+		   //findsubring3(r,16);		   
+		   findquotientring(r,16);
+		   delete r;
+		   r=NULL;
+	   }	   
+   }	
+}
+
+void testR8R8()
+{
+   //R8R4:1~572
+   //R8R8:1~2400,2570~2704
+   //R8R8:1~1520
+   for(int i=g_i;i<=g_a;i++)
+   {
+	   IRing* r=newR8R8(i);
+	   if(r){		   
+		   printf("R8R8_%d\n",i);
+		   //findsubring3(r,16);		   
+		   findquotientring(r,16);
 		   delete r;
 		   r=NULL;
 	   }	   
@@ -1330,13 +1352,29 @@ void testR4R4()
    }	
 }
 
+void testM2R4(int i)
+{
+   //for(int i=1;i<=11;i++)//1~121
+   {
+	   IRing* r4=newR4(i);
+	   M2r* r=new M2r(r4);
+	   if(r){
+		   r->m_flag=1;
+		   printf("M2R4_%d\n",i);
+		   findquotientring(r,16);
+		   delete r;
+		   r=NULL;
+	   }	   
+   }	
+}
+
 int main(int argc, char* argv[])
 {   
    if(argc>1)
 	   g_i=atoi(argv[1]);
    if(argc>2)
 	   g_a=atoi(argv[2]);   
-   testR8R4();
+   testR8R8();
    //system("pause");
    return 0;
 }

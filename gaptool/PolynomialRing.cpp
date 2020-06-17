@@ -1,4 +1,5 @@
 #include"ZmodnZ.h"
+#include"quotientRing.h"
 #include<vector> 
 #include<iostream>
 #include<fstream> 
@@ -45,7 +46,7 @@ public:
 	int visitVnRm(int n,int m);
 	void initR4(int ID=0);	
 	void initR8(int ID=0);
-	void initR16(int ID=0);
+	bool initR16(int ID=0);
 	void initR36(int ID=0);		
 	// 成员变量
 	vector<Polynomial> m_Set;
@@ -77,7 +78,7 @@ void PolynomialRing::init(IRing *r,Polynomial& a){
 	int N=r->size();
 	unsigned int pOrd = a.size()-1;/*多项式最高次项次数*/	
 	int cnt=visitVnRm(pOrd,N);
-	printf("cnt=%d\n",cnt);
+	//printf("cnt=%d\n",cnt);
 }
 
 void PolynomialRing::initR4(int ID){
@@ -168,7 +169,7 @@ void PolynomialRing::initR8(int ID){
    m_flag=1;
 }
 	
-void PolynomialRing::initR16(int ID){
+bool PolynomialRing::initR16(int ID){
    Polynomial vf,vm1,vm2;
    if(ID==16){  
 		vm1.push_back(4);
@@ -372,16 +373,13 @@ void PolynomialRing::initR16(int ID){
 		m_r=new ZmodnZ(1,2);
 		init(m_r,vf); 
    }else if(ID==0){	
-		vf.push_back(1);
-		vf.push_back(1);
-		vf.push_back(1);		
-		m_r=new ZmodnZ(1,12);
-		init(m_r,vf); 		
+	   initR16(388);
+	   return true; 		
    }else{
-	   initR16(0);
-	   return;
+	   return false;
    }
-   m_flag=1;	
+   m_flag=1;
+   return true;   
 }	
 
 void PolynomialRing::initR36(int ID){
@@ -984,6 +982,71 @@ void findsubring3(PolynomialRing *r,int n){
 #endif		
 }
 
+void findquotientring(IRing *r,int n)
+{
+#define PRINT_LOG 1	
+	bool bFind=false;	
+	int ID=IdRing(r);
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
+    ofstream fout(sz);
+#endif	
+    string strCmd="del ";
+	strCmd+=sz;
+	map<pair<int,int>,pair<int,int>> M;	
+	for(int i=0;i<r->size()-1;i++)		
+    //int i=0;
+	for(int j=i+1;j<r->size();j++)
+	{
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);
+		Subring S1i0;
+		bool bn=S1i0.init(r,v,2);
+		if(!bn)
+			continue;
+		if(S1i0.m_Set.size()!=2)
+			continue;
+		vector<int> v0=v;
+		v=S1i0.m_Set;
+		int iret1=IsIdeal(r,v); 
+		if(iret1!=1)
+			continue;
+		quotientRing S1i(r,v);
+		int ni=S1i.size();		
+		int ID=IdRing(&S1i);	
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){		
+            int IDr=IdRing(r);
+			int IDr0=IdRing(&S1i0);
+			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
+		}	
+		//if(ni==16 && ID==-1)
+		if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 	
+		{		
+			string strR=calcRingInvariant(&S1i);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			//S1i.printTable();
+#if PRINT_LOG			
+			fout<<i<<","<<j<<"=>";
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			bFind=true;
+#endif
+			//break;
+		}
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("商环表示已输出到文件%s\n",sz);
+#endif	
+}
+
 std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
 {
 	std::vector<string> ret;
@@ -1023,7 +1086,18 @@ int main(int argc, char* argv[])
 	if(argc>3){
 		g_i=atoi(argv[3]);	
 	}
-	if(1){
+	
+	for(int i=1;i<=390;i++){
+	   PolynomialRing r16;
+	   bool b=r16.initR16(i);
+       if(b){
+		   int ID=IdRing(&r16);
+		   printf("%d:R16_%d\n",i,ID);
+		   findquotientring(&r16,8);
+	   }
+	}
+	
+	if(0){
 		if(argc<3)
 		{
 			printf("Usage:  PolynomialRing vf n [g_i]\n");
