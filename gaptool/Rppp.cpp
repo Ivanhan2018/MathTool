@@ -153,9 +153,10 @@ void findsubring(Mnr *r,int n)
 }
 
 IRing* newRppp(int ID,int p,int sID){	
-   //if(/* ID!=29 && ID!=46 ID!=26 && ID!=44*/ID!=36 && ID!=40)
-	   //return NULL;
+   if(/* ID!=29 && ID!=46 ID!=26 && ID!=44ID!=36 && ID!=40*/ID!=56)
+	   return NULL;
 	//p=2;
+	//if(p==3)return NULL;
    if(ID==1){
 		return new ZmodnZ(p*p*p,p*p*p*p*p*p); 
    }else if(ID==2){
@@ -624,26 +625,8 @@ Rppp':
 		gen.push_back(B);
 		gen.push_back(C);		
 		r->m_flag=1;
-		r->m_Set=Mnr::FR(r->m_r,gen); 
-#if 0
-        for(int i=0;i<r->size();i++){
-				for(int j=0;j<r->size();j++){
-				vector<int> vi;
-				vi.push_back(i);
-				vi.push_back(j);		   
-				Subring si(r,vi);
-				int ni=si.size();
-				if(ni==r->size()){		   
-					string str=Mnr::MStr(r->m_Set[i]);
-					printf("%d->%s=>",i,str.c_str()); 
-					string strj=Mnr::MStr(r->m_Set[j]);
-					printf("%d->%s=>",j,strj.c_str()); 	
-					break;			
-				}
-			}	
-		}		
-#endif		
-		return r;	
+		r->m_Set=Mnr::FR(r->m_r,gen); 		
+		return r;		 		
    }else if(ID==33){	
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -1199,6 +1182,50 @@ Rppp':
 		gen.push_back(A);
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
+		return r;	
+   }else if(ID==56){//Rppp(56,3)=R27_56,µ«Rppp(56,2)=R8_26
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;	   
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		MATRIXi8 B(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=1;
+		A[1][0]=1;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=1; 
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=0;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[0][3]=0;
+		B[1][0]=0;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[1][3]=1;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		B[2][3]=0;
+		B[3][0]=0;
+		B[3][1]=0;
+		B[3][2]=0;
+		B[3][3]=0;	
+		gen.push_back(A);
+		gen.push_back(B);
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen);		
 		return r;		
    }else if(ID==59){//Rppp(59,3)=R27_59,µ«Rppp(59,2)=R4_6
 		Mnr* r=new Mnr();   
@@ -1402,7 +1429,7 @@ void findquotientring(IRing *r,int n)
 
 int main()
 { 
-	if(0){
+	if(1){
 		for(int i=1;i<=59;i++){
 		   IRing* r8=newRppp(i,2);
 		   IRing* r27=newRppp(i,3);		   
@@ -1426,7 +1453,7 @@ int main()
 			#endif		
 		}
 	}
-	if(1){
+	if(0){
 		for(int i=1;i<=11;i++){
 		   IRing* r64=newRpp(i,12);		   
 		   if(!r64)
