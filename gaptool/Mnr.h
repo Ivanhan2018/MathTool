@@ -2,11 +2,14 @@
 #define MNR_H
 
 #include"IRing.h"
-
+#ifdef USE_MNR_UINT32
+typedef unsigned int TElem;
+#else
 typedef unsigned char TElem; // unsigned int
+#endif
 typedef vector<vector<TElem> > MATRIXi8;
 
-typedef vector<vector<unsigned char> > MATRIXi8;
+//typedef vector<vector<unsigned char> > MATRIXi8;
 
 // n阶全矩阵环Mn(r)
 struct Mnr:public IRing
@@ -15,7 +18,7 @@ public:
 	// 静态函数
    static int getidx(vector<MATRIXi8> &Arr2,MATRIXi8 &Arr1);
    static bool IsEqual(const MATRIXi8 &t,const MATRIXi8 &m);	
-   static bool nextV1(int m,vector<unsigned char>& v);
+   static bool nextV1(int m,vector<TElem>& v);
    static vector<MATRIXi8> FR(IRing* r,vector<MATRIXi8>& gen); 
    static MATRIXi8 add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m);  
    static MATRIXi8 mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m); 
@@ -61,7 +64,7 @@ Mnr::~Mnr(){
 
 // A:=[[Z(m),Z(m),0*Z(m),0*Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)],[Z(m),Z(m),0*Z(m),0*Z(m)]];;R4_5:=RingByGenerators([A]);;
 void Mnr::initE(int n){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));
+   MATRIXi8 A(4,vector<TElem>(4,0));
    //MATRIXi8 B(4,vector<unsigned char>(4,0));
    A[0][0]=0;
    A[0][1]=1;
@@ -89,7 +92,7 @@ void Mnr::initE(int n){
 
 // A:=[[Z(m),0*Z(m),0*Z(m),Z(m)],[Z(m),0*Z(m),0*Z(m),Z(m)],[0*Z(m),Z(m),Z(m),0*Z(m)],[Z(m),0*Z(m),0*Z(m),Z(m)]];;R4_6:=RingByGenerators([A]);;
 void Mnr::initF(int n){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));
+   MATRIXi8 A(4,vector<TElem>(4,0));
    A[0][0]=1;
    A[0][1]=0;
    A[0][2]=0;
@@ -116,7 +119,7 @@ void Mnr::initF(int n){
 
 // A:=[[0*Z(m),Z(m),0*Z(m),Z(m)],[Z(m),Z(m),0*Z(m),0*Z(m)],[0*Z(m),0*Z(m),Z(m),Z(m)],[0*Z(m),Z(m),0*Z(m),Z(m)]];;R8_38:=RingByGenerators([A]);;
 void Mnr::initL(int n){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));
+   MATRIXi8 A(4,vector<TElem>(4,0));
    //MATRIXi8 B(4,vector<unsigned char>(4,0));
    A[0][0]=0;
    A[0][1]=1;
@@ -143,7 +146,7 @@ void Mnr::initL(int n){
 }
 
 void Mnr::initR8(int ID){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));	
+   MATRIXi8 A(4,vector<TElem>(4,0));	
    if(ID==13){
 	   A[0][0]=0;
 	   A[0][1]=1;
@@ -191,7 +194,7 @@ void Mnr::initR8(int ID){
 }
 
 void Mnr::initR16(int ID){
-   MATRIXi8 A(4,vector<unsigned char>(4,0));	
+   MATRIXi8 A(4,vector<TElem>(4,0));	
    if(ID==113){
 	   A[0][0]=1;
 	   A[0][1]=0;
@@ -270,7 +273,7 @@ string Mnr::MStr(const MATRIXi8 &t){
 vector<MATRIXi8> Mnr::FR(IRing* r,vector<MATRIXi8>& gen){
 	vector<MATRIXi8> Set;
 	int n=gen[0].size();
-	MATRIXi8 E(n,vector<unsigned char>(n,0));
+	MATRIXi8 E(n,vector<TElem>(n,0));
 	Set.push_back(E);
 	for(int i=0;i<gen.size();i++)
 	{
@@ -306,7 +309,7 @@ vector<MATRIXi8> Mnr::FR(IRing* r,vector<MATRIXi8>& gen){
 MATRIXi8 Mnr::add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 {
     int n=t.size();
-	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	MATRIXi8 C(n,vector<TElem>(n,0));
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
 			C[i][j]=r->add(t[i][j],m[i][j]);
@@ -318,7 +321,7 @@ MATRIXi8 Mnr::add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 MATRIXi8 Mnr::mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 {
     int n=t.size();
-	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	MATRIXi8 C(n,vector<TElem>(n,0));
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
 			int sum=0;
@@ -331,7 +334,7 @@ MATRIXi8 Mnr::mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 	return C;
 }
 
-bool Mnr::nextV1(int m,vector<unsigned char>& v){
+bool Mnr::nextV1(int m,vector<TElem>& v){
 	int n=v.size();
 	for(int i=n-1;i>=0;i--){
 		if(v[i]<m-1){
@@ -352,11 +355,11 @@ bool Mnr::nextV1(int m,vector<unsigned char>& v){
 
 // 调用m^(n^2)次visit
 int Mnr::visitMnRm(int n,int m){
-	vector<unsigned char> v(n*n,0);
+	vector<TElem> v(n*n,0);
 	int cnt=0;
 	do {
 		++cnt;
-		MATRIXi8 M(n,vector<unsigned char>(n,0));
+		MATRIXi8 M(n,vector<TElem>(n,0));
 		for(int k=0;k<n*n;k++){
 			int i=k/n;
 			int j=k%n;
@@ -410,7 +413,7 @@ int Mnr::add(int a,int b)
 	MATRIXi8 A=m_Set[a];
 	MATRIXi8 B=m_Set[b];	
     int n=m_n;
-	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	MATRIXi8 C(n,vector<TElem>(n,0));
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
 			C[i][j]=m_r->add(A[i][j],B[i][j]);
@@ -425,7 +428,7 @@ int Mnr::mul(int a,int b)
 	MATRIXi8 A=m_Set[a];
 	MATRIXi8 B=m_Set[b];	
     int n=m_n;
-	MATRIXi8 C(n,vector<unsigned char>(n,0));
+	MATRIXi8 C(n,vector<TElem>(n,0));
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
 			int sum=0;
