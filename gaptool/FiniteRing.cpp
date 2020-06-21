@@ -1378,7 +1378,19 @@ int main(int argc, char* argv[])
 	   g_i=atoi(argv[1]);
    if(argc>2)
 	   g_a=atoi(argv[2]);   
-   testR8R4(1);
+   //testR8R4(1);
+    for(int i=1;i<=11;i++){
+		for(int j=i;j<=11;j++){
+			IRing* ri=newR4(i);
+			IRing* rj=newR4(j);
+			DecompositionRing* r= new DecompositionRing(ri,rj);
+			r->m_flag=1;
+			int ID=IdRing(r);
+			printf("R4_%d¡ÁR4_%d=R16_%d\n",i,j,ID);
+			delete r;
+			r=NULL;
+		}
+	}
    //system("pause");
    return 0;
 }
