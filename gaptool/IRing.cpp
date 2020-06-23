@@ -2101,7 +2101,46 @@ bool Mnr::initR8(int ID){
 		A[3][1]=0;
 		A[3][2]=0;
 		A[3][3]=0;
-		gen.push_back(A);		
+		gen.push_back(A);
+	}else if(ID==39){//R8_39
+		m_r=new ZmodnZ(1,2);
+		m_n=4;
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		MATRIXi8 B(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=0;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=1;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[0][3]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[1][3]=0;
+		B[2][0]=0;
+		B[2][1]=1;
+		B[2][2]=0;
+		B[2][3]=0;
+		B[3][0]=1;
+		B[3][1]=0;
+		B[3][2]=0;
+		B[3][3]=0;
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==40){
 		m_r=new ZmodnZ(1,2);	
 		m_n=4;		   
@@ -3912,9 +3951,11 @@ bool Mnr::initR16(int ID){
 		B[3][3]=0;	   
 		gen.push_back(A);
 		gen.push_back(B); 				
-    }else if(ID>280){  
- 	    initR16_2(ID);
-        return true; 		
+    }else if(ID>280 && ID<=390){  
+ 	    return initR16_2(ID);
+	}else if(ID==0){	
+ 	    initR16_2(380);
+        return true;    		
    }else{
        return false; 
    }
