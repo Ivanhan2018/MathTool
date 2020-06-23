@@ -10,7 +10,7 @@ void findsubring1R8R16(IRing *r)
 {
 	set<pair<int,int>> M;
 	set<string> S;	
-	int ID=IdRing(r);
+	int ID=0;//IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
 	for(int i=g_i;i<r->size();i++)			
 	{
@@ -21,8 +21,8 @@ void findsubring1R8R16(IRing *r)
 		if(!bn)
 			continue;
 		int ni=S1i.size();
-		if(ni!=16 && ni!=8)
-			continue;
+		//if(ni!=16 && ni!=8)
+			//continue;
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(ni,ID));
@@ -45,7 +45,7 @@ void findsubring2R8R16(IRing *r)
 {
 	set<pair<int,int>> M;
 	set<string> S;	
-	int ID=IdRing(r);
+	int ID=0;//IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
 	for(int i=g_i;i<r->size()-1;i++)		
 	for(int j=i+1;j<r->size();j++)	
@@ -58,8 +58,8 @@ void findsubring2R8R16(IRing *r)
 		if(!bn)
 			continue;
 		int ni=S1i.size();
-		if(ni!=16 && ni!=8)
-			continue;
+		//if(ni!=16 && ni!=8)
+			//continue;
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(ni,ID));
@@ -82,7 +82,7 @@ void findsubring3R8R16(IRing *r)
 {
 	set<pair<int,int>> M;
 	set<string> S;	
-	int ID=IdRing(r);
+	int ID=0;//IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
 	for(int i=g_i;i<r->size()-2;i++)		
 	for(int j=i+1;j<r->size()-1;j++)
@@ -97,8 +97,8 @@ void findsubring3R8R16(IRing *r)
 		if(!bn)
 			continue;
 		int ni=S1i.size();
-		if(ni!=16 && ni!=8)
-			continue;
+		//if(ni!=16 && ni!=8)
+			//continue;
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(ni,ID));
@@ -141,14 +141,14 @@ int main(int argc, char* argv[])
 	if(argc>4)
 		g_i=atoi(argv[4]);
 	if(argc>5)
-		ijk=atoi(argv[5]);	
+		ijk=atoi(argv[5]);		
 	IRing* r=NULL;	
 	if(n1==4 && n2<=11){	
 		r=M2r::newR4(n2);
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}
-	if(n>2){
+	if(n>2||n==1){
 		Mnr* R=new Mnr(r,n);
 		R->m_flag=1;
 		findsubringR8R16(R,ijk);		

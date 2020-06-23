@@ -1235,7 +1235,7 @@ void findquotientring(IRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=IdRing(r);
+	int ID=0;//IdRing(r);
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -1313,6 +1313,8 @@ void testR8R4(int func)
 		   printf("R8R4_%d\n",i);	   
 		   if(func==0)
 			   findquotientring(r,16);
+		   else if(func==1)
+			   findsubring(r,16);		   
 		   else
 			   findsubring3(r,16);
 		   delete r;
@@ -1333,6 +1335,8 @@ void testR8R8(int func)
 		   printf("R8R8_%d\n",i);
 		   if(func==0)
 			   findquotientring(r,16);
+		   else if(func==1)
+			   findsubring(r,16);		   
 		   else
 			   findsubring3(r,16);
 		   delete r;
@@ -1372,13 +1376,17 @@ void testM2R4(int i)
    }	
 }
 
+int g_func=0;
 int main(int argc, char* argv[])
 {   
    if(argc>1)
 	   g_i=atoi(argv[1]);
    if(argc>2)
 	   g_a=atoi(argv[2]);   
-   //testR8R4(1);
+   if(argc>3)
+	   g_func=atoi(argv[3]);    
+   testR8R4(g_func);
+   /*
     for(int i=1;i<=11;i++){
 		for(int j=i;j<=11;j++){
 			IRing* ri=newR4(i);
@@ -1391,6 +1399,20 @@ int main(int argc, char* argv[])
 			r=NULL;
 		}
 	}
+    for(int i=1;i<=52;i++){
+		IRing* ri=newR8(i);
+		if(!ri)continue;
+		for(int j=1;j<=2;j++){		
+			IRing* rj=new ZmodnZ(3-j,2*(3-j));
+			DecompositionRing* r= new DecompositionRing(ri,rj);
+			r->m_flag=1;
+			int ID=IdRing(r);
+			printf("R8_%d¡ÁR2_%d=R16_%d\n",i,j,ID);
+			//delete r;
+			//r=NULL;
+		}
+	}
+		*/
    //system("pause");
    return 0;
 }
