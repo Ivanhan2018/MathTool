@@ -1,3 +1,4 @@
+#define R16_I1I2
 #define R32_DEL
 #include<ctime>
 #include<fstream>
@@ -1385,8 +1386,7 @@ int main(int argc, char* argv[])
 	   g_a=atoi(argv[2]);   
    if(argc>3)
 	   g_func=atoi(argv[3]);    
-   testR8R4(g_func);
-   /*
+   //testR8R4(g_func); 
     for(int i=1;i<=11;i++){
 		for(int j=i;j<=11;j++){
 			IRing* ri=newR4(i);
@@ -1399,7 +1399,7 @@ int main(int argc, char* argv[])
 			r=NULL;
 		}
 	}
-    for(int i=1;i<=52;i++){
+    /*for(int i=1;i<=52;i++){
 		IRing* ri=newR8(i);
 		if(!ri)continue;
 		for(int j=1;j<=2;j++){		
