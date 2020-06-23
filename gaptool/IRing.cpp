@@ -3927,7 +3927,46 @@ bool Mnr::initR16_2(int ID){
    vector<MATRIXi8> gen;     
    if(ID==0){	
  	    initR16_2(380);
-        return true; 	   
+        return true; 
+	}else if(ID==284){//R16_284
+		m_r=new ZmodnZ(1,2);
+		m_n=4;
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		MATRIXi8 B(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=0;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=0;
+		A[3][1]=1;
+		A[3][2]=1;
+		A[3][3]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[0][3]=0;
+		B[1][0]=0;
+		B[1][1]=1;
+		B[1][2]=0;
+		B[1][3]=0;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		B[2][3]=0;
+		B[3][0]=0;
+		B[3][1]=1;
+		B[3][2]=0;
+		B[3][3]=0;
+		gen.push_back(A);
+		gen.push_back(B);		
 	}else if(ID==285){//R16_285
 		m_r=new ZmodnZ(1,2);
 		m_n=4;
@@ -6390,7 +6429,7 @@ int main(int argc, char* argv[])
 	   return 0;
 	}   
 	
-	if(1){
+	if(argc==2){
 		ZmodnZ r(1,2);
 		//M2r r4;
 		//r4.initJ(2);
@@ -6404,7 +6443,7 @@ int main(int argc, char* argv[])
 		return 0;
 	}	
 	
-	if(argc>1){
+	if(argc>2){
 		set<int> vID;
 		for(int i=1;i<=390;i++){
 		   M2r r16;
@@ -6449,7 +6488,7 @@ int main(int argc, char* argv[])
 		printf("\n");
 	}
 	
-	if(argc>1){
+	if(argc>2){
 		set<int> vID;
 		for(int i=1;i<=52;i++){
 		   M2r r8;

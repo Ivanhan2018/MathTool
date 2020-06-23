@@ -1,3 +1,4 @@
+#define R16_I1I2
 #define USE_MNR_UINT32
 #include<iostream>
 #include<set>
