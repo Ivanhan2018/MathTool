@@ -240,7 +240,11 @@ IRing* newR8(int i)
 	}
 	if(i==14)//R8_14:=DirectSum(SmallRing(4,3),SmallRing(2,2));;R8_14:=DirectSum(ZmodnZ(2),ZmodnZ(4));;
 	{
-		FiniteRing* r=new FiniteRing(8,g_C2C4Add,&g_Z4F2Mul[0][0],0);
+		//不是环FiniteRing* r=new FiniteRing(8,g_C2C4Add,&g_Z4F2Mul[0][0],0);
+		ZmodnZ* r4=new ZmodnZ(1,4);
+		ZmodnZ* r2=new ZmodnZ(1,2);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;		
 		return r;
 	}
 	if(i==15)

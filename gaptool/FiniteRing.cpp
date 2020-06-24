@@ -390,11 +390,17 @@ int test2()
 				//printf("Hit%d:i=%d,ID=%d\n",cnt++,i,ID);
 			}
 			vID.insert(ID);
-			//string I1=calcI1(r);
-			//string I2=calcI2(r);   
-			//printf("R%d_%d:I1I2=%s,%s\n",r->size(),ID,I1.c_str(),I2.c_str());
-		   delete r;
-		   r=NULL;
+			int I=(i-1)%52+1;
+			int J=(i-1)/52+1;
+			if(0){//((I==13 && J==2)||(I==14 &&J==1)){
+				string strR=calcRingInvariant(r);	
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r->size(),ID,strR.c_str());				
+				string I1=calcI1(r);
+				string I2=calcI2(r);   
+				printf("R%d_%d:I1I2=%s,%s\n",r->size(),ID,I1.c_str(),I2.c_str());
+			}
+		   //delete r;
+		   //r=NULL;
 	   }	   
    }
    printf("%d种16阶可分解环\n",vID.size());
@@ -486,9 +492,10 @@ int main(int argc, char* argv[])
    if(argc>2)
 	   g_a=atoi(argv[2]);   
    if(argc>3)
-	   g_func=atoi(argv[3]);    
+	   g_func=atoi(argv[3]);
+   //test2();
    //testR8R4(g_func); 
-    /*for(int i=1;i<=11;i++){
+    /**/for(int i=1;i<=11;i++){
 		for(int j=i;j<=11;j++){
 			IRing* ri=newR4(i);
 			IRing* rj=newR4(j);
@@ -499,7 +506,7 @@ int main(int argc, char* argv[])
 			delete r;
 			r=NULL;
 		}
-	}*/
+	}
     for(int i=1;i<=52;i++){
 		IRing* ri=newR8(i);
 		if(!ri)continue;

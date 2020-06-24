@@ -1,9 +1,13 @@
 #define R16_I1I2
 #define USE_MNR_UINT32
 #include<iostream>
+#if 1
+#include"FiniteRing.h"
+#else
 #include"ZmodnZ.h"
 #include"M2r.h"
 #include"Mnr.h"
+#endif
 
 int main(int argc, char* argv[])
 { 
@@ -28,9 +32,15 @@ int main(int argc, char* argv[])
 	IRing* r=NULL;	
 	if(n1==4 && n2<=11){	
 		r=M2r::newR4(n2);
+	}else if(n1==8 && n2<=52){	
+		r=newR8(n2);		
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}
+	if(!IsRing(r)){
+		printf("r不是环\n");
+		return 0;
+	}		
 	if(n>2||(n==2 && n1==4 && (n2==5||n2==6))){
 		Mnr* R=new Mnr(r,n);
 		R->m_flag=1;
@@ -139,7 +149,9 @@ int main(int argc, char* argv[])
 		}else if(n1==4 && n2==11){
 			cout<<"M2r *K4=new M2r();"<<endl;
 			cout<<"K4->initK(2);"<<endl;
-			cout<<"m_r=K4;"<<endl;				
+			cout<<"m_r=K4;"<<endl;	
+		}else if(n1==8 && n2<=52){	
+			cout<<"m_r=newR8("<<n2<<");"<<endl;				
 		}else{	
 			cout<<"m_r=new ZmodnZ("<<n1<<","<<n2<<");"<<endl;
 		}

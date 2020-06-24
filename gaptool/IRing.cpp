@@ -186,6 +186,107 @@ int DecompositionRing::size()
 	return m_Add.size();
 }
 
+// 直接从凯莱表构造一个有限环
+struct FiniteRing:public IRing
+{
+public:
+	//  静态函数  
+	static IRing* newR8(int i);
+public:
+	// 实现抽象基类的方法
+	virtual void printTable();
+	virtual int add(int a,int b);
+	virtual int mul(int a,int b);
+	virtual int size(); 
+	// 构造函数
+	FiniteRing(int n,int* a,int* m,int delt);
+	// 析构函数
+	~FiniteRing();	
+	// 成员变量  
+	int m_n; 
+	int* m_Add;
+	int* m_Mul; 
+	int m_delt; 
+	int m_flag;// FiniteRing对象析构时是否释放m_Add、m_Mul指向的内存	
+};
+
+void FiniteRing::printTable()
+{
+	int ID=IdRing(this);
+	string str=calcRingInvariant(this);
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());
+	//printRing(this);	
+}
+
+int FiniteRing::add(int a,int b)
+{
+	int c=*(m_Add+a*m_n+b);
+	return c-m_delt;
+}
+
+int FiniteRing::mul(int a,int b)
+{
+	int c=*(m_Mul+a*m_n+b);
+	return c-m_delt;
+}
+
+int FiniteRing::size()
+{
+	return m_n;
+}
+
+FiniteRing::FiniteRing(int n,int* a,int* m,int delt)
+{
+	m_n=n;
+	m_Add=a;
+    m_Mul=m;
+    m_delt=delt;	
+}
+
+FiniteRing::~FiniteRing(){
+	if(m_flag==1 && m_Add!=NULL){
+		delete m_Add;
+		m_Add=NULL;
+	}	
+	if(m_flag==1 && m_Mul!=NULL){
+		delete m_Mul;
+		m_Mul=NULL;
+	}		
+}
+
+IRing* FiniteRing::newR8(int i){
+/* 	static int g_C2C4Mul_2[8][8]={
+		{0,1,2,3,4,5,6,7},
+		{1,4,7,2,5,0,3,6},
+		{2,7,4,1,6,3,0,5},
+		{3,2,1,0,7,6,5,4},
+		{4,5,6,7,0,1,2,3},
+		{5,0,3,6,1,4,7,2},
+		{6,3,0,5,2,7,4,1},
+		{7,6,5,4,3,2,1,0}
+	};	
+	static int g_Z4F2Mul[8][8]={
+		{0,0,0,0,0,0,0,0},
+		{0,1,0,1,0,1,0,1},
+		{0,0,2,2,4,4,6,6},
+		{0,1,2,3,4,5,6,7},
+		{0,0,4,4,0,0,4,4},
+		{0,1,4,5,0,1,4,5},
+		{0,0,6,6,4,4,2,2},
+		{0,1,6,7,4,5,2,3},
+	}; */
+	if(i==14)//R8_14:=DirectSum(SmallRing(4,3),SmallRing(2,2));;R8_14:=DirectSum(ZmodnZ(2),ZmodnZ(4));;
+	{
+		//不是环FiniteRing* r=new FiniteRing(8,g_C2C4Add,&g_Z4F2Mul[0][0],0);
+		ZmodnZ* r4=new ZmodnZ(1,4);
+		ZmodnZ* r2=new ZmodnZ(1,2);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;		
+		return r;
+	}	
+	return NULL;
+}
+
 typedef vector<vector<int> > MATRIXi;
 
 // 2阶全矩阵环M2(r)
@@ -652,22 +753,13 @@ bool M2r::initR8(int ID){
 	   A[1][0]=1;
 	   A[1][1]=0;   
 	   gen.push_back(A);
-   }else if(ID==0){	 
-		m_r=new ZmodnZ(1,8);
-		A[0][0]=1;
-		A[0][1]=0;
+   }else if(ID==0){ 
+		m_r=FiniteRing::newR8(14);
+		A[0][0]=0;
+		A[0][1]=2;
 		A[1][0]=1;
-		A[1][1]=0;
-		B[0][0]=2;
-		B[0][1]=0;
-		B[1][0]=0;
-		B[1][1]=0;
-		gen.push_back(A);
-		gen.push_back(B); 
-		MATRIXi C(2,vector<int>(2,0));
-		C[0][0]=3;
-		C[0][1]=3;		
-		//gen.push_back(C);			
+		A[1][1]=3;
+		gen.push_back(A);		
  	    //initR8(51);
 		//return true;  
 	}else{
@@ -2402,17 +2494,19 @@ bool Mnr::initR8(int ID){
 	   gen.push_back(A);   
 	   m_r=new ZmodnZ(1,2);	
        m_n=4;	   
-   }else if(ID==0){
-		M2r *I4=new M2r();
-		I4->initI(2);
-		m_r=I4;
-		m_n=6;
-		MATRIXi8 A(6,vector<TElem>(6,0));
-		MATRIXi8 B(6,vector<TElem>(6,0));
-		A[2][1]=1;
-		A[2][2]=3;
-		B[4][5]=3;
-		B[5][5]=3;
+   }else if(ID==0){//R8_13×R2_1=R16_219
+		m_r=new ZmodnZ(1,4);	
+		m_n=4;
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		MATRIXi8 B(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[2][2]=0;
+		B[2][3]=1;
+		B[3][2]=2;
+		B[3][3]=1;
 		gen.push_back(A);
 		gen.push_back(B);
 	   //initR8(41);
@@ -6544,7 +6638,9 @@ int main(int argc, char* argv[])
 		   bool b=r16.initR16(i);
 		   if(b){
 			   int ID=IdRing(&r16);
-			   printf("%d:R16_%d\n",i,ID);
+			   bool b=IsRing(&r16);
+			   const char* sz=b?"":"不是环";
+			   printf("%d:R16_%d%s\n",i,ID,sz);
 			   //findquotientring(&r16,8);
 			   //findsubring(&r16,8);
 			   /*
@@ -6561,7 +6657,9 @@ int main(int argc, char* argv[])
 				bool ba=r16a.initR16(i);
 				if(ba){
 				   int ID=IdRing(&r16a);
-				   printf("%d:R16_%d\n",i,ID);
+				   bool b=IsRing(&r16);
+				   const char* sz=b?"":"不是环";
+				   printf("%d:R16_%d%s\n",i,ID,sz);
 				   //findquotientring(&r16a,8);
 				   //findsubring3(&r16a,8);
 				   /*

@@ -28,12 +28,16 @@ void findsubring1R8R16(IRing *r)
 		int ni=S1i.size();
 		//if(ni!=16 && ni!=8)
 			//continue;
-		int ID=IdRing(&S1i);
+		bool b=IsRing(&S1i);
+		if(!b){
+			continue;
+		}		
+		int ID=IdRing(&S1i);		
 		int cnt=M.size();
 		M.insert(make_pair(ni,ID));
 		int cnt1=M.size();
 		if(cnt1>cnt){		
-			printf("cnt1=%d:R%d_%d->i=%d\n",cnt1,ni,ID,i);			
+			printf("cnt1=%d:R%d_%d->i=%d\n",cnt1,ni,ID,i);				
 		}	
 		if((ni==16 && ID==-1)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
 		{					
@@ -65,12 +69,16 @@ void findsubring2R8R16(IRing *r)
 		int ni=S1i.size();
 		//if(ni!=16 && ni!=8)
 			//continue;
-		int ID=IdRing(&S1i);
+		bool b=IsRing(&S1i);
+		if(!b){
+			continue;
+		}		
+		int ID=IdRing(&S1i);			
 		int cnt=M.size();
 		M.insert(make_pair(ni,ID));
 		int cnt1=M.size();
 		if(cnt1>cnt){		
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);			
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);				
 		}	
 		if((ni==16 && ID==-1)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
 		{					
@@ -104,12 +112,16 @@ void findsubring3R8R16(IRing *r)
 		int ni=S1i.size();
 		//if(ni!=16 && ni!=8)
 			//continue;
-		int ID=IdRing(&S1i);
+		bool b=IsRing(&S1i);
+		if(!b){
+			continue;
+		}		
+		int ID=IdRing(&S1i);	
 		int cnt=M.size();
 		M.insert(make_pair(ni,ID));
 		int cnt1=M.size();
 		if(cnt1>cnt){		
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d\n",cnt1,ni,ID,i,j,k);			
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d\n",cnt1,ni,ID,i,j,k);		
 		}	
 		if((ni==16 && ID==-1)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
 		{					
@@ -155,6 +167,10 @@ int main(int argc, char* argv[])
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}
+	if(!IsRing(r)){
+		printf("r²»ÊÇ»·\n");
+		return 0;
+	}		
 	if(n>2||n==1){
 		Mnr* R=new Mnr(r,n);
 		R->m_flag=1;
