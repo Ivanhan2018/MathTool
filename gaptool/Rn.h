@@ -152,11 +152,6 @@ extern int g_R8_20Mul[8][8];
 
 
 //R8_21
-/*
-i=21,不可逆元个数n1=4,幂等元个数n2=2,特征：4,是否交换：true,是否有幺元=true,2次幂零元个数n4=3,2~3次幂零元个数n5=3,零乘个数n6=
-24,零因子个数n7=3
-环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7=4,1,1,4,2,3,3,24,3
-*/
 extern int g_R8_21Add[8][8];
 extern int g_R8_21Mul[8][8];
 
@@ -173,11 +168,6 @@ extern int g_R8_24Add[8][8];
 extern int g_R8_24Mul[8][8];
 
 //R8_28
-/*
-i=28,不可逆元个数n1=8,幂等元个数n2=1,特征：2,是否交换：false,是否有幺元=false,2次幂零元个数n4=5,2~3次幂零元个数n5=
-7,零乘个数n6=48,零因子个数n7=7
-环的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7=2,0,0,8,1,5,7,48,7
-*/
 extern int g_R8_28Add[8][8];
 extern int g_R8_28Mul[8][8];
 
@@ -240,6 +230,10 @@ extern int g_F4F2Mul[8][8];
 //R8_52
 extern int g_F8Add[8][8];
 extern int g_F8Mul[8][8];
+
+extern int* g_C2C4Add;
+extern int g_R8_C2C2C2_28_2Mul[8][8];
+extern int g_R8_C2C2C2_28_3Mul[8][8];
 
 extern int g_R9_5Add[9][9];
 extern int g_R9_5Mul[9][9];

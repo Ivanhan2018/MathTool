@@ -2,9 +2,13 @@
 #define USE_MNR_UINT32
 #include<iostream>
 #include<set>
+#if 1
+#include"FiniteRing.h"
+#else
 #include"ZmodnZ.h"
 #include"M2r.h"
 #include"Mnr.h"
+#endif
 
 int g_i=0;
 void findsubring1R8R16(IRing *r)
@@ -146,6 +150,8 @@ int main(int argc, char* argv[])
 	IRing* r=NULL;	
 	if(n1==4 && n2<=11){	
 		r=M2r::newR4(n2);
+	}else if(n1==8 && n2<=52){	
+		r=newR8(n2);	
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}
