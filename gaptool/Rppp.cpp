@@ -153,7 +153,7 @@ void findsubring(Mnr *r,int n)
 }
 
 IRing* newRppp(int ID,int p,int sID){	
-   if(/* ID!=29 && ID!=46 ID!=26 && ID!=44ID!=36 && ID!=40*/ID!=56)
+   if(/* ID!=29 && ID!=46 ID!=26 && ID!=44ID!=36 && ID!=40*/ID!=32)
 	   return NULL;
 	//p=2;
 	//if(p==3)return NULL;
@@ -183,7 +183,13 @@ IRing* newRppp(int ID,int p,int sID){
 		gen.push_back(B);
 		r->m_flag=1;
 		r->m_Set=M2r::FR(r->m_r,gen); 
-        return r;		
+        return r;	
+   }else if(ID==7){
+		ZmodnZ* rpp=new ZmodnZ(p*p,p*p*p*p);
+		ZmodnZ* rp=new ZmodnZ(1,p);
+		DecompositionRing* r= new DecompositionRing(rpp,rp);
+		r->m_flag=1;	   
+		return r;		
    }else if(ID==8){	
 		M2r* r=new M2r();   
 		r->m_r=new ZmodnZ(1,p*p);
@@ -297,7 +303,13 @@ IRing* newRppp(int ID,int p,int sID){
 		gen.push_back(B);
 		r->m_flag=1;
 		r->m_Set=M2r::FR(r->m_r,gen); 
-        return r;		
+        return r;
+   }else if(ID==17){
+		ZmodnZ* rpp=new ZmodnZ(p,p*p*p);
+		ZmodnZ* rp=new ZmodnZ(1,p);
+		DecompositionRing* r= new DecompositionRing(rpp,rp);
+		r->m_flag=1;	   
+		return r;		
    }else if(ID==19){//不用下面的2阶矩阵表示Rppp',因为Rppp'(19,2)=R8_19，但Rppp'(19,3)!=R27_19(,Rppp'(19,3)=R27_13、R27_11)
 /*
 Rppp':
@@ -626,7 +638,30 @@ Rppp':
 		gen.push_back(C);		
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 		
-		return r;		 		
+		return r;
+   }else if(ID==32){
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		MATRIXi8 B(4,vector<TElem>(4,0)); 		
+		A[0][3]=1;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[1][3]=1; 
+		A[2][1]=1;
+		A[2][2]=1;
+		A[2][3]=1;
+		B[0][3]=1;
+		B[1][0]=1;
+		B[2][0]=1;
+		B[2][3]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 	
+		return r;		
    }else if(ID==33){	
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -809,6 +844,24 @@ Rppp':
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
 		return r;	
+   }else if(ID==39){	
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		MATRIXi8 B(4,vector<TElem>(4,0)); 	  					
+		A[2][0]=1;
+		A[2][3]=1;
+		A[3][0]=1;
+		B[1][0]=1;
+		B[2][1]=1;
+		B[3][0]=1;
+		gen.push_back(A);
+		gen.push_back(B);
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;		
    }else if(ID==40){//Rppp(40,2)=R8_40，但Rppp(40,3)=R27_38
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);

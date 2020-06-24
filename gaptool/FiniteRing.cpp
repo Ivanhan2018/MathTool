@@ -502,11 +502,27 @@ IRing* newR8(int i)
 		ZmodnZ* r=new ZmodnZ(4,32);
 		return r;
 	}
+	if(i==5)//R8_5:=DirectSum(SmallRing(4,1),SmallRing(2,1));;
+	{
+		ZmodnZ* r4=new ZmodnZ(4,16);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
 	if(i==6)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_6Mul[0][0],0);
 		return r;
 	}
+	if(i==7)//R8_7:=DirectSum(SmallRing(4,1),SmallRing(2,2));;
+	{
+		ZmodnZ* r4=new ZmodnZ(4,16);
+		ZmodnZ* r2=new ZmodnZ(1,2);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
 	if(i==8)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_8Mul[0][0],0);
@@ -538,7 +554,7 @@ IRing* newR8(int i)
 		r->initR8(13);
 		return r;
 	}
-	if(i==14)
+	if(i==14)//R8_14:=DirectSum(SmallRing(4,3),SmallRing(2,2));;R8_14:=DirectSum(ZmodnZ(2),ZmodnZ(4));;
 	{
 		FiniteRing* r=new FiniteRing(8,g_C2C4Add,&g_Z4F2Mul[0][0],0);
 		return r;
@@ -548,7 +564,7 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_15Mul[0][0],0);
 		return r;
 	}
-	if(i==16)
+	if(i==16)//R8_16:=DirectSum(SmallRing(4,2),SmallRing(2,1));;
 	{
 		ZmodnZ* r4=new ZmodnZ(2,8);
 		ZmodnZ* r2=new ZmodnZ(2,4);
@@ -556,6 +572,14 @@ IRing* newR8(int i)
 		r->m_flag=1;
 		return r;
 	}
+	if(i==17)//R8_17:=DirectSum(SmallRing(4,2),SmallRing(2,2));;
+	{
+		ZmodnZ* r4=new ZmodnZ(2,8);
+		ZmodnZ* r2=new ZmodnZ(1,2);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
 	if(i==18)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_18Mul[0][0],0);
@@ -617,6 +641,33 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_24Mul[0][0],0);
 		return r;
 	}
+	if(i==25)//R8_25:=DirectSum(SmallRing(4,4),SmallRing(2,1));;
+	{
+		M2r* r4=new M2r;
+		r4->initD(2);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
+	if(i==26)//R8_26:=DirectSum(SmallRing(4,5),SmallRing(2,1));;
+	{
+		Mnr* r4=new Mnr;
+		r4->initE(2);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
+	if(i==27)//R8_27:=DirectSum(SmallRing(4,6),SmallRing(2,1));;
+	{
+		Mnr* r4=new Mnr;
+		r4->initF(2);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
 	if(i==28)
 	{
 		Mnr* r=new Mnr();
@@ -663,6 +714,15 @@ IRing* newR8(int i)
 		r->m_Set=Mnr::FR(r->m_r,gen);   
 		return r;
 	}
+	if(i==29)//R8_29:=DirectSum(SmallRing(4,7),SmallRing(2,1));;
+	{
+		M2r* r4=new M2r;
+		r4->initG(2);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
 	if(i==30)
 	{
 		Mnr* r=new Mnr();
@@ -765,6 +825,24 @@ IRing* newR8(int i)
 		r->m_Set=Mnr::FR(r->m_r,gen);   
 		return r;
 	}
+	if(i==34)//R8_34:=DirectSum(SmallRing(4,8),SmallRing(2,1));;
+	{
+		M2r* r4=new M2r;
+		r4->initH(2);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
+	if(i==35)//R8_35:=DirectSum(SmallRing(4,9),SmallRing(2,1));;
+	{
+		M2r* r4=new M2r;
+		r4->initI(2);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
 	if(i==36)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_R8_36Mul[0][0],0);
@@ -775,7 +853,7 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_R8_37Mul[0][0],0);
 		return r;
 	}
-	if(i==38)
+	if(i==38)//R8_38:=DirectSum(SmallRing(4,5),SmallRing(2,2));;
 	{
 		Mnr* r=new Mnr();
 		r->initL(2);
@@ -786,6 +864,33 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_R8_39Mul[0][0],0);
 		return r;
 	}
+	if(i==40)//R8_40:=DirectSum(SmallRing(4,10),SmallRing(2,1));;
+	{
+		M2r* r4=new M2r;
+		r4->initJ(2);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}
+	if(i==41)//R8_41:=DirectSum(SmallRing(4,7),SmallRing(2,2));;
+	{
+		M2r* r4=new M2r;
+		r4->initG(2);
+		ZmodnZ* r2=new ZmodnZ(1,2);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
+	if(i==42)//R8_42:=DirectSum(SmallRing(4,11),SmallRing(2,1));;
+	{
+		M2r* r4=new M2r;
+		r4->initK(2);
+		ZmodnZ* r2=new ZmodnZ(2,4);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
 	if(i==43)
 	{
 		Mnr* r=new Mnr();
@@ -896,7 +1001,16 @@ IRing* newR8(int i)
 		r->m_flag=1;
 		return r;
 	}
-	if(i==48)
+	if(i==47)//R8_47:=DirectSum(SmallRing(4,8),SmallRing(2,2));;
+	{
+		M2r* r4=new M2r;
+		r4->initH(2);
+		ZmodnZ* r2=new ZmodnZ(1,2);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
+	if(i==48)//R8_48:=DirectSum(SmallRing(4,9),SmallRing(2,2));;R8_48=F_2[x]/(x^3+x^2)=F_2[x]/(x^3+x)
 	{
 		int f[] = {0,1,0,1};
 		Polynomial vf(f,f+sizeof(f)/sizeof(f[0]));			
@@ -910,12 +1024,21 @@ IRing* newR8(int i)
 		FiniteRing* r=new FiniteRing(8,&g_F4F2Add[0][0],&g_R8_C2C2C2_28_3Mul[0][0],0);
 		return r;
 	}	
-	if(i==51)
+	if(i==50)//R8_50:=DirectSum(SmallRing(4,10),SmallRing(2,2));;
+	{
+		M2r* r4=new M2r;
+		r4->initJ(2);
+		ZmodnZ* r2=new ZmodnZ(1,2);
+		DecompositionRing* r= new DecompositionRing(r4,r2);
+		r->m_flag=1;
+		return r;
+	}	
+	if(i==51)//R8_51:=DirectSum(SmallRing(4,11),SmallRing(2,2));;R8_51=F_2[x]/(x^3+x^2+x)=F_2[x]/(x^3+1)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_F4F2Add[0][0],&g_F4F2Mul[0][0],0);
 		return r;
 	}	
-	if(i==52)
+	if(i==52)//R8_52=F_2[x]/(x^3+x+1)=F_2[x]/(x^3+x^2+1)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_F8Mul[0][0],0);
 		return r;
@@ -1387,7 +1510,7 @@ int main(int argc, char* argv[])
    if(argc>3)
 	   g_func=atoi(argv[3]);    
    //testR8R4(g_func); 
-    for(int i=1;i<=11;i++){
+    /*for(int i=1;i<=11;i++){
 		for(int j=i;j<=11;j++){
 			IRing* ri=newR4(i);
 			IRing* rj=newR4(j);
@@ -1398,8 +1521,8 @@ int main(int argc, char* argv[])
 			delete r;
 			r=NULL;
 		}
-	}
-    /*for(int i=1;i<=52;i++){
+	}*/
+    for(int i=1;i<=52;i++){
 		IRing* ri=newR8(i);
 		if(!ri)continue;
 		for(int j=1;j<=2;j++){		
@@ -1411,8 +1534,7 @@ int main(int argc, char* argv[])
 			//delete r;
 			//r=NULL;
 		}
-	}
-		*/
+	}	
    //system("pause");
    return 0;
 }

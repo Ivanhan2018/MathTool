@@ -543,7 +543,35 @@ bool M2r::initR8(int ID){
 		gen.push_back(A);
 		gen.push_back(B);
 		MATRIXi C(2,vector<int>(2,2));
-		gen.push_back(C);		
+		gen.push_back(C);
+	}else if(ID==26){//R8_26
+		M2r *G4=new M2r();
+		G4->initG(2);
+		m_r=G4;
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=3;
+		A[1][1]=0;
+		B[0][0]=0;
+		B[0][1]=3;
+		B[1][0]=1;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);	
+	}else if(ID==27){//R8_27
+		M2r *G4=new M2r();
+		G4->initG(2);
+		m_r=G4;
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=3;
+		B[0][0]=1;
+		B[0][1]=0;
+		B[1][0]=2;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==31){
 		M2r *I4=new M2r();
 		I4->initI(2);
@@ -1863,7 +1891,7 @@ bool Mnr::initR8(int ID){
 	   A[3][3]=1;
 	   gen.push_back(A);
 	   m_r=new ZmodnZ(1,4);	  
-	   m_n=4;			
+	   m_n=4;				
    }else if(ID==28){
 		m_r=new ZmodnZ(1,2);	
 		m_n=3;		   
@@ -2182,26 +2210,26 @@ bool Mnr::initR8(int ID){
 		gen.push_back(A);  
 		gen.push_back(B);
    }else if(ID==42){
-	   MATRIXi8 A(4,vector<TElem>(4,0));
-	   A[0][0]=0;
-	   A[0][1]=1;
-	   A[0][2]=0;
-	   A[0][3]=0;
-	   A[1][0]=0;
-	   A[1][1]=1;
-	   A[1][2]=1;
-	   A[1][3]=0; 
-	   A[2][0]=0;
-	   A[2][1]=1;
-	   A[2][2]=0;
-	   A[2][3]=1;
-	   A[3][0]=0;
-	   A[3][1]=0;
-	   A[3][2]=0;
-	   A[3][3]=0; 
-	   gen.push_back(A);   
-	   m_r=new ZmodnZ(1,2);	
-       m_n=4;
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=1;
+		A[0][2]=0;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[1][3]=0; 
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=0; 
+		gen.push_back(A);   
+		m_r=new ZmodnZ(1,2);	
+		m_n=4;
 	}else if(ID==43){//R8_43
 		m_r=new ZmodnZ(1,2);
 		m_n=3;
@@ -2375,29 +2403,18 @@ bool Mnr::initR8(int ID){
 	   m_r=new ZmodnZ(1,2);	
        m_n=4;	   
    }else if(ID==0){
-		m_r=new ZmodnZ(1,2);	
-		m_n=4;		   
-		MATRIXi8 A(4,vector<TElem>(4,0));	
-		MATRIXi8 B(4,vector<TElem>(4,0));		
-		A[0][0]=0;
-		A[0][1]=0;
-		A[0][2]=0;
-		A[0][3]=0;
-		A[1][0]=0;
-		A[1][1]=1;
-		A[1][2]=0;
-		A[1][3]=0; 
-		A[2][0]=0;
-		A[2][1]=0;
-		A[2][2]=0;
-		A[2][3]=0;
-		A[3][0]=1;
-		A[3][1]=0;
-		A[3][2]=0;
-		A[3][3]=0;  
-		B[3][2]=1;
+		M2r *I4=new M2r();
+		I4->initI(2);
+		m_r=I4;
+		m_n=6;
+		MATRIXi8 A(6,vector<TElem>(6,0));
+		MATRIXi8 B(6,vector<TElem>(6,0));
+		A[2][1]=1;
+		A[2][2]=3;
+		B[4][5]=3;
+		B[5][5]=3;
 		gen.push_back(A);
-		gen.push_back(B); 
+		gen.push_back(B);
 	   //initR8(41);
        //return true;	   
    }else{
@@ -3497,7 +3514,43 @@ bool Mnr::initR16(int ID){
 		A[3][2]=0;
 		A[3][3]=1;
 		gen.push_back(A); 
-		gen.push_back(B);	
+		gen.push_back(B);
+	}else if(ID==231){//R16_231
+		m_r=new ZmodnZ(1,4);
+		m_n=3;
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		MATRIXi8 C(3,vector<TElem>(3,0));
+		A[0][0]=2;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=0;
+		B[0][0]=2;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=0;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[2][0]=0;
+		B[2][1]=1;
+		B[2][2]=2;
+		C[0][0]=0;
+		C[0][1]=0;
+		C[0][2]=0;
+		C[1][0]=0;
+		C[1][1]=0;
+		C[1][2]=0;
+		C[2][0]=0;
+		C[2][1]=0;
+		C[2][2]=2;
+		gen.push_back(A);
+		gen.push_back(B);
+		gen.push_back(C);		
    }else if(ID==238){	 
 		m_r=new ZmodnZ(1,4);	
 		m_n=3;		   
@@ -6470,7 +6523,7 @@ int main(int argc, char* argv[])
 	   return 0;
 	}   
 	
-	if(argc==2){
+	if(0){
 		ZmodnZ r(1,2);
 		//M2r r4;
 		//r4.initJ(2);
@@ -6561,14 +6614,16 @@ int main(int argc, char* argv[])
 	   findsubring3(&r16,16);
 	}
 	
-	if(0){
+	if(1){
 	   Mnr r16;
 	   r16.initR8();
+	   int ID=IdRing(&r16);
+	   printf("R%d_%d\n",r16.size(),ID);
 	   //r16.printTable();
 	   findsubring(&r16,16);	   
 	   findquotientring(&r16,16);
 	   //findsubring(&r16,8);	   
-	   findquotientring(&r16,8);	   
+	   //findquotientring(&r16,8);	   
 	}
    
    return 0;
