@@ -305,6 +305,26 @@ IRing* FiniteRing::newR8(int i){
 		 {0,0,0,0,0,0,0,0},
 		 {0,4,4,0,0,4,4,0}
 	};	
+	static int g_R8_12Mul[8][8]={
+		{0,0,0,0,0,0,0,0},
+		{0,4,4,0,0,4,4,0},
+		{0,4,0,4,0,4,0,4},
+		{0,0,4,4,0,0,4,4},
+		{0,0,0,0,0,0,0,0},
+		{0,4,4,0,0,4,4,0},
+		{0,4,0,4,0,4,0,4},
+		{0,0,4,4,0,0,4,4}
+	};	
+	static int g_R8_18Mul[8][8]={
+		{0,0,0,0,0,0,0,0},
+		{0,4,4,0,0,4,4,0},
+		{0,0,4,4,0,0,4,4},
+		{0,4,0,4,0,4,0,4},
+		{0,0,0,0,0,0,0,0},
+		{0,4,4,0,0,4,4,0},
+		{0,0,4,4,0,0,4,4},
+		{0,4,0,4,0,4,0,4}
+	};	
 	static int g_R8_22Mul[8][8]={
 		{0,0,0,0,0,0,0,0},
 		{0,4,1,5,0,4,1,5},
@@ -314,6 +334,26 @@ IRing* FiniteRing::newR8(int i){
 		{0,4,5,1,0,4,5,1},
 		{0,1,6,7,4,5,2,3},
 		{0,5,7,2,4,1,3,6}
+	};
+	static int g_F8Add[8][8]={
+	  {0, 1, 2, 3, 4, 5, 6, 7},
+	  {1, 0, 3, 2, 5, 4, 7, 6},
+	  {2, 3, 0, 1, 6, 7, 4, 5},
+	  {3, 2, 1, 0, 7, 6, 5, 4},
+	  {4, 5, 6, 7, 0, 1, 2, 3},
+	  {5, 4, 7, 6, 1, 0, 3, 2},
+	  {6, 7, 4, 5, 2, 3, 0, 1},
+	  {7, 6, 5, 4, 3, 2, 1, 0}
+	};	
+	static int g_R8_39Mul[8][8]={
+		{0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0},
+		{0,0,1,1,0,0,1,1},
+		{0,0,1,1,0,0,1,1},
+		{0,0,1,1,1,1,0,0},
+		{0,0,1,1,1,1,0,0},
+		{0,0,0,0,1,1,1,1},
+		{0,0,0,0,1,1,1,1},
 	};	
 	if(i==6)
 	{
@@ -333,6 +373,11 @@ IRing* FiniteRing::newR8(int i){
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_9Mul[0][0],0);
 		return r;
 	}	
+	if(i==12)
+	{
+		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_12Mul[0][0],0);
+		return r;
+	}	
 	if(i==14)//R8_14:=DirectSum(SmallRing(4,3),SmallRing(2,2));;R8_14:=DirectSum(ZmodnZ(2),ZmodnZ(4));;
 	{
 		//²»ÊÇ»·FiniteRing* r=new FiniteRing(8,g_C2C4Add,&g_Z4F2Mul[0][0],0);
@@ -342,9 +387,19 @@ IRing* FiniteRing::newR8(int i){
 		r->m_flag=1;		
 		return r;
 	}
+	if(i==18)
+	{
+		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_18Mul[0][0],0);
+		return r;
+	}	
 	if(i==22)
 	{
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_22Mul[0][0],0);
+		return r;
+	}	
+	if(i==39)
+	{
+		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_R8_39Mul[0][0],0);
 		return r;
 	}	
 	return NULL;
@@ -817,17 +872,17 @@ bool M2r::initR8(int ID){
 	   A[1][1]=0;   
 	   gen.push_back(A);
    }else if(ID==0){ 
-		m_r=FiniteRing::newR8(22);
+		m_r=FiniteRing::newR8(39);
 		A[0][0]=0;
-		A[0][1]=1;
-		A[1][0]=1;
+		A[0][1]=0;
+		A[1][0]=0;
 		A[1][1]=3;
 		B[0][0]=0;
 		B[0][1]=0;
-		B[1][0]=3;
-		B[1][1]=2;
+		B[1][0]=2;
+		B[1][1]=4;
 		gen.push_back(A);
-		//gen.push_back(B);		
+		gen.push_back(B);		
  	    //initR8(51);
 		//return true;  
 	}else{
@@ -1124,6 +1179,18 @@ bool M2r::initR16(int ID){
 		B[1][1]=0;
 		gen.push_back(A);
 		gen.push_back(B);
+   }else if(ID==129){ 
+		m_r=FiniteRing::newR8(12);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=1;
+		A[1][1]=3;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[1][0]=0;
+		B[1][1]=3;
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==150){ 
 		m_r=FiniteRing::newR8(9);
 		A[0][0]=0;
@@ -1134,6 +1201,66 @@ bool M2r::initR16(int ID){
 		B[0][1]=1;
 		B[1][0]=0;
 		B[1][1]=3;
+		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==151){ 
+		m_r=FiniteRing::newR8(18);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[1][0]=0;
+		B[1][1]=2;
+		gen.push_back(A);
+		gen.push_back(B);		
+   }else if(ID==154){ 
+		m_r=FiniteRing::newR8(6);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=1;
+		A[1][1]=0;
+		B[0][0]=2;
+		B[0][1]=1;
+		B[1][0]=0;
+		B[1][1]=2;
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==157){ 
+		m_r=FiniteRing::newR8(12);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=2;
+		B[1][1]=2;
+		gen.push_back(A);
+		gen.push_back(B);		
+   }else if(ID==158){ 
+		m_r=FiniteRing::newR8(18);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=1;
+		B[1][1]=2;
+		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==161){ 
+		m_r=FiniteRing::newR8(12);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=0;
+		B[0][1]=2;
+		B[1][0]=0;
+		B[1][1]=2;
 		gen.push_back(A);
 		gen.push_back(B);		
    }else if(ID==164){ 
@@ -1160,6 +1287,18 @@ bool M2r::initR16(int ID){
 		B[1][1]=2;
 		gen.push_back(A);
 		gen.push_back(B);
+   }else if(ID==170){ 
+		m_r=FiniteRing::newR8(22);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=4;
+		B[0][0]=2;
+		B[0][1]=1;
+		B[1][0]=1;
+		B[1][1]=2;
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==174){ 
 		m_r=FiniteRing::newR8(22);
 		A[0][0]=0;
@@ -1183,6 +1322,18 @@ bool M2r::initR16(int ID){
 		B[1][0]=1;
 		B[1][1]=2;
 		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==184){ 
+		m_r=FiniteRing::newR8(18);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=0;
+		B[0][1]=3;
+		B[1][0]=0;
+		B[1][1]=2;
+		gen.push_back(A);
 		gen.push_back(B);		
    }else if(ID==185){ 
 		m_r=FiniteRing::newR8(6);
@@ -1193,6 +1344,18 @@ bool M2r::initR16(int ID){
 		B[0][0]=0;
 		B[0][1]=1;
 		B[1][0]=0;
+		B[1][1]=2;
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==186){ 
+		m_r=FiniteRing::newR8(18);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=2;
 		B[1][1]=2;
 		gen.push_back(A);
 		gen.push_back(B);		
@@ -1220,6 +1383,18 @@ bool M2r::initR16(int ID){
 		B[1][1]=2;
 		gen.push_back(A);
 		gen.push_back(B);
+   }else if(ID==189){ 
+		m_r=FiniteRing::newR8(6);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=7;
+		B[0][0]=1;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==191){ 
 		m_r=FiniteRing::newR8(14);
 		A[0][0]=0;
@@ -1243,7 +1418,31 @@ bool M2r::initR16(int ID){
 		B[1][0]=1;
 		B[1][1]=2;
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);
+   }else if(ID==193){ 
+		m_r=FiniteRing::newR8(22);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=4;
+		B[0][0]=2;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=3;
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==194){ 
+		m_r=FiniteRing::newR8(18);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=3;
+		B[1][1]=2;
+		gen.push_back(A);
+		gen.push_back(B);			
    }else if(ID==195){ 
 		m_r=FiniteRing::newR8(9);
 		A[0][0]=0;
@@ -1535,7 +1734,31 @@ bool M2r::initR16(int ID){
 		B[1][0]=2;
 		B[1][1]=0;
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);	
+   }else if(ID==225){ 
+		m_r=FiniteRing::newR8(14);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[0][0]=0;
+		B[0][1]=1;
+		B[1][0]=1;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==226){ 
+		m_r=FiniteRing::newR8(14);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=3;
+		B[0][0]=1;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=1;
+		gen.push_back(A);
+		gen.push_back(B);			
    }else if(ID==227){ 
 		m_r=FiniteRing::newR8(14);
 		A[0][0]=0;
@@ -1555,6 +1778,18 @@ bool M2r::initR16(int ID){
 		B[1][1]=2;
 		gen.push_back(A);
 		gen.push_back(B);	
+   }else if(ID==234){ 
+		m_r=FiniteRing::newR8(12);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=1;
+		A[1][1]=4;
+		B[0][0]=1;
+		B[0][1]=3;
+		B[1][0]=2;
+		B[1][1]=1;
+		gen.push_back(A);
+		gen.push_back(B);			
    }else if(ID==237){ 
 		m_r=FiniteRing::newR8(22);
 		A[0][0]=0;
@@ -1562,6 +1797,54 @@ bool M2r::initR16(int ID){
 		A[1][0]=1;
 		A[1][1]=3;
 		gen.push_back(A);
+   }else if(ID==240){ 
+		m_r=FiniteRing::newR8(14);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=4;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=2;
+		B[1][1]=1;
+		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==242){ 
+		m_r=FiniteRing::newR8(14);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=4;
+		B[0][0]=0;
+		B[0][1]=2;
+		B[1][0]=0;
+		B[1][1]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
+   }else if(ID==245){ 
+		m_r=FiniteRing::newR8(14);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[0][0]=0;
+		B[0][1]=4;
+		B[1][0]=0;
+		B[1][1]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
+   }else if(ID==247){ 
+		m_r=FiniteRing::newR8(14);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=2;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=4;
+		B[1][1]=1;
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==250){ 
 		m_r=FiniteRing::newR8(14);
 		A[0][0]=0;
@@ -1607,6 +1890,30 @@ bool M2r::initR16(int ID){
 		B[0][0]=0;
 		B[0][1]=1;
 		B[1][0]=2;
+		B[1][1]=4;
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==291){ 
+		m_r=FiniteRing::newR8(39);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=3;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=2;
+		B[1][1]=4;
+		gen.push_back(A);
+		gen.push_back(B);
+   }else if(ID==292){ 
+		m_r=FiniteRing::newR8(39);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=3;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[1][0]=4;
 		B[1][1]=4;
 		gen.push_back(A);
 		gen.push_back(B);		
