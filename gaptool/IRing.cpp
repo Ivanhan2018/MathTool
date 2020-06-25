@@ -441,7 +441,8 @@ public:
     void initJ(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_10所在的有限环序列,D=<a,b;pa=pb=0,a^2=a,b^2=b,ab=ba=0>=Z_p+Z_p	
     void initK(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_11所在的有限环序列,K=GF(p^2)=p^2阶有限域
 	bool initR8(int ID=0);
-	bool initR16(int ID=0);		
+	bool initR16(int ID=0);	
+	bool initR16_2(int ID=0);		
 	// 成员变量
 	vector<MATRIXi> m_Set;
 	IRing* m_r;
@@ -1893,7 +1894,36 @@ bool M2r::initR16(int ID){
 		B[1][1]=4;
 		gen.push_back(A);
 		gen.push_back(B);
-   }else if(ID==291){ 
+   }else if(ID>280 && ID<=390){ 
+		return initR16_2(ID);
+   }else if(ID==0){	 
+ 	    initR16(256);
+		return true;  
+   }else{
+		return false;
+   }
+   m_flag=1;
+   m_Set=FR(m_r,gen); 
+   return true; 
+}
+
+bool M2r::initR16_2(int ID){
+	vector<MATRIXi> gen;	
+	MATRIXi A(2,vector<int>(2,0));
+	MATRIXi B(2,vector<int>(2,0));	
+	if(ID==288){ 
+		m_r=FiniteRing::newR8(39);
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=5;
+		B[0][0]=2;
+		B[0][1]=6;
+		B[1][0]=6;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==291){ 	
 		m_r=FiniteRing::newR8(39);
 		A[0][0]=0;
 		A[0][1]=0;
@@ -2341,16 +2371,13 @@ bool M2r::initR16(int ID){
 		A[0][1]=1;
 		A[1][0]=1;
 		A[1][1]=2;
-		gen.push_back(A);	   
-   }else if(ID==0){	 
- 	    initR16(389);
-		return true;  
-   }else{
+		gen.push_back(A);
+	}else{
 		return false;
-   }
-   m_flag=1;
-   m_Set=FR(m_r,gen); 
-   return true; 
+	}	 
+	m_flag=1;
+	m_Set=FR(m_r,gen); 
+    return true;	
 }
 
 M2r::M2r(IRing* r,vector<MATRIXi>& gen){
