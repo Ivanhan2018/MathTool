@@ -381,6 +381,10 @@ int test2()
 
    for(int i=1;i<=104;i++)
    {
+		int I=(i-1)%52+1;
+		int J=(i-1)/52+1;
+		//if(!(I==45)&& !(I==51))
+			//continue;	
 	   IRing* r=newR8R2(i);
 	   if(r){
 		   int ID=IdRing(r);
@@ -390,9 +394,8 @@ int test2()
 				//printf("Hit%d:i=%d,ID=%d\n",cnt++,i,ID);
 			}
 			vID.insert(ID);
-			int I=(i-1)%52+1;
-			int J=(i-1)/52+1;
-			if(0){//((I==13 && J==2)||(I==14 &&J==1)){
+
+			if(0){
 				string strR=calcRingInvariant(r);	
 				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r->size(),ID,strR.c_str());				
 				string I1=calcI1(r);
@@ -493,9 +496,16 @@ int main(int argc, char* argv[])
 	   g_a=atoi(argv[2]);   
    if(argc>3)
 	   g_func=atoi(argv[3]);
-   //test2();
-   //testR8R4(g_func); 
-    /**/for(int i=1;i<=11;i++){
+   test2();
+   //testR8R4(g_func);
+    /*for(int i=1;i<=52;i++){
+		IRing* r=newR8(i);
+		int ID=IdRing(r);
+		bool b=IsRing(r);
+		const char* sz=b?"":"²»ÊÇ»·";   
+		printf("%d:R%d_%d%s\n",i,r->size(),ID,sz);		
+	}		
+    for(int i=1;i<=11;i++){
 		for(int j=i;j<=11;j++){
 			IRing* ri=newR4(i);
 			IRing* rj=newR4(j);
@@ -519,7 +529,7 @@ int main(int argc, char* argv[])
 			//delete r;
 			//r=NULL;
 		}
-	}	
+	}*/	
    //system("pause");
    return 0;
 }

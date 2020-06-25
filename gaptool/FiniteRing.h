@@ -677,7 +677,35 @@ IRing* newR8(int i)
 	}
 	if(i==45)
 	{
-		FiniteRing* r=new FiniteRing(8,&g_F4F2Add[0][0],&g_R8_C2C2C2_28_2Mul[0][0],0);
+		//不是环FiniteRing* r=new FiniteRing(8,&g_F4F2Add[0][0],&g_R8_C2C2C2_28_2Mul[0][0],0);
+		Mnr* r=new Mnr();
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[1][0]=1;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=0;
+		B[0][0]=1;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=1;
+		B[2][0]=1;
+		B[2][1]=1;
+		B[2][2]=0;  
+		vector<MATRIXi8> gen;
+		gen.push_back(A);
+		gen.push_back(B);		
+		r->m_r=new ZmodnZ(1,2);
+		r->m_flag=1;
+		r->m_n=3;
+		r->m_Set=Mnr::FR(r->m_r,gen);   
 		return r;
 	}
 	if(i==46)
@@ -728,7 +756,31 @@ IRing* newR8(int i)
 	}	
 	if(i==52)//R8_52=F_2[x]/(x^3+x+1)=F_2[x]/(x^3+x^2+1)
 	{
-		FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_F8Mul[0][0],0);
+		//不是环FiniteRing* r=new FiniteRing(8,&g_F8Add[0][0],&g_F8Mul[0][0],0);
+		Mnr* r=new Mnr();
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		A[0][0]=0;
+		A[0][1]=1;
+		A[0][2]=1;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[1][3]=0; 
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=1;
+		A[3][3]=0; 
+		vector<MATRIXi8> gen;
+		gen.push_back(A);
+		r->m_r=new ZmodnZ(1,2);
+		r->m_flag=1;
+		r->m_n=4;
+		r->m_Set=Mnr::FR(r->m_r,gen);   
 		return r;
 	}	
 	return NULL;
