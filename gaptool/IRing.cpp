@@ -890,12 +890,15 @@ bool M2r::initR8(int ID){
    }else if(ID==0){ 
 		m_r=FiniteRing::newR8(18);
 		A[0][0]=1;
-		B[0][0]=2;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=5;
+		B[0][0]=1;
+		B[0][1]=1;
+		B[1][0]=1;
+		B[1][1]=0;
 		gen.push_back(A);
-		gen.push_back(B);
-		MATRIXi C(2,vector<int>(2,0));
-		C[1][1]=4;		
-		gen.push_back(C);		
+		gen.push_back(B);		
  	    //initR8(51);
 		//return true;  
 	}else{
@@ -2320,7 +2323,19 @@ bool M2r::initR16_2(int ID){
 		B[1][0]=1;
 		B[1][1]=1;
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);
+   }else if(ID==362){ 
+		m_r=FiniteRing::newR8(22);
+		A[0][0]=1;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=5;
+		B[0][0]=1;
+		B[0][1]=1;
+		B[1][0]=1;
+		B[1][1]=0;
+		gen.push_back(A);
+		gen.push_back(B);				
    }else if(ID==364){	
 	   M2r *K4=new M2r();
 	   K4->initK(2);
@@ -3394,17 +3409,24 @@ bool Mnr::initR8(int ID){
 		//r->initR8(45);
 		//m_r=r;
 		//m_r=new ZmodnZ(1,4);
-		m_r=FiniteRing::newR8(14);
+		//m_r=FiniteRing::newR8(14);
+		m_r=new ZmodnZ(1,4);
 		m_n=3;
 		MATRIXi8 A(3,vector<TElem>(3,0));
 		MATRIXi8 B(3,vector<TElem>(3,0));		
+		MATRIXi8 C(3,vector<TElem>(3,0));				
 		A[0][0]=0;
 		A[0][1]=0;
-		A[1][0]=2;
-		A[1][1]=4;
-		B[2][2]=5;		
+		A[1][0]=1;
+		A[1][1]=2;
+		B[0][0]=2;
+		B[0][1]=0;
+		B[1][0]=3;
+		B[1][1]=0;
+		C[2][2]=2;			
 		gen.push_back(A);
-		gen.push_back(B);
+		gen.push_back(B); 
+		gen.push_back(C);
 	   //initR8(41);
        //return true;	   
    }else{
@@ -4616,7 +4638,25 @@ bool Mnr::initR16(int ID){
 		A[3][1]=2;
 		A[3][2]=0;
 		A[3][3]=1;	
-		gen.push_back(A);	   
+		gen.push_back(A);
+   }else if(ID==252){
+		m_r=new ZmodnZ(1,4);
+		m_n=3;
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));		
+		MATRIXi8 C(3,vector<TElem>(3,0));				
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=1;
+		A[1][1]=2;
+		B[0][0]=2;
+		B[0][1]=0;
+		B[1][0]=3;
+		B[1][1]=0;
+		C[2][2]=2;			
+		gen.push_back(A);
+		gen.push_back(B); 
+		gen.push_back(C);		
    }else if(ID==257){
 		m_r=new ZmodnZ(1,4);
 		m_n=3; 	   
@@ -7776,8 +7816,8 @@ int main(int argc, char* argv[])
 	}
 	
 	if(1){
-	   Mnr r16;
-	   r16.initR16(342);
+	   M2r r16;
+	   r16.initR8();
 	   int ID=IdRing(&r16);
 	   bool b=IsRing(&r16);
 	   const char* sz=b?"":"²»ÊÇ»·";   
