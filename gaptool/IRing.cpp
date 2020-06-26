@@ -3394,45 +3394,17 @@ bool Mnr::initR8(int ID){
 		//r->initR8(45);
 		//m_r=r;
 		//m_r=new ZmodnZ(1,4);
-		//m_r=FiniteRing::newR8(6);
-		m_r=new ZmodnZ(1,2);
-		m_n=5;
-		MATRIXi8 A(5,vector<TElem>(5,0));
-		MATRIXi8 B(5,vector<TElem>(5,0));
-		MATRIXi8 C(5,vector<TElem>(5,0));							
-		MATRIXi8 D(5,vector<TElem>(5,0));
+		m_r=FiniteRing::newR8(14);
+		m_n=3;
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));		
 		A[0][0]=0;
 		A[0][1]=0;
-		A[0][2]=0;
-		A[1][0]=0;
-		A[1][1]=0;
-		A[1][2]=0;
-		A[2][0]=0;
-		A[2][1]=0;
-		A[2][2]=1;
-		B[0][0]=0;
-		B[0][1]=0;
-		B[0][2]=0;
-		B[1][0]=0;
-		B[1][1]=0;
-		B[1][2]=1;
-		B[2][0]=0;
-		B[2][1]=0;
-		B[2][2]=0;
-		C[0][0]=0;
-		C[0][1]=0;
-		C[0][2]=1;
-		C[1][0]=0;
-		C[1][1]=0;
-		C[1][2]=0;
-		C[2][0]=0;
-		C[2][1]=0;
-		C[2][2]=0;
+		A[1][0]=2;
+		A[1][1]=4;
+		B[2][2]=5;		
 		gen.push_back(A);
 		gen.push_back(B);
-		gen.push_back(C);
-		D[4][3]=1;		
-		gen.push_back(D);
 	   //initR8(41);
        //return true;	   
    }else{
@@ -4509,7 +4481,19 @@ bool Mnr::initR16(int ID){
 		B[3][3]=0;
 		gen.push_back(A); 
 		gen.push_back(B);
-		gen.push_back(C);			
+		gen.push_back(C);	
+   }else if(ID==214){
+		m_r=FiniteRing::newR8(14);
+		m_n=3;
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));		
+		A[0][0]=0;
+		A[0][1]=0;
+		A[1][0]=2;
+		A[1][1]=4;
+		B[2][2]=5;		
+		gen.push_back(A);
+		gen.push_back(B);		
    }else if(ID==219){
 		m_r=new ZmodnZ(1,4);
 		m_n=4; 	   
@@ -5683,6 +5667,58 @@ bool Mnr::initR16_2(int ID){
 		C[3][3]=1;		
 		gen.push_back(A);
 		gen.push_back(B);
+		gen.push_back(C);
+   }else if(ID==331){
+		m_r=new ZmodnZ(1,2);
+		m_n=6;
+		MATRIXi8 A(6,vector<TElem>(6,0));
+		MATRIXi8 B(6,vector<TElem>(6,0));
+		A[0][0]=0;
+		A[0][1]=1;
+		A[0][2]=1;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=1;
+		A[1][2]=1;
+		A[1][3]=0; 
+		A[2][0]=0;
+		A[2][1]=1;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=1;
+		A[3][3]=0; 
+		B[5][4]=1;
+		gen.push_back(A);
+		gen.push_back(B);	
+   }else if(ID==332){
+		m_r=new ZmodnZ(1,2);
+		m_n=4;
+		MATRIXi8 A(4,vector<TElem>(4,0));
+		MATRIXi8 B(4,vector<TElem>(4,0));
+		MATRIXi8 C(4,vector<TElem>(4,0));		
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[1][0]=1;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=0;
+		B[0][0]=1;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=1;
+		B[2][0]=1;
+		B[2][1]=1;
+		B[2][2]=0;   
+		C[3][3]=1; 		
+		gen.push_back(A);
+		gen.push_back(B);
 		gen.push_back(C);		
    }else if(ID==333){//R2_1×R8_31=R16_333
 		M2r *I4=new M2r();
@@ -5838,26 +5874,45 @@ bool Mnr::initR16_2(int ID){
 		B[3][3]=0;
 		gen.push_back(A);
 		gen.push_back(B);	
-   }else if(ID==342){//R2_2×R8_45=R16_342
-		M2r *I4=new M2r();
-		I4->initI(2);
-		m_r=I4;
-		m_n=4;		   
-		MATRIXi8 A(4,vector<TElem>(4,0));
-		MATRIXi8 B(4,vector<TElem>(4,0));
-		MATRIXi8 C(4,vector<TElem>(4,0));		
+   }else if(ID==342){//R2_2×R8_39=R16_342
+		m_r=new ZmodnZ(1,2);
+		m_n=5;		   
+		MATRIXi8 A(5,vector<TElem>(5,0));
+		MATRIXi8 B(5,vector<TElem>(5,0));
+		MATRIXi8 C(5,vector<TElem>(5,0));		
 		A[0][0]=0;
 		A[0][1]=0;
+		A[0][2]=0;
+		A[0][3]=0;
 		A[1][0]=0;
-		A[1][1]=1;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=0;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=0;
+		A[2][3]=1;
+		A[3][0]=1;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[0][3]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[1][3]=0;
+		B[2][0]=0;
+		B[2][1]=1;
 		B[2][2]=0;
 		B[2][3]=0;
+		B[3][0]=1;
+		B[3][1]=0;
 		B[3][2]=0;
-		B[3][3]=3; 
-		C[2][2]=1;
-		C[2][3]=0;
-		C[3][2]=3;
-		C[3][3]=1;		
+		B[3][3]=0;
+		C[4][4]=1;		
 		gen.push_back(A);
 		gen.push_back(B);
 		gen.push_back(C);		
@@ -7676,6 +7731,16 @@ int main(int argc, char* argv[])
 			printf("%d,",*it);
 		}
 		printf("\n");
+		// 129种16阶可分解环
+		int IDs[]={6,9,10,11,12,13,14,15,103,104,107,112,113,116,200,203,204,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,380,382,384,386,387,388,389};	
+        int cnt=sizeof(IDs)/sizeof(IDs[0]);
+		printf("%d,%d\n",vID.size(),cnt);
+		for(int i=0;i<cnt;i++){
+			if(vID.find(IDs[i])==vID.end()){
+				printf("%d,",IDs[i]);
+			}			
+		}
+		printf("\n");		
 	}
 	
 	if(argc>2){
@@ -7712,7 +7777,7 @@ int main(int argc, char* argv[])
 	
 	if(1){
 	   Mnr r16;
-	   r16.initR8();
+	   r16.initR16(342);
 	   int ID=IdRing(&r16);
 	   bool b=IsRing(&r16);
 	   const char* sz=b?"":"不是环";   

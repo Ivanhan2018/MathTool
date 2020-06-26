@@ -436,7 +436,11 @@ if(flag==0){
 	   }	   
    }
 }
-   printf("%d种16阶可分解环\n",vID.size());
+    printf("%d种16阶可分解环\n",vID.size());
+	for(auto it=vID.begin();it!=vID.end();it++){
+		printf("%d,",*it);
+	}
+	printf("\n");   
    return 0;
 }
 
