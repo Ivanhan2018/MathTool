@@ -355,11 +355,40 @@ void test1()
 	}	
 }
 
-int test2()
+int test2(int flag=0)
 {
    set<int> vID;
    int cnt=0;
-
+if(flag==0){
+	for(int i=1;i<=11;i++){
+		for(int j=i;j<=11;j++){
+			IRing* ri=newR4(i);
+			IRing* rj=newR4(j);
+			DecompositionRing* r= new DecompositionRing(ri,rj);
+			r->m_flag=1;
+			int ID=IdRing(r);
+			vID.insert(ID);
+			printf("R4_%d×R4_%d=R16_%d\n",i,j,ID);
+			delete r;
+			r=NULL;
+		}
+	}
+    for(int i=1;i<=52;i++){
+		IRing* ri=newR8(i);
+		if(!ri)continue;
+		for(int j=1;j<=2;j++){		
+			IRing* rj=new ZmodnZ(3-j,2*(3-j));
+			DecompositionRing* r= new DecompositionRing(ri,rj);
+			r->m_flag=1;
+			int ID=IdRing(r);
+			vID.insert(ID);
+			printf("R8_%d×R2_%d=R16_%d\n",i,j,ID);
+			//delete r;
+			//r=NULL;
+		}
+	}
+	
+}else{
    for(int i=1;i<=121;i++)
    {
 	   IRing* r=newR4R4(i);
@@ -406,6 +435,7 @@ int test2()
 		   //r=NULL;
 	   }	   
    }
+}
    printf("%d种16阶可分解环\n",vID.size());
    return 0;
 }
@@ -505,31 +535,7 @@ int main(int argc, char* argv[])
 		const char* sz=b?"":"不是环";   
 		printf("%d:R%d_%d%s\n",i,r->size(),ID,sz);		
 	}		
-    for(int i=1;i<=11;i++){
-		for(int j=i;j<=11;j++){
-			IRing* ri=newR4(i);
-			IRing* rj=newR4(j);
-			DecompositionRing* r= new DecompositionRing(ri,rj);
-			r->m_flag=1;
-			int ID=IdRing(r);
-			printf("R4_%d×R4_%d=R16_%d\n",i,j,ID);
-			delete r;
-			r=NULL;
-		}
-	}
-    for(int i=1;i<=52;i++){
-		IRing* ri=newR8(i);
-		if(!ri)continue;
-		for(int j=1;j<=2;j++){		
-			IRing* rj=new ZmodnZ(3-j,2*(3-j));
-			DecompositionRing* r= new DecompositionRing(ri,rj);
-			r->m_flag=1;
-			int ID=IdRing(r);
-			printf("R8_%d×R2_%d=R16_%d\n",i,j,ID);
-			//delete r;
-			//r=NULL;
-		}
-	}*/	
+    */	
    //system("pause");
    return 0;
 }
