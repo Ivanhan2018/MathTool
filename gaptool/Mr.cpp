@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 		printf("r不是环\n");
 		return 0;
 	}		
-	if(n>2||(n==2 && n1==4 && (n2==5||n2==6))){
+	if(n>2||n==1||(n==2 && n1==4 && (n2==5||n2==6))){
 		Mnr* R=new Mnr(r,n);
 		R->m_flag=1;
 		string str1=Mnr::MStr(R->m_Set[idx1]);
