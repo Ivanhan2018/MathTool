@@ -1043,7 +1043,7 @@ void findquotientring(IRing *r,int n)
 				//Subring S1i00(r,S1i.m_I);
 				//printRing(&S1i00);
 			//}
-            if(ni==16 && (ID==248 || ID==-1)){
+            if(ni==16 && (ID>=130 && ID<150 || ID==-1)){
 				printRing0(&S1i,ID);
 			}			
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
