@@ -81,6 +81,34 @@ FiniteRing::~FiniteRing(){
 	}		
 }
 
+void printRing0(IRing* r,int ID){
+   int n=r->size();
+   printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
+   for(int i=0;i<n;i++){
+	   printf("{"); 
+	   for(int j=0;j<n;j++){
+		  int ij=r->add(i,j);
+		  printf("%d",ij);
+		  if(j<n-1)
+			printf(",");  
+	   } 
+       printf("},\n");   
+   }
+   printf("};\n");    
+   printf("static int g_R%d_%dMul[%d][%d]={\n",n,ID,n,n);   
+   for(int i=0;i<n;i++){
+	   printf("{"); 
+	   for(int j=0;j<n;j++){
+		  int ij=r->mul(i,j);
+		  printf("%d",ij);
+		  if(j<n-1)
+			printf(",");  
+	   } 
+       printf("},\n");   
+   }
+   printf("};\n"); 
+}
+
 IRing* newR2(int i)
 {
 	if(i==1)
@@ -939,7 +967,7 @@ void findsubring3(IRing *r,int n)
 		//Subring S1i(r,v);
 		int ni=S1i.size();
 		if(ni!=16)
-			continue;
+			continue;		
 		ID=IdRing(&S1i);
 		if(ni==16 && ID==-1)
 		{		
@@ -999,7 +1027,11 @@ void findquotientring(IRing *r,int n)
 		if(iret1!=1)
 			continue;
 		quotientRing S1i(r,v);
-		int ni=S1i.size();		
+		int ni=S1i.size();	
+		bool b=IsRing(&S1i);
+		if(!b){
+			continue;
+		}		
 		int ID=IdRing(&S1i);	
 		int cnt=M.size();
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
@@ -1007,10 +1039,13 @@ void findquotientring(IRing *r,int n)
 		if(cnt1>cnt){		
             int IDr=0;//IdRing(r);
 			int IDr0=IdRing(&S1i0);
-			if(S1i0.size()==4 && IDr0==-1){
-				Subring S1i00(r,S1i.m_I);
-				printRing(&S1i00);
-			}
+			//if(S1i0.size()==4 && IDr0==-1){
+				//Subring S1i00(r,S1i.m_I);
+				//printRing(&S1i00);
+			//}
+            if(ni==16 && (ID==248 || ID==-1)){
+				printRing0(&S1i,ID);
+			}			
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
 		}	
 		if(ni==n && ((ni==16 && ID==-1)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))) 	
