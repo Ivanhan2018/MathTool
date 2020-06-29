@@ -912,6 +912,9 @@ void findsubring(IRing *r,int n)
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
+			if(ni==16 && ID==-1){
+				printRing0(&S1i,ID);
+			}
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
 			//string I1=calcI1(&S1i);
 			//string I2=calcI2(&S1i);   
@@ -1043,7 +1046,11 @@ void findquotientring(IRing *r,int n)
 				//Subring S1i00(r,S1i.m_I);
 				//printRing(&S1i00);
 			//}
-            if(ni==16 && ((ID>=132 && ID<150)|| ID==-1)){
+			static int IDs[]={-1,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,91,92,96,97,98,99,100,121,122,123,124,125,126,127,128,141,142,143,144,145,146,147,148,149,153,155,159,160,162,163,165,167,168,169,171,172,173,175,176,178,179,180,181,182,183,190,274,279,281,282,283,286,287,289,290,377};
+			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
+		    static vector<int> vIDs(IDs,IDs+cnt);
+			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
+			if(ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end()){
 				printRing0(&S1i,ID);
 			}			
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
