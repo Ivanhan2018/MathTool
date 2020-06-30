@@ -271,6 +271,16 @@ bool SaveTable(const char *fn,const vector<vector<int> > &A,const vector<vector<
 
 int main(int argc, char* argv[])
 {
+#if 0
+	M2r *r4=new M2r();
+	r4->initI(8);
+	findquotientring(r4,16);
+	delete r4;
+	r4=NULL;
+	system("pause");
+	return 0;
+#endif
+
 	char sz[100]={0};
 	char sz1[100]={0};
 	char sz2[100]={0};
