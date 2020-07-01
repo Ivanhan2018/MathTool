@@ -1,3 +1,4 @@
+#define R16_I1I2
 #include"ZmodnZ.h"
 #include"quotientRing.h"
 #include<vector> 
@@ -6,6 +7,34 @@
 #include<string> 
 #include<ctime>
 using namespace std;
+
+void printRing0(IRing* r,int ID){
+   int n=r->size();
+   printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
+   for(int i=0;i<n;i++){
+	   printf("{"); 
+	   for(int j=0;j<n;j++){
+		  int ij=r->add(i,j);
+		  printf("%d",ij);
+		  if(j<n-1)
+			printf(",");  
+	   } 
+       printf("},\n");   
+   }
+   printf("};\n");    
+   printf("static int g_R%d_%dMul[%d][%d]={\n",n,ID,n,n);   
+   for(int i=0;i<n;i++){
+	   printf("{"); 
+	   for(int j=0;j<n;j++){
+		  int ij=r->mul(i,j);
+		  printf("%d",ij);
+		  if(j<n-1)
+			printf(",");  
+	   } 
+       printf("},\n");   
+   }
+   printf("};\n"); 
+}
 
 typedef vector<int> Polynomial;// 用向量表示多项式
 
@@ -876,17 +905,28 @@ void findsubring(PolynomialRing *r,int n){
 		int ni=S1i.size();
 		if(ni>16)
 			continue;
+		bool b=IsRing(&S1i);
+		if(!b){
+			continue;
+		}		
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
-			string I1=calcI1(&S1i);
-			string I2=calcI2(&S1i);   
-			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+			//string I1=calcI1(&S1i);
+			//string I2=calcI2(&S1i);   
+			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());		
+			static int IDs[]={-1,28,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,91,92,96,97,98,99,100,121,122,123,124,125,141,142,143,144,145,146,147,165,168,169,171,172,173,175,176,178,179,180,181,182,274,279,281,282,286,287,289,290};
+			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
+		    static vector<int> vIDs(IDs,IDs+cnt);
+			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
+			if(ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end()){
+				printRing0(&S1i,ID);
+			}		
 		}
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
+		if(ni==n && ID==-1)//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
 		//if(n<r->size() && ni==n && ID==386 || ID==5417 || ID==5527 || ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 		{
 			string str=PolynomialRing::sPoly(r->m_Set[i]);
@@ -942,18 +982,29 @@ void findsubring3(PolynomialRing *r,int n){
 		//Subring S1i(r,v);
 		int ni=S1i.size();
 		if(ni>16)
+			continue;	
+		bool b=IsRing(&S1i);
+		if(!b){
 			continue;
+		}		
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d\n",cnt1,ni,ID,i,j,k);
-			string I1=calcI1(&S1i);
-			string I2=calcI2(&S1i);   
-			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+			//string I1=calcI1(&S1i);
+			//string I2=calcI2(&S1i);   
+			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
+			static int IDs[]={-1,28,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,91,92,96,97,98,99,100,121,122,123,124,125,141,142,143,144,145,146,147,165,168,169,171,172,173,175,176,178,179,180,181,182,274,279,281,282,286,287,289,290};
+			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
+		    static vector<int> vIDs(IDs,IDs+cnt);
+			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
+			if(ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end()){
+				printRing0(&S1i,ID);
+			}			
 		}
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
+		if(ni==n && ID==-1)//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
 		//if(n<r->size() && ni==n && ID==386 || ID==5417 || ID==5527 || ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 		{
 			string str=PolynomialRing::sPoly(r->m_Set[i]);
@@ -1003,10 +1054,10 @@ void findquotientring(IRing *r,int n)
 		v.push_back(i);		
 		v.push_back(j);
 		Subring S1i0;
-		bool bn=S1i0.init(r,v,2);
+		bool bn=S1i0.init(r,v,r->size()/n);
 		if(!bn)
 			continue;
-		if(S1i0.m_Set.size()!=2)
+		if(S1i0.m_Set.size()!=r->size()/n)
 			continue;
 		vector<int> v0=v;
 		v=S1i0.m_Set;
@@ -1023,9 +1074,16 @@ void findquotientring(IRing *r,int n)
             int IDr=IdRing(r);
 			int IDr0=IdRing(&S1i0);
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
+			static int IDs[]={-1,28,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,91,92,96,97,98,99,100,121,122,123,124,125,141,142,143,144,145,146,147,165,168,169,171,172,173,175,176,178,179,180,181,182,274,279,281,282,286,287,289,290};
+			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
+		    static vector<int> vIDs(IDs,IDs+cnt);
+			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
+			if(ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end()){
+				printRing0(&S1i,ID);
+			}			
 		}	
-		//if(ni==16 && ID==-1)
-		if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 	
+		if(ni==16 && ID==-1)
+		//if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
 			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
@@ -1087,7 +1145,7 @@ int main(int argc, char* argv[])
 		g_i=atoi(argv[3]);	
 	}
 	
-	for(int i=1;i<=390;i++){
+	if(0)for(int i=1;i<=390;i++){
 	   PolynomialRing r16;
 	   bool b=r16.initR16(i);
        if(b){
@@ -1097,10 +1155,10 @@ int main(int argc, char* argv[])
 	   }
 	}
 	
-	if(0){
+	if(1){
 		if(argc<3)
 		{
-			printf("Usage:  PolynomialRing vf n [g_i]\n");
+			printf("Usage:  PolynomialRing n vf [g_i]\n");
 			return 0;
 		}		
 		int n=atoi(argv[1]);
@@ -1112,7 +1170,7 @@ int main(int argc, char* argv[])
 			vf.push_back(vi);
 		}			
 		PolynomialRing pr(&r,vf);
-		argc>4?findsubring3(&pr,16):findsubring(&pr,16);	
+		argc>3?(atoi(argv[3])!=0?findsubring3(&pr,16):findsubring(&pr,16)):findquotientring(&pr,16);	
 	}
 	if(0){
 		PolynomialRing r4;
