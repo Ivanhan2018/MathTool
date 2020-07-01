@@ -906,13 +906,17 @@ void findsubring(IRing *r,int n)
 		//Subring S1i(r,v);
 		int ni=S1i.size();
 		if(ni!=16)
-			continue;
+			continue;	
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
-			if(ni==16 && (ID==-1)){
+			static int IDs[]={-1,28,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,91,92,96,97,98,99,100,121,122,123,124,125,141,142,143,144,145,146,147,165,168,169,171,172,173,175,176,178,179,180,181,182,274,279,281,282};
+			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
+		    static vector<int> vIDs(IDs,IDs+cnt);
+			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
+			if(ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end()){
 				printRing0(&S1i,ID);
 			}
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
@@ -970,7 +974,7 @@ void findsubring3(IRing *r,int n)
 		//Subring S1i(r,v);
 		int ni=S1i.size();
 		if(ni!=16)
-			continue;		
+			continue;
 		ID=IdRing(&S1i);
 		if(ni==16 && ID==-1)
 		{		
@@ -1046,7 +1050,7 @@ void findquotientring(IRing *r,int n)
 				//Subring S1i00(r,S1i.m_I);
 				//printRing(&S1i00);
 			//}
-			static int IDs[]={-1,28,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,91,92,96,97,98,99,100,121,122,123,124,125,141,142,143,144,145,146,147,165,168,169,171,172,173,175,176,178,179,180,181,182,274,279,281,282,286,287,289,290};
+			static int IDs[]={-1,28,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,91,92,96,97,98,99,100,121,122,123,124,125,141,142,143,144,145,146,147,165,168,169,171,172,173,175,176,178,179,180,181,182,274,279,281,282};
 			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
 		    static vector<int> vIDs(IDs,IDs+cnt);
 			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
@@ -1055,7 +1059,7 @@ void findquotientring(IRing *r,int n)
 			}			
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
 		}	
-		if(i==16 && ID==-1) 	
+		if(ni==n && ((ni==16 && ID==-1)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
 			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
