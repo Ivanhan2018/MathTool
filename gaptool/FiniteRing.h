@@ -912,7 +912,6 @@ void findsubring(IRing *r,int n)
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
-			static int IDs[]={-1,28,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,91,92,96,97,98,99,100,121,122,123,124,125,141,142,143,144,145,146,147,165,168,169,171,172,173,175,176,178,179,180,181,182,274,279,281,282};
 			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
 		    static vector<int> vIDs(IDs,IDs+cnt);
 			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
@@ -1050,7 +1049,6 @@ void findquotientring(IRing *r,int n)
 				//Subring S1i00(r,S1i.m_I);
 				//printRing(&S1i00);
 			//}
-			static int IDs[]={-1,28,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,91,92,96,97,98,99,100,121,122,123,124,125,141,142,143,144,145,146,147,165,168,169,171,172,173,175,176,178,179,180,181,182,274,279,281,282};
 			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
 		    static vector<int> vIDs(IDs,IDs+cnt);
 			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
