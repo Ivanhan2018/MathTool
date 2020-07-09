@@ -3100,12 +3100,6 @@ IRing* FiniteRing::newR16(int i){
 	return NULL;
 }
 
-bool isR16ID(int i){
-	if(i==6||i==13||i==14||i==15||i==29||i==30||i==31||i==32||i==70||i==126||i==127||i==128||i==130||i==131|i==132||i==133||i==134||i==135||i==136||i==137||i==138||i==139||i==140||i==147||i==148||i==152||i==153||i==155||i==156||i==160||i==163||i==165||i==167||i==168||i==169||i==179||i==190||i==228||i==229||i==239||i==241||i==244||i==246||i==248||i==271||i==272||i==273||i==274||i==275||i==276||i==277||i==278||i==180||i==282||i==283||i==286||i==287||i==290||i==377)
-		return true;
-	return false;
-}
-
 void printRing0(IRing* r,int ID){
    int n=r->size();
    printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
@@ -6219,29 +6213,35 @@ bool Mnr::initR8(int ID){
 		//Mnr* r=new Mnr();
 		//r->initR8(45);
 		//m_r=r;
-		IRing * newR16(int ID);
+		IRing * newR4(int ID);
 		IRing * newR8(int ID);		
-		m_r=g_a<0?newR16(-g_a):newR8(g_a);
+		m_r=g_a<0?newR4(-g_a):newR8(g_a);
 		//m_r=new ZmodnZ(1,4);	
-		m_n=4;		   
-		MATRIXi8 A(4,vector<TElem>(4,0));
-		MATRIXi8 B(4,vector<TElem>(4,0));
-		MATRIXi8 C(4,vector<TElem>(4,0));		
+		m_n=3; 	   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
 		A[0][0]=0;
-		A[0][1]=1;
+		A[0][1]=0;
+		A[0][2]=0;
 		A[1][0]=0;
-		A[1][1]=3;
-		B[2][2]=0;
-		B[2][3]=0;
-		B[3][2]=1;
-		B[3][3]=1; 
-		C[2][2]=1;
-		C[2][3]=0;
-		C[3][2]=0;
-		C[3][3]=1;		
-		gen.push_back(A);
-		gen.push_back(B);
-		gen.push_back(C); 			
+		A[1][1]=2;
+		A[1][2]=2;
+		A[2][0]=1;
+		A[2][1]=2;
+		A[2][2]=2;
+		B[0][0]=3;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=2;
+		B[2][0]=0;
+		B[2][1]=3;
+		B[2][2]=2; 
+		gen.push_back(A); 
+		gen.push_back(B); 		
+		//gen.push_back(C);
+		//gen.push_back(D); 			
 	   //initR8(41);
        //return true;	   
    }else{
@@ -6964,7 +6964,7 @@ bool Mnr::initR16(int ID){
 		A[3][2]=0;
 		A[3][3]=1;
 		gen.push_back(A);
-   }else if(ID==107){
+   }else if(ID==107){//R4_1¡ÁR4_1=R16_107
 		m_r=new ZmodnZ(2,8);
 		m_n=3; 	   
 		MATRIXi8 A(3,vector<TElem>(3,0));
@@ -10633,6 +10633,23 @@ IRing* newR16R4(int ij)
 	return r;
 }
 
+IRing* newR8R4(int ij)
+{
+	int i=(ij-1)%52+1;
+	int j=(ij-1)/52+1;
+    IRing* ri=newR8(i);
+	if(!ri)
+		return NULL;
+    IRing* rj=newR4(j);
+	if(!rj){
+		delete ri;
+		return NULL;
+	}
+	DecompositionRing* r= new DecompositionRing(ri,rj);
+	r->m_flag=1;
+	return r;
+}
+
 int main(int argc, char* argv[])
 { 
 	if(argc>1)
@@ -10654,20 +10671,30 @@ int main(int argc, char* argv[])
 		return 0;		
 	}
 	
-	if(0){	
-	   for(int i=1;i<=4290;i++)
+	if(1){
+	   for(int j=1;j<=11;j++)		
+	   for(int i=1;i<=52;i++)								   
 	   {
-		   if(i<=157)
-			   continue;
-		   IRing* r=newR16R4(i);
-		   if(r){
-			   printf("R16R4_%d\n",i);
-			   //int ID=IdRing(r);
+		   int ij=(j-1)*52+i;
+		   int ji=(i-1)*11+j;	   
+		   IRing* r=newR8R4(ij);
+		   if(r){				   
+			   	//string strR=calcRingInvariant(r);			
+				//char sz2[100]={0};	
+				//sprintf(sz2,"//R8R4_%d=R8_%d¡ÁR4_%d",ji,i,j);			
+				//string strRingInvariant="m_RingInvariant.insert(make_pair(\""+strR+"\",0));"+sz2;
+				//printf("%s\n",strRingInvariant.c_str());		
+				//string I1=calcI1(r);
+				//string I2=calcI2(r);			
+				//string strI1I2="m_I1I2.insert(make_pair(\""+I1+","+I2+"\","+"0"+"));"+sz2;
+				//printf("%s\n",strI1I2.c_str());	
+			   int ID=IdRing(r);
+			   printf("R8_%d¡ÁR4_%d=R32_%d\n",i,j,ID);
 			   //printf("R8R2_%d=R8_%d¡ÁR2_%d=R16_%d\n",i,(i-1)%52+1,(i-1)/52+1,ID);
-			   findsubring(r,16);	   
+			   //findsubring(r,16);	   
 			   //findquotientring(r,16);
-			   delete r;
-			   r=NULL;
+			   //delete r;
+			   //r=NULL;
 		   }
 	   }
 	   return 0;
@@ -10809,14 +10836,16 @@ int main(int argc, char* argv[])
 	
 	if(1){
 		if(1){
-			IRing* r=newR16(179);
+			IRing* r=newR16(5);
 			int ID=IdRing(r);
 			bool b=IsRing(r);
 			const char* sz=b?"":"²»ÊÇ»·";   
 			printf("R%d_%d%s\n",r->size(),ID,sz);
-			string I1=calcI1(r);
-			string I2=calcI2(r);   
-			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+			//string I1=calcI1(r);
+			//string I2=calcI2(r);   
+			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
+			string strR=calcRingInvariant(r);
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r->size(),ID,strR.c_str());				
 		}		   
 	   Mnr r16;
 	   r16.initR8();
