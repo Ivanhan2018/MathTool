@@ -14,7 +14,8 @@ public:
    static vector<SnE> FG(const vector<SnE> & gen);  
    static SnE mul(const SnE &t,const SnE &m);  
    static SnE inv(const SnE &t);
-   static vector<SnE> Order(const SnE & m);   
+   static vector<SnE> Order(const SnE & m); 
+   static SnE getSnE(int n,int idx);   
 public:
    // 实现抽象基类的方法
    virtual void printSet();
@@ -28,6 +29,7 @@ public:
    Sn(int n,TSnE* a,TSnE* b);   
    // 成员函数
    void init(const vector<SnE> & gen);
+   bool init(const vector<SnE> & gen,int N);
    // 成员变量
    vector<SnE> s_Arr; 
    vector<SnE> m_gen;
@@ -46,7 +48,7 @@ vector<SnE> Sn::FG(const vector<SnE> & gen)
 	S.push_back(E);
 	for(int i=0;i<gen.size();i++)
 	{
-		if(memcmp(&E[0],&gen[i],sizeof(TSnE)*N)!=0)
+		if(memcmp(&E[0],&gen[i][0],sizeof(TSnE)*N)!=0)
 		{
 			S.push_back(gen[i]);
 		}
@@ -84,6 +86,23 @@ Sn::Sn(int n)
    }while( next_permutation(v.begin(),v.end()));
 }
 
+SnE Sn::getSnE(int n,int idx)
+{
+	SnE v(n);
+	for(int i=0;i<n;i++)
+		v[i]=i+1;
+	if(idx<=0){
+		return v;
+	}
+	int cnt=-1;
+	do { 
+		cnt++;
+		if(cnt==idx)
+			return v; 		 
+	}while( next_permutation(v.begin(),v.end()));	
+	return v;
+}
+
 Sn::Sn(int n,TSnE* a,TSnE* b)
 {
 	SnE sa(a,a+n);
@@ -99,6 +118,48 @@ void Sn::init(const vector<SnE> & gen)
 	m_gen=gen;
 	s_Arr=FG(m_gen);
 	m_n=gen[0].size();
+}
+
+bool Sn::init(const vector<SnE> & gen,int N)
+{
+	m_gen=gen;
+	m_n=gen[0].size();
+	int n=gen[0].size();
+	SnE E;
+	for(int i=0;i<n;i++)
+	{
+		E.push_back(i+1);
+	}
+	s_Arr.push_back(E);
+	for(int i=0;i<gen.size();i++)
+	{
+		if(memcmp(&E[0],&gen[i][0],sizeof(TSnE)*n)!=0)
+		{
+			s_Arr.push_back(gen[i]);
+		}
+	}	
+	int R=s_Arr.size();
+	int cnt=R;
+	int cnt1=R;
+	do{
+		cnt=s_Arr.size();
+		if(N>0 && cnt>N)
+			return false;
+		for(int i=1;i<cnt;i++)
+		{
+			for(int j=1;j<cnt;j++)
+			{
+				SnE IJ=mul(s_Arr[i],s_Arr[j]);
+				int bIn=getidx(s_Arr,IJ);
+				if(bIn==-1)
+				{
+					s_Arr.push_back(IJ);
+				}
+			}
+		}
+		cnt1=s_Arr.size();
+	}while(cnt1>cnt);	
+	return true;
 }
 
 void Sn::printSet()

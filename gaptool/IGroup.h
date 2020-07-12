@@ -119,12 +119,56 @@ public:
 	virtual int size();
 	virtual int inv(int a); 
 	// 构造函数
+	Subgroup();	
 	Subgroup(IGroup* g,const vector<int>& gens);
-	// 成员函数	
+	// 析构函数
+	~Subgroup();		
+	// 成员函数
+    bool init(IGroup* g,const vector<int>& gens,int N=0);//N>0时表示子群阶要小于等于N，否则初始化失败
 	// 成员变量
 	vector<int> m_Set;
 	IGroup* m_g;
 };
+
+Subgroup::Subgroup(){
+	
+}
+
+Subgroup::~Subgroup(){
+
+}
+
+bool Subgroup::init(IGroup* g,const vector<int>& gens,int N){
+	m_g=g;
+	m_Set.push_back(0);
+	int R=gens.size();
+	for(int i=0;i<R;i++){
+		if(gens[i]==0)
+			continue;
+		m_Set.push_back(gens[i]);
+	}
+	int cnt=R+1;
+	int cnt1=R+1;
+	do{
+		cnt=m_Set.size();
+		if(N>0 && cnt>N)
+			return false;
+		if(cnt==g->size())
+			break;
+		for(int i=1;i<cnt;i++){
+			for(int j=1;j<cnt;j++){
+				int IJ=g->mul(m_Set[i],m_Set[j]);
+				vector<int>::iterator p=std::find(m_Set.begin(),m_Set.end(),IJ);
+				if(p==m_Set.end()){
+					m_Set.push_back(IJ);
+				}
+			}
+		}
+		cnt1=m_Set.size();
+	}while(cnt1>cnt);	
+   return true;
+}
+
 
 void Subgroup::printSet()
 {
@@ -169,8 +213,9 @@ int Subgroup::size()
 
 Subgroup::Subgroup(IGroup* g,const vector<int>& gens)
 {
-	m_g=g;
-	m_Set=FG(g,gens);
+	//m_g=g;
+	//m_Set=FG(g,gens);
+	init(g,gens,0);
 }
 
 vector<tuple<int,int,int> > doN2Vec(vector<pair<int,int> >& v){
