@@ -131,7 +131,7 @@ public:
 };
 
 Subgroup::Subgroup(){
-	
+
 }
 
 Subgroup::~Subgroup(){
@@ -216,6 +216,35 @@ Subgroup::Subgroup(IGroup* g,const vector<int>& gens)
 	//m_g=g;
 	//m_Set=FG(g,gens);
 	init(g,gens,0);
+}
+
+// 判断集合S是否是群g的正规子群
+int IsNormalSubgroup(IGroup* g,vector<int> &S,bool bSet){	
+	vector<int>* I;
+	Subgroup s;
+	//S不是g的生成元集
+	if(!bSet){
+		bool b=s.init(g,S,S.size());
+		if(!b){
+			return 0;// 子群也不是
+		}
+		I=&s.m_Set;
+	}else{
+		I=&S;
+	}
+	//进一步判断是否是正规子群
+	for(int i=0;i<g->size();i++){
+		for(int j=0;j<(*I).size();j++){
+			int gh=g->mul(i,(*I)[j]);
+			int g1=g->inv(i);
+			int ghg1=g->mul(gh,g1);  
+			vector<int>::iterator p=std::find((*I).begin(),(*I).end(),ghg1);
+			if(p==(*I).end()){
+				return 2;// 是子群但不是正规子群
+			} 
+		}
+	}
+	return 1;//是正规子群
 }
 
 vector<tuple<int,int,int> > doN2Vec(vector<pair<int,int> >& v){

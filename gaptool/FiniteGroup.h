@@ -58,18 +58,20 @@ void FiniteGroup::printSet()
 void FiniteGroup::printTable()
 {
 	int ID=IdGroup(this);
+	printf("GAP[%d,%d]:\n",m_n,ID);	
+	/*
 	string N0=calcN0(this);  
 	string C1=calcC1(this);	
 	string Nk=calcNk(this);	
 	string S2=calcS2(this);
-	string kKEZDCANS=calckKEZDCANS(this);
-	printf("GAP[%d,%d]:\n",m_n,ID); 
+	string kKEZDCANS=calckKEZDCANS(this); 
 	printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
 	printf("S2=%s\n",S2.c_str());
 	printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
-	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());   
+	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str()); 
+	*/	
 	//printGroup(this);
 }
 
