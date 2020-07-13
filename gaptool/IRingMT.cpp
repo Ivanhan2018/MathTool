@@ -34,8 +34,9 @@ void fsubring(M2r *r,int n)
 		int cnt1=M.size();
 		if(cnt1>cnt){
 			printf("%s cnt1=%d:R%d_%d->i=%d,j=%d\n",__FUNCTION__,cnt1,ni,ID,i,j);
-		}		
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
+		}	
+		if(ni==16 && (ID==-1||isR16ID(ID)))
+		//if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
 		{
 			string str=M2r::MStr(r->m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());
@@ -83,8 +84,9 @@ void fsubring2(Mnr *r,int n)
 		int cnt1=M.size();
 		if(cnt1>cnt){
 			printf("%s cnt1=%d:R%d_%d->i=%d,j=%d\n",__FUNCTION__,cnt1,ni,ID,i,j);
-		}		
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
+		}	
+		if(ni==16 && (ID==-1||isR16ID(ID)))
+		//if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
 		{
 			string str=Mnr::MStr(r->m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());
@@ -146,8 +148,9 @@ void fsubring3(Mnr *r,int n)
 		int cnt1=M.size();
 		if(cnt1>cnt){
 			printf("%s cnt1=%d:R%d_%d->i=%d,j=%d,k=%d\n",__FUNCTION__,cnt1,ni,ID,i,j,k);
-		}	
-		if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
+		}
+		if(ni==16 && (ID==-1||isR16ID(ID)))
+		//if(ni==n && ID==-1||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
 		{
 			string str=Mnr::MStr(r->m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());

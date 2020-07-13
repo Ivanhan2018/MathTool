@@ -1,6 +1,9 @@
 #include"FiniteGroup.h"
 #include"DecompositionGroup.h"
-using namespace std;
+#include"GLnR.h"
+#include"GLnC.h"
+#include"GL2Zn.h"
+#include"PermGroup.h"
 
 typedef IGroup*(*newGFunc)(int);
 class grouptool
@@ -12,7 +15,11 @@ public:
     static int NumberSmallGroups(int n);
     static newGFunc newGn(int n);	
 	static vector<int> Cn(int n);
+	static IGroup* newT1(int n);
+	static IGroup* newT2(int n);	
+	static IGroup* newT3(int n);	
     static IGroup* newCn(int n);
+    static IGroup* newG6(int ID);	
     static IGroup* newG8(int ID);	
     static IGroup* newG12(int ID);	
     static IGroup* newG16(int ID);
@@ -20,6 +27,66 @@ public:
     static IGroup* newG32(int ID);	
     static IGroup* newG48(int ID);	
 };
+
+IGroup* grouptool::newT1(int n){
+    GL2Zn *t1=new GL2Zn();
+	t1->m_n=n;
+	vector<TM2> gen;
+	TM2 a(4);
+	TM2 b(4);	
+	a[0]=0;
+	a[1]=1;
+	a[2]=n-1;
+	a[3]=0;
+	b[0]=n-1;
+	b[1]=n-1;
+	b[2]=n-1;
+	b[3]=0;		
+	gen.push_back(a);
+	gen.push_back(b);
+	t1->s_Arr=GL2Zn::FG(gen,n);
+	return t1;	
+}
+
+IGroup* grouptool::newT2(int n){
+    GL2Zn *t=new GL2Zn();
+	t->m_n=n;
+	vector<TM2> gen;
+	TM2 a(4);
+	TM2 b(4);	
+	a[0]=0;
+	a[1]=n-1;
+	a[2]=n-1;
+	a[3]=0;
+	b[0]=n-1;
+	b[1]=n-1;
+	b[2]=n-1;
+	b[3]=0;	
+	gen.push_back(a);
+	gen.push_back(b);
+	t->s_Arr=GL2Zn::FG(gen,n);
+	return t;	
+}
+
+IGroup* grouptool::newT3(int n){
+    GL2Zn *t=new GL2Zn();
+	t->m_n=n;
+	vector<TM2> gen;
+	TM2 a(4);
+	TM2 b(4);	
+	a[0]=0;
+	a[1]=n-1;
+	a[2]=1;
+	a[3]=0;
+	b[0]=n-1;
+	b[1]=1;
+	b[2]=0;
+	b[3]=n-1;
+	gen.push_back(a);
+	gen.push_back(b);
+	t->s_Arr=GL2Zn::FG(gen,n);
+	return t;	
+}
 
 // 生成循环群C_n的凯莱表
 vector<int> grouptool::Cn(int n){
@@ -36,6 +103,7 @@ vector<int> grouptool::Cn(int n){
 int grouptool::NumberSmallGroups(int n){
     static map<int,int> M;
 	if(M.size()==0){
+		M.insert(make_pair(6,2));		
 		M.insert(make_pair(8,5));
 		M.insert(make_pair(12,5));
 		M.insert(make_pair(16,14));
@@ -53,6 +121,7 @@ int grouptool::NumberSmallGroups(int n){
 newGFunc grouptool::newGn(int n){
     static map<int,newGFunc> M;
 	if(M.size()==0){
+		M.insert(make_pair(6,grouptool::newG6));		
 		M.insert(make_pair(8,grouptool::newG8));
 		M.insert(make_pair(12,grouptool::newG12));
 		M.insert(make_pair(16,grouptool::newG16));
@@ -81,8 +150,22 @@ IGroup* grouptool::newCn(int n){
 	return fg;	
 }
 
+IGroup* grouptool::newG6(int ID){
+	if(ID==1){
+		GLnR *fg=new GLnR();
+		*fg=GLnR::D2nGroup(3);
+		return fg;
+	}		
+	if(ID==2){
+		GLnR *fg=new GLnR();
+		*fg=GLnR::CyclicGroup(6);
+		return fg;
+	}	
+    return NULL;	
+}
+
 IGroup* grouptool::newG8(int ID){
-	static int g_C8Mul_2[8][8]={
+/* 	static int g_C8Mul_2[8][8]={
 		{0,1,2,3,4,5,6,7},
 		{1,2,3,4,5,6,7,0},
 		{2,3,4,5,6,7,0,1},
@@ -101,13 +184,33 @@ IGroup* grouptool::newG8(int ID){
 		{5,0,3,6,1,4,7,2},
 		{6,3,0,5,2,7,4,1},
 		{7,6,5,4,3,2,1,0}
-	};	
+	};	 */
 	if(ID==1){
+#if 1
+		IGroup *fg=newCn(8);
+#else
 		FiniteGroup *fg=new FiniteGroup(8,&g_C8Mul_2[0][0],0);
+#endif
 		return fg;
 	}		
 	if(ID==2){
+#if 1
+		IGroup *g1=newCn(4);
+		IGroup *g2=newCn(2);
+		DecompositionGroup *fg=new DecompositionGroup(g1,g2);
+#else
 		FiniteGroup *fg=new FiniteGroup(8,&g_C2C4Mul_2[0][0],0);
+#endif
+		return fg;
+	}
+	if(ID==3){
+		GLnR *fg=new GLnR();
+		*fg=GLnR::D2nGroup(4);
+		return fg;
+	}	
+	if(ID==4){
+		GLnC *fg=new GLnC();		
+		*fg=GLnC::QuaternionGroup(8);
 		return fg;
 	}	
     return NULL;	
@@ -234,6 +337,9 @@ IGroup* grouptool::newG16(int ID){
 		FiniteGroup *fg=new FiniteGroup(16,&g_M16Mul[0][0],0);
 		return fg;
 	}
+	if(ID==8){
+		return newT1(3);
+	}	
 	if(ID==13){
 		FiniteGroup *fg=new FiniteGroup(16,&g_P16Mul[0][0],0);
 		return fg;
@@ -247,6 +353,12 @@ IGroup* grouptool::newG24(int ID){
 		IGroup *g2=newCn(3);
 		DecompositionGroup *dg=new DecompositionGroup(g1,g2);
 		return dg;
+	}
+	if(ID==3){
+		return newT3(3);
+	}		
+	if(ID==8){
+		return newT1(4);
 	}	
 	if(ID==9){
 #if 1
@@ -259,6 +371,10 @@ IGroup* grouptool::newG24(int ID){
 		DecompositionGroup *dg=new DecompositionGroup(g1,g2);
 		return dg;
 	}
+	if(ID==12){
+		Sn *sn=new Sn(4);
+		return sn;
+	}	
 	if(ID==13){
 		IGroup *g1=newG12(3);
 		IGroup *g2=newCn(2);
@@ -281,6 +397,9 @@ IGroup* grouptool::newG24(int ID){
 }
 
 IGroup* grouptool::newG32(int ID){
+	if(ID==19){
+		return newT1(8);
+	}	
 	if(ID==37){
 		IGroup *g1=newG16(6);
 		IGroup *g2=newCn(2);
@@ -297,12 +416,29 @@ IGroup* grouptool::newG32(int ID){
 }
 
 IGroup* grouptool::newG48(int ID){
+	if(ID==6){
+		return newT1(6);//或newT1(9)、newT1(18)
+	}	
+	if(ID==7){
+		GLnR *fg=new GLnR();
+		*fg=GLnR::D2nGroup(24);
+		return fg;
+	}
+	if(ID==14){
+		return newT1(8);
+	}	
 	if(ID==24){
 		IGroup *g1=newG16(6);
 		IGroup *g2=newCn(3);
 		DecompositionGroup *dg=new DecompositionGroup(g1,g2);
 		return dg;
 	}
+	if(ID==29){
+		return newT2(3);
+	}
+	if(ID==30){
+		return newT3(4);
+	}	
 	if(ID==47){
 		IGroup *g1=newG16(13);
 		IGroup *g2=newCn(3);
@@ -313,7 +449,7 @@ IGroup* grouptool::newG48(int ID){
 }
 
 int main(){
-	int ns[]={8,12,16,24,32,48};
+	int ns[]={6,8,12,16,24,32,48};
 	int cnt=sizeof(ns)/sizeof(ns[0]);
 	for(int i=0;i<cnt;i++){
 		int m=grouptool::NumberSmallGroups(ns[i]);

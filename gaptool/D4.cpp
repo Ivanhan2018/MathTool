@@ -112,10 +112,10 @@ void test3(int n)
 
 int main(int argc,char *argv[])
 {
-	test1(19);
+	//test1(19);
     //for(int i=3;i<10;i++)
 	//for(int i=10;i<15;i++)
-	for(int i=15;i<20;i++)	
-		//test1(i);
+	for(int i=2;i<20;i++)	
+		test3(i);
     return 0;
 }

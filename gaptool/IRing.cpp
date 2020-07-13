@@ -10268,8 +10268,8 @@ void findsubring(IRing *r,int n)
     string strCmd="del ";
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;		
-	srand(time(NULL));
-	g_i=rand()%r->size();
+	//srand(time(NULL));
+	//g_i=rand()%r->size();
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
 	for(int i=g_i;i<r->size()-1;i++)		
 	for(int j=i+1;j<r->size();j++)
@@ -10650,8 +10650,61 @@ IRing* newR8R4(int ij)
 	return r;
 }
 
+int Mrijk(int argc, char* argv[])
+{ 
+    int n=2;
+	int n1=1;
+	int n2=8;
+	int ijk=16;	
+	if(argc>1)
+		n=atoi(argv[1]);
+	if(argc>2)
+		n1=atoi(argv[2]);
+	if(argc>3)
+		n2=atoi(argv[3]); 
+	if(argc>4)
+		g_i=atoi(argv[4]);
+	if(argc>5)
+		ijk=atoi(argv[5]);		
+	IRing* r=NULL;	
+	if(n1==4 && n2<=11){	
+		r=newR4(n2);
+	}else if(n1==8 && n2<=52){	
+		r=newR8(n2);	
+	}else if(n1==16){	
+		r=newR16(n2);		
+	}else if(n2%n1==0){
+		r=new ZmodnZ(n1,n2);
+	}
+	if(!r){
+		printf("r==NULL\n");
+		return 0;
+	}
+	if(!IsRing(r)){
+		printf("r²»ÊÇ»·\n");
+		return 0;
+	}	
+	if(n>2||n==1){
+		Mnr* R=new Mnr(r,n);
+		R->m_flag=1;
+		findsubring(R,ijk);		
+		delete R;
+		R=NULL;
+	}else{
+		M2r* R=new M2r(r);
+		R->m_flag=1;
+		findsubring(R,ijk);		
+		delete R;
+		R=NULL;		
+	}
+   
+   return 0;
+}
+
 int main(int argc, char* argv[])
 { 
+	//return Mrijk(argc,argv);
+
 	if(argc>1)
 		g_i=atoi(argv[1]);
 	if(argc>2)
@@ -10672,7 +10725,7 @@ int main(int argc, char* argv[])
 	}
 	
 	if(1){
-	   for(int j=1;j<=11;j++)		
+	   for(int j=5;j<=11;j++)		
 	   for(int i=1;i<=52;i++)								   
 	   {
 		   int ij=(j-1)*52+i;

@@ -163,9 +163,10 @@ bool Sn::init(const vector<SnE> & gen,int N)
 }
 
 void Sn::printSet()
-{
+{	
    int ID=IdGroup(this);
    printf("GAP[%d,%d]:\n",size(),ID);
+#ifdef PRINT_SET   
    if(size()<73)
    {
 		for(int i=0;i<size();i++){
@@ -177,12 +178,13 @@ void Sn::printSet()
    {
 	   printf("群的阶太大，不在控制台打印\n");
    }
+#endif
 }
 
 void Sn::printTable()
 {
-   if(size()<73)
-		printGroup(this);
+   //if(size()<73)
+		//printGroup(this);
 }
 
 int Sn::mul(int a,int b)

@@ -863,7 +863,7 @@ void findsubring(PolynomialRing *r){
 		if(ni!=8 && ni!=16)
 			continue;
 		int ID=IdRing(&S1i);
-		if(ni==16 && ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==36||ID==39)))   
+		if(ni==16 && (ID==-1)||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==36||ID==39)))   
 		{
 			string str=PolynomialRing::sPoly(r->m_Set[i]);
 			printf("%d->%s=>",i,str.c_str());
@@ -914,7 +914,9 @@ void findsubring(PolynomialRing *r,int n){
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
+			string str=PolynomialRing::sPoly(r->m_Set[i]);
+			string strj=PolynomialRing::sPoly(r->m_Set[j]);			
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s,%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
 			//string I1=calcI1(&S1i);
 			//string I2=calcI2(&S1i);   
 			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());		
@@ -925,7 +927,7 @@ void findsubring(PolynomialRing *r,int n){
 				printRing0(&S1i,ID);
 			}		
 		}
-		if(ni==n && ID==-1)//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
+		if(ni==n && (ID==-1))//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
 		//if(n<r->size() && ni==n && ID==386 || ID==5417 || ID==5527 || ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 		{
 			string str=PolynomialRing::sPoly(r->m_Set[i]);
@@ -991,7 +993,10 @@ void findsubring3(PolynomialRing *r,int n){
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d\n",cnt1,ni,ID,i,j,k);
+			string str=PolynomialRing::sPoly(r->m_Set[i]);
+			string strj=PolynomialRing::sPoly(r->m_Set[j]);	
+			string strk=PolynomialRing::sPoly(r->m_Set[k]);			
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d=>%s,%s,%s\n",cnt1,ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());
 			//string I1=calcI1(&S1i);
 			//string I2=calcI2(&S1i);   
 			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
@@ -1002,7 +1007,7 @@ void findsubring3(PolynomialRing *r,int n){
 				printRing0(&S1i,ID);
 			}			
 		}
-		if(ni==n && ID==-1)//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
+		if(ni==n && (ID==-1))//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
 		//if(n<r->size() && ni==n && ID==386 || ID==5417 || ID==5527 || ID==-1||(ni==8 && (ID==6||ID==36||ID==9||ID==12||ID==18||ID==31||ID==32||ID==39)))   
 		{
 			string str=PolynomialRing::sPoly(r->m_Set[i]);
@@ -1079,7 +1084,7 @@ void findquotientring(IRing *r,int n)
 				printRing0(&S1i,ID);
 			}			
 		}	
-		if(ni==16 && ID==-1)
+		if(ni==n && ID==-1)
 		//if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 	
 		{		
 			string strR=calcRingInvariant(&S1i);

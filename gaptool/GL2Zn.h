@@ -152,6 +152,7 @@ GL2Zn::GL2Zn(int n)
 
 void GL2Zn::printSet()
 {
+#ifdef PRINT_SET
 	if(size()<100){
 		int ID=IdGroup(this);	
 		printf("GL(2,%d)的%d阶子群GAP[%d,%d]:\n",m_n,size(),size(),ID);
@@ -161,14 +162,15 @@ void GL2Zn::printSet()
 			printf("%d->[[%d,%d],[%d,%d]]=>%d->[[%d,%d],[%d,%d]]\n",i,s_Arr[i][0],s_Arr[i][1],s_Arr[i][2],s_Arr[i][3],i1,v1[0],v1[1],v1[2],v1[3]);
 		}
 	}
+#endif
 }
 
 void GL2Zn::printTable()
 {
    int ID=IdGroup(this);	
    printf("GL(2,%d)的%d阶子群GAP[%d,%d]:\n",m_n,size(),size(),ID);
-   if(size()<73)   
-		printGroup(this);
+   //if(size()<73)   
+		//printGroup(this);
 }
 
 int GL2Zn::mul(int a,int b)
