@@ -217,7 +217,7 @@ IGroup* grouptool::newG8(int ID){
 }
 
 IGroup* grouptool::newG12(int ID){
-	static int G12_2[12][12]=
+	/* static int G12_2[12][12]=
 	{
 		{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
 		{2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11},
@@ -276,22 +276,103 @@ IGroup* grouptool::newG12(int ID){
 		{10, 11, 12, 7, 8, 9, 4, 5, 6, 1, 2, 3},
 		{11, 12, 10, 8, 9, 7, 5, 6, 4, 2, 3, 1},
 		{12, 10, 11, 9, 7, 8, 6, 4, 5, 3, 1, 2}
-	};	
+	}; */	
+	if(ID==1){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=8;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=7;
+		a[3]=0;
+		b[0]=5;
+		b[1]=3;
+		b[2]=3;
+		b[3]=2;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
 	if(ID==2){
-		FiniteGroup *fg=new FiniteGroup(12,&G12_2[0][0],1);
-		return fg;
+		//FiniteGroup *fg=new FiniteGroup(12,&G12_2[0][0],1);
+		//return fg;
+		GL2Zn *t=new GL2Zn();
+		t->m_n=8;
+		vector<TM2> gen;
+		TM2 a(4);	
+		a[0]=7;
+		a[1]=7;
+		a[2]=7;
+		a[3]=0;
+		gen.push_back(a);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;		
 	}	
 	if(ID==3){
-		FiniteGroup *fg=new FiniteGroup(12,&G12_3[0][0],1);
-		return fg;
+		//FiniteGroup *fg=new FiniteGroup(12,&G12_3[0][0],1);
+		//return fg;
+		GL2Zn *t=new GL2Zn();
+		t->m_n=4;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=2;
+		a[1]=1;
+		a[2]=1;
+		a[3]=1;
+		b[0]=1;
+		b[1]=1;
+		b[2]=1;
+		b[3]=2;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;		
 	}		
 	if(ID==4){
-		FiniteGroup *fg=new FiniteGroup(12,&G12_4[0][0],1);
-		return fg;
+		//FiniteGroup *fg=new FiniteGroup(12,&G12_4[0][0],1);
+		//return fg;
+		GL2Zn *t=new GL2Zn();
+		t->m_n=8;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=7;
+		a[1]=0;
+		a[2]=1;
+		a[3]=1;
+		b[0]=1;
+		b[1]=7;
+		b[2]=0;
+		b[3]=7;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;		
 	}		
 	if(ID==5){
-		FiniteGroup *fg=new FiniteGroup(12,&G12_5[0][0],1);
-		return fg;
+		//FiniteGroup *fg=new FiniteGroup(12,&G12_5[0][0],1);
+		//return fg;
+		GL2Zn *t=new GL2Zn();
+		t->m_n=8;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=7;
+		a[1]=0;
+		a[2]=0;
+		a[3]=7;
+		b[0]=2;
+		b[1]=1;
+		b[2]=1;
+		b[3]=1;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;		
 	}	
 	return NULL;	
 }
@@ -332,13 +413,83 @@ IGroup* grouptool::newG16(int ID){
 		{13,12,15,14,11,10,8,9,6,7,5,4,1,0,3,2},
 		{14,15,13,12,9,8,11,10,4,5,6,7,2,3,1,0},
 		{15,14,12,13,8,9,10,11,5,4,7,6,3,2,0,1},
-	};	
+	};
+	if(ID==1){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=14;
+		vector<TM2> gen;
+		TM2 a(4);	
+		a[0]=11;
+		a[1]=12;
+		a[2]=12;
+		a[3]=13;	
+		gen.push_back(a);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
+	if(ID==4){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=12;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=11;
+		a[3]=0;
+		b[0]=1;
+		b[1]=8;
+		b[2]=8;
+		b[3]=5;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
 	if(ID==6){
 		FiniteGroup *fg=new FiniteGroup(16,&g_M16Mul[0][0],0);
 		return fg;
 	}
+	if(ID==7){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=14;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=13;
+		a[1]=0;
+		a[2]=1;
+		a[3]=1;
+		b[0]=5;
+		b[1]=6;
+		b[2]=3;
+		b[3]=9;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
 	if(ID==8){
 		return newT1(3);
+	}	
+	if(ID==9){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=14;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=13;
+		a[3]=0;
+		b[0]=13;
+		b[1]=8;
+		b[2]=8;
+		b[3]=5;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
 	}	
 	if(ID==13){
 		FiniteGroup *fg=new FiniteGroup(16,&g_P16Mul[0][0],0);
@@ -356,7 +507,83 @@ IGroup* grouptool::newG24(int ID){
 	}
 	if(ID==3){
 		return newT3(3);
-	}		
+	}
+	if(ID==4){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=14;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=13;
+		a[3]=0;
+		b[0]=5;
+		b[1]=3;
+		b[2]=3;
+		b[3]=2;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}
+	if(ID==5){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=17;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=16;
+		a[3]=0;
+		b[0]=14;
+		b[1]=15;
+		b[2]=15;
+		b[3]=16;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
+	if(ID==6){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=14;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=13;
+		a[1]=0;
+		a[2]=1;
+		a[3]=1;
+		b[0]=2;
+		b[1]=11;
+		b[2]=1;
+		b[3]=12;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
+	if(ID==7){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=12;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=11;
+		a[3]=0;
+		b[0]=5;
+		b[1]=3;
+		b[2]=3;
+		b[3]=2;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
 	if(ID==8){
 		return newT1(4);
 	}	
@@ -397,8 +624,27 @@ IGroup* grouptool::newG24(int ID){
 }
 
 IGroup* grouptool::newG32(int ID){
+	if(ID==9){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=12;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=11;
+		a[3]=0;
+		b[0]=9;
+		b[1]=10;
+		b[2]=10;
+		b[3]=11;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
 	if(ID==19){
-		return newT1(8);
+		return newT1(7);
 	}	
 	if(ID==37){
 		IGroup *g1=newG16(6);
@@ -416,6 +662,19 @@ IGroup* grouptool::newG32(int ID){
 }
 
 IGroup* grouptool::newG48(int ID){
+	if(ID==2){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=14;
+		vector<TM2> gen;
+		TM2 a(4);	
+		a[0]=13;
+		a[1]=13;
+		a[2]=13;
+		a[3]=0;	
+		gen.push_back(a);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}
 	if(ID==6){
 		return newT1(6);//»ònewT1(9)¡¢newT1(18)
 	}	
@@ -424,8 +683,65 @@ IGroup* grouptool::newG48(int ID){
 		*fg=GLnR::D2nGroup(24);
 		return fg;
 	}
+	if(ID==8){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=14;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=13;
+		a[3]=0;
+		b[0]=2;
+		b[1]=1;
+		b[2]=1;
+		b[3]=1;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
+	if(ID==13){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=12;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=1;
+		a[2]=11;
+		a[3]=0;
+		b[0]=2;
+		b[1]=1;
+		b[2]=1;
+		b[3]=1;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
 	if(ID==14){
 		return newT1(8);
+	}	
+	if(ID==23){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=12;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=11;
+		a[1]=11;
+		a[2]=11;
+		a[3]=0;
+		b[0]=11;
+		b[1]=0;
+		b[2]=0;
+		b[3]=11;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
 	}	
 	if(ID==24){
 		IGroup *g1=newG16(6);
@@ -439,12 +755,69 @@ IGroup* grouptool::newG48(int ID){
 	if(ID==30){
 		return newT3(4);
 	}	
+	if(ID==32){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=6;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=5;
+		a[2]=1;
+		a[3]=0;
+		b[0]=1;
+		b[1]=4;
+		b[2]=0;
+		b[3]=1;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
 	if(ID==47){
 		IGroup *g1=newG16(13);
 		IGroup *g2=newCn(3);
 		DecompositionGroup *dg=new DecompositionGroup(g1,g2);
 		return dg;
 	}
+	if(ID==48){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=4;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=0;
+		a[1]=3;
+		a[2]=3;
+		a[3]=0;
+		b[0]=3;
+		b[1]=1;
+		b[2]=2;
+		b[3]=3;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
+	if(ID==49){
+		GL2Zn *t=new GL2Zn();
+		t->m_n=4;
+		vector<TM2> gen;
+		TM2 a(4);
+		TM2 b(4);	
+		a[0]=3;
+		a[1]=3;
+		a[2]=3;
+		a[3]=0;
+		b[0]=0;
+		b[1]=3;
+		b[2]=3;
+		b[3]=3;	
+		gen.push_back(a);
+		gen.push_back(b);
+		t->s_Arr=GL2Zn::FG(gen,t->m_n);
+		return t;
+	}	
 	return NULL;	
 }
 
