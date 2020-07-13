@@ -17,7 +17,7 @@ public:
    virtual int inv(int a);
    // 构造函数
    DecompositionGroup();   
-   DecompositionGroup(IGroup *g1,IGroup *g2);
+   DecompositionGroup(IGroup *g1,IGroup *g2,int flag=1);
    // 析构函数
    ~DecompositionGroup();   
    // 成员函数
@@ -83,13 +83,14 @@ vector<vector<int> > DecompositionGroup::DirectProduct(const vector<vector<int>>
 	return C;
 }
 
-DecompositionGroup::DecompositionGroup(IGroup *g1,IGroup *g2)
+DecompositionGroup::DecompositionGroup(IGroup *g1,IGroup *g2,int flag)
 {
     m_g1=g1;
 	m_g2=g2;
 	vector<vector<int> > A=getTable(g1);
 	vector<vector<int>> B=getTable(g2);	
 	s_Arr=DirectProduct(A,B);
+	m_flag=flag;
 }
 
 void DecompositionGroup::printSet()
