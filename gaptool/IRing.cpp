@@ -10725,9 +10725,10 @@ int main(int argc, char* argv[])
 	}
 	
 	if(1){
-	   for(int j=5;j<=11;j++)		
+	   for(int j=7;j<=11;j++)		
 	   for(int i=1;i<=52;i++)								   
 	   {
+           //if(j==4 && i<47)continue;
 		   int ij=(j-1)*52+i;
 		   int ji=(i-1)*11+j;	   
 		   IRing* r=newR8R4(ij);
