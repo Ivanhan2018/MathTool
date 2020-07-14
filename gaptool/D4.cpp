@@ -125,8 +125,8 @@ void test(int n)
 	D8.printTable();	
 }
 
-//GAP[16,8]、GAP[24,8]、GAP[40,-1]、GAP[48,6]、GAP[32,19]、GAP[48,14]、GAP[48,6]
-//GAP[120,-1]、GAP[40,-1]、GAP[96,-1]、GAP[56,-1]、GAP[96,-1]、
+//GAP[16,8]、GAP[24,8]、GAP[40,5]、GAP[48,6]、GAP[32,19]、GAP[48,14]、GAP[48,6]
+//GAP[120,-1]、GAP[40,8]、GAP[96,-1]、GAP[56,-1]、GAP[96,-1]、
 //GAP[160,-1]、GAP[96,-1]、GAP[72,5]、GAP[48,6]、GAP[72,8]、
 void test1(int n)
 {
@@ -208,6 +208,6 @@ int main(int argc,char *argv[])
 	//for(int i=10;i<15;i++)
 	//for(int i=2;i<20;i++)	
 		//test3(i);
-	test3(n);
+	test2(n);
     return 0;
 }
