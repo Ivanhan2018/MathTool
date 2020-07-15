@@ -320,6 +320,7 @@ IGroup* grouptool::newG12(int ID){
 	if(ID==3){
 		//FiniteGroup *fg=new FiniteGroup(12,&G12_3[0][0],1);
 		//return fg;
+		/*		
 		GL2Zn *t=new GL2Zn();
 		t->m_n=4;
 		vector<TM2> gen;
@@ -336,7 +337,11 @@ IGroup* grouptool::newG12(int ID){
 		gen.push_back(a);
 		gen.push_back(b);
 		t->s_Arr=GL2Zn::FG(gen,t->m_n);
-		return t;		
+		return t;	
+		*/	
+		Sn *sn=new Sn(4);
+		Subgroup *an=new Subgroup(sn,sn->EvenSet(),1);
+		return an;  		
 	}		
 	if(ID==4){
 		//FiniteGroup *fg=new FiniteGroup(12,&G12_4[0][0],1);
@@ -357,7 +362,7 @@ IGroup* grouptool::newG12(int ID){
 		gen.push_back(a);
 		gen.push_back(b);
 		t->s_Arr=GL2Zn::FG(gen,t->m_n);
-		return t;		
+		return t;      		
 	}		
 	if(ID==5){
 		//FiniteGroup *fg=new FiniteGroup(12,&G12_5[0][0],1);

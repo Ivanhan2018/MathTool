@@ -120,26 +120,32 @@ public:
 	virtual int inv(int a); 
 	// 构造函数
 	Subgroup();	
-	Subgroup(IGroup* g,const vector<int>& gens);
+	Subgroup(IGroup* g,const vector<int>& gens,int flag=0);
 	// 析构函数
 	~Subgroup();		
 	// 成员函数
-    bool init(IGroup* g,const vector<int>& gens,int N=0);//N>0时表示子群阶要小于等于N，否则初始化失败
+    bool init(IGroup* g,const vector<int>& gens,int N=0,int flag=0);//N>0时表示子群阶要小于等于N，否则初始化失败
 	// 成员变量
 	vector<int> m_Set;
 	IGroup* m_g;
+    int m_flag;// Subgroup对象析构时是否释放m_g指向的内存 	
 };
 
 Subgroup::Subgroup(){
-
+	m_g=NULL;
+	m_flag=0;
 }
 
 Subgroup::~Subgroup(){
-
+	if(m_flag==1 && m_g!=NULL){
+		delete m_g;
+		m_g=NULL;
+	}
 }
 
-bool Subgroup::init(IGroup* g,const vector<int>& gens,int N){
+bool Subgroup::init(IGroup* g,const vector<int>& gens,int N,int flag){
 	m_g=g;
+	m_flag=flag;
 	m_Set.push_back(0);
 	int R=gens.size();
 	for(int i=0;i<R;i++){
@@ -181,7 +187,7 @@ void Subgroup::printTable()
     int IdGroup(IGroup*);
 	int ID=IdGroup(this);
 	printf("GAP[%d,%d]:\n",size(),ID);
-	printGroup(this);
+	//printGroup(this);
 }
 
 int Subgroup::inv(int a)
@@ -211,11 +217,11 @@ int Subgroup::size()
 	return m_Set.size();
 }
 
-Subgroup::Subgroup(IGroup* g,const vector<int>& gens)
+Subgroup::Subgroup(IGroup* g,const vector<int>& gens,int flag)
 {
 	//m_g=g;
 	//m_Set=FG(g,gens);
-	init(g,gens,0);
+	init(g,gens,0,flag);
 }
 
 // 判断集合S是否是群g的正规子群
@@ -881,6 +887,54 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,9,8,4,0,0,36,32,0,0,0,0",8));
 	m_N0.insert(make_pair("1,45,8,4,0,0,0,32,0,0,0,0",9));
 	m_N0.insert(make_pair("1,1,8,4,8,0,4,32,0,32,0,0",10));	
+	//G120	
+	m_N0.insert(make_pair("1,1,2,2,4,2,12,4,4,8,8,0,8,48,16,0",1));
+	m_N0.insert(make_pair("1,1,2,2,4,2,20,4,4,8,8,40,8,0,16,0",2));
+	m_N0.insert(make_pair("1,1,2,2,4,2,60,4,4,8,8,0,8,0,16,0",3));
+	m_N0.insert(make_pair("1,1,2,2,4,2,4,4,4,8,8,8,8,16,16,32",4));
+	m_N0.insert(make_pair("1,1,20,30,24,20,0,24,0,0,0,0,0,0,0,0",5));
+	m_N0.insert(make_pair("1,1,2,10,4,2,20,4,20,8,0,40,8,0,0,0",6));
+	m_N0.insert(make_pair("1,1,2,10,4,2,60,4,20,8,0,0,8,0,0,0",7));
+	m_N0.insert(make_pair("1,11,2,36,4,22,0,4,0,8,24,0,8,0,0,0",8));
+	m_N0.insert(make_pair("1,7,2,40,4,2,0,28,20,8,0,0,8,0,0,0",9));
+	m_N0.insert(make_pair("1,31,2,16,4,2,0,4,20,8,24,0,8,0,0,0",10));
+	m_N0.insert(make_pair("1,17,2,30,4,22,0,28,0,8,0,0,8,0,0,0",11));
+	m_N0.insert(make_pair("1,41,2,6,4,22,0,4,0,8,24,0,8,0,0,0",12));
+	m_N0.insert(make_pair("1,37,2,10,4,2,0,28,20,8,0,0,8,0,0,0",13));
+	m_N0.insert(make_pair("1,1,2,46,4,2,0,4,20,8,24,0,8,0,0,0",14));
+	m_N0.insert(make_pair("1,1,8,6,4,8,0,4,0,32,24,0,32,0,0,0",15));
+	m_N0.insert(make_pair("1,1,2,22,4,2,0,4,44,8,8,0,8,0,16,0",16));
+	m_N0.insert(make_pair("1,11,2,12,4,22,0,4,24,8,8,0,8,0,16,0",17));
+	m_N0.insert(make_pair("1,21,2,2,4,42,0,4,4,8,8,0,8,0,16,0",18));
+	m_N0.insert(make_pair("1,3,2,20,4,6,0,12,40,8,0,0,24,0,0,0",19));
+	m_N0.insert(make_pair("1,13,2,10,4,26,0,12,20,8,0,0,24,0,0,0",20));
+	m_N0.insert(make_pair("1,1,2,14,4,2,0,4,4,8,56,0,8,0,16,0",21));
+	m_N0.insert(make_pair("1,7,2,8,4,2,0,28,4,8,32,0,8,0,16,0",22));
+	m_N0.insert(make_pair("1,13,2,2,4,2,0,52,4,8,8,0,8,0,16,0",23));
+	m_N0.insert(make_pair("1,3,2,12,4,6,0,12,0,8,48,0,24,0,0,0",24));
+	m_N0.insert(make_pair("1,9,2,6,4,6,0,36,0,8,24,0,24,0,0,0",25));
+	m_N0.insert(make_pair("1,1,2,62,4,2,0,4,4,8,8,0,8,0,16,0",26));
+	m_N0.insert(make_pair("1,31,2,32,4,2,0,4,4,8,8,0,8,0,16,0",27));
+	m_N0.insert(make_pair("1,61,2,2,4,2,0,4,4,8,8,0,8,0,16,0",28));
+	m_N0.insert(make_pair("1,3,2,60,4,6,0,12,0,8,0,0,24,0,0,0",29));
+	m_N0.insert(make_pair("1,33,2,30,4,6,0,12,0,8,0,0,24,0,0,0",30));
+	m_N0.insert(make_pair("1,3,2,4,4,6,0,12,8,8,16,0,24,0,32,0",31));
+	m_N0.insert(make_pair("1,5,2,2,4,10,0,20,4,8,8,0,40,0,16,0",32));
+	m_N0.insert(make_pair("1,1,2,6,4,2,0,4,12,8,24,0,8,0,48,0",33));
+	m_N0.insert(make_pair("1,25,20,30,24,20,0,0,0,0,0,0,0,0,0,0",34));
+	m_N0.insert(make_pair("1,31,20,0,24,20,0,24,0,0,0,0,0,0,0,0",35));
+	m_N0.insert(make_pair("1,23,2,40,4,10,0,12,20,8,0,0,0,0,0,0",36));
+	m_N0.insert(make_pair("1,9,8,6,4,0,0,36,0,32,24,0,0,0,0,0",37));
+	m_N0.insert(make_pair("1,33,8,30,4,0,0,12,0,32,0,0,0,0,0,0",38));
+	m_N0.insert(make_pair("1,23,8,0,4,40,0,12,0,32,0,0,0,0,0,0",39));
+	m_N0.insert(make_pair("1,11,2,20,4,22,0,4,40,8,0,0,8,0,0,0",40));
+	m_N0.insert(make_pair("1,11,2,60,4,22,0,4,0,8,0,0,8,0,0,0",41));
+	m_N0.insert(make_pair("1,47,2,0,4,22,0,28,0,8,0,0,8,0,0,0",42));
+	m_N0.insert(make_pair("1,7,8,0,4,8,0,28,0,32,0,0,32,0,0,0",43));
+	m_N0.insert(make_pair("1,23,2,0,4,46,0,12,0,8,0,0,24,0,0,0",44));
+	m_N0.insert(make_pair("1,15,2,0,4,6,0,60,0,8,0,0,24,0,0,0",45));
+	m_N0.insert(make_pair("1,63,2,0,4,6,0,12,0,8,0,0,24,0,0,0",46));
+	m_N0.insert(make_pair("1,7,2,0,4,14,0,28,0,8,0,0,56,0,0,0",47));	
 	//G180
 	m_N0.insert(make_pair("1,1,2,18,4,2,6,4,0,8,6,72,8,0,24,0,24,0",1));
 	m_N0.insert(make_pair("1,1,2,10,4,2,6,4,20,8,6,0,8,60,24,0,24,0",2));

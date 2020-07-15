@@ -126,7 +126,7 @@ void test(int n)
 }
 
 //GAP[16,8]、GAP[24,8]、GAP[40,5]、GAP[48,6]、GAP[32,19]、GAP[48,14]、GAP[48,6]
-//GAP[120,-1]、GAP[40,8]、GAP[96,-1]、GAP[56,-1]、GAP[96,-1]、
+//GAP[120,27]、GAP[40,8]、GAP[96,-1]、GAP[56,-1]、GAP[96,-1]、
 //GAP[160,-1]、GAP[96,-1]、GAP[72,5]、GAP[48,6]、GAP[72,8]、
 void test1(int n)
 {
@@ -148,7 +148,7 @@ void test1(int n)
 	D8.s_Arr=GL2Zn::FG(gen,D8.m_n);
 	D8.printSet();
 	D8.printTable();
-    findgroup2(&D8,72);	
+    findgroup2(&D8,120);	
 }
 
 //GAP[48,29]、GAP[96,-1]、GAP[240,-1]、GAP[288,-1]、GAP[672,-1]、GAP[768,-1]、GAP[1296,-1]
@@ -172,10 +172,10 @@ void test2(int n)
 	D8.s_Arr=GL2Zn::FG(gen,D8.m_n);
 	D8.printSet();
 	D8.printTable();
-    findgroup2(&D8,72);		
+    findgroup2(&D8,120);		
 }
 
-//GAP[24,3]、GAP[48,30]、GAP[120,-1]、GAP[144,-1]、GAP[336,-1]、GAP[384,-1]、GAP[648,-1]
+//GAP[24,3]、GAP[48,30]、GAP[120,5]、GAP[144,-1]、GAP[336,-1]、GAP[384,-1]、GAP[648,-1]
 void test3(int n)
 {
     GL2Zn D8;
@@ -196,7 +196,7 @@ void test3(int n)
 	D8.s_Arr=GL2Zn::FG(gen,D8.m_n);
 	D8.printSet();
 	D8.printTable();
-    findgroup2(&D8,72);		
+    findgroup2(&D8,120);		
 }
 
 int main(int argc,char *argv[])

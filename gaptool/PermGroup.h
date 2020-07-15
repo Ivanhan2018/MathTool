@@ -15,7 +15,8 @@ public:
    static SnE mul(const SnE &t,const SnE &m);  
    static SnE inv(const SnE &t);
    static vector<SnE> Order(const SnE & m); 
-   static SnE getSnE(int n,int idx);   
+   static SnE getSnE(int n,int idx); 
+   static int OddEvenFlag(const SnE & m);// 0:偶置换,1:奇置换   
 public:
    // 实现抽象基类的方法
    virtual void printSet();
@@ -30,11 +31,40 @@ public:
    // 成员函数
    void init(const vector<SnE> & gen);
    bool init(const vector<SnE> & gen,int N);
+   vector<int> EvenSet();// 所有的偶置换
    // 成员变量
    vector<SnE> s_Arr; 
    vector<SnE> m_gen;
    int m_n;   
 };
+
+// 奇偶置换判别的逆序数算法：对第二排的每一个数,计算在它右边比它小的数的个数,所有这些个数的和是奇数,则该置换为奇置换;否则是偶置换
+int Sn::OddEvenFlag(const SnE & m)
+{
+	int iFlags=0;
+	int n=m.size();
+	for(int j=0;j<n;j++)
+	{
+		for(int k=j+1;k<n;k++)
+		{
+			if(m[k]<m[j])
+				 iFlags+=1;
+		}
+	}
+	iFlags%=2;
+	return iFlags;
+}
+
+vector<int> Sn::EvenSet()
+{
+	vector<int> v;
+	for(int i=0;i<s_Arr.size();i++)
+	{
+		if(OddEvenFlag(s_Arr[i])==0)
+			v.push_back(i);
+	}	
+	return v;
+}
 
 vector<SnE> Sn::FG(const vector<SnE> & gen)
 {

@@ -138,6 +138,7 @@ void QFindquotientGroup3(int n,int m)
 		vector<int> v;
 		v.push_back(i);
 		v.push_back(j);
+		v.push_back(k);
 		Subgroup s;
 		bool b=s.init(&sn,v,m/2);
 		if(!b)
