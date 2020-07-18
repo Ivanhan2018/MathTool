@@ -4730,6 +4730,14 @@ bool M2r::initR16(int ID){
 		gen.push_back(A);
 		gen.push_back(B);	
    }else if(ID==249){ 
+#if 1
+		m_r=FiniteRing::newR8(17);
+		A[0][0]=0;
+		A[0][1]=2;
+		A[1][0]=2;
+		A[1][1]=1;
+		gen.push_back(A);
+#else
 		m_r=FiniteRing::newR8(17);
 		A[0][0]=4;
 		A[0][1]=4;
@@ -4740,7 +4748,8 @@ bool M2r::initR16(int ID){
 		B[1][0]=2;
 		B[1][1]=5;
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);
+#endif		
    }else if(ID==250){ 
 		m_r=FiniteRing::newR8(14);
 		A[0][0]=0;
@@ -10725,7 +10734,7 @@ int main(int argc, char* argv[])
 	}
 	
 	if(1){
-	   for(int j=7;j<=11;j++)		
+	   for(int j=11;j<=11;j++)		
 	   for(int i=1;i<=52;i++)								   
 	   {
            //if(j==4 && i<47)continue;
@@ -10752,7 +10761,7 @@ int main(int argc, char* argv[])
 		   }
 	   }
 	   return 0;
-	}   
+	}  
 	
 	if(argc>2 && 0){
 		//ZmodnZ r(1,2);

@@ -73,7 +73,7 @@ vector<int> Mul(int N,int n,vector<int> & a,vector<int> & b)
 		{
 		    for(int m=0;m<N*N;m++)
 		    {
-			ij[m]=ij[m]%n;
+				ij[m]=ij[m]%n;
 		    }
 		}
 	}
@@ -95,9 +95,9 @@ vector<int> Identity(int N)
 
 bool IsEqual(const vector<int> & m,const vector<int> & n)
 {
-        int N2=m.size();
-        if(N2!=n.size())
-           return false;
+	int N2=m.size();
+	if(N2!=n.size())
+	   return false;
   
 	for(int i=0;i<N2;i++)
 	{
@@ -176,36 +176,6 @@ bool FGMtx(vector<vector<int> >& FG,int N,int n)
 
 int main(int argc, char **argv)
 {
-char sz[500]="SL;2;3; \
-1,0,0,1; \
-0,1,2,0; \
-0,1,2,1; \
-0,1,2,2; \
-0,2,1,0; \
-0,2,1,1; \
-0,2,1,2; \
-1,0,1,1; \
-1,0,2,1; \
-1,1,0,1; \
-1,1,1,2; \
-1,1,2,0; \
-1,2,0,1; \
-1,2,1,0; \
-1,2,2,2; \
-2,0,0,2; \
-2,0,1,2; \
-2,0,2,2; \
-2,1,0,2; \
-2,1,1,1; \
-2,1,2,0; \
-2,2,0,2; \
-2,2,1,0; \
-2,2,2,1 \
-";
-        //char sz1[500]="GL;2;3;0,1,2,0;0,1,2,1;2,2,0,1";
-        //char sz1[500]="SL;2;3;0,1,2,0;0,1,2,1";//G24_3
-        //char sz1[500]="O;2;3;0,1,2,0";//G8_3
-        //char sz1[500]="SL;2;3;0,1,2,0";//SL(2,3)_4=G4_1
 	char sz1[100]={0};
 	if(argc<2)
 	{
@@ -224,21 +194,21 @@ char sz[500]="SL;2;3; \
 	}
 	int N=atoi(vM[1].c_str());//N*N矩阵的阶
 	int n=atoi(vM[2].c_str());//域F_n的阶
-        vector<string> ElemSet(&vM[3],&vM[3]+(M-3));
+	vector<string> ElemSet(&vM[3],&vM[3]+(M-3));
 	vector<vector<int> > vElemSet=GroupUtil::StrtoInt(ElemSet);
-        bool bRet=FGMtx(vElemSet,N,n);
+	bool bRet=FGMtx(vElemSet,N,n);
 	vector<vector<int> > vvG=atoTable(vElemSet,n);
-        char szOut[100]={0};
-        if(argc>=3)
-        {
-           strcpy(szOut,argv[2]);
-        }
-        else 
-        {
-            sprintf(szOut,"%s(%d,%d)_%d",vM[0].c_str(),N,n,vvG.size());
-        }
-        string strOutFile=szOut;
-        strOutFile+=".txt";
+	char szOut[100]={0};
+	if(argc>=3)
+	{
+	   strcpy(szOut,argv[2]);
+	}
+	else 
+	{
+		sprintf(szOut,"%s(%d,%d)_%d",vM[0].c_str(),N,n,vvG.size());
+	}
+	string strOutFile=szOut;
+	strOutFile+=".txt";
 	bool bret=GroupUtil::SaveTable(strOutFile.c_str(),vvG);
 	if(bret)
 	{

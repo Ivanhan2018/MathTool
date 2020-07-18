@@ -26,7 +26,7 @@ void findgroup2(GL2Zn *g,int N)
 		if(cnt1>cnt){
 			printf("%d,%d->%s,%s=>GAP[%d,%d]:\n",i,j,V2S(vi).c_str(),V2S(vj).c_str(),G.size(),ID);				
 		}
-		if(ID==-1){		
+		if(ni<m && ID==-1){		
 			string N0=calcN0(&G);  
 			string C1=calcC1(&G);	
 			string Nk=calcNk(&G);	
@@ -68,7 +68,7 @@ void findgroup3(GL2Zn *g,int N)
 		if(cnt1>cnt){
 			printf("%d,%d,%d->%s,%s,%s=>GAP[%d,%d]:\n",i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str(),G.size(),ID);				
 		}
-		if(ID==-1){		
+		if(ni<m && ID==-1){		
 			string N0=calcN0(&G);  
 			string C1=calcC1(&G);	
 			string Nk=calcNk(&G);	
@@ -199,6 +199,15 @@ void test3(int n)
     findgroup2(&D8,120);		
 }
 
+//GAP[6,1]、GAP[24,3]、GAP[48,30]、GAP[120,5]、GAP[144,-1]
+void SL2Zn(int n)
+{
+    GL2Zn g(n,1);
+	g.printSet();
+	g.printTable();
+    findgroup2(&g,120);		
+}
+
 int main(int argc,char *argv[])
 {
 	g_a=argc>1?atoi(argv[1]):0;
@@ -206,8 +215,8 @@ int main(int argc,char *argv[])
 	//test1(19);
     //for(int i=3;i<10;i++)
 	//for(int i=10;i<15;i++)
-	//for(int i=2;i<20;i++)	
-		//test3(i);
-	test2(n);
+	for(int i=2;i<7;i++)	
+		;//SL2Zn(i);
+	SL2Zn(n);
     return 0;
 }

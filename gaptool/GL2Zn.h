@@ -69,10 +69,11 @@ public:
    virtual int inv(int a);
    // 构造函数
    GL2Zn(){}// 默认构造函数
-   GL2Zn(int n);
+   GL2Zn(int n,int idet1=0);
    // 析构函数
    ~GL2Zn(){};   
    // 成员函数
+   void init(int n,int idet1=0);
    // 成员变量
    vector<TM2> s_Arr;   
    int m_n;   
@@ -123,8 +124,11 @@ bool GL2Zn::IsEqual(const TM2 &t,const TM2 &m){
 	return true;
 }
 
-GL2Zn::GL2Zn(int n)
-{
+GL2Zn::GL2Zn(int n,int idet1){
+    init(n,idet1);
+}
+
+void GL2Zn::init(int n,int idet1){
     m_n=n;
 	TM2 v(4);
 	v[0]=1;
@@ -145,8 +149,14 @@ GL2Zn::GL2Zn(int n)
 					v[3]=m;
 				    int d=det(v,n);
 					// 非奇异2阶方阵
-					if(d!=0)
-						s_Arr.push_back(v);						
+					if(d!=0){
+						if(!idet1)
+							s_Arr.push_back(v);	
+						else{
+							if(det(v,n)==1)
+								s_Arr.push_back(v);
+						}
+					}						
 				}
 }
 

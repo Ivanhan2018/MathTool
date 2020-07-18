@@ -519,6 +519,9 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,5,10,4,0,0",3));
 	m_N0.insert(make_pair("1,11,0,4,4,0",4));
 	m_N0.insert(make_pair("1,3,0,4,12,0",5));	
+	//G21
+	m_N0.insert(make_pair("1,14,6,0,[[0,20],[1,1]],[[1,1,1],[3,7,14],[7,3,6]]",1));
+	m_N0.insert(make_pair("1,2,6,12,[[0,20],[1,1]],[[1,1,1],[3,1,2],[7,1,6],[21,1,12]]",2));	
 	//G24
 	m_N0.insert(make_pair("1,1,2,2,2,12,4,0",1));
 	m_N0.insert(make_pair("1,1,2,2,2,4,4,8",2));	
