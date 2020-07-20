@@ -4,6 +4,53 @@
 #include"GLnC.h"
 #include"GL2Zn.h"
 #include"PermGroup.h"
+#include <fstream>
+
+std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
+{
+	std::vector<string> ret;
+	unsigned int numSplits = 0;
+	// Use STL methods 
+	size_t start, pos;
+	start = 0;
+	do 
+	{
+		pos = str.find_first_of(delims, start);
+		if (pos == start)
+		{
+			// Do nothing
+			start = pos + 1;
+		}
+		else if (pos == std::string::npos || (maxSplits && numSplits == maxSplits))
+		{
+			// Copy the rest of the std::string
+			ret.push_back( str.substr(start) );
+			break;
+		}
+		else
+		{
+			// Copy up to delimiter
+			ret.push_back( str.substr(start, pos - start) );
+			start = pos + 1;
+		}
+		// parse up to next real data
+		start = str.find_first_not_of(delims, start);
+		++numSplits;
+	} while (pos != std::string::npos);
+	return ret;
+}
+
+void writeTable(IGroup* g,const char *path){
+	ofstream fout(path);
+	int n=g->size();  
+	for(int i=0;i<n;i++){
+	   for(int j=0;j<n;j++){
+		  int ij=g->mul(i,j);
+		  fout<<ij+1<<" ";
+	   }
+	   fout<<endl;
+	}
+}
 
 typedef IGroup*(*newGFunc)(int);
 class grouptool
@@ -15,6 +62,7 @@ public:
     static int NumberSmallGroups(int n);
     static newGFunc newGn(int n);	
 	static vector<int> Cn(int n);
+    static IGroup* newPermGroup(const char* str);	
 	static IGroup* newT1(int n);
 	static IGroup* newT2(int n);	
 	static IGroup* newT3(int n);	
@@ -25,10 +73,28 @@ public:
     static IGroup* newG16(int ID);
     static IGroup* newG24(int ID);
     static IGroup* newG32(int ID);
+    static IGroup* newG36(int ID);	
     static IGroup* newG40(int ID);	
     static IGroup* newG48(int ID);	
     static IGroup* newG72(int ID);	
 };
+
+IGroup* grouptool::newPermGroup(const char* str){
+	Sn *sn=new Sn();
+	vector<SnE> S;
+	vector<string> vN=split(str,";");
+	for(int i=0;i<vN.size();i++){
+		vector<string> vNi=split(vN[i],",");
+		int N=vNi.size();
+		SnE viN1(N);
+		for(int j=0;j<N;j++){
+			viN1[j]=atoi(vNi[j].c_str());
+		}
+		S.push_back(viN1);		
+	}
+	sn->init(S);
+    return sn;	
+}
 
 IGroup* grouptool::newT1(int n){
     GL2Zn *t1=new GL2Zn();
@@ -111,6 +177,7 @@ int grouptool::NumberSmallGroups(int n){
 		M.insert(make_pair(16,14));
 		M.insert(make_pair(24,15));
 		M.insert(make_pair(32,51));
+		M.insert(make_pair(36,14));		
 		M.insert(make_pair(40,52));		
 		M.insert(make_pair(48,52));	
 		M.insert(make_pair(72,50));		
@@ -131,6 +198,7 @@ newGFunc grouptool::newGn(int n){
 		M.insert(make_pair(16,grouptool::newG16));
 		M.insert(make_pair(24,grouptool::newG24));
 		M.insert(make_pair(32,grouptool::newG32));
+		M.insert(make_pair(36,grouptool::newG36));		
 		M.insert(make_pair(40,grouptool::newG40));		
 		M.insert(make_pair(48,grouptool::newG48));	
 		M.insert(make_pair(72,grouptool::newG72));		
@@ -520,6 +588,9 @@ IGroup* grouptool::newG16(int ID){
 		gen.push_back(b);
 		t->s_Arr=GL2Zn::FG(gen,t->m_n);
 		return t;
+	}	
+	if(ID==11){
+		return newPermGroup("1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,15;1,2,3,4,5,6,7,8,9,10,11,12,15,16,13,14;1,2,3,4,5,6,7,8,9,10,12,11,13,14,15,16");
 	}	
 	if(ID==13){
 		FiniteGroup *fg=new FiniteGroup(16,&g_P16Mul[0][0],0);
@@ -1050,6 +1121,16 @@ IGroup* grouptool::newG48(int ID){
 	return NULL;	
 }
 
+IGroup* grouptool::newG36(int ID){
+	if(ID==9){
+		return newPermGroup("1,2,3,4,5,6,7,8,9,10,11,16,13,12,15,14;1,2,3,4,5,6,7,8,9,10,12,11,14,15,16,13");
+	}	
+	if(ID==10){
+		return newPermGroup("1,2,3,4,5,6,7,8,9,10,11,16,13,15,14,12;1,2,3,4,5,6,7,8,9,10,12,11,14,15,13,16");
+	}		
+	return NULL;	
+}
+
 IGroup* grouptool::newG72(int ID){
 	if(ID==5){
 		return newT1(17);
@@ -1076,6 +1157,9 @@ IGroup* grouptool::newG72(int ID){
 		t->s_Arr=GL2Zn::FG(gen,t->m_n);
 		return t;
 	}	
+	if(ID==40){
+		return newPermGroup("1,2,3,4,5,6,7,8,9,10,11,16,12,15,14,13;1,2,3,4,5,6,7,8,9,10,12,11,14,13,16,15");
+	}		
 	return NULL;	
 }
 
@@ -1102,7 +1186,7 @@ int main(int argc,char *argv[]){
 			return 0;	
 		}		
 	}	
-	int ns[]={6,8,12,16,24,32,40,48};
+	int ns[]={6,8,12,16,24,32,36,40,48,72};
 	int cnt=sizeof(ns)/sizeof(ns[0]);
 	for(int i=0;i<cnt;i++){
 		int m=grouptool::NumberSmallGroups(ns[i]);

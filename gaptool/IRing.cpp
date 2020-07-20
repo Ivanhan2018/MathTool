@@ -3577,7 +3577,8 @@ bool M2r::initR8(int ID){
 		B[1][0]=0;
 		B[1][1]=0;
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);
+#if 0		
    }else if(ID==47){
 		M2r *r4=new M2r();
 		r4->initH(2);
@@ -3591,7 +3592,8 @@ bool M2r::initR8(int ID){
 		B[1][0]=0;
 		B[1][1]=0;
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);
+#endif		
    }else if(ID==48){
 		M2r *I4=new M2r();
 		I4->initI(2);
@@ -3605,7 +3607,8 @@ bool M2r::initR8(int ID){
 		B[1][0]=0;
 		B[1][1]=0;
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);	
+#if 0		
    }else if(ID==51){
 	   // KK(4)=R8_51
 	   M2r *K4=new M2r();
@@ -3616,6 +3619,7 @@ bool M2r::initR8(int ID){
 	   A[1][0]=1;
 	   A[1][1]=0;   
 	   gen.push_back(A);
+#endif
    }else if(ID==0){ 
 		//m_r=new ZmodnZ(1,4);	
 		IRing * newR16(int ID);
@@ -6136,7 +6140,6 @@ bool Mnr::initR8(int ID){
 		m_r=new ZmodnZ(1,2);	
 		m_n=3;		   
 		MATRIXi8 A(3,vector<TElem>(3,0));
-		MATRIXi8 B(3,vector<TElem>(3,0));
 		A[0][0]=1;
 		A[0][1]=0;
 		A[0][2]=1;
@@ -6147,6 +6150,31 @@ bool Mnr::initR8(int ID){
 		A[2][1]=1;
 		A[2][2]=0;  
 		gen.push_back(A);
+   }else if(ID==47){
+		m_r=new ZmodnZ(1,2);	
+		m_n=3;		   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		MATRIXi8 B(3,vector<TElem>(3,0));
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=0;
+		A[1][0]=1;
+		A[1][1]=1;
+		A[1][2]=0;
+		A[2][0]=1;
+		A[2][1]=0;
+		A[2][2]=1;
+		B[0][0]=1;
+		B[0][1]=1;
+		B[0][2]=0;
+		B[1][0]=0;
+		B[1][1]=0;
+		B[1][2]=0;
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;   
+		gen.push_back(A);
+		gen.push_back(B);			   
    }else if(ID==49){
 		m_r=new ZmodnZ(1,2);	
 		m_n=3;		   
@@ -6196,7 +6224,21 @@ bool Mnr::initR8(int ID){
 		B[2][1]=0;
 		B[2][2]=1;   
 		gen.push_back(A);
-		gen.push_back(B);		
+		gen.push_back(B);
+   }else if(ID==51){
+		m_r=new ZmodnZ(1,2);	
+		m_n=3;		   
+		MATRIXi8 A(3,vector<TElem>(3,0));
+		A[0][0]=1;
+		A[0][1]=1;
+		A[0][2]=0;
+		A[1][0]=1;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[2][0]=1;
+		A[2][1]=1;
+		A[2][2]=1;
+		gen.push_back(A);	   
    }else if(ID==52){
 	   MATRIXi8 A(4,vector<TElem>(4,0));
 	   A[0][0]=0;
@@ -10734,7 +10776,8 @@ int main(int argc, char* argv[])
 	}
 	
 	if(1){
-	   for(int j=11;j<=11;j++)		
+	   set<int> vID;
+	   for(int j=1;j<=11;j++)		
 	   for(int i=1;i<=52;i++)								   
 	   {
            //if(j==4 && i<47)continue;
@@ -10758,8 +10801,14 @@ int main(int argc, char* argv[])
 			   //findquotientring(r,16);
 			   //delete r;
 			   //r=NULL;
+			   vID.insert(ID);
 		   }
 	   }
+		printf("有%d种R8_i×R4_j类型的32阶可分解环:",vID.size());	
+		for(auto it=vID.begin();it!=vID.end();it++){
+			printf("%d,",*it);
+		}
+		printf("\n");	   
 	   return 0;
 	}  
 	

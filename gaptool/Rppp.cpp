@@ -1088,7 +1088,18 @@ Rppp':
 		r->m_r=new ZmodnZ(1,p);
 		r->m_n=3; 
 		vector<MATRIXi8> gen;		
-		MATRIXi8 A(3,vector<TElem>(3,0)); 	  					
+		MATRIXi8 A(3,vector<TElem>(3,0)); 
+#if 1
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=1;
+		A[1][0]=1;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[2][0]=1;
+		A[2][1]=1;
+		A[2][2]=1;
+#else		
 		A[0][0]=1;
 		A[0][1]=0;
 		A[0][2]=1;
@@ -1097,7 +1108,8 @@ Rppp':
 		A[1][2]=1;
 		A[2][0]=0;
 		A[2][1]=1;
-		A[2][2]=0;		
+		A[2][2]=0;
+#endif		
 		gen.push_back(A);
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
