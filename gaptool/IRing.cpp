@@ -5529,6 +5529,7 @@ public:
    static MATRIXi8 add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m);  
    static MATRIXi8 mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m); 
    static string MStr(const MATRIXi8 &t);   
+   static MATRIXi8 getMATRIXi8(int n,int m,int idx);    
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -5542,6 +5543,7 @@ public:
 	// 析构函数
 	~Mnr();	
 	// 成员函数	
+	bool init(IRing* r,int n,const vector<MATRIXi8> & gen,int N);	
     int visitMnRm(int n,int m);	
 	// 有限环序列
 	void initE(int n);// R4_5、R9_5所在的n^2阶有限环序列,
@@ -9898,6 +9900,66 @@ MATRIXi8 Mnr::mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 	return C;
 }
 
+bool Mnr::init(IRing* r,int n,const vector<MATRIXi8> & gen,int N){
+	m_r=r;
+	m_n=n;
+	m_flag=0;	
+	//int n=gen[0].size();
+	MATRIXi8 E(n,vector<TElem>(n,0));
+	m_Set.push_back(E);
+	for(int i=0;i<gen.size();i++)
+	{
+		if(!IsEqual(gen[i],E))
+			m_Set.push_back(gen[i]);
+	}
+	int R=m_Set.size();
+	int cnt=R;
+	int cnt1=R;
+	do{
+		cnt=m_Set.size();
+		if(N>0 && cnt>N)
+			return false;		
+		for(int i=0;i<cnt;i++)
+		{
+			for(int j=0;j<cnt;j++)
+			{
+				MATRIXi8 IJ=mul(r,m_Set[i],m_Set[j]);
+				vector<MATRIXi8>::iterator p=std::find(m_Set.begin(),m_Set.end(),IJ);
+				if(p==m_Set.end()){
+					m_Set.push_back(IJ);
+				}
+				MATRIXi8 IJ1=add(r,m_Set[i],m_Set[j]);
+				p=std::find(m_Set.begin(),m_Set.end(),IJ1);
+				if(p==m_Set.end()){
+					m_Set.push_back(IJ1);
+				}
+			}
+		}
+		cnt1=m_Set.size();
+	}while(cnt1>cnt);
+    return true;		
+}
+
+MATRIXi8 Mnr::getMATRIXi8(int n,int m,int idx){
+	vector<TElem> v(n*n,0);
+	MATRIXi8 M(n,vector<TElem>(n,0));	
+	if(idx<=0){
+		return M;
+	}
+	int cnt=-1;
+	do {
+		for(int k=0;k<n*n;k++){
+			int i=k/n;
+			int j=k%n;
+			M[i][j]=v[k];
+		}
+		cnt++;
+		if(cnt==idx)
+			return M;
+	}while(nextV1(m,v));	
+	return M;	
+}
+
 bool Mnr::nextV1(int m,vector<TElem>& v){
 	int n=v.size();
 	for(int i=n-1;i>=0;i--){
@@ -10663,6 +10725,25 @@ IRing* newR16R2(int ij)
 	return r;
 }
 
+IRing* newR16R2(int i,int j)
+{
+	IRing* ri=newR16(i);
+	if(!ri)
+		return NULL;
+	if(j!=1 && j!=2){
+		delete ri;
+		return NULL;		
+	}
+    IRing* rj=new ZmodnZ(3-j,2*(3-j));
+	if(!rj){
+		delete ri;
+		return NULL;
+	}
+	DecompositionRing* r= new DecompositionRing(ri,rj);
+	r->m_flag=1;
+	return r;
+}
+
 IRing* newR16R4(int ij)
 {
 	int i=(ij-1)%390+1;
@@ -10701,6 +10782,46 @@ IRing* newR8R4(int ij)
 	return r;
 }
 
+set<string> gS;
+set<std::pair<int,int>> gM;
+void FindMnr(IRing* r,int n,int m)
+{	
+	for(int i=g_i;i<m;i++)		
+	for(int j=i+1;j<m;j++){	
+		vector<MATRIXi8> S;
+		MATRIXi8 vi=Mnr::getMATRIXi8(n,r->size(),i);
+		MATRIXi8 vj=Mnr::getMATRIXi8(n,r->size(),j);		
+		S.push_back(vi);
+		S.push_back(vj);
+		Mnr R;
+		bool b=R.init(r,n,S,32);	
+		if(!b)
+			continue;
+		int ni=R.size();
+		int ID=IdRing(&R);
+		int cnt=gM.size();
+		gM.insert(make_pair(ni,ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+				string str=Mnr::MStr(vi);
+				string strj=Mnr::MStr(vj);			   
+				printf("R%d_%d->i=%d,j=%d=>%s,%s\n",ni,ID,i,j,str.c_str(),strj.c_str());
+				if(ni==32 && ID>0){
+					char sz1[128]={0};   
+					sprintf(sz1,"R%d_%d.txt",ni,ID);
+					writeTable(&R,sz1);                  
+				}
+		}
+		if(ID==-1){		
+			string strR=calcRingInvariant(&R);
+			if(gS.find(strR)==gS.end()){			
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());		
+			}
+			gS.insert(strR);
+		}
+	}
+}
+
 int Mrijk(int argc, char* argv[])
 { 
     int n=2;
@@ -10736,6 +10857,33 @@ int Mrijk(int argc, char* argv[])
 		return 0;
 	}	
 	if(n>2||n==1){
+		if(n>2 && r->size()>4||(n>3 &&r->size()==4)){
+			FindMnr(r,n,ijk);
+			/*
+			Mnr R16;
+			MATRIXi8 A=Mnr::getMATRIXi8(n,r->size(),g_i);
+			MATRIXi8 B=Mnr::getMATRIXi8(n,r->size(),ijk);
+			vector<MATRIXi8> gen;
+			gen.push_back(A);
+			gen.push_back(B);		
+			bool b=R16.init(r,n,gen,32);		
+			if(b){
+				int ni=R16.size();
+				int ID=IdRing(&R16);
+				string str=Mnr::MStr(A);
+				string strj=Mnr::MStr(B);			   
+				printf("R%d_%d->i=%d,j=%d=>%s,%s\n",ni,ID,g_i,ijk,str.c_str(),strj.c_str());
+				if(ID==-1){		
+					string strR=calcRingInvariant(&R16);
+					printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());
+				}				
+			}else{
+				printf("生成32阶以下矩阵环失败\n");
+			}*/
+			delete r;
+			r=NULL;
+			return 0;
+		}
 		Mnr* R=new Mnr(r,n);
 		R->m_flag=1;
 		findsubring(R,ijk);		
@@ -10755,231 +10903,44 @@ int Mrijk(int argc, char* argv[])
 int main(int argc, char* argv[])
 { 
 	//return Mrijk(argc,argv);
-
-	if(argc>1)
-		g_i=atoi(argv[1]);
-	if(argc>2)
-		g_a=atoi(argv[2]);	
-	
-	if(0){
-		IRing* r=newR16(157);
-		int ID=IdRing(r);
-		bool b=IsRing(r);
-		const char* sz=b?"":"不是环";   
-		printf("R%d_%d%s\n",r->size(),ID,sz);
-		string I1=calcI1(r);
-		string I2=calcI2(r);   
-		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
-		delete r;
-		r=NULL;		
-		return 0;		
-	}
-	
-	if(1){
-	   set<int> vID;
-	   for(int j=1;j<=11;j++)		
-	   for(int i=1;i<=52;i++)								   
-	   {
-           //if(j==4 && i<47)continue;
-		   int ij=(j-1)*52+i;
-		   int ji=(i-1)*11+j;	   
-		   IRing* r=newR8R4(ij);
-		   if(r){				   
-			   	//string strR=calcRingInvariant(r);			
-				//char sz2[100]={0};	
-				//sprintf(sz2,"//R8R4_%d=R8_%d×R4_%d",ji,i,j);			
-				//string strRingInvariant="m_RingInvariant.insert(make_pair(\""+strR+"\",0));"+sz2;
-				//printf("%s\n",strRingInvariant.c_str());		
-				//string I1=calcI1(r);
-				//string I2=calcI2(r);			
-				//string strI1I2="m_I1I2.insert(make_pair(\""+I1+","+I2+"\","+"0"+"));"+sz2;
-				//printf("%s\n",strI1I2.c_str());	
-			   int ID=IdRing(r);
-			   printf("R8_%d×R4_%d=R32_%d\n",i,j,ID);
-			   //printf("R8R2_%d=R8_%d×R2_%d=R16_%d\n",i,(i-1)%52+1,(i-1)/52+1,ID);
-			   //findsubring(r,16);	   
-			   //findquotientring(r,16);
-			   //delete r;
-			   //r=NULL;
-			   vID.insert(ID);
-		   }
-	   }
-		printf("有%d种R8_i×R4_j类型的32阶可分解环:",vID.size());	
-		for(auto it=vID.begin();it!=vID.end();it++){
-			printf("%d,",*it);
-		}
-		printf("\n");	   
-	   return 0;
-	}  
-	
-	if(argc>2 && 0){
-		//ZmodnZ r(1,2);
-		//M2r r4;
-		//r4.initJ(2);
-		IRing* r=newR16(atoi(argv[2]));
-		M2r m2r(r);
-		//Mnr m2r(&r,4);
-		//findsubring(&m2r,16);	   
-		findquotientring(&m2r,16);
-		//findsubring(&m2r,8);	   
-		//findquotientring(&m2r,8);
-		delete r;
-		r=NULL;
-		return 0;
-	}	
-	
-	if(argc>2 && 0){
-		string delims="_";
-		if(argc>3)
-			delims=atoi(argv[3]);
-		if(0){
-			for(int i=1;i<=52;i++)
-			{
-			   IRing* r=newR8(i);
-			   if(r){
-					printf("R8_%d\n",i);
-					char sz1[128]={0};   
-					sprintf(sz1,"R8%s%d.txt",delims.c_str(),i);
-					writeTable(r,sz1);
-					delete r;
-					r=NULL;
-			   }	   
-			}
-			return 0;
-		}
-
-		if(0){
-			for(int i=1;i<=11;i++)
-			{
-			   IRing* r=newR4(i);
-			   if(r){
-					printf("R4_%d\n",i);
-					char sz1[128]={0};   
-					sprintf(sz1,"R4%s%d.txt",delims.c_str(),i);
-					writeTable(r,sz1);
-					delete r;
-					r=NULL;
-			   }	   
-			}
-			return 0;
-		}		
-		
-		set<int> vID;
-		set<int> vID2;	
-		static int cnt=sizeof(IDs)/sizeof(IDs[0]);
-		#if 1
-		for(int j=0;j<cnt;j++){
-			int i=IDs[j];
-			if(i==-1)
-				continue;
-		#else
-		for(int i=0;i<=281;i++){
-		#endif	
-		   IRing* r=newR16(i);
+	// 129种16阶可分解环
+	static int IDs0[]={6,9,10,11,12,13,14,15,103,104,107,112,113,116,152,180,200,203,204,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,230,231,233,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,380,382,384,386,387,388,389};	
+	static int IDs1[]={274,282,286,287,289,290,126,127,283,377,29,30,31,32,70,190,153,155,159,163,165,128,147,148,149,160,162,167,168,169,183,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,93,94,95,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,129,130,131,132,133,134,135,136,137,138,139,140,150,151,152,154,156,157,158,161,164,166,170,174,177,179,184,185,186,187,188,189,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,275,276,277,278,180,284,285,288,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,378,379,380,381,382,383,384,385,386,387,388,389,390};
+	static int cnt0=sizeof(IDs0)/sizeof(IDs0[0]);
+	static int cnt1=sizeof(IDs1)/sizeof(IDs1[0]);
+	static int cnt=sizeof(IDs)/sizeof(IDs[0]);
+	vector<int> IDs2;// 差集s1-s0=s2
+#if 1
+	std::sort(IDs1,IDs1+cnt1);
+	std::sort(IDs0,IDs0+cnt0);
+	set_difference(IDs1,IDs1+cnt1,IDs0,IDs0+cnt0,back_inserter(IDs2));	
+#else	
+	set<int> s0(IDs0,IDs0+cnt0);
+	set<int> s1(IDs1,IDs1+cnt1);	
+	set_difference(s1.begin(),s1.end(),s0.begin(),s0.end(),back_inserter(IDs2));
+#endif
+	printf("cnt0=%d,cnt1=%d,cnt=%d,cnt2=cnt1-cnt0=%d\n",cnt0,cnt1,cnt,IDs2.size());
+	// R16R2，其中R16为不可分解环
+    for(int k=0;k<IDs2.size();k++){
+		int i=IDs2[k];
+		for(int j=1;j<=2;j++){
+		IRing* r=newR16R2(i,1);
 		   if(r){
+				string strR=calcRingInvariant(r);			
+				char sz2[100]={0};	
+				sprintf(sz2,"//R8_%d×R2_%d",i,j);			
+				string strRingInvariant="m_RingInvariant.insert(make_pair(\""+strR+"\",0));"+sz2;
+				printf("%s\n",strRingInvariant.c_str());		
+				string I1=calcI1(r);
+				string I2=calcI2(r);			
+				string strI1I2="m_I1I2.insert(make_pair(\""+I1+","+I2+"\","+"0"+"));"+sz2;
+				printf("%s\n",strI1I2.c_str());	
 				int ID=IdRing(r);
-				vID.insert(ID);		   
-				bool b=IsRing(r);
-			  #if 1
-					const char* sz=b?"":"不是环";
-					printf("%d:R16_%d%s\n",i,ID,sz);
-					char sz1[128]={0};   
-					sprintf(sz1,"R%d%s%d.txt",r->size(),delims.c_str(),ID);
-					writeTable(r,sz1);
-					 delete r;
-					 r=NULL;				   
-			  #else
-					string I1=calcI1(r);
-					string I2=calcI2(r);
-					char sz2[20]={0};	
-					sprintf(sz2,"%d",ID);			
-					string strI1I2="m_I1I2.insert(make_pair(\""+I1+","+I2+"\","+sz2+"));";
-					printf("%s\n",strI1I2.c_str());	
-					delete r;
-					r=NULL;					
-			  #endif			   
-		   }else{
-			   vID2.insert(i);
-		   }
-		}
-		printf("已有%d种16阶环的表示:",vID.size());	
-		for(auto it=vID.begin();it!=vID.end();it++){
-			printf("%d,",*it);
-		}
-		printf("\n");
-		printf("缺少如下%d种16阶环的表示:",vID2.size());
-		for(auto it=vID2.begin();it!=vID2.end();it++){
-			printf("%d,",*it);
-		}		
-		printf("\n");
-	}
-	
-	if(argc>2 && 0){
-		set<int> vID;
-		for(int i=1;i<=52;i++){
-		   M2r r8;
-		   bool b=r8.initR8(i);
-		   if(b){
-			   int ID=IdRing(&r8);
-			   printf("%d:R8_%d\n",i,ID);
-			   vID.insert(ID);
-		   }else{
-				Mnr r8a;
-				bool ba=r8a.initR8(i);
-				if(ba){
-				   int ID=IdRing(&r8a);
-				   printf("%d:R8_%d\n",i,ID);
-				   vID.insert(ID);
-				}				
-		   }
-		}
-		for(auto it=vID.begin();it!=vID.end();it++){
-			printf("%d,",*it);
-		}
-		printf("\n");
-	}	
-	
-	if(0){
-	   Mnr r16;
-	   r16.initR8();
-	   //r16.printTable(); 
-	   findsubring3(&r16,16);
-	}
-	
-	if(1){
-		if(1){
-			IRing* r=newR16(5);
-			int ID=IdRing(r);
-			bool b=IsRing(r);
-			const char* sz=b?"":"不是环";   
-			printf("R%d_%d%s\n",r->size(),ID,sz);
-			//string I1=calcI1(r);
-			//string I2=calcI2(r);   
-			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
-			string strR=calcRingInvariant(r);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r->size(),ID,strR.c_str());				
+				printf("R16_%d×R2_%d=R32_%d\n",i,j,ID);	
+				delete r;
+				r=NULL;			   
+		   }	
 		}		   
-	   Mnr r16;
-	   r16.initR8();
-	   if(r16.size()<=16){
-			int ID=IdRing(&r16);
-			bool b=IsRing(&r16);
-			const char* sz=b?"":"不是环";   
-			printf("R%d_%d%s\n",r16.size(),ID,sz);
-			string I1=calcI1(&r16);
-			string I2=calcI2(&r16);   
-			printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());			   
-	   }else{
-		   
-	   }
-	   //r16.printTable();	
-       if(r16.size()<=64){	   
-		   findquotientring(&r16,16);
-	   }
-	   findsubring(&r16,16);	   
-	   //findsubring(&r16,8);	   
-	   //findquotientring(&r16,8);	   
 	}
-   
-   return 0;
+	return 0;
 }
