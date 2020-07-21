@@ -10924,21 +10924,23 @@ int main(int argc, char* argv[])
     for(int k=0;k<IDs2.size();k++){
 		int i=IDs2[k];
 		for(int j=1;j<=2;j++){
-		IRing* r=newR16R2(i,1);
+		IRing* r=newR16R2(i,j);
 		   if(r){
+				int ID=IdRing(r);
+				printf("R16_%d¡ÁR2_%d=R32_%d\n",i,j,ID);	
+#if 0				
 				string strR=calcRingInvariant(r);			
 				char sz2[100]={0};	
-				sprintf(sz2,"//R8_%d¡ÁR2_%d",i,j);			
+				sprintf(sz2,"//R16_%d¡ÁR2_%d",i,j);			
 				string strRingInvariant="m_RingInvariant.insert(make_pair(\""+strR+"\",0));"+sz2;
 				printf("%s\n",strRingInvariant.c_str());		
 				string I1=calcI1(r);
 				string I2=calcI2(r);			
 				string strI1I2="m_I1I2.insert(make_pair(\""+I1+","+I2+"\","+"0"+"));"+sz2;
-				printf("%s\n",strI1I2.c_str());	
-				int ID=IdRing(r);
-				printf("R16_%d¡ÁR2_%d=R32_%d\n",i,j,ID);	
-				delete r;
-				r=NULL;			   
+				printf("%s\n",strI1I2.c_str());		
+#endif
+				//delete r;
+				//r=NULL;			   
 		   }	
 		}		   
 	}
