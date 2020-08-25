@@ -336,11 +336,23 @@ int main(int argc, char* argv[])
 			}
 		FiniteRing* r=new FiniteRing(n,g_RnAdd,g_RnMul,1);
 		r->m_flag=1;
-		findquotientring(r,16);
-		findsubring(r,16);
+		//findquotientring(r,16);
+		//findsubring(r,16);
+		int fun=1;
+        if(argc>4){
+            fun=atoi(argv[4]);
+			if(fun<0||fun>4){
+				fun=0;
+			}	
+		}
+		int n0=argc>5?32:16;       		
+		typedef void(*pF)(IRing *r,int n);
+		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findquotientring};
+		Func[fun](r,n0);
+		
 		delete r;
 		r=NULL;
-		printf("搜索16阶子环和16阶商环完毕！\n");
+		printf("搜索完毕！\n");
 	}
 
 #ifdef _DEBUG
