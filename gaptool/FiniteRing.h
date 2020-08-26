@@ -3,7 +3,7 @@
 
 //#include"IRing.h"
 #define R16_I1I2
-#define R32_DEL
+//#define R32_DEL
 #include<ctime>
 #include<fstream>
 #include<set>
@@ -1186,6 +1186,7 @@ void findquotientring(IRing *r,int n)
     string strCmd="del ";
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;	
+	set<string> S;	
 	for(int i=0;i<r->size()-1;i++)		
     //int i=0;
 	for(int j=i+1;j<r->size();j++)
@@ -1233,13 +1234,16 @@ void findquotientring(IRing *r,int n)
 		if(ID==-1) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
-			//S1i.printTable();
+			if(S.find(strR)==S.end()){				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+				//S1i.printTable();
 #if PRINT_LOG			
-			fout<<i<<","<<j<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
-			bFind=true;
+				fout<<i<<","<<j<<"=>";
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+				bFind=true;
 #endif
+		}
+			S.insert(strR);
 			//break;
 		}
 	}
