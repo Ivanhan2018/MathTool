@@ -125,7 +125,7 @@ void ZmodnZ::printTable()
 {
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());	
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());	
 	//string S1=calS1(this,true);
 	//string undoS1=calS1(this,false);	
 	//printf("R%d_%d:S1=%s,S1(未经处理)=%s\n",size(),ID,S1.c_str(),undoS1.c_str());
@@ -263,7 +263,7 @@ void DecompositionRing::printTable()
 {
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());
 	//printRing(this);	
 }
 
@@ -311,7 +311,7 @@ void FiniteRing::printTable()
 {
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());
 	//printRing(this);	
 }
 
@@ -4100,7 +4100,7 @@ bool M2r::initR8(int ID){
 		gen.push_back(A);
 		gen.push_back(B);
    }else if(ID==8){	 
-		//R8_8:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,0,0,8,1,5,7,48,7,2,[1,3,4,0],[[2,4,8],[4,4,8]]	
+		//R8_8:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=[1,3,4,0],4,0,0,8,1,5,7,48,7,2,[1,3,4,0],[[2,4,8],[4,4,8]]	
 		m_r=new ZmodnZ(1,4);
 		A[0][0]=0;
 		A[0][1]=1;
@@ -4137,7 +4137,7 @@ bool M2r::initR8(int ID){
 		gen.push_back(A);
 		gen.push_back(B); 		
    }else if(ID==13){		
-        //R8_13:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,1,0,8,2,3,3,32,7,8,[1,3,2,2],[[2,4,8],[4,2,8],[4,4,16]]
+        //R8_13:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=[1,3,4,0],4,1,0,8,2,3,3,32,7,8,[1,3,2,2],[[2,4,8],[4,2,8],[4,4,16]]
 		m_r=new ZmodnZ(1,4);		
 		A[0][0]=2;
 		A[0][1]=0;
@@ -4186,7 +4186,7 @@ bool M2r::initR8(int ID){
 		gen.push_back(A);
 		gen.push_back(B); 		
    }else if(ID==20){
-        //R8_20:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,0,0,8,3,3,3,28,3,2,[1,3,4,0],[[2,4,8],[4,2,12],[4,4,16]]
+        //R8_20:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=[1,3,4,0],4,0,0,8,3,3,3,28,3,2,[1,3,4,0],[[2,4,8],[4,2,12],[4,4,16]]
 		m_r=new ZmodnZ(1,4);		
 		A[0][0]=0;
 		A[0][1]=2;
@@ -6193,7 +6193,7 @@ void M2r::printTable()
 {
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());	
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());	
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
 	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
@@ -10794,7 +10794,7 @@ void Mnr::printTable()
 {
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",size(),ID,str.c_str());
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
 	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
@@ -10942,7 +10942,7 @@ void findsubring1(IRing *r,int n)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){		
-				printf("i=%d=>%s->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",i,IMStr(r,i).c_str(),ni,ID,strR.c_str());
+				printf("i=%d=>%s->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,IMStr(r,i).c_str(),ni,ID,strR.c_str());
 			}
 			S.insert(strR);	
 		}		   
@@ -10998,11 +10998,11 @@ void findsubring2(IRing *r,int n)
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){			
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
 				//S1i.printTable();
 #if PRINT_LOG			
 				fout<<i<<","<<j<<"=>";
-				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
 				bFind=true;
 #endif
 			}
@@ -11068,10 +11068,10 @@ void findsubring3(IRing *r,int n)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
 #if 0//PRINT_LOG			
 				fout<<i<<","<<j<<","<<k<<"=>";
-				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
 				bFind=true;
 #endif
 		}
@@ -11144,10 +11144,10 @@ void findsubring4(IRing *r,int n)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){			
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
 #if 0//PRINT_LOG			
 				fout<<t<<","<<i<<","<<j<<","<<k<<"=>";
-				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
 				bFind=true;
 #endif
 		}
@@ -11225,11 +11225,11 @@ void findquotientring(IRing *r,int n)
 		if(ID==-1) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
 			//S1i.printTable();
 #if PRINT_LOG			
 			fout<<i<<","<<j<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
 			bFind=true;
 #endif
 			//break;
@@ -11515,7 +11515,7 @@ void FindMnr(IRing* r,int n,int m)
 		if(ID==-1){		
 			string strR=calcRingInvariant(&R);
 			if(gS.find(strR)==gS.end()){			
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());		
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());		
 			}
 			gS.insert(strR);
 		}
@@ -11575,7 +11575,7 @@ int Mrijk(int argc, char* argv[])
 				printf("R%d_%d->i=%d,j=%d=>%s,%s\n",ni,ID,g_i,ijk,str.c_str(),strj.c_str());
 				if(ID==-1){		
 					string strR=calcRingInvariant(&R16);
-					printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());
+					printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());
 				}				
 			}else{
 				printf("生成32阶以下矩阵环失败\n");
@@ -11680,7 +11680,7 @@ int main(int argc, char* argv[])
     // 将环表示数据配置到文件中，精简代码
 	int ret=LoadData("RingData.csv");
 	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());
-    return testR16R2();
+    //return testR16R2();
 	return Mrijk(argc,argv);
 	// 129种16阶可分解环
 	static int IDs0[]={6,9,10,11,12,13,14,15,103,104,107,112,113,116,152,180,200,203,204,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,230,231,233,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,380,382,384,386,387,388,389};	

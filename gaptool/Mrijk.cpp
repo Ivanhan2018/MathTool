@@ -2712,7 +2712,7 @@ void findsubring1R8R16(IRing *r)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){		
-				printf("i=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",i,ni,ID,strR.c_str());
+				printf("i=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,ni,ID,strR.c_str());
 			}
 			S.insert(strR);	
 		}		   
@@ -2753,7 +2753,7 @@ void findsubring2R8R16(IRing *r)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){		
-				printf("i=%d,j=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",i,j,ni,ID,strR.c_str());
+				printf("i=%d,j=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,j,ni,ID,strR.c_str());
 			}
 			S.insert(strR);	
 		}		   
@@ -2796,7 +2796,7 @@ void findsubring3R8R16(IRing *r)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){		
-				printf("i=%d,j=%d,k=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",i,j,k,ni,ID,strR.c_str());
+				printf("i=%d,j=%d,k=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,j,k,ni,ID,strR.c_str());
 			}
 			S.insert(strR);	
 		}		   

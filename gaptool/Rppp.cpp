@@ -79,11 +79,11 @@ void findsubring(M2r *r,int n)
 			string strj=M2r::MStr(r->m_Set[j]);
 			printf("%d->%s=>",j,strj.c_str());			
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());			
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());			
 			//S1i.printTable();
 #if PRINT_LOG			
 			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
 			bFind=true;
 #endif			
 			break;
@@ -128,7 +128,7 @@ void findsubring(Mnr *r,int n)
 			string strj=Mnr::MStr(r->m_Set[j]);
 			printf("%d->%s=>",j,strj.c_str());			
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());		
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());		
 			if(ID==3052){
 				string I1=calcI1(&S1i);
 				string I2=calcI2(&S1i);   
@@ -137,7 +137,7 @@ void findsubring(Mnr *r,int n)
 			//S1i.printTable();
 #if PRINT_LOG			
 			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
 			bFind=true;
 #endif
 			break;
@@ -1367,131 +1367,6 @@ IRing* newRpp(int ID,int p){
    }	
 }
 
-void findsubring(IRing *r,int n)
-{
-#define PRINT_LOG 1	
-	bool bFind=false;	
-	int ID=IdRing(r);
-#if PRINT_LOG
-    char sz[100]="0";
-	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
-    ofstream fout(sz);
-#endif	
-    string strCmd="del ";
-	strCmd+=sz;
-	map<pair<int,int>,pair<int,int>> M;		
-	for(int i=0;i<r->size()-1;i++)		
-	for(int j=i+1;j<r->size();j++)
-	{
-		vector<int> v;
-		v.push_back(i);		
-		v.push_back(j);
-		Subring S1i;
-		bool bn=S1i.init(r,v,8);
-		if(!bn)
-			continue;
-		//Subring S1i(r,v);
-		int ni=S1i.size();
-		if(ni!=8)
-			continue;
-		int ID=IdRing(&S1i);
-		int cnt=M.size();
-		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
-		int cnt1=M.size();
-		if(cnt1>cnt){
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d\n",cnt1,ni,ID,i,j);
-			//string I1=calcI1(&S1i);
-			//string I2=calcI2(&S1i);   
-			//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
-		}		
-		//if(ni==16 && ID==-1)//||(ID==230||ID==232||ID==236||ID==241||ID==244||ID==246||ID==337)||(ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39)))   
-        if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 
-		{		
-			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
-			//S1i.printTable();
-#if PRINT_LOG			
-			fout<<i<<","<<j<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
-			bFind=true;
-#endif
-			//break;
-		}		   
-	}
-#if PRINT_LOG
-	fout.close();	
-	if(!bFind)	
-		system(strCmd.c_str());
-	else
-		printf("子环表示已输出到文件%s\n",sz);
-#endif	
-}
-
-void findquotientring(IRing *r,int n)
-{
-#define PRINT_LOG 1	
-	bool bFind=false;	
-	int ID=0;//IdRing(r);
-#if PRINT_LOG
-    char sz[100]="0";
-	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
-    ofstream fout(sz);
-#endif	
-    string strCmd="del ";
-	strCmd+=sz;
-	map<pair<int,int>,pair<int,int>> M;	
-	for(int i=0;i<r->size()-1;i++)		
-    //int i=0;
-	for(int j=i+1;j<r->size();j++)
-	{
-		vector<int> v;
-		v.push_back(i);		
-		v.push_back(j);
-		Subring S1i0;
-		bool bn=S1i0.init(r,v,18);
-		if(!bn)
-			continue;
-		if(S1i0.m_Set.size()!=18)
-			continue;
-		vector<int> v0=v;
-		v=S1i0.m_Set;
-		int iret1=IsIdeal(r,v); 
-		if(iret1!=1)
-			continue;
-		quotientRing S1i(r,v);
-		int ni=S1i.size();		
-		int ID=IdRing(&S1i);	
-		int cnt=M.size();
-		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
-		int cnt1=M.size();
-		if(cnt1>cnt){		
-            int IDr=0;//IdRing(r);
-			int IDr0=IdRing(&S1i0);
-			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);
-		}	
-		//if(ni==16 && ID==-1)
-		if((ni==8 && (ID==6||ID==9||ID==12||ID==18||ID==39))) 	
-		{		
-			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
-			//S1i.printTable();
-#if PRINT_LOG			
-			fout<<i<<","<<j<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2="<<strR<<endl;
-			bFind=true;
-#endif
-			//break;
-		}
-	}
-#if PRINT_LOG
-	fout.close();	
-	if(!bFind)	
-		system(strCmd.c_str());
-	else
-		printf("商环表示已输出到文件%s\n",sz);
-#endif	
-}
-
 int main()
 { 
 	if(1){
@@ -1506,34 +1381,17 @@ int main()
 			    printf("Rppp(%d,2)=R%d_%d,Rppp(%d,3)=R%d_%d\n",i,r8->size(),ID8,i,r27->size(),ID27);
 			#else
 				string str=calcRingInvariant(r8);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r8->size(),ID8,str.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r8->size(),ID8,str.c_str());
 				string I1=calcI1(r8);
 				string I2=calcI2(r8);   
 				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 				str=calcRingInvariant(r27);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r27->size(),ID27,str.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r27->size(),ID27,str.c_str());
 				I1=calcI1(r27);
 				I2=calcI2(r27);   
 				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
 			#endif		
 		}
 	}
-	if(0){
-		for(int i=1;i<=11;i++){
-		   IRing* r64=newRpp(i,12);		   
-		   if(!r64)
-			   continue;
-		   printf("Rpp(%d,12)\n",i);
-		   findsubring(r64,16);
-		   delete r64;
-		   r64=NULL;
-			//int ID64=IdRing(r64);			
-				//string str=calcRingInvariant(r64);
-				//printf("Rpp(%d,4)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",i,r64->size(),ID64,str.c_str());
-				//string I1=calcI1(r64);
-				//string I2=calcI2(r64);   
-				//printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
-		}
-	}	
     return 0;
 }

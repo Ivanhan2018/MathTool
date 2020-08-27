@@ -408,7 +408,8 @@ int main()
 		delete g;
 		g=NULL;
 	}
-
+#ifdef _DEBUG
 	system("pause");
+#endif
 	return 0;
 }
