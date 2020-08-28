@@ -3895,7 +3895,8 @@ public:
     void initK(int n);// 16阶全矩阵环M2(Z/2Z)的4阶子环R4_11所在的有限环序列,K=GF(p^2)=p^2阶有限域
 	bool initR8(int ID=0);
 	bool initR16(int ID=0);	
-	bool initR16_2(int ID=0);		
+	bool initR16_2(int ID=0);
+	bool init(int n,int ID);	
 	// 成员变量
 	vector<MATRIXi> m_Set;
 	IRing* m_r;
@@ -4037,10 +4038,14 @@ void M2r::initK(int n){
    m_Set=FR(m_r,gen);   
 }
 
-bool M2r::initR8(int ID){
-	const CRingDataItem * pItem = Find(8,ID);
-	if(pItem && pItem->m_n0==2 && pItem->m_n1==1){
-		m_r=new ZmodnZ(1,pItem->m_n2);
+bool M2r::init(int n,int ID){
+	IRing* newR8(int ID);
+	const CRingDataItem * pItem = Find(n,ID);
+	if(pItem && pItem->m_n0==2 && (pItem->m_n1==1||(pItem->m_n1==8 && pItem->m_n2<=52))){
+		if(pItem->m_n1==1)
+			m_r=new ZmodnZ(1,pItem->m_n2);
+		else
+			m_r=newR8(pItem->m_n2);
 		vector<MATRIXi> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
 		for(int i=0;i<vv.size();i++){
@@ -4054,6 +4059,14 @@ bool M2r::initR8(int ID){
 		}	
 		m_flag=1;
 		m_Set=FR(m_r,gen); 
+		return true;		
+	}	
+	return false;
+}
+
+bool M2r::initR8(int ID){
+	bool bDone = init(8,ID);
+	if(bDone){
 		return true;		
 	}	
 	vector<MATRIXi> gen;	
@@ -4379,6 +4392,10 @@ bool M2r::initR8(int ID){
 }
 
 bool M2r::initR16(int ID){
+	bool bDone = init(16,ID);
+	if(bDone){
+		return true;		
+	}	
    vector<MATRIXi> gen;	
    MATRIXi A(2,vector<int>(2,0));
    MATRIXi B(2,vector<int>(2,0));
@@ -6305,7 +6322,8 @@ public:
 	void initL(int n);// R8_38所在的n^3阶有限环序列,
 	bool initR8(int ID=0);
 	bool initR16(int ID=0);	
-	bool initR16_2(int ID=0);// 特征为2的16阶环，拆分原因：fatal error C1061: 编译器限制 : 块嵌套太深	
+	bool initR16_2(int ID=0);// 特征为2的16阶环，拆分原因：fatal error C1061: 编译器限制 : 块嵌套太深
+	bool init(int n,int ID);	
 	// 成员变量
 	vector<MATRIXi8> m_Set;
 	IRing* m_r;
@@ -6408,7 +6426,37 @@ void Mnr::initL(int n){
    m_Set=FR(m_r,gen);   
 }
 
+bool Mnr::init(int n,int ID){
+	IRing* newR8(int ID);
+	const CRingDataItem * pItem = Find(n,ID);
+	if(pItem && pItem->m_n0>2 && (pItem->m_n1==1||(pItem->m_n1==8 && pItem->m_n2<=52))){
+		if(pItem->m_n1==1)
+			m_r=new ZmodnZ(1,pItem->m_n2);
+		else
+			m_r=newR8(pItem->m_n2);
+		m_n=pItem->m_n0;	
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(m_n,vector<TElem>(m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<m_n;j++)
+				for(int k=0;k<m_n;k++)
+					A[j][k]=atoi(v[j*m_n+k].c_str());
+			gen.push_back(A);
+		}	
+		m_flag=1;
+		m_Set=FR(m_r,gen); 
+		return true;		
+	}	
+	return false;
+}
+
 bool Mnr::initR8(int ID){
+	bool bDone = init(8,ID);
+	if(bDone){
+		return true;		
+	}	
    vector<MATRIXi8> gen;		
    if(ID==4){
 		m_r=new ZmodnZ(4,32);	
@@ -7060,6 +7108,10 @@ bool Mnr::initR8(int ID){
 }
 
 bool Mnr::initR16(int ID){
+	bool bDone = init(16,ID);
+	if(bDone){
+		return true;		
+	}		
    vector<MATRIXi8> gen;     
    if(ID==1){
 		m_r=new ZmodnZ(1,16);	
@@ -11673,7 +11725,38 @@ int testR16R2(){
 		}			
 	}	
 	return 0;
-}		   
+}	
+
+int testRingData(int argc, char* argv[]){ 
+	if(argc<3){
+		printf("usage:IRing n ID\n");
+		return 0;
+	}	
+	int n=atoi(argv[1]);
+	int ID=atoi(argv[2]);
+	const CRingDataItem * pItem = Find(n,ID);
+	if(!pItem){
+		printf("没有配置R%d_%d的表示数据！\n",n,ID);
+		return 0;
+	}
+	IRing *r=NULL;
+	bool b=false;
+	if(pItem->m_n0==2){
+	    M2r *r1=new M2r;
+		b=r1->init(n,ID);
+		r=r1;
+	}else{
+	    Mnr *r1=new Mnr;
+		b=r1->init(n,ID);
+		r=r1;		
+	}	
+	if(b && r){
+		int in=r->size();
+		int iID=IdRing(r);
+		printf("R%d_%d\n",in,iID);	
+	}
+	return 0;
+}	
 
 int main(int argc, char* argv[])
 { 
@@ -11681,6 +11764,7 @@ int main(int argc, char* argv[])
 	int ret=LoadData("RingData.csv");
 	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());
     //return testR16R2();
+	return testRingData(argc,argv);	
 	return Mrijk(argc,argv);
 	// 129种16阶可分解环
 	static int IDs0[]={6,9,10,11,12,13,14,15,103,104,107,112,113,116,152,180,200,203,204,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,230,231,233,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,380,382,384,386,387,388,389};	
