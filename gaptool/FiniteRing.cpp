@@ -459,7 +459,7 @@ void testR8R4(int func)
 		   if(func==0)
 			   findquotientring(r,16);
 		   else if(func==1)
-			   findsubring(r,16);		   
+			   findsubring2(r,16);		   
 		   else
 			   findsubring3(r,16);
 		   delete r;
@@ -481,7 +481,7 @@ void testR8R8(int func)
 		   if(func==0)
 			   findquotientring(r,16);
 		   else if(func==1)
-			   findsubring(r,16);		   
+			   findsubring2(r,16);		   
 		   else
 			   findsubring3(r,16);
 		   delete r;
