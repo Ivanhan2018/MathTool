@@ -289,6 +289,7 @@ public:
 	//  静态函数  
 	static IRing* newR8(int i);
 	static IRing* newR16(int i);	
+	static IRing* newR32(int i);	
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -350,6 +351,19 @@ FiniteRing::~FiniteRing(){
 		m_Mul=NULL;
 	}		
 }
+
+IRing* FiniteRing::newR32(int i){
+	if(i==1008)
+	{
+		ZmodnZ* r8=new ZmodnZ(1,8);
+		ZmodnZ* r4=new ZmodnZ(1,4);
+		DecompositionRing* r= new DecompositionRing(r8,r4);
+		r->m_flag=1;		
+		return r;
+	}
+	return NULL;
+}	
+	
 
 IRing* FiniteRing::newR8(int i){
 /* 	static int g_C2C4Mul_2[8][8]={
@@ -4223,7 +4237,9 @@ bool M2r::init(int n,int ID){
 		else if(pItem->m_n1==8)
 			m_r=newR8(pItem->m_n2);
 		else if(pItem->m_n1==16)
-			m_r=newR16(pItem->m_n2);		
+			m_r=newR16(pItem->m_n2);	
+		else if(pItem->m_n1==32)
+			m_r=FiniteRing::newR32(pItem->m_n2);		
 		vector<MATRIXi> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
 		for(int i=0;i<vv.size();i++){
@@ -11414,6 +11430,7 @@ void findquotientring(IRing *r,int n)
     string strCmd="del ";
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;	
+	set<string> S;		
 	for(int i=0;i<r->size()-1;i++)		
     //int i=0;
 	for(int j=i+1;j<r->size();j++)
@@ -11461,13 +11478,16 @@ void findquotientring(IRing *r,int n)
 		if(ID==-1) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
-			//S1i.printTable();
+			if(S.find(strR)==S.end()){			
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				//S1i.printTable();
 #if PRINT_LOG			
-			fout<<i<<","<<j<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
-			bFind=true;
+				fout<<i<<","<<j<<"=>";
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+				bFind=true;
 #endif
+			}
+			S.insert(strR);
 			//break;
 		}
 	}
@@ -11780,7 +11800,9 @@ int Mrijk(int argc, char* argv[])
 	}else if(n1==8 && n2<=52){	
 		r=newR8(n2);	
 	}else if(n1==16){	
-		r=newR16(n2);		
+		r=newR16(n2);	
+	}else if(n1==32){
+		r=FiniteRing::newR32(n2);		
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}
@@ -11844,7 +11866,7 @@ int Mrijk(int argc, char* argv[])
 			if(fun<0||fun>3){
 				fun=0;
 			}	
-		}	
+		}		
 		typedef void(*pF)(IRing *r,int n);
 		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4};
 		Func[fun](R,32);	
@@ -11944,6 +11966,19 @@ int testRingData(int argc, char* argv[]){
 			string I1=calcI1(r);
 			string I2=calcI2(r);			
 			printf("\nI1I2=%s,%s",I1.c_str(),I2.c_str());				
+		}
+		if(in>=32 && in<=256){
+			int fun=1;
+			if(argc>3){
+				fun=atoi(argv[3]);
+				if(fun<0||fun>4){
+					fun=0;
+				}	
+			}	
+			int n0=argc>4?32:16; 			
+			typedef void(*pF)(IRing *r,int n);
+			pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findquotientring};
+			Func[fun](r,n0);			
 		}
 		printf("\n");		
 	}
