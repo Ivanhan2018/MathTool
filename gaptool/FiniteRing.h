@@ -961,7 +961,7 @@ void findsubring2(IRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=0;//IdRing(r);
+	int ID=r->size()>=32?0:IdRing(r);
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -1176,7 +1176,7 @@ void findquotientring(IRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=0;//IdRing(r);
+	int ID=r->size()>=32?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 #if PRINT_LOG
     char sz[100]="0";
