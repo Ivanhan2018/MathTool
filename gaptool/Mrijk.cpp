@@ -3640,11 +3640,17 @@ int main(int argc, char* argv[])
 	}	
 	
 	string mstr=argv[4];
-	if(mstr=="r"){
+	if(mstr.substr(0,1)=="r"){
 		srand(time(NULL));
-		mstr="";
 		Mnr T(r,n);
 		int cnt=GetRand(1,3);
+		if(mstr.size()>1){
+			int cnt1=atoi(mstr.substr(1,1).c_str());
+			if(cnt1>0 && cnt1<6){
+				cnt=cnt1;
+			}
+		}
+		mstr="";
 		for(int i=0;i<cnt;i++){
 			int ii=GetRand(1,T.size()-1);
 			string stri=MnStr(T.m_Set[ii]);
