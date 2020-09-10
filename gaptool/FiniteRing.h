@@ -923,7 +923,11 @@ void findsubring1(IRing *r,int n)
 	//srand(time(NULL));
 	//g_i=rand()%r->size();
 	//printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
-	for(int i=0;i<r->size();i++)			
+	int i0=0;
+#ifdef QF
+	i0=1;
+#endif	
+	for(int i=i0;i<r->size();i++)			
 	{
 		vector<int> v;
 		v.push_back(i);				
@@ -932,8 +936,10 @@ void findsubring1(IRing *r,int n)
 		if(!bn)
 			continue;
 		int ni=S1i.size();
-		//if(ni!=n)
-			//continue;
+#ifdef QF
+		if(ni<16)
+			continue;
+#endif
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(ni,ID));
@@ -974,7 +980,11 @@ void findsubring2(IRing *r,int n)
 	//srand(time(NULL));
 	//g_i=rand()%r->size();
 	printf("R%d_%d\n",r->size(),ID);	
-	for(int i=0;i<r->size()-1;i++)		
+	int i0=0;
+#ifdef QF
+	i0=1;
+#endif	
+	for(int i=i0;i<r->size()-1;i++)	
 	for(int j=i+1;j<r->size();j++)
 	{
 		vector<int> v;
@@ -986,8 +996,10 @@ void findsubring2(IRing *r,int n)
 			continue;
 		//Subring S1i(r,v);
 		int ni=S1i.size();
-		//if(ni!=16)
-			//continue;
+#ifdef QF
+		if(ni<16)
+			continue;
+#endif
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
@@ -1042,7 +1054,11 @@ void findsubring3(IRing *r,int n)
 	set<string> S;	
 	int ID=0;//IdRing(r);
 	printf("R%d_%d%d\n",r->size(),ID);
-	for(int i=0;i<r->size()-2;i++)		
+	int i0=0;
+#ifdef QF
+	i0=1;
+#endif	
+	for(int i=i0;i<r->size()-2;i++)	
 	for(int j=i+1;j<r->size()-1;j++)
 	for(int k=j+1;k<r->size();k++)		
 	{
@@ -1055,8 +1071,10 @@ void findsubring3(IRing *r,int n)
 		if(!bn)
 			continue;
 		int ni=S1i.size();
-		//if(ni!=n)
-			//continue;
+#ifdef QF
+		if(ni<16)
+			continue;
+#endif
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
@@ -1111,7 +1129,11 @@ void findsubring4(IRing *r,int n)
 	set<string> S;		
 	int ID=0;//IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
-	for(int t=0;t<r->size()-3;t++)	
+	int i0=0;
+#ifdef QF
+	i0=1;
+#endif	
+	for(int t=i0;t<r->size()-3;t++)
 	for(int i=t+1;i<r->size()-2;i++)		
 	for(int j=i+1;j<r->size()-1;j++)
 	for(int k=j+1;k<r->size();k++)		
@@ -1126,8 +1148,10 @@ void findsubring4(IRing *r,int n)
 		if(!bn)
 			continue;
 		int ni=S1i.size();
-		//if(ni!=n)
-			//continue;
+#ifdef QF
+		if(ni<16)
+			continue;
+#endif
 		int ID=IdRing(&S1i);
 		int cnt=M.size();
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));

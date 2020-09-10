@@ -521,16 +521,79 @@ void testM2R4(int i)
    }	
 }
 
+int R8_iR8_j(int argc, char* argv[])
+{
+	int i0=1;
+	int j0=1;
+	if(argc>1)
+	   i0=atoi(argv[1]);
+    if(argc>2)
+	   j0=atoi(argv[2]);     
+	int fun=4;
+	if(argc>3){
+		fun=atoi(argv[3]);
+		if(fun<0||fun>4){
+			fun=0;
+		}	
+	}   
+	char* str1="";
+    if(argc>4)	
+		str1=argv[4];   
+	int J=0;	
+ 	for(int i=i0;i<=52;i++){
+		for(int j=(J==0?j0:1);j<=52;j++){
+			J=1;
+			char sz[1000]={0};
+			sprintf(sz,"DPR0 R8%d.txt R8%d.txt R8_%d%R8_%d.txt %d %s",i,j,i,j,fun,str1);
+			printf("i=%d,j=%d\n",i,j);
+			system(sz);
+		} 
+	}
+	return 0;
+}
+
+int R16_iR4_j(int argc, char* argv[])
+{
+	int i0=1;
+	int j0=1;
+	if(argc>1)
+	   i0=atoi(argv[1]);
+    if(argc>2)
+	   j0=atoi(argv[2]);     
+	int fun=4;
+	if(argc>3){
+		fun=atoi(argv[3]);
+		if(fun<0||fun>4){
+			fun=0;
+		}	
+	}   
+	char* str1="";
+    if(argc>4)	
+		str1=argv[4];   
+	int J=0;	
+ 	for(int i=i0;i<=390;i++){
+		for(int j=(J==0?j0:1);j<=11;j++){
+			J=1;
+			char sz[1000]={0};
+			sprintf(sz,"DPR0 R16%d.txt R4%d.txt R16_%d%R4_%d.txt %d %s",i,j,i,j,fun,str1);
+			printf("i=%d,j=%d\n",i,j);
+			system(sz);
+		} 
+	}
+	return 0;
+}
+
 int g_func=0;
 int main(int argc, char* argv[])
 {   
-   if(argc>1)
+/*    if(argc>1)
 	   g_i=atoi(argv[1]);
    if(argc>2)
 	   g_a=atoi(argv[2]);   
    if(argc>3)
-	   g_func=atoi(argv[3]);
-   test2();
+	   g_func=atoi(argv[3]); */
+	return R16_iR4_j(argc,argv);
+   //test2();
    //testR8R4(g_func);
     /*for(int i=1;i<=52;i++){
 		IRing* r=newR8(i);
