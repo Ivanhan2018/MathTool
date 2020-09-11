@@ -1,4 +1,4 @@
-﻿#ifndef FINITERING_H
+#ifndef FINITERING_H
 #define FINITERING_H
 
 //#include"IRing.h"
@@ -914,15 +914,29 @@ string IMStr(IRing *r,int i)
 	return "";
 }
 
+void checkring(IRing *r,int ID){
+	if(r->size()==32){
+		if(ID>0){
+			char sz1[128]={0};   
+			sprintf(sz1,"R%d_%d.txt",r->size(),ID);
+			writeTable(r,sz1);  
+		}else{
+			string strR=calcRingInvariant(r);			
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+		}			
+	}
+}
+
 //int g_i=0;
 void findsubring1(IRing *r,int n)
 {
 	set<pair<int,int>> M;
 	set<string> S;	
-	int ID=0;//IdRing(r);
+	int ID=r->size()>32?0:IdRing(r);
 	//srand(time(NULL));
 	//g_i=rand()%r->size();
 	//printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
+	checkring(r,ID);
 	int i0=0;
 #ifdef QF
 	i0=1;
@@ -967,7 +981,7 @@ void findsubring2(IRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=r->size()>=32?0:IdRing(r);
+	int ID=r->size()>32?0:IdRing(r);
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -979,7 +993,8 @@ void findsubring2(IRing *r,int n)
 	set<string> S;		
 	//srand(time(NULL));
 	//g_i=rand()%r->size();
-	printf("R%d_%d\n",r->size(),ID);	
+	printf("R%d_%d\n",r->size(),ID);
+	checkring(r,ID);	
 	int i0=0;
 #ifdef QF
 	i0=1;
@@ -1052,8 +1067,9 @@ void findsubring3(IRing *r,int n)
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;	
-	int ID=0;//IdRing(r);
+	int ID=r->size()>32?0:IdRing(r);
 	printf("R%d_%d%d\n",r->size(),ID);
+	checkring(r,ID);	
 	int i0=0;
 #ifdef QF
 	i0=1;
@@ -1127,8 +1143,9 @@ void findsubring4(IRing *r,int n)
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
-	int ID=0;//IdRing(r);
+	int ID=r->size()>32?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
+	checkring(r,ID);
 	int i0=0;
 #ifdef QF
 	i0=1;
@@ -1200,8 +1217,9 @@ void findquotientring(IRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=r->size()>=32?0:IdRing(r);
+	int ID=r->size()>32?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
+	checkring(r,ID);	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));

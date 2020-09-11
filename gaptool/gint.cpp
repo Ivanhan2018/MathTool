@@ -1,9 +1,32 @@
 #include"IRing.h"
 #include<iostream>
+#include<fstream>
 #include<complex>
+#include<set>
 #include<vector>
 #include<algorithm>
 using namespace std;
+
+void writeTable(IRing* r,const char *path){
+   ofstream fout(path);
+   int n=r->size();
+   fout<<"[R"<<n<<"Add]"<<endl;   
+   for(int i=0;i<n;i++){
+	   for(int j=0;j<n;j++){
+		  int ij=r->add(i,j);
+		  fout<<ij+1<<" ";
+	   } 
+       fout<<endl;   
+   }
+   fout<<"[R"<<n<<"Mul]"<<endl;   
+   for(int i=0;i<n;i++){
+	   for(int j=0;j<n;j++){
+		  int ij=r->mul(i,j);
+		  fout<<ij+1<<" "; 
+	   } 
+       fout<<endl;	   
+   }	
+}
 
 typedef complex<int> GaussianInteger;
 
@@ -169,7 +192,7 @@ void ZimodnZ::printTable()
 		}
 		str2+="],";
 	}	
-	printf("Z[i]/(%s%s)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",str2.c_str(),str1.c_str(),size(),ID,str.c_str());	
+	printf("Z[i]/(%s%s)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",str2.c_str(),str1.c_str(),size(),ID,str.c_str());	
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
 	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
@@ -342,6 +365,51 @@ bool ZimodnZ::IsPrime(const GaussianInteger& a)
 	return false;
 }
 
+void findsubring2(ZimodnZ *r,int n){
+	map<pair<int,int>,pair<int,int>> M;	
+	set<string> S;	
+	for(int i=0;i<r->size()-1;i++)
+	for(int j=i+1;j<r->size();j++)
+	{
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);	
+		Subring S1i;		
+		bool bn=S1i.init(r,v,n);
+		if(!bn)
+			continue;
+		int ni=S1i.size();
+		int ID=IdRing(&S1i);
+		bool b=IsRing(&S1i);
+		if(!b){
+			continue;
+		}
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){	
+			string str=gStr(r->m_Set[i]);
+			string strj=gStr(r->m_Set[j]);				
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s,%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
+			if(ni==32 && ID>0){
+				char sz1[128]={0};   
+				sprintf(sz1,"R%d_%d.txt",ni,ID);
+				writeTable(&S1i,sz1);                  
+			}
+		}		
+		if(ID==-1)   
+		{
+			string strR=calcRingInvariant(&S1i);
+			if(S.find(strR)==S.end()){				
+				string str=gStr(r->m_Set[i]);
+				string strj=gStr(r->m_Set[j]);
+				printf("%d,%d=>%s,%s:R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,j,str.c_str(),strj.c_str(),ni,ID,strR.c_str());				
+			}
+			S.insert(strR);			
+		}		   
+	}			
+}
+
 int main(void)
 {
 	//GaussianInteger v[]={GaussianInteger(0,-1),GaussianInteger(3,1)};
@@ -353,47 +421,28 @@ int main(void)
 	//}
 	//system("pause");
 	//return 0;
-	if(1)
+	if(0)
 	{
-		//ZimodnZ r32(GaussianInteger(4,4));
-		//r32.printTable();
-		// ZimodnZ r16_109;
-		// r16_109.initFR(GaussianInteger(1,1),GaussianInteger(4,4));
-		// r16_109.printTable();		
+		ZimodnZ r32_1074(GaussianInteger(4,4));
+		r32_1074.printTable();
+		ZimodnZ r16_109;
+		r16_109.initFR(GaussianInteger(1,1),GaussianInteger(4,4));
+		r16_109.printTable();		
 		// ZimodnZ r8_16;
 		// r8_16.initFR(GaussianInteger(2,2),GaussianInteger(2,0),GaussianInteger(4,4));
 		// r8_16.printTable();
-/*		ZimodnZ r16_117;
-		r16_117.initFR(GaussianInteger(0,4),GaussianInteger(2,2),GaussianInteger(8,8));
-		r16_117.printTable();*/		
-		ZimodnZ r200(GaussianInteger(10,10));
-		r200.printTable();
+		ZimodnZ r16_97;
+		r16_97.initFR(GaussianInteger(0,4),GaussianInteger(2,2),GaussianInteger(8,8));
+		r16_97.printTable();	
+		//ZimodnZ r200(GaussianInteger(10,10));
+		//r200.printTable();
 	}
-	if(0)
-	{
-		ZimodnZ r128(GaussianInteger(8,8));
+	if(1)
+	{	
+		ZimodnZ r128(GaussianInteger(12,8));
 		//r128.printTable();
-	for(int i=0;i<r128.size();i++)
-	for(int j=i+1;j<r128.size();j++)
-	{
-		vector<int> v;
-		v.push_back(i);
-		v.push_back(j);		
-		Subring S1i(&r128,v);
-		int ni=S1i.size();
-		int ID=IdRing(&S1i);
-		if(ni==16 && ID==117)   
-		{
-			string str=gStr(r128.m_Set[i]);
-			printf("%d->%s=>",i,str.c_str());
-			string strj=gStr(r128.m_Set[j]);
-			printf("%d->%s=>",j,strj.c_str());			
-			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",ni,ID,strR.c_str());				
-			S1i.printTable();
-			break;
-		}		   
-	}		
+		writeTable(&r128,"R208_1.txt"); 		
+		findsubring2(&r128,32);
 	}
 	//system("pause");
 	return 0;
