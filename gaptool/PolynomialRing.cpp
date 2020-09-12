@@ -8,6 +8,96 @@
 #include<ctime>
 using namespace std;
 
+std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
+{
+	std::vector<string> ret;
+	unsigned int numSplits = 0;
+	// Use STL methods 
+	size_t start, pos;
+	start = 0;
+	do 
+	{
+		pos = str.find_first_of(delims, start);
+		if (pos == start)
+		{
+			// Do nothing
+			start = pos + 1;
+		}
+		else if (pos == std::string::npos || (maxSplits && numSplits == maxSplits))
+		{
+			// Copy the rest of the std::string
+			ret.push_back( str.substr(start) );
+			break;
+		}
+		else
+		{
+			// Copy up to delimiter
+			ret.push_back( str.substr(start, pos - start) );
+			start = pos + 1;
+		}
+		// parse up to next real data
+		start = str.find_first_not_of(delims, start);
+		++numSplits;
+	} while (pos != std::string::npos);
+	return ret;
+}
+
+// “交换环表示数据表”结点
+class CRingDataAItem
+{
+public:
+	CRingDataAItem() 
+	{
+		m_n=0;
+		m_ID=0;
+		m_n0=0;
+        m_vfvm="";		
+	}
+
+	int m_n;
+	int m_ID;	
+	int m_n0;
+	string m_vfvm;
+};
+
+map<pair<int,int>,CRingDataAItem> g_mapRingDataACache;
+
+const CRingDataAItem * Find(int n,int ID)
+{
+	map<pair<int,int>,CRingDataAItem>::const_iterator it;
+	it = g_mapRingDataACache.find(make_pair(n,ID));
+	if( it != g_mapRingDataACache.end() )
+		return &(it->second);
+	return NULL;
+}
+
+// “交换环表示数据表”缓冲
+int LoadData(char * pszFilePath)		//“从文件中读取数据”
+{
+	if( !g_mapRingDataACache.empty() )
+		return 2;//2已经载入数据了
+
+	FILE * fp =fopen(pszFilePath, "r");
+	if( fp == NULL )
+		return 1;//1打开文件失败
+
+	char sz[200] = {0};
+	CRingDataAItem item;
+	int n = 0;
+	n = fscanf(fp, "%s", sz);
+	while( n > 0 && !feof(fp) )
+	{
+		n = fscanf(fp, "%d,%d,%d,%s\n", &item.m_n, &item.m_ID, &item.m_n0,sz);
+		if( n > 0 )
+		{
+			item.m_vfvm = sz;
+			g_mapRingDataACache.insert( make_pair(make_pair(item.m_n,item.m_ID),item));
+		}
+	}
+	fclose(fp);
+	return 0;//0成功
+}
+
 void printRing0(IRing* r,int ID){
    int n=r->size();
    printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
@@ -91,13 +181,15 @@ public:
 	~PolynomialRing();	
 	// 成员函数	
 	void init(IRing *r,Polynomial& a);
+	void initFR(IRing *r,vector<Polynomial> &m,Polynomial &n);	
 	void initFR(IRing *r,Polynomial &m,Polynomial &n);
 	void initFR(IRing *r,Polynomial &m1,Polynomial &m2,Polynomial &n);	
+	bool init(int n,int ID);	
 	int visitVnRm(int n,int m);
-	void initR4(int ID=0);	
-	void initR8(int ID=0);
+	bool initR4(int ID=0);	
+	bool initR8(int ID=0);
 	bool initR16(int ID=0);
-	void initR36(int ID=0);		
+	bool initR36(int ID=0);		
 	// 成员变量
 	vector<Polynomial> m_Set;
 	Polynomial m_a;// 运算为模a加法和模a乘法
@@ -131,9 +223,33 @@ void PolynomialRing::init(IRing *r,Polynomial& a){
 	//printf("cnt=%d\n",cnt);
 }
 
-void PolynomialRing::initR4(int ID){
+bool PolynomialRing::init(int n,int ID){
+	const CRingDataAItem * pItem = Find(n,ID);
+	if(pItem){		
+		vector<Polynomial> gen;		
+		vector<string> vv=split(pItem->m_vfvm,";");
+		for(int i=0;i<vv.size();i++){
+			Polynomial vf;
+			vector<string> v=split(vv[i],",");
+			for(int i=0;i<v.size();i++){
+				int vi=atoi(v[i].c_str());	
+				vf.push_back(vi);
+			}
+			gen.push_back(vf);
+		}
+		Polynomial vf=gen[0];
+		gen.erase(gen.begin());
+		m_r=new ZmodnZ(1,pItem->m_n0); 
+		m_flag=1;  
+		initFR(m_r,gen,vf);
+		return true;		
+	}	
+	return false;
+}
+
+bool PolynomialRing::initR4(int ID){
 	Polynomial vf,vm1;
-	if(ID==4){ 
+	if(ID==5){ 
 		vm1.push_back(0);
 		vm1.push_back(1);	
 		vf.push_back(0);
@@ -143,7 +259,7 @@ void PolynomialRing::initR4(int ID){
 		m_r=new ZmodnZ(1,2); 
 		m_flag=1;		
         initFR(m_r,vm1,vf);	
-		return;		
+		return true;		
 	}else if(ID==9){  
 		//vf.push_back(1);
 		vf.push_back(0);
@@ -158,15 +274,15 @@ void PolynomialRing::initR4(int ID){
 		vf.push_back(1);
 		vf.push_back(1);
 	}else{
-		initR4(11);
-		return;
+		return false;
 	}
 	m_r=new ZmodnZ(1,2); 
 	m_flag=1;  
 	init(m_r,vf);
+	return true;
 }
 
-void PolynomialRing::initR8(int ID){
+bool PolynomialRing::initR8(int ID){
    Polynomial vf,vm1,vm2;
    if(ID==11){  
 		vm1.push_back(0);
@@ -206,17 +322,17 @@ void PolynomialRing::initR8(int ID){
 		m_r=new ZmodnZ(1,2);
 		init(m_r,vf);
    }else if(ID==52){	
+		vf.push_back(1);
 		vf.push_back(0);
-		vf.push_back(0);
-		vf.push_back(0);
+		vf.push_back(1);
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,2);
 		init(m_r,vf); 		
    }else{
-	   initR8(11);
-	   return;
+	   return false;
    }
    m_flag=1;
+   return true;
 }
 	
 bool PolynomialRing::initR16(int ID){
@@ -241,6 +357,30 @@ bool PolynomialRing::initR16(int ID){
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,8);
 		initFR(m_r,vm1,vm2,vf); 
+   }else if(ID==92){	
+		vf.push_back(0);
+		vf.push_back(2);
+		vf.push_back(1);
+		m_r=new ZmodnZ(1,4);
+		init(m_r,vf);		
+   }else if(ID==98){	
+		vm1.push_back(0);
+		vm1.push_back(2);
+		vm2.push_back(2);  
+		vf.push_back(1);
+		vf.push_back(0);
+		vf.push_back(1);
+		m_r=new ZmodnZ(1,8);
+		initFR(m_r,vm1,vm2,vf); 
+   }else if(ID==99){	
+		vm1.push_back(0);
+		vm1.push_back(2);
+		vm2.push_back(2);  
+		vf.push_back(1);
+		vf.push_back(1);
+		vf.push_back(1);
+		m_r=new ZmodnZ(1,8);
+		initFR(m_r,vm1,vm2,vf); 		
    }else if(ID==104){	
 		vf.push_back(0);
 		vf.push_back(1);
@@ -265,30 +405,6 @@ bool PolynomialRing::initR16(int ID){
 		vf.push_back(1);
 		m_r=new ZmodnZ(1,4);
 		init(m_r,vf);  
-   }else if(ID==115){	
-		vf.push_back(0);
-		vf.push_back(2);
-		vf.push_back(1);
-		m_r=new ZmodnZ(1,4);
-		init(m_r,vf);		
-   }else if(ID==118){	
-		vm1.push_back(0);
-		vm1.push_back(2);
-		vm2.push_back(2);  
-		vf.push_back(1);
-		vf.push_back(0);
-		vf.push_back(1);
-		m_r=new ZmodnZ(1,8);
-		initFR(m_r,vm1,vm2,vf); 
-   }else if(ID==119){	
-		vm1.push_back(0);
-		vm1.push_back(2);
-		vm2.push_back(2);  
-		vf.push_back(1);
-		vf.push_back(1);
-		vf.push_back(1);
-		m_r=new ZmodnZ(1,8);
-		initFR(m_r,vm1,vm2,vf); 
    }else if(ID==302){	
 		vm1.push_back(1);
 		vm1.push_back(1);
@@ -432,7 +548,7 @@ bool PolynomialRing::initR16(int ID){
    return true;   
 }	
 
-void PolynomialRing::initR36(int ID){
+bool PolynomialRing::initR36(int ID){
    Polynomial vf,vm1,vm2;
    if(ID==1){  
    }else if(ID==99){	
@@ -448,10 +564,22 @@ void PolynomialRing::initR36(int ID){
 		m_r=new ZmodnZ(1,6);
 		init(m_r,vf); 	
    }else{
-	   initR36(119);
-	   return;
+	   return false;
    }
    m_flag=1;
+   return true;    
+}
+
+void PolynomialRing::initFR(IRing *r,vector<Polynomial> &m,Polynomial &n)
+{
+    if(m.size()==0){
+		init(r,n);
+		return;
+	}
+	m_r=r;
+	m_a=n;
+	m_Set=FR(n,m,r->size());
+	m_gen=m;
 }
 
 void PolynomialRing::initFR(IRing *r,Polynomial &m,Polynomial &n)
@@ -898,6 +1026,19 @@ void findsubring(PolynomialRing *r){
 	}	
 }
 
+void checkring(IRing *r,int ID){
+	if(r->size()==32){
+		if(ID>0){
+			char sz1[128]={0};   
+			sprintf(sz1,"R%d_%d.txt",r->size(),ID);
+			writeTable(r,sz1);  
+		}else{
+			string strR=calcRingInvariant(r);			
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+		}			
+	}
+}
+
 void findsubring(PolynomialRing *r,int n){
 #define PRINT_LOG 1	
 	bool bFind=false;	
@@ -909,8 +1050,9 @@ void findsubring(PolynomialRing *r,int n){
     string strCmd="del ";
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;
-	int ID=IdRing(r);
+	int ID=r->size()>32?0:IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
+	checkring(r,ID);
 	for(int i=g_i;i<r->size()-1;i++)
 	for(int j=i+1;j<r->size();j++)
 	{
@@ -990,8 +1132,9 @@ void findsubring3(PolynomialRing *r,int n){
     string strCmd="del ";
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;
-	int ID=IdRing(r);
+	int ID=r->size()>32?0:IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
+	checkring(r,ID);	
 	for(int i=g_i;i<r->size()-2;i++)
 	for(int j=i+1;j<r->size()-1;j++)
 	for(int k=j+1;k<r->size();k++)		
@@ -1069,7 +1212,8 @@ void findquotientring(PolynomialRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=IdRing(r);
+	int ID=r->size()>32?0:IdRing(r);
+	checkring(r,ID);	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -1140,42 +1284,62 @@ void findquotientring(PolynomialRing *r,int n)
 #endif	
 }
 
-std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
-{
-	std::vector<string> ret;
-	unsigned int numSplits = 0;
-	// Use STL methods 
-	size_t start, pos;
-	start = 0;
-	do 
-	{
-		pos = str.find_first_of(delims, start);
-		if (pos == start)
-		{
-			// Do nothing
-			start = pos + 1;
+int testRingDataA(int argc, char* argv[]){ 
+	if(argc<3){
+		printf("usage:PolynomialRing n ID\n");
+		return 0;
+	}	
+	int n=atoi(argv[1]);
+	int ID=atoi(argv[2]);
+	const CRingDataAItem * pItem = Find(n,ID);
+	if(!pItem){
+		printf("没有配置R%d_%d的表示数据！\n",n,ID);
+		return 0;
+	}
+	PolynomialRing *r=new PolynomialRing;
+	bool b=r->init(n,ID);	
+	if(b && r){
+		int in=r->size();
+		int iID=IdRing(r);
+		printf("R%d_%d",in,iID);	
+		if(in<=32 && iID<=0){
+			string strR=calcRingInvariant(r);
+			printf(":N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s",strR.c_str());
+			string I1=calcI1(r);
+			string I2=calcI2(r);			
+			printf("\nI1I2=%s,%s",I1.c_str(),I2.c_str());				
 		}
-		else if (pos == std::string::npos || (maxSplits && numSplits == maxSplits))
-		{
-			// Copy the rest of the std::string
-			ret.push_back( str.substr(start) );
-			break;
+		if(in>=32 && in<=256){
+			int fun=0;
+			if(argc>3){
+				fun=atoi(argv[3]);
+				if(fun<0||fun>2){
+					fun=0;
+				}	
+			}	
+			int n0=argc>4?32:16; 			
+			typedef void(*pF)(PolynomialRing *r,int n);
+			pF Func[]={findsubring,findsubring3,findquotientring};
+			Func[fun](r,n0);			
 		}
-		else
-		{
-			// Copy up to delimiter
-			ret.push_back( str.substr(start, pos - start) );
-			start = pos + 1;
-		}
-		// parse up to next real data
-		start = str.find_first_not_of(delims, start);
-		++numSplits;
-	} while (pos != std::string::npos);
-	return ret;
-}
+		printf("\n");	
+		for(int i=0;i<in;i++){		
+			string stri=PolynomialRing::sPoly(r->m_Set[i]);		
+			printf("i=%d=>%s\n",i,stri.c_str());	
+		}		
+	}
+	delete r;
+	r=NULL;
+	return 0;
+}	
 
 int main(int argc, char* argv[])
 { 
+    // 将交换环表示数据配置到文件中，精简代码
+	int ret=LoadData("RingDataA.csv");
+	printf("ret=%d,交换环表示数据表中的记录条数=%d\n",ret,g_mapRingDataACache.size());
+	return testRingDataA(argc,argv);
+	
 	if(argc>3){
 		g_i=atoi(argv[3]);	
 	}
@@ -1225,10 +1389,13 @@ int main(int argc, char* argv[])
 		pF Func[]={findsubring,findsubring3,findquotientring};
 		Func[fun](&pr,N);	        		
 	}
+	
 	if(0){
 		PolynomialRing r4;
-		r4.initR4(5);
-		r4.printTable();
+		bool b=r4.initR4(4);
+		if(b){
+			r4.printTable();
+		}
 	}	
 	if(0){	
 		PolynomialRing r8;
@@ -1241,5 +1408,6 @@ int main(int argc, char* argv[])
 		r16.printTable();
 		findsubring(&r16,16);
 	}
+	
 	return 0;
 }
