@@ -1286,7 +1286,7 @@ void findquotientring(PolynomialRing *r,int n)
 
 int testRingDataA(int argc, char* argv[]){ 
 	if(argc<3){
-		printf("usage:PolynomialRing n ID\n");
+		printf("usage:PolynomialRing n ID [g_i] [n0]\n");
 		return 0;
 	}	
 	int n=atoi(argv[1]);
@@ -1316,17 +1316,20 @@ int testRingDataA(int argc, char* argv[]){
 				if(fun<0||fun>2){
 					fun=0;
 				}	
-			}	
-			int n0=argc>4?32:16; 			
+			}		
+			if(argc>4){
+				g_i=atoi(argv[4]);	
+			}
+			int n0=argc>5?32:16;				
 			typedef void(*pF)(PolynomialRing *r,int n);
 			pF Func[]={findsubring,findsubring3,findquotientring};
 			Func[fun](r,n0);			
-		}
+		}		
 		printf("\n");	
-		for(int i=0;i<in;i++){		
+/* 		for(int i=0;i<in;i++){		
 			string stri=PolynomialRing::sPoly(r->m_Set[i]);		
 			printf("i=%d=>%s\n",i,stri.c_str());	
-		}		
+		} */		
 	}
 	delete r;
 	r=NULL;
