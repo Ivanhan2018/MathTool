@@ -1250,7 +1250,7 @@ void findsubring3(IRing *r,int n)
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;	
 	int ID=r->size()>32?0:IdRing(r);
-	printf("R%d_%d%d\n",r->size(),ID);
+	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 	int i0=0;
 #ifdef QF
