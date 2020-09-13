@@ -1,3 +1,4 @@
+#define PARSE_RING_FILE
 #define QF
 #define R16_I1I2
 #define USE_MNR_UINT32
@@ -11,6 +12,7 @@
 #include"Mnr.h"
 #endif
 
+#ifndef PARSE_RING_FILE
 std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
 {
 	std::vector<string> ret;
@@ -44,6 +46,26 @@ std::vector<string> split( const std::string& str, const std::string& delims, un
 	} while (pos != std::string::npos);
 	return ret;
 }
+
+#endif
+
+IRing* newR32(int i){
+	if(i==1008)
+	{
+		ZmodnZ* r8=new ZmodnZ(1,8);
+		ZmodnZ* r4=new ZmodnZ(1,4);
+		DecompositionRing* r=new DecompositionRing(r8,r4);
+		r->m_flag=1;		
+		return r;
+	}
+#ifdef PARSE_RING_FILE	
+	char sz[100]={0};
+	sprintf(sz,"R32_%d.txt",i);
+	FiniteRing* r=newRing(sz);
+	return r;	
+#endif
+	return NULL;
+}	
 
 IRing* newR16(int i){
 	static int g_R16_6Add[16][16]={
@@ -3579,7 +3601,13 @@ IRing* newR16(int i){
 	{
 		FiniteRing* r=new FiniteRing(16,&g_R16_377Add[0][0],&g_R16_377Mul[0][0],0);
 		return r;
-	}	
+	}
+#ifdef PARSE_RING_FILE	
+	char sz[100]={0};
+	sprintf(sz,"R16%d.txt",i);
+	FiniteRing* r=newRing(sz);
+	return r;	
+#endif	
 	return NULL;
 }
 
@@ -3626,8 +3654,10 @@ int main(int argc, char* argv[])
 		r=M2r::newR4(n2);
 	}else if(n1==8 && n2<=52){	
 		r=newR8(n2);	
-	}else if(n1==16 && isR16ID(n2)){	
-		r=newR16(n2);		
+	}else if(n1==16){	
+		r=newR16(n2);	
+	}else if(n1==32){
+		r=newR32(n2);		
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}

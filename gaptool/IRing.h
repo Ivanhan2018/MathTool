@@ -551,6 +551,101 @@ string calcI2(IRing* r){
 	return str;
 }
 
+string calcI3(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();
+	vector<pair<int,int> > v;
+   for(int i=0;i<n-2;i++){
+	for(int j=i+1;j<n-1;j++){
+	   for(int k=j+1;k<n;k++){
+		   vector<int> vi;
+		   vi.push_back(i);
+		   vi.push_back(j);
+		   vi.push_back(k);		   
+		   Subring si;
+		   bool b=si.init(r,vi,n-1);
+		   if(!b)
+			   continue;
+		   int ni=si.size();
+		   if(ni<n && ni>0){
+			int ID=IdRing(&si);
+#if 1			
+			if(ID==-1){
+				printf("i=%d,j=%d,k=%d\n",i,j,k);
+			    break;
+			}
+#endif
+			v.push_back(make_pair(ni,ID));
+		   }
+   }
+   }
+   }
+	std::sort(v.begin(),v.end());
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2)
+	{
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
+string calcI4(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();
+	vector<pair<int,int> > v;
+   for(int t=0;t<n-3;t++){	
+   for(int i=t+1;i<n-2;i++){
+	for(int j=i+1;j<n-1;j++){
+	   for(int k=j+1;k<n;k++){
+		   vector<int> vi;
+		   vi.push_back(t);		   
+		   vi.push_back(i);
+		   vi.push_back(j);
+		   vi.push_back(k);		   
+		   Subring si;
+		   bool b=si.init(r,vi,n-1);
+		   if(!b)
+			   continue;
+		   int ni=si.size();
+		   if(ni<n && ni>0){
+			int ID=IdRing(&si);
+#if 1			
+			if(ID==-1){
+				printf("t=%d,i=%d,j=%d,k=%d\n",t,i,j,k);
+			    break;
+			}
+#endif
+			v.push_back(make_pair(ni,ID));
+		   }
+   }
+   }
+   }
+   }
+	std::sort(v.begin(),v.end());
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2)
+	{
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
 int ZeroNum(IRing* r){
     int n=r->size();
 	int iRet=0;
