@@ -153,7 +153,7 @@ void findsubring(Mnr *r,int n)
 }
 
 IRing* newRppp(int ID,int p,int sID){	
-   if(/* ID!=29 && ID!=46 ID!=26 && ID!=44ID!=36 && ID!=40*/ID!=32)
+   if(/* ID!=29 && ID!=46 ID!=26 && ID!=44ID!=36 && ID!=40*/ID!=7)
 	   return NULL;
 	//p=2;
 	//if(p==3)return NULL;
@@ -266,6 +266,12 @@ IRing* newRppp(int ID,int p,int sID){
 		}		
 #endif		
         return r;
+   }else if(ID==14){
+		ZmodnZ* rpp=new ZmodnZ(1,p*p);
+		ZmodnZ* rp=new ZmodnZ(1,p);
+		DecompositionRing* r= new DecompositionRing(rpp,rp);
+		r->m_flag=1;	   
+		return r;		
    }else if(ID==15){	
 		M2r* r=new M2r();   
 		r->m_r=new ZmodnZ(1,p*p);

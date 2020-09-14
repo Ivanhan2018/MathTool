@@ -289,7 +289,8 @@ public:
 	//  静态函数  
 	static IRing* newR8(int i);
 	static IRing* newR16(int i);	
-	static IRing* newR32(int i);	
+	static IRing* newR32(int i);
+	static IRing* newR27(int i);	
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -519,7 +520,17 @@ IRing* FiniteRing::newR32(int i){
 #endif	
 	return NULL;
 }	
-	
+
+IRing* FiniteRing::newR27(int i){
+	if(i==14){
+		ZmodnZ* r9=new ZmodnZ(1,9);
+		ZmodnZ* r3=new ZmodnZ(1,3);
+		DecompositionRing* r= new DecompositionRing(r9,r3);
+		r->m_flag=1;		
+		return r;
+	}
+	return NULL;	
+}	
 
 IRing* FiniteRing::newR8(int i){
 /* 	static int g_C2C4Mul_2[8][8]={
@@ -4558,6 +4569,8 @@ bool M2r::init(int n,int ID){
 			m_r=newR8(pItem->m_n2);
 		else if(pItem->m_n1==16)
 			m_r=newR16(pItem->m_n2);	
+		else if(pItem->m_n1==27)
+			m_r=FiniteRing::newR27(pItem->m_n2);		
 		else if(pItem->m_n1==32)
 			m_r=FiniteRing::newR32(pItem->m_n2);		
 		vector<MATRIXi> gen;		
@@ -4980,6 +4993,8 @@ bool Mnr::init(int n,int ID){
 			m_r=newR8(pItem->m_n2);
 		else if(pItem->m_n1==16)
 			m_r=newR16(pItem->m_n2);
+		else if(pItem->m_n1==27)
+			m_r=FiniteRing::newR27(pItem->m_n2);		
 		m_n=pItem->m_n0;	
 		vector<MATRIXi8> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
@@ -5806,6 +5821,30 @@ IRing* newR16(int ij)
 	return ri;
 }
 
+IRing* newRing(int n,int ID)
+{
+	const CRingDataItem * pItem = Find(n,ID);
+	if(!pItem){
+		printf("没有配置R%d_%d的表示数据！\n",n,ID);
+		return 0;
+	}
+	IRing *r=NULL;	
+	bool b=false;
+	if(pItem->m_n0==2){
+	    M2r *r1=new M2r;
+		b=r1->init(n,ID);
+		r=r1;
+	}else{
+	    Mnr *r1=new Mnr;
+		b=r1->init(n,ID);
+		r=r1;		
+	}	
+	if(b && r){	
+		return r;			
+	}	
+	return NULL;
+}
+
 IRing* newR4(int i)
 {
 	if(i==1)
@@ -6015,6 +6054,8 @@ int Mrijk(int argc, char* argv[])
 		r=newR8(n2);	
 	}else if(n1==16){	
 		r=newR16(n2);	
+	}else if(n1==27){
+		r=newRing(27,n2);		
 	}else if(n1==32){
 		r=FiniteRing::newR32(n2);		
 	}else if(n2%n1==0){
