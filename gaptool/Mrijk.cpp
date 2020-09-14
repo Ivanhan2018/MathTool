@@ -3706,6 +3706,8 @@ int main(int argc, char* argv[])
 		int _n0=atoi(argv[6]);	
 		if(_n0==27)
 			n0=27;
+		else if(_n0==81)
+			n0=81;		
 		else
 			n0=32;		
 	}		

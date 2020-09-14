@@ -153,7 +153,7 @@ void findsubring(Mnr *r,int n)
 }
 
 IRing* newRppp(int ID,int p,int sID){	
-   if(/* ID!=29  ID!=26 && ID!=44ID!=36 && ID!=40*/ID!=48 && ID!=46)
+   if(/* ID!=29  ID!=26 && ID!=44ID!=36 */ID!=45 && ID!=48 && ID!=46)
 	   return NULL;
 	//p=2;
 	//if(p==3)return NULL;
@@ -1059,9 +1059,21 @@ Rppp':
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;					
-   }else if(ID==45){//Rppp(45,2)=R8_45£¬µ«Rppp(45,3)=R27_49	
+   }else if(ID==45){//27,45,4,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0;0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,1
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
+#if 1
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		MATRIXi8 B(4,vector<TElem>(4,0)); 		
+		A[3][1]=1;
+		B[1][1]=1;
+		B[2][0]=1;
+		B[2][1]=1;
+		B[2][2]=1;
+		B[3][3]=1;
+#else
 		r->m_n=3; 
 		vector<MATRIXi8> gen;		
 		MATRIXi8 A(3,vector<TElem>(3,0)); 
@@ -1083,7 +1095,8 @@ Rppp':
 		B[1][2]=0;
 		B[2][0]=0;
 		B[2][1]=0;
-		B[2][2]=1;		
+		B[2][2]=1;
+#endif		
 		gen.push_back(A);
 		gen.push_back(B);
 		r->m_flag=1;

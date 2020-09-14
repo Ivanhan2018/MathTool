@@ -5954,20 +5954,20 @@ IRing* newR4(int i,int p=2)
 	return NULL;
 }
 
-IRing* newRing(int n,int ID)
-{
+IRing* newRing(int n,int ID){
+	IRing *r=NULL;	
 	if(n==9){
-		return newR4(ID,3);
+		r=newR4(ID,3);
+	}else if(n==27){
+		r=FiniteRing::newR27(ID);
 	}
-	if(n==27){
-		return FiniteRing::newR27(ID);
-	}	
+	if(r)
+		return r;
 	const CRingDataItem * pItem = Find(n,ID);
 	if(!pItem){
 		printf("没有配置R%d_%d的表示数据！\n",n,ID);
 		return 0;
 	}
-	IRing *r=NULL;	
 	bool b=false;
 	if(pItem->m_n0==2){
 	    M2r *r1=new M2r;
