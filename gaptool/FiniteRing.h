@@ -329,69 +329,69 @@ IRing* newR2(int i)
 	return NULL;
 }
 
-IRing* newR4(int i)
+IRing* newR4(int i,int p=2)
 {
 	if(i==1)
 	{
-		ZmodnZ* r=new ZmodnZ(4,16);
+		ZmodnZ* r=new ZmodnZ(p*p,p*p*p*p);
 		return r;
 	}
 	if(i==2)
 	{
-		ZmodnZ* r=new ZmodnZ(2,8);
+		ZmodnZ* r=new ZmodnZ(p,p*p*p);
 		return r;
 	}	
 	if(i==3)
 	{
-		ZmodnZ* r=new ZmodnZ(1,4);
+		ZmodnZ* r=new ZmodnZ(1,p*p);
 		return r;
 	}
 	if(i==4)
 	{
 		M2r* r=new M2r();
-	    r->initD(2);
+	    r->initD(p);
 		return r;
 	}	
 	if(i==5)
 	{
 		Mnr* r=new Mnr();
-	    r->initE(2);
+	    r->initE(p);
 		return r;
 	}	
 	if(i==6)
 	{
 		Mnr* r=new Mnr();
-	    r->initF(2);
+	    r->initF(p);
 		return r;
 	}	
 	if(i==7)
 	{
 		M2r* r=new M2r();
-	    r->initG(2);
+	    r->initG(p);
 		return r;
 	}
 	if(i==8)
 	{
 		M2r* r=new M2r();
-	    r->initH(2);
+	    r->initH(p);
 		return r;
 	}
 	if(i==9)
 	{
 		M2r* r=new M2r();
-	    r->initI(2);
+	    r->initI(p);
 		return r;
 	}
 	if(i==10)
 	{
 		M2r* r=new M2r();
-	    r->initJ(2);
+	    r->initJ(p);
 		return r;
 	}
 	if(i==11)
 	{
 		M2r* r=new M2r();
-	    r->initK(2);
+	    r->initK(p);
 		return r;
 	}	
 	return NULL;
@@ -1107,6 +1107,10 @@ void checkring(IRing *r,int ID){
 			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
 		}			
 	}
+	if((r->size()==27||r->size()==81) && ID==-1){	
+			string strR=calcRingInvariant(r);			
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+	}	
 }
 
 //int g_i=0;
@@ -1114,7 +1118,7 @@ void findsubring1(IRing *r,int n)
 {
 	set<pair<int,int>> M;
 	set<string> S;	
-	int ID=r->size()>32?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	//srand(time(NULL));
 	//g_i=rand()%r->size();
 	//printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
@@ -1163,7 +1167,7 @@ void findsubring2(IRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=r->size()>32?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -1249,7 +1253,7 @@ void findsubring3(IRing *r,int n)
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;	
-	int ID=r->size()>32?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 	int i0=0;
@@ -1325,7 +1329,7 @@ void findsubring4(IRing *r,int n)
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
-	int ID=r->size()>32?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);
 	int i0=0;
@@ -1399,7 +1403,7 @@ void findquotientring(IRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=r->size()>32?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 #if PRINT_LOG
@@ -1446,7 +1450,7 @@ void findquotientring(IRing *r,int n)
 			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
 		    static vector<int> vIDs(IDs,IDs+cnt);
 			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
-			if(ni==32 && ID==-1 || (ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end())){
+			if((ni==32||ni==27||ni==81) && ID==-1 || (ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end())){
 				printRing0(&S1i,ID);
 			}	
             if(ni==32 && ID>0){

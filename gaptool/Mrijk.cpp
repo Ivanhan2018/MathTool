@@ -3652,6 +3652,8 @@ int main(int argc, char* argv[])
 	IRing* r=NULL;	
 	if(n1==4 && n2<=11){	
 		r=M2r::newR4(n2);
+	}else if(n1==9 && n2<=11){	
+		r=newR4(n2,3);		
 	}else if(n1==8 && n2<=52){	
 		r=newR8(n2);	
 	}else if(n1==16){	
@@ -3698,7 +3700,15 @@ int main(int argc, char* argv[])
 			fun=0;
 		}	
 	}
-	int n0=argc>6?32:16;       		
+	//int n0=argc>6?32:16;   
+    int n0=16;
+    if(argc>6){
+		int _n0=atoi(argv[6]);	
+		if(_n0==27)
+			n0=27;
+		else
+			n0=32;		
+	}		
 	typedef void(*pF)(IRing *r,int n);
 	pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findquotientring};
 		

@@ -1037,6 +1037,10 @@ void checkring(IRing *r,int ID){
 			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
 		}			
 	}
+	if((r->size()==27||r->size()==81) && ID==-1){	
+			string strR=calcRingInvariant(r);			
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+	}	
 }
 
 void findsubring(PolynomialRing *r,int n){
@@ -1050,7 +1054,7 @@ void findsubring(PolynomialRing *r,int n){
     string strCmd="del ";
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;
-	int ID=r->size()>32?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
 	checkring(r,ID);
 	for(int i=g_i;i<r->size()-1;i++)
@@ -1132,7 +1136,7 @@ void findsubring3(PolynomialRing *r,int n){
     string strCmd="del ";
 	strCmd+=sz;
 	map<pair<int,int>,pair<int,int>> M;
-	int ID=r->size()>32?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
 	checkring(r,ID);	
 	for(int i=g_i;i<r->size()-2;i++)
@@ -1212,7 +1216,7 @@ void findquotientring(PolynomialRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=r->size()>32?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	checkring(r,ID);	
 #if PRINT_LOG
     char sz[100]="0";
@@ -1320,7 +1324,14 @@ int testRingDataA(int argc, char* argv[]){
 			if(argc>4){
 				g_i=atoi(argv[4]);	
 			}
-			int n0=argc>5?32:16;				
+			int n0=16;
+			if(argc>5){
+				int _n0=atoi(argv[5]);	
+				if(_n0==27)
+					n0=27;
+				else
+					n0=32;		
+			}					
 			typedef void(*pF)(PolynomialRing *r,int n);
 			pF Func[]={findsubring,findsubring3,findquotientring};
 			Func[fun](r,n0);			
