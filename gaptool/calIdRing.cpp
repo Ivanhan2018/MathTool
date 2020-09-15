@@ -2,8 +2,9 @@
 
 #ifdef QR16
 #include"quotientring.h"
-#include <ctime>
-#include <fstream>
+#include<ctime>
+#include<fstream>
+#include<set>
 
 void printRing0(IRing* r,int ID){
    int n=r->size();
@@ -59,7 +60,8 @@ void findquotientring(IRing *r,int n)
 {
 	int ID=IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);	
-	map<pair<int,int>,pair<int,int>> M;	
+	map<pair<int,int>,pair<int,int>> M;
+	set<string> S;	
 	for(int i=0;i<r->size()-1;i++)		
 	for(int j=i+1;j<r->size();j++)
 	{
@@ -101,8 +103,11 @@ void findquotientring(IRing *r,int n)
 		if(ni==n && ID==-1) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
-			//break;
+			if(S.find(strR)==S.end()){				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				//break;
+			}
+			S.insert(strR);
 		}
 	}
 }
@@ -348,8 +353,15 @@ int main(int argc, char **argv)
 		strcpy(sz,argv[1]);
 	
 #ifdef QR16
-    if(argc>2)
-		g_a=32;
+    if(argc>2){
+		int _n0=atoi(argv[2]);	
+		if(_n0==27)
+			g_a=27;
+		else if(_n0==81)
+			g_a=81;		
+		else
+			g_a=32;		
+	}
 #endif
 
 	vector<char> A=lof2(sz);
