@@ -1450,7 +1450,7 @@ void findquotientring(IRing *r,int n)
 			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
 		    static vector<int> vIDs(IDs,IDs+cnt);
 			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
-			if((ni==32||ni==27||ni==81) && ID==-1 || (ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end())){
+			if((ni==32||ni==27) && ID==-1 || (ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end())){
 				printRing0(&S1i,ID);
 			}	
             if((ni==32||ni==81) && ID>0){
