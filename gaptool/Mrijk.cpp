@@ -65,7 +65,17 @@ IRing* newR32(int i){
 	return r;	
 #endif
 	return NULL;
-}	
+}
+
+IRing* newR27(int i){
+#ifdef PARSE_RING_FILE	
+	char sz[100]={0};
+	sprintf(sz,"R27_%d.txt",i);
+	FiniteRing* r=newRing(sz);
+	return r;	
+#endif
+	return NULL;
+}
 
 IRing* newR16(int i){
 	static int g_R16_6Add[16][16]={
@@ -3658,6 +3668,8 @@ int main(int argc, char* argv[])
 		r=newR8(n2);	
 	}else if(n1==16){	
 		r=newR16(n2);	
+	}else if(n1==27){	
+		r=newR27(n2);		
 	}else if(n1==32){
 		r=newR32(n2);		
 	}else if(n2%n1==0){

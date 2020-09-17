@@ -20,10 +20,13 @@ int main(int argc, char* argv[]){
 	}
 	char* str1="";
     if(argc>5)	
-		str1=argv[5];  	
+		str1=argv[5]; 
+	char* str0="R32_";
+    if(argc>6)	
+		str0=argv[6];  	
 	for(int i=n1;i<=n2;i++)	{
 		char sz[1000]={0};
-		sprintf(sz,"DPR0 R32_%d.txt %s.txt R32_%d%s.txt %d %s",i,str,i,str,fun,str1);
+		sprintf(sz,"DPR0 %s%d.txt %s.txt %s%d%s.txt %d %s",str0,i,str,str0,i,str,fun,str1);
 		printf("i=%d\n%s\n",i,sz);
 		system(sz);
 	} 

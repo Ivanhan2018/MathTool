@@ -345,7 +345,16 @@ int main(int argc, char* argv[])
 				fun=0;
 			}	
 		}
-		int n0=argc>5?32:16;       		
+		int n0=16;
+		if(argc>5){
+			int _n0=atoi(argv[5]);	
+			if(_n0==27)
+				n0=27;
+			else if(_n0==81)
+				n0=81;				
+			else
+				n0=32;		
+		}    		
 		typedef void(*pF)(IRing *r,int n);
 		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findquotientring};
 		Func[fun](r,n0);

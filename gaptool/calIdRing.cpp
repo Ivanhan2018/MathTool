@@ -147,8 +147,10 @@ void FiniteRing::printTable()
 	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
 	string I3=calcI3(this);
 	printf("I3=%s\n",I3.c_str());	
-	string I4=calcI4(this);
-	printf("I4=%s\n",I4.c_str());	
+	if(m_n<64){	
+		string I4=calcI4(this);
+		printf("I4=%s\n",I4.c_str());
+	}	
 #endif	
 	//printRing(this);	
 }
