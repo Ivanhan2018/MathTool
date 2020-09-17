@@ -1097,7 +1097,7 @@ string IMStr(IRing *r,int i)
 }
 
 void checkring(IRing *r,int ID){
-	if(r->size()==32){
+	if(r->size()==32||r->size()==64){
 		if(ID>0){
 			char sz1[128]={0};   
 			sprintf(sz1,"R%d_%d.txt",r->size(),ID);
@@ -1403,7 +1403,7 @@ void findquotientring(IRing *r,int n)
 {
 #define PRINT_LOG 1	
 	bool bFind=false;	
-	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 #if PRINT_LOG
