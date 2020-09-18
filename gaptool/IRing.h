@@ -865,7 +865,7 @@ int RIDHelper::LoadData(char * pszFilePath){
 	if( fp == NULL )
 		return 1;//1打开文件失败
 
-	char sz[200] = {0};
+	char sz[400] = {0};
 	pair<string,int> item;
 	int n = 0;
 	n = fscanf(fp, "%s", sz);

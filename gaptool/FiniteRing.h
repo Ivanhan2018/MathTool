@@ -1097,7 +1097,7 @@ string IMStr(IRing *r,int i)
 }
 
 void checkring(IRing *r,int ID){
-	if(r->size()==32||r->size()==64){
+	if(r->size()==32||r->size()==64||r->size()==243){
 		if(ID>0){
 			char sz1[128]={0};   
 			sprintf(sz1,"R%d_%d.txt",r->size(),ID);
@@ -1165,16 +1165,16 @@ void findsubring1(IRing *r,int n)
 
 void findsubring2(IRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
 	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
 	//srand(time(NULL));
@@ -1242,15 +1242,15 @@ void findsubring2(IRing *r,int n)
 
 void findsubring3(IRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;	
 	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
@@ -1318,15 +1318,15 @@ void findsubring3(IRing *r,int n)
 
 void findsubring4(IRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
 	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
@@ -1401,18 +1401,18 @@ void findsubring4(IRing *r,int n)
 
 void findquotientring(IRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
-	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64)?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64 && r->size()!=243)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;	
 	for(int i=0;i<r->size()-1;i++)		

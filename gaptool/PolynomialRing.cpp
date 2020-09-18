@@ -1017,7 +1017,7 @@ Polynomial PolynomialRing::mod(Polynomial& a,Polynomial& b,int ord)
 int g_i=0;
 
 void checkring(IRing *r,int ID){
-	if(r->size()==32){
+	if(r->size()==32||r->size()==64||r->size()==243){
 		if(ID>0){
 			char sz1[128]={0};   
 			sprintf(sz1,"R%d_%d.txt",r->size(),ID);
@@ -1034,15 +1034,15 @@ void checkring(IRing *r,int ID){
 }
 
 void findsubring(PolynomialRing *r,int n){
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;
 	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
@@ -1116,15 +1116,15 @@ void findsubring(PolynomialRing *r,int n){
 }
 
 void findsubring3(PolynomialRing *r,int n){
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;
 	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
 	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);	
@@ -1201,17 +1201,17 @@ void findsubring3(PolynomialRing *r,int n){
 
 void findquotientring(PolynomialRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
-	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
+	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64 && r->size()!=243)?0:IdRing(r);
 	checkring(r,ID);	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	for(int i=0;i<r->size()-1;i++)		
     //int i=0;

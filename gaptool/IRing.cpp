@@ -6045,7 +6045,7 @@ void findsubring1(IRing *r,int n)
 		int cnt1=M.size();
 		if(cnt1>cnt){		
 			printf("cnt1=%d:R%d_%d->i=%d=>%s\n",cnt1,ni,ID,i,IMStr(r,i).c_str());	
-            if((ni==32||ni==81) && ID>0){
+            if((ni==32||ni==81||ni==64) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6064,16 +6064,16 @@ void findsubring1(IRing *r,int n)
 
 void findsubring2(IRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
 	int ID=0;//IdRing(r);
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
 	//srand(time(NULL));
@@ -6101,7 +6101,7 @@ void findsubring2(IRing *r,int n)
 			string str=IMStr(r,i);
 			string strj=IMStr(r,j);				
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s,%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
-            if((ni==32||ni==81) && ID>0){
+            if((ni==32||ni==81||ni==64) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6134,15 +6134,15 @@ void findsubring2(IRing *r,int n)
 
 void findsubring3(IRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0
 	bool bFind=false;	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;	
 	int ID=0;//IdRing(r);
@@ -6171,7 +6171,7 @@ void findsubring3(IRing *r,int n)
 			string strj=IMStr(r,j);
 			string strk=IMStr(r,k);				
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d=>%s,%s,%s\n",cnt1,ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());			
-            if((ni==32||ni==81) && ID>0){
+            if((ni==32||ni==81||ni==64) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6203,15 +6203,15 @@ void findsubring3(IRing *r,int n)
 
 void findsubring4(IRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
 	int ID=0;//IdRing(r);
@@ -6247,7 +6247,7 @@ void findsubring4(IRing *r,int n)
 			string strk=IMStr(r,k);		
 			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s,%s,%s,%s\n",cnt1,ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
 #endif
-            if((ni==32||ni==81) && ID>0){
+            if((ni==32||ni==81||ni==64) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6279,7 +6279,7 @@ void findsubring4(IRing *r,int n)
 
 void findquotientring(IRing *r,int n)
 {
-#define PRINT_LOG 1	
+#define PRINT_LOG 0	
 	bool bFind=false;	
 	int ID=0;//IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
@@ -6287,9 +6287,9 @@ void findquotientring(IRing *r,int n)
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
     ofstream fout(sz);
-#endif	
     string strCmd="del ";
-	strCmd+=sz;
+	strCmd+=sz;	
+#endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
 	for(int i=0;i<r->size()-1;i++)		
@@ -6330,7 +6330,7 @@ void findquotientring(IRing *r,int n)
 			if((ni==32||ni==27||ni==81) && ID==-1 || (ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end())){
 				printRing0(&S1i,ID);
 			}	
-            if((ni==32||ni==81) && ID>0){
+            if((ni==32||ni==81||ni==64) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6653,7 +6653,7 @@ void FindMnr(IRing* r,int n,int m)
 				string str=Mnr::MStr(vi);
 				string strj=Mnr::MStr(vj);			   
 				printf("R%d_%d->i=%d,j=%d=>%s,%s\n",ni,ID,i,j,str.c_str(),strj.c_str());
-				if((ni==32||ni==81) && ID>0){
+				if((ni==32||ni==81||ni==64) && ID>0){
 					char sz1[128]={0};   
 					sprintf(sz1,"R%d_%d.txt",ni,ID);
 					writeTable(&R,sz1);                  
