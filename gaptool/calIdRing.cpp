@@ -111,6 +111,64 @@ void findquotientring(IRing *r,int n)
 		}
 	}
 }
+
+void findquotientring3(IRing *r,int n)
+{
+	int ID=IdRing(r);
+	printf("R%d_%d\n",r->size(),ID);	
+	map<pair<int,int>,pair<int,int>> M;
+	set<string> S;	
+	for(int i=0;i<r->size()-2;i++)		
+	for(int j=i+1;j<r->size()-1;j++)
+	for(int k=j+1;k<r->size();k++)		
+	{
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);
+		v.push_back(k);		
+		Subring S1i0;
+		bool bn=S1i0.init(r,v,r->size()/n);
+		if(!bn)
+			continue;
+		if(S1i0.m_Set.size()!=r->size()/n||S1i0.m_Set.size()==1||S1i0.m_Set.size()==r->size())
+			continue;
+		vector<int> v0=v;
+		v=S1i0.m_Set;
+		int iret1=IsIdeal(r,v); 
+		if(iret1!=1)
+			continue;
+		quotientRing S1i(r,v);
+		int ni=S1i.size();	
+		int IDr=ID;
+		bool b=IsRing(&S1i);
+		if(!b){
+			continue;
+		}			
+		int ID=IdRing(&S1i);	
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){		
+			int IDr0=IdRing(&S1i0);
+			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d,k=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j,k);			
+			if(ni==n && ID==-1){
+				printRing0(&S1i,ID);
+				char sz[100]="0";
+				sprintf(sz,"R%d_%d.txt",ni,time(NULL));	
+				writeTable(&S1i,sz);
+			}				
+		}	
+		if(ni==n && ID==-1) 	
+		{		
+			string strR=calcRingInvariant(&S1i);
+			if(S.find(strR)==S.end()){				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				//break;
+			}
+			S.insert(strR);
+		}
+	}
+}
 #endif
 
 // 根据环的加法、乘法凯莱表分析其结构的小工具IdRing.exe
@@ -137,7 +195,11 @@ public:
 void FiniteRing::printTable()
 {
 #ifdef QR16
-    findquotientring(this,g_a);
+	if(m_n==128||m_n==256){
+		findquotientring3(this,g_a);
+	}else{
+		findquotientring(this,g_a);		
+	}
 #else
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);

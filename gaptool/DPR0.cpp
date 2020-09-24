@@ -341,7 +341,7 @@ int main(int argc, char* argv[])
 		int fun=1;
         if(argc>4){
             fun=atoi(argv[4]);
-			if(fun<0||fun>4){
+			if(fun<0||fun>5){
 				fun=0;
 			}	
 		}
@@ -356,7 +356,7 @@ int main(int argc, char* argv[])
 				n0=32;		
 		}    		
 		typedef void(*pF)(IRing *r,int n);
-		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findquotientring};
+		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findquotientring,findquotientring3};
 		Func[fun](r,n0);
 		
 		delete r;
