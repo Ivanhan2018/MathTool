@@ -6771,7 +6771,7 @@ int Mrijk(int argc, char* argv[])
 }
 
 int testR16(){
-	   int IDs[]={118};
+	   int IDs[]={67,68,69,274};
 	   int cnt=sizeof(IDs)/sizeof(IDs[0]);
 	   for(int i=0;i<cnt;i++){
 		   IRing* r=newR16(IDs[i]);
@@ -6798,7 +6798,7 @@ int testR16(){
 }
 
 int testR16R2(){
-	int IDs[]={118};
+	int IDs[]={67,68,69,274};
 	int cnt=sizeof(IDs)/sizeof(IDs[0]);
 	for(int k=0;k<cnt;k++){
 		int i=IDs[k];
@@ -6807,7 +6807,7 @@ int testR16R2(){
 		   if(r){
 				int ID=IdRing(r);
 				printf("R16_%d×R2_%d=R32_%d\n",i,j,ID);							   
-#if 1				
+#if 0				
 				string strR=calcRingInvariant(r);			
 				char sz2[100]={0};	
 				sprintf(sz2,"//R16_%d×R2_%d",i,j);			
@@ -6904,7 +6904,7 @@ int main(int argc, char* argv[])
 { 	
 	// 将环表示数据配置到文件中，精简代码
 	int ret=LoadData("RingData.csv");
-	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());		
+	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());	
 #ifdef TRD	
 	return testRingData(argc,argv);	
 #endif	
