@@ -6672,7 +6672,7 @@ IRing* newR8R4(int ij)
 
 set<string> gS;
 set<std::pair<int,int>> gM;
-void FindMnr(IRing* r,int n,int m)
+void FindMnr(IRing* r,int n,int m,int n0)
 {	
 	for(int i=g_i;i<m;i++)		
 	for(int j=i+1;j<m;j++){	
@@ -6682,7 +6682,7 @@ void FindMnr(IRing* r,int n,int m)
 		S.push_back(vi);
 		S.push_back(vj);
 		Mnr R;
-		bool b=R.init(r,n,S,32);	
+		bool b=R.init(r,n,S,n0);	
 		if(!b)
 			continue;
 		int ni=R.size();
@@ -6725,7 +6725,17 @@ int Mrijk(int argc, char* argv[])
 	if(argc>4)
 		g_i=atoi(argv[4]);
 	if(argc>5)
-		ijk=atoi(argv[5]);		
+		ijk=atoi(argv[5]);	
+	int n0=16;
+	if(argc>6){
+		int _n0=atoi(argv[6]);	
+		if(_n0==27)
+			n0=27;
+		else if(_n0==81)
+			n0=81;		
+		else
+			n0=32;		
+	}	
 	IRing* r=NULL;	
 	if(n1==4 && n2<=11){	
 		r=newR4(n2);
@@ -6750,7 +6760,7 @@ int Mrijk(int argc, char* argv[])
 	}	
 	if(n>2||n==1){
 		if(n>2 && r->size()>4||(n>3 &&r->size()==4)){
-			FindMnr(r,n,ijk);
+			FindMnr(r,n,ijk,n0);
 			/*
 			Mnr R16;
 			MATRIXi8 A=Mnr::getMATRIXi8(n,r->size(),g_i);
@@ -6788,7 +6798,7 @@ int Mrijk(int argc, char* argv[])
 		}	
 		typedef void(*pF)(IRing *r,int n);
 		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4};
-		Func[fun](R,32);
+		Func[fun](R,n0);
 		delete R;
 		R=NULL;
 	}else{
@@ -6803,7 +6813,7 @@ int Mrijk(int argc, char* argv[])
 		}		
 		typedef void(*pF)(IRing *r,int n);
 		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4};
-		Func[fun](R,81);	
+		Func[fun](R,n0);	
 		delete R;
 		R=NULL;		
 	}
