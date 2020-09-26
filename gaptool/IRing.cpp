@@ -6069,7 +6069,8 @@ void findsubring1(IRing *r,int n)
 	//srand(time(NULL));
 	//g_i=rand()%r->size();
 	//printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
-	for(int i=g_i;i<r->size();i++)			
+	int i0=(g_i<=0?1:g_i);
+	for(int i=i0;i<r->size();i++)			
 	{
 		vector<int> v;
 		v.push_back(i);				
