@@ -6859,7 +6859,7 @@ int testR16R2(){
 		   if(r){
 				int ID=IdRing(r);
 				printf("R16_%d¡ÁR2_%d=R32_%d\n",i,j,ID);							   
-#if 0				
+#if 1				
 				string strR=calcRingInvariant(r);			
 				char sz2[100]={0};	
 				sprintf(sz2,"//R16_%d¡ÁR2_%d",i,j);			
