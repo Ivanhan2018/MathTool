@@ -5058,7 +5058,7 @@ public:
    static vector<MATRIXi> FR(IRing* r,vector<MATRIXi>& gen); 
    static MATRIXi add(IRing* r,const MATRIXi &t,const MATRIXi &m);  
    static MATRIXi mul(IRing* r,const MATRIXi &t,const MATRIXi &m);
-   static string MStr(const MATRIXi &t);   
+   static string MStr(const MATRIXi &t,const char* szL="[",const char* szR="]");   
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -5358,12 +5358,12 @@ vector<MATRIXi> M2r::FR(IRing* r,vector<MATRIXi>& gen){
     return Set;	
 }
 
-string M2r::MStr(const MATRIXi &t){
-	string str="[";
+string M2r::MStr(const MATRIXi &t,const char* szL,const char* szR){
+	string str=szL;
 	int n=t.size();
 	for(int i=0;i<n;i++)
 	{
-        str+="[";
+        str+=szL;
 		for(int j=0;j<n;j++)
 		{
 			char sz[20]={0};
@@ -5372,11 +5372,11 @@ string M2r::MStr(const MATRIXi &t){
 			if(j<n-1)
 				str+=",";
 		}
-		str+="]";
+		str+=szR;
 		if(i<n-1)
 			str+=",";
 	}
-	str+="]";
+	str+=szR;
 	return str;
 }
 
@@ -5524,7 +5524,7 @@ public:
    static vector<MATRIXi8> FR(IRing* r,vector<MATRIXi8>& gen); 
    static MATRIXi8 add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m);  
    static MATRIXi8 mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m); 
-   static string MStr(const MATRIXi8 &t);   
+   static string MStr(const MATRIXi8 &t,const char* szL="[",const char* szR="]");   
    static MATRIXi8 getMATRIXi8(int n,int m,int idx);    
 public:
 	// 实现抽象基类的方法
@@ -5739,12 +5739,12 @@ Mnr::Mnr(IRing* r,int n,vector<MATRIXi8>& gen){
 	m_Set=FR(r,gen);
 }
 
-string Mnr::MStr(const MATRIXi8 &t){
-	string str="[";
+string Mnr::MStr(const MATRIXi8 &t,const char* szL,const char* szR){
+	string str=szL;
 	int n=t.size();
 	for(int i=0;i<n;i++)
 	{
-        str+="[";
+        str+=szL;
 		for(int j=0;j<n;j++)
 		{
 			char sz[20]={0};
@@ -5753,11 +5753,11 @@ string Mnr::MStr(const MATRIXi8 &t){
 			if(j<n-1)
 				str+=",";
 		}
-		str+="]";
+		str+=szR;
 		if(i<n-1)
 			str+=",";
 	}
-	str+="]";
+	str+=szR;
 	return str;
 }
 
@@ -6051,12 +6051,19 @@ string calcI2a(IRing* r){
 
 string IMStr(IRing *r,int i)
 {
+#ifdef USE_BLACKET
+	const char* szL="[";
+	const char* szR="]";
+#else
+	const char* szL="";
+	const char* szR="";	
+#endif	
 	M2r *r1=dynamic_cast<M2r *>(r);
 	if(r1)
-		return M2r::MStr(r1->m_Set[i]);
+		return M2r::MStr(r1->m_Set[i],szL,szR);
 	Mnr *r2=dynamic_cast<Mnr *>(r);
 	if(r2)
-		return Mnr::MStr(r2->m_Set[i]);
+		return Mnr::MStr(r2->m_Set[i],szL,szR);
 	return "";
 }
 
@@ -6141,8 +6148,8 @@ void findsubring2(IRing *r,int n)
 		int cnt1=M.size();
 		if(cnt1>cnt){
 			string str=IMStr(r,i);
-			string strj=IMStr(r,j);				
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s,%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
+			string strj=IMStr(r,j);			
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s;%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
             if((ni==32||ni==81||ni==64) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
@@ -6212,7 +6219,7 @@ void findsubring3(IRing *r,int n)
 			string str=IMStr(r,i);
 			string strj=IMStr(r,j);
 			string strk=IMStr(r,k);				
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d=>%s,%s,%s\n",cnt1,ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());			
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d=>%s;%s;%s\n",cnt1,ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());			
             if((ni==32||ni==81||ni==64) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
@@ -6287,7 +6294,7 @@ void findsubring4(IRing *r,int n)
 			string str=IMStr(r,i);
 			string strj=IMStr(r,j);
 			string strk=IMStr(r,k);		
-			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s,%s,%s,%s\n",cnt1,ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
+			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s\n",cnt1,ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
 #endif
             if((ni==32||ni==81||ni==64) && ID>0){
 				char sz1[128]={0};   
