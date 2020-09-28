@@ -128,7 +128,30 @@ IRing* newRpppp(int ID,int p){
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;			
-	}	
+	}
+	if(pItem && pItem->m_n1==1 && pItem->m_n2==4){
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p*p);
+		r->m_n=pItem->m_n0; 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+					if(A[j][k]==2)
+						A[j][k]=p;
+					else if(A[j][k]==3)
+						A[j][k]=1;
+				}
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
+	}		
 	return NULL;	
 }
 
