@@ -6699,9 +6699,9 @@ void FindMnr(IRing* r,int n,int m,int n0)
 		gM.insert(make_pair(ni,ID));
 		int cnt1=gM.size();
 		if(cnt1>cnt){
-				string str=Mnr::MStr(vi);
-				string strj=Mnr::MStr(vj);			   
-				printf("R%d_%d->i=%d,j=%d=>%s,%s\n",ni,ID,i,j,str.c_str(),strj.c_str());
+				string str=Mnr::MStr(vi,"","");
+				string strj=Mnr::MStr(vj,"","");			   
+				printf("R%d_%d->i=%d,j=%d=>%s;%s\n",ni,ID,i,j,str.c_str(),strj.c_str());
 				if((ni==32||ni==81||ni==64) && ID>0){
 					char sz1[128]={0};   
 					sprintf(sz1,"R%d_%d.txt",ni,ID);
