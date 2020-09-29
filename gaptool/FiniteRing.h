@@ -1087,12 +1087,19 @@ IRing* newR8R8(int ij)
 
 string IMStr(IRing *r,int i)
 {
+#ifdef USE_BLACKET
+	const char* szL="[";
+	const char* szR="]";
+#else
+	const char* szL="";
+	const char* szR="";	
+#endif	
 	M2r *r1=dynamic_cast<M2r *>(r);
 	if(r1)
-		return M2r::MStr(r1->m_Set[i]);
+		return M2r::MStr(r1->m_Set[i],szL,szR);
 	Mnr *r2=dynamic_cast<Mnr *>(r);
 	if(r2)
-		return Mnr::MStr(r2->m_Set[i]);
+		return Mnr::MStr(r2->m_Set[i],szL,szR);
 	return "";
 }
 
@@ -1167,7 +1174,7 @@ void findsubring2(IRing *r,int n)
 {
 #define PRINT_LOG 0	
 	bool bFind=false;	
-	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
+	int ID=0;//(r->size()>32 && r->size()!=81)?0:IdRing(r);
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -1191,12 +1198,11 @@ void findsubring2(IRing *r,int n)
 		vector<int> v;
 		v.push_back(i);		
 		v.push_back(j);
-		Subring S1i;
+		Subring S1i;		
 		bool bn=S1i.init(r,v,n);
 		if(!bn)
 			continue;
-		//Subring S1i(r,v);
-		int ni=S1i.size();
+		int ni=S1i.size();	
 #ifdef QF
 		if(ni<16)
 			continue;
@@ -1208,7 +1214,7 @@ void findsubring2(IRing *r,int n)
 		if(cnt1>cnt){
 			string str=IMStr(r,i);
 			string strj=IMStr(r,j);				
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s,%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s;%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
             if((ni==32||ni==81) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
@@ -1285,7 +1291,7 @@ void findsubring3(IRing *r,int n)
 			string str=IMStr(r,i);
 			string strj=IMStr(r,j);
 			string strk=IMStr(r,k);				
-			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d=>%s,%s,%s\n",cnt1,ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());			
+			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d=>%s;%s;%s\n",cnt1,ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());			
             if((ni==32||ni==81) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
@@ -1367,7 +1373,7 @@ void findsubring4(IRing *r,int n)
 			string str=IMStr(r,i);
 			string strj=IMStr(r,j);
 			string strk=IMStr(r,k);		
-			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s,%s,%s,%s\n",cnt1,ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
+			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s\n",cnt1,ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
 #endif
             if((ni==32||ni==81) && ID>0){
 				char sz1[128]={0};   
