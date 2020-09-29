@@ -24,7 +24,7 @@ public:
 	static vector<MATRIXi> FR(IRing* r,vector<MATRIXi>& gen); 
 	static MATRIXi add(IRing* r,const MATRIXi &t,const MATRIXi &m);  
 	static MATRIXi mul(IRing* r,const MATRIXi &t,const MATRIXi &m);
-	static string MStr(const MATRIXi &t);   
+	static string MStr(const MATRIXi &t,const char* szL="[",const char* szR="]");   
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -731,12 +731,12 @@ vector<MATRIXi> M2r::FR(IRing* r,vector<MATRIXi>& gen){
     return Set;	
 }
 
-string M2r::MStr(const MATRIXi &t){
-	string str="[";
+string M2r::MStr(const MATRIXi &t,const char* szL,const char* szR){
+	string str=szL;
 	int n=t.size();
 	for(int i=0;i<n;i++)
 	{
-        str+="[";
+        str+=szL;
 		for(int j=0;j<n;j++)
 		{
 			char sz[20]={0};
@@ -745,11 +745,11 @@ string M2r::MStr(const MATRIXi &t){
 			if(j<n-1)
 				str+=",";
 		}
-		str+="]";
+		str+=szR;
 		if(i<n-1)
 			str+=",";
 	}
-	str+="]";
+	str+=szR;
 	return str;
 }
 

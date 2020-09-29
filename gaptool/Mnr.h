@@ -22,7 +22,7 @@ public:
    static vector<MATRIXi8> FR(IRing* r,vector<MATRIXi8>& gen); 
    static MATRIXi8 add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m);  
    static MATRIXi8 mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m); 
-   static string MStr(const MATRIXi8 &t);   
+   static string MStr(const MATRIXi8 &t,const char* szL="[",const char* szR="]");   
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -248,12 +248,12 @@ Mnr::Mnr(IRing* r,int n,vector<MATRIXi8>& gen){
 	m_Set=FR(r,gen);
 }
 
-string Mnr::MStr(const MATRIXi8 &t){
-	string str="[";
+string Mnr::MStr(const MATRIXi8 &t,const char* szL,const char* szR){
+	string str=szL;
 	int n=t.size();
 	for(int i=0;i<n;i++)
 	{
-        str+="[";
+        str+=szL;
 		for(int j=0;j<n;j++)
 		{
 			char sz[20]={0};
@@ -262,11 +262,11 @@ string Mnr::MStr(const MATRIXi8 &t){
 			if(j<n-1)
 				str+=",";
 		}
-		str+="]";
+		str+=szR;
 		if(i<n-1)
 			str+=",";
 	}
-	str+="]";
+	str+=szR;
 	return str;
 }
 
