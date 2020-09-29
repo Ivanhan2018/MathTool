@@ -1,4 +1,16 @@
+#define PARSE_RING_FILE
 #include"FiniteRing.h"
+
+IRing* newR27(int i){
+#ifdef PARSE_RING_FILE	
+	char sz[100]={0};
+	sprintf(sz,"R27_%d.txt",i);
+	FiniteRing* r=newRing(sz);
+	return r;	
+#endif
+	return NULL;
+}
+
 
 #ifndef Rn_H
 int g_M2Add[2][2]={
@@ -444,9 +456,51 @@ if(flag==0){
    return 0;
 }
 
+int test3()
+{
+   set<int> vID;
+   int cnt=0;
+	for(int i=1;i<=11;i++){
+		IRing* ri=newR4(i,3);
+		int IDi=IdRing(ri);
+		for(int j=i;j<=11;j++){
+			IRing* rj=newR4(j,3);
+			int IDj=IdRing(rj);			
+			DecompositionRing* r= new DecompositionRing(ri,rj);
+			r->m_flag=1;
+			int ID=IdRing(r);
+			vID.insert(ID);
+			printf("R9_%d×R9_%d=R81_%d\n",IDi,IDj,ID);
+			//delete r;
+			//r=NULL;
+		}
+	}
+    for(int i=1;i<=59;i++){
+		IRing* ri=newR27(i);
+		if(!ri)continue;
+		for(int j=1;j<=2;j++){		
+			IRing* rj=newR2(j,3);
+			DecompositionRing* r= new DecompositionRing(ri,rj);
+			r->m_flag=1;
+			int ID=IdRing(r);
+			vID.insert(ID);
+			printf("R27_%d×R3_%d=R81_%d\n",i,j,ID);
+			//delete r;
+			//r=NULL;
+		}
+	}
+	
+    printf("%d种81阶可分解环\n",vID.size());
+	for(auto it=vID.begin();it!=vID.end();it++){
+		printf("%d,",*it);
+	}
+	printf("\n");   
+   return 0;
+}
+
 int g_i=1;
 int g_a=572;
-void testR8R4(int func)
+int testR8R4(int func)
 {
    //R8R4:1~572
    //R8R8:1~2400,2570~2704
@@ -462,13 +516,14 @@ void testR8R4(int func)
 			   findsubring2(r,16);		   
 		   else
 			   findsubring3(r,16);
-		   delete r;
-		   r=NULL;
+		   //delete r;
+		   //r=NULL;
 	   }	   
-   }	
+   }
+	return 0;   
 }
 
-void testR8R8(int func)
+int testR8R8(int func)
 {
    //R8R4:1~572
    //R8R8:1~2400,2570~2704
@@ -484,28 +539,30 @@ void testR8R8(int func)
 			   findsubring2(r,16);		   
 		   else
 			   findsubring3(r,16);
-		   delete r;
-		   r=NULL;
+		   //delete r;
+		   //r=NULL;
 	   }	   
-   }	
+   }
+	return 0;   
 }
 
-void testR4R4()
+int testR9R9()
 {
    for(int i=g_i;i<=g_a;i++)//1~121
    {
-	   IRing* r=newR4R4(i);
+	   IRing* r=newR4R4(i,3);
 	   if(r){
-		   printf("R4R4_%d\n",i);
+		   printf("R9R9_%d\n",i);
 		   //findsubring(r,8);
-		   findquotientring(r,8);
-		   delete r;
-		   r=NULL;
+		   findquotientring(r,27);
+		   //delete r;
+		   //r=NULL;
 	   }	   
-   }	
+   }
+	return 0;   
 }
 
-void testM2R4(int i)
+int testM2R4(int i)
 {
    //for(int i=1;i<=11;i++)//1~121
    {
@@ -519,6 +576,7 @@ void testM2R4(int i)
 		   r=NULL;
 	   }	   
    }	
+   return 0;
 }
 
 int R8_iR8_j(int argc, char* argv[])
@@ -592,9 +650,9 @@ int main(int argc, char* argv[])
 	   g_a=atoi(argv[2]);   
    if(argc>3)
 	   g_func=atoi(argv[3]); */
-	return R16_iR4_j(argc,argv);
-   //test2();
-   //testR8R4(g_func);
+	//return R16_iR4_j(argc,argv);
+	//return test3();
+	return testR8R8(g_func);
     /*for(int i=1;i<=52;i++){
 		IRing* r=newR8(i);
 		int ID=IdRing(r);

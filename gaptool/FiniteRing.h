@@ -314,16 +314,16 @@ FiniteRing* newRing(const char* szFileName){
 
 #endif
 
-IRing* newR2(int i)
+IRing* newR2(int i,int p=2)
 {
 	if(i==1)
 	{
-		ZmodnZ* r=new ZmodnZ(2,4);
+		ZmodnZ* r=new ZmodnZ(p,p*p);
 		return r;
 	}
 	if(i==2)
 	{
-		ZmodnZ* r=new ZmodnZ(1,2);
+		ZmodnZ* r=new ZmodnZ(1,p);
 		return r;
 	}
 	return NULL;
@@ -1036,14 +1036,14 @@ IRing* newR8R2(int ij)
 	return r;
 }
 
-IRing* newR4R4(int ij)
+IRing* newR4R4(int ij,int p=2)
 {
 	int i=(ij-1)%11+1;
 	int j=(ij-1)/11+1;
 	if(i>j)
 		return NULL;
-    IRing* ri=newR4(i);
-    IRing* rj=newR4(j);
+    IRing* ri=newR4(i,p);
+    IRing* rj=newR4(j,p);
 	DecompositionRing* r= new DecompositionRing(ri,rj);
 	r->m_flag=1;
 	return r;

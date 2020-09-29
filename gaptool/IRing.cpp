@@ -6718,6 +6718,48 @@ void FindMnr(IRing* r,int n,int m,int n0)
 	}
 }
 
+void FindMnr3(IRing* r,int n,int m,int n0)
+{	
+	for(int i=g_i;i<m;i++)		
+	for(int j=i+1;j<m;j++)	
+	for(int k=j+1;k<m;k++){	
+		vector<MATRIXi8> S;
+		MATRIXi8 vi=Mnr::getMATRIXi8(n,r->size(),i);
+		MATRIXi8 vj=Mnr::getMATRIXi8(n,r->size(),j);	
+		MATRIXi8 vk=Mnr::getMATRIXi8(n,r->size(),k);		
+		S.push_back(vi);
+		S.push_back(vj);
+		S.push_back(vk);		
+		Mnr R;
+		bool b=R.init(r,n,S,n0);	
+		if(!b)
+			continue;
+		int ni=R.size();
+		int ID=IdRing(&R);
+		int cnt=gM.size();
+		gM.insert(make_pair(ni,ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+				string str=Mnr::MStr(vi,"","");
+				string strj=Mnr::MStr(vj,"","");
+				string strk=Mnr::MStr(vk,"","");				
+				printf("R%d_%d->i=%d,j=%d,k=%d=>%s;%s;%s\n",ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());
+				if((ni==32||ni==81||ni==64) && ID>0){
+					char sz1[128]={0};   
+					sprintf(sz1,"R%d_%d.txt",ni,ID);
+					writeTable(&R,sz1);                  
+				}
+		}
+		if(ID==-1){		
+			string strR=calcRingInvariant(&R);
+			if(gS.find(strR)==gS.end()){			
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());		
+			}
+			gS.insert(strR);
+		}
+	}
+}
+
 int Mrijk(int argc, char* argv[])
 { 
     int n=2;
@@ -6740,7 +6782,9 @@ int Mrijk(int argc, char* argv[])
 		if(_n0==27)
 			n0=27;
 		else if(_n0==81)
-			n0=81;		
+			n0=81;
+		else if(_n0==16)
+			n0=16;		
 		else
 			n0=32;		
 	}	
@@ -6768,7 +6812,10 @@ int Mrijk(int argc, char* argv[])
 	}	
 	if(n>2||n==1){
 		if(n>2 && r->size()>4||(n>3 &&r->size()==4)){
-			FindMnr(r,n,ijk,n0);
+			if(argc>6 && n0==16)
+				FindMnr3(r,n,ijk,n0);
+			else
+				FindMnr(r,n,ijk,n0);				
 			/*
 			Mnr R16;
 			MATRIXi8 A=Mnr::getMATRIXi8(n,r->size(),g_i);
