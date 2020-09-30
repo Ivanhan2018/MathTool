@@ -6812,7 +6812,7 @@ int Mrijk(int argc, char* argv[])
 	}	
 	if(n>2||n==1){
 		if(n>2 && r->size()>4||(n>3 &&r->size()==4)){
-			if(argc>6 && n0==16)
+			if((argc>6 && n0==16)||argc>7)
 				FindMnr3(r,n,ijk,n0);
 			else
 				FindMnr(r,n,ijk,n0);				
@@ -7010,7 +7010,7 @@ int main(int argc, char* argv[])
 { 	
 	// 将环表示数据配置到文件中，精简代码
 	int ret=LoadData("RingData.csv");
-	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());	
+	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());
 #ifdef TRD	
 	return testRingData(argc,argv);	
 #endif	

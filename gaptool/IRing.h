@@ -4879,7 +4879,7 @@ int IdRing(IRing* r){
 	   return vID02[0];
    }   
 #ifdef R16_I1I2
-   if(r->size()==16||r->size()==27){
+   if(r->size()==16){
 		string strI1I2=calcI1(r)+","+calcI2(r);
 		vector<string> vI1I2=idHelper.I1I2FromID(vID[0]);
 		vector<string>::iterator p=std::find(vI1I2.begin(),vI1I2.end(),strI1I2);
