@@ -6968,9 +6968,11 @@ int testRingData(int argc, char* argv[]){
 			writeTable(r,sz1);
 			printf("\nĞ´ÈëÎÄ¼ş%s\n",sz1);			
 		}			
-		if(in<=32 && iID<=0){
+		if(in<=32 && iID<=0||str.substr(0,1)=="r"){
 			string strR=calcRingInvariant(r);
 			printf(":N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s",strR.c_str());
+			int rk=Rank(r);
+			printf("\nr=%d",rk);			
 			string I1=calcI1(r);
 			string I2=calcI2(r);			
 			printf("\nI1I2=%s,%s",I1.c_str(),I2.c_str());				

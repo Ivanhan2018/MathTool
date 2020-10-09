@@ -656,6 +656,52 @@ string calcI4(IRing* r){
 	return str;
 }
 
+int Rank(IRing* r){
+	int n=r->size();
+	if(n<4)
+		return 1;	
+	for(int i=1;i<n;i++){
+	   vector<int> vi;
+	   vi.push_back(i);	   
+	   Subring si(r,vi);
+	   si.m_flag=0;
+	   int ni=si.size();
+	   if(ni==n){
+			return 1;
+	   }
+   }
+	for(int i=1;i<n-1;i++){
+		for(int j=i+1;j<n;j++){		
+		   vector<int> vi;
+		   vi.push_back(i);	
+		   vi.push_back(j);	   
+		   Subring si(r,vi);
+		   si.m_flag=0;
+		   int ni=si.size();
+		   if(ni==n){
+				return 2;
+		   }
+	   }  
+	}
+	for(int i=1;i<n-2;i++){
+		for(int j=i+1;j<n-1;j++){	
+			for(int k=j+1;k<n;k++){		
+			   vector<int> vi;
+			   vi.push_back(i);	
+			   vi.push_back(j);
+			   vi.push_back(k);		   
+			   Subring si(r,vi);
+			   si.m_flag=0;
+			   int ni=si.size();
+			   if(ni==n){
+					return 3;
+			   }
+		   } 
+		}
+	}
+	return 4;//rank>=4  
+}
+
 int ZeroNum(IRing* r){
     int n=r->size();
 	int iRet=0;
@@ -852,12 +898,15 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表	
+	map<pair<int,int>,int> m_Rank;//有限环的秩	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
+	int LoadRank(char * pszFilePath,int n);
 	vector<int> IDFromRingInvariant(string& RingInvariant);	
 	vector<int> IDFromI1I2(string& I1I2);	
-	vector<string> I1I2FromID(int ID);	
-	vector<int> IDFromN0n0bAbO(string& N0n0bAbO);	
+	vector<string> I1I2FromID(int ID);			
+	vector<int> IDFromN0n0bAbO(string& N0n0bAbO);
+	int RankFromID(int n,int ID);	
 };
 
 int RIDHelper::LoadData(char * pszFilePath,int idx){
@@ -882,6 +931,31 @@ int RIDHelper::LoadData(char * pszFilePath,int idx){
 	fclose(fp);
 	return 0;//0成功
 }
+
+int RIDHelper::LoadRank(char * pszFilePath,int n){
+	FILE * fp =fopen(pszFilePath, "r");
+	if( fp == NULL )
+		return 1;//1打开文件失败
+
+	char sz[400] = {0};
+	pair<pair<int,int>,int> item;
+	int n0 = 0;
+	n0 = fscanf(fp, "%s", sz);
+	map<pair<int,int>,int> *p=&m_Rank;
+	while( n0 > 0 && !feof(fp) )
+	{
+        int id=0;
+		n0 = fscanf(fp, "%d,%d\n",&id,&item.second);
+		if( n0 > 0 )
+		{
+			item.first = make_pair(n,id);
+			(*p).insert(item);
+		}
+	}
+	fclose(fp);
+	return 0;//0成功
+}
+
 
 RIDHelper::RIDHelper(){
 	// N0,【n0,bA,bO,n1,n2,n4,n5,n6,n7】,n8,S1,N2
@@ -4761,7 +4835,12 @@ RIDHelper::RIDHelper(){
 	int cnt2=m_I1I2.size();	
 	int iret1=LoadData("I1I2.csv",1);	
 	int cnt3=m_I1I2.size();
-    printf("iret1=%d,%d-%d=%d\n",iret1,cnt3,cnt2,cnt3-cnt2);	
+    printf("iret1=%d,%d-%d=%d\n",iret1,cnt3,cnt2,cnt3-cnt2);
+	iret=LoadRank("RankR16.csv",16);	
+	iret=LoadRank("RankR27.csv",27);
+	iret=LoadRank("RankR81.csv",81);
+	int rcnt=m_Rank.size();	
+    printf("rcnt=%d\n",rcnt);	
 }
 
 RIDHelper::~RIDHelper(){
@@ -4806,6 +4885,15 @@ vector<string> RIDHelper::I1I2FromID(int ID){
 			v.push_back(it->first);
 	}
     return v;	
+}
+
+int RIDHelper::RankFromID(int n,int ID){
+	std::map<pair<int,int>,int>::iterator it;
+	it=m_Rank.find(make_pair(n,ID));
+	if(it!=m_Rank.end()){
+		return it->second;
+	}
+	return 0;
 }
 
 vector<int> RIDHelper::IDFromN0n0bAbO(string& N0n0bAbO){
@@ -4887,6 +4975,13 @@ int IdRing(IRing* r){
 			printf("出错了，环不变量数据RingInvariant=%s,I1I2=%s与ID=%d不匹配！\n",strRingInvariant.c_str(),strI1I2.c_str(),vID[0]);
 		}
    }
+   if(r->size()==16||r->size()==27||r->size()==81){
+		int rk=Rank(r);
+		int rk0=idHelper.RankFromID(r->size(),vID[0]);
+		if(rk0>0 && rk0!=rk){
+			printf("出错了，环的秩rk=%d与ID=%d,rk0=%d不匹配！\n",rk,vID[0],rk0);
+		}
+   }   
 #endif   
    return vID[0];
 }
