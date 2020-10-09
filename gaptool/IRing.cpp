@@ -6975,7 +6975,7 @@ int testRingData(int argc, char* argv[]){
 			printf("\nr=%d",rk);			
 			string I1=calcI1(r);
 			string I2=calcI2(r);			
-			printf("\nI1I2=%s,%s",I1.c_str(),I2.c_str());				
+			printf("\nI1I2=%s,%s\n",I1.c_str(),I2.c_str());
 		}
 		if(in>=32 && in<=256){
 			int fun=1;
