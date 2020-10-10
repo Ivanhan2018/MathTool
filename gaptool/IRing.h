@@ -66,7 +66,8 @@ public:
 };
 
 Subring::Subring(){
-	
+	m_r=NULL;
+	m_flag=0;
 }
 
 bool Subring::init(IRing* r,const vector<int>& gens,int N){

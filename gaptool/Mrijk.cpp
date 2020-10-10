@@ -3648,6 +3648,44 @@ string MnStr(const MATRIXi8 &t){
 	return str;
 }
 
+bool testQR(IRing *r,int n,vector<int>& v){		
+	Subring S1i0;
+	bool bn=S1i0.init(r,v,n);
+	if(!bn)
+		return false;
+	if(S1i0.m_Set.size()==1||S1i0.m_Set.size()==r->size())
+		return false;
+	vector<int> v0=v;
+	v=S1i0.m_Set;		
+	int IDr0=IdRing(&S1i0);		
+	int iret1=IsIdeal(r,v);
+	int IDr=(r->size()>32 && r->size()!=81 && r->size()!=64 && r->size()!=243)?0:IdRing(r);
+	printf("r=R%d_%d,s=R%d_%d%s\n",r->size(),IDr,S1i0.size(),IDr0,IsIdealRetInfo(iret1));	
+	if(iret1!=1)
+		return false;
+	quotientRing S1i(r,v);
+	bool b=IsRing(&S1i);
+	if(!b){
+		return false;
+	}	
+	int ni=S1i.size();	
+	int ID=IdRing(&S1i);		
+	printf("R%d_%d/R%d_%d=R%d_%d\n",r->size(),IDr,S1i0.size(),IDr0,ni,ID);			
+	if(ni==n && ID==-1||(ni==81 && ID>0)){
+		if(n<32)printRing0(&S1i,ID);
+		if(n==81 && ID>0){
+			char sz[100]="0";
+			sprintf(sz,"R%d_%d.txt",ni,ID);	
+			writeTable(&S1i,sz);
+		}
+	}					
+	if(ni==n && ID==-1){		
+		string strR=calcRingInvariant(&S1i);			
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+	}
+	return true;
+}
+
 int main(int argc, char* argv[])
 { 
     int n=2;
@@ -3706,11 +3744,23 @@ int main(int argc, char* argv[])
 		printf("mstr=%s\n",mstr.c_str());		
 	}
 	int fun=1;
+	string vstr="";
+	vector<int> vi;	
 	if(argc>5){
-		fun=atoi(argv[5]);
-		if(fun<0||fun>5){
-			fun=0;
-		}	
+		vstr=argv[5];
+		if(vstr.substr(0,1)=="q"){
+			vstr=vstr.substr(1,vstr.size()-1);
+			vector<string> vs=split(vstr,",");
+			for(int i=0;i<vs.size();i++){
+				vi.push_back(atoi(vs[i].c_str()));
+			}
+			fun=-1;
+		}else{
+			fun=atoi(argv[5]);
+			if(fun<0||fun>5){
+				fun=0;
+			}
+		}		
 	}
 	//int n0=argc>6?32:16;   
     int n0=16;
@@ -3742,7 +3792,12 @@ int main(int argc, char* argv[])
         R->m_r=r;		
 		R->m_Set=Mnr::FR(r,gen); 		
 		R->m_flag=1;
-		Func[fun](R,n0);		
+		if(fun>-1)
+			Func[fun](R,n0);
+		else
+		{
+			testQR(R,n0,vi);
+		}	
 		delete R;
 		R=NULL;
 	}else{
@@ -3761,7 +3816,12 @@ int main(int argc, char* argv[])
         R->m_r=r;		
 		R->m_Set=M2r::FR(r,gen); 		
 		R->m_flag=1;
-		Func[fun](R,n0);		
+		if(fun>-1)
+			Func[fun](R,n0);
+		else
+		{
+			testQR(R,n0,vi);
+		}		
 		delete R;
 		R=NULL;		
 	}
