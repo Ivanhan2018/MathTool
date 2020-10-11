@@ -1,7 +1,6 @@
+#include"IRing.h"
 #ifndef QUOTIENTRING_H
 #define QUOTIENTRING_H
-
-#include"IRing.h"
 
 // …Ãª∑R/I
 struct quotientRing:public IRing

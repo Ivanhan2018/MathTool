@@ -933,6 +933,189 @@ vector<int> Center(IRing* r){
 	return ret;
 }
 
+#ifndef QUOTIENTRING_H
+#define QUOTIENTRING_H
+
+// 商环R/I
+struct quotientRing:public IRing
+{
+public:
+	//  静态函数  
+	static vector<vector<int> > quotientGN(const vector<vector<int> > &vvG,const vector<int> &vN);
+	static vector<vector<int> > quotientTable(const vector<vector<int> > &vvG,const vector<vector<int> > &vvH,const vector<int> &vN);
+public:
+	// 实现抽象基类的方法
+	virtual void printTable();
+	virtual int add(int a,int b);
+	virtual int mul(int a,int b);
+	virtual int size(); 
+	// 构造函数
+	quotientRing();
+	quotientRing(IRing *r1,vector<int> &I);
+	// 析构函数
+	~quotientRing();
+	// 成员函数 
+	template<class T> vector<vector<int> > getTable(T *obp,int n,int(T::*p)(int,int));	
+	// 成员变量  
+	IRing *m_r1;
+	vector<int> m_I;	
+	vector<vector<int> > m_Add;
+	vector<vector<int> > m_Mul;
+	int m_flag;// quotientRing对象析构时是否释放m_r1指向的内存
+};
+
+quotientRing::quotientRing(){
+	m_r1=NULL;
+	m_flag=0;	
+}
+
+quotientRing::quotientRing(IRing *r1,vector<int> &I)
+{
+    m_r1=r1;
+	m_I=I;
+	vector<vector<int> > Add1=getTable(r1,r1->size(),&IRing::add);
+	vector<vector<int> > H=quotientGN(Add1,I);
+	m_Add=quotientTable(Add1,H,I);
+	vector<vector<int> > Mul1=getTable(r1,r1->size(),&IRing::mul);
+	m_Mul=quotientTable(Mul1,H,I);
+}
+
+quotientRing::~quotientRing(){
+	if(m_flag==1 && m_r1!=NULL){
+		delete m_r1;
+		m_r1=NULL;
+	}
+}
+
+template<class T>
+vector<vector<int> > quotientRing::getTable(T *obp,int n,int(T::*p)(int,int))
+{
+	vector<vector<int> > vv(n,vector<int>(n));
+	for(int i=0;i<n;i++)
+		for(int j=0;j<n;j++)
+		{
+			vv[i][j]=(obp->*p)(i,j);	
+		}
+	return vv;
+}
+
+vector<vector<int> > quotientRing::quotientGN(const vector<vector<int> > &vvG,const vector<int> &vN)
+{
+	vector<vector<int> > ret;
+	int G=vvG.size();
+	int N=vN.size();
+	for(int i=0;i<G;i++)
+	{
+		vector<int> I;
+		for(int j=0;j<N;j++)
+		{
+			int ij=vvG[i][vN[j]];
+			I.push_back(ij);
+		}
+		bool bNew=true;
+		for(int k=0;k<ret.size();k++)
+		{
+			//判断I中的元素是否在ret中
+			vector<int>::iterator p;
+			p=std::find(ret[k].begin(),ret[k].end(),I[0]);
+			if(p!=ret[k].end())
+			{
+				bNew=false;
+				break;
+			}
+		}
+		if(bNew)
+		{
+			ret.push_back(I);
+		}
+	}
+	return ret;
+}
+
+vector<vector<int> > quotientRing::quotientTable(const vector<vector<int> > &vvG,const vector<vector<int> > &vvH,const vector<int> &vN)
+{
+	int G=vvG.size();
+	int H=vvH.size();
+	vector<vector<int> > ret(H);
+	for(int i=0;i<H;i++)
+	{
+		vector<int> I(H);
+		for(int j=0;j<H;j++)
+		{
+			int ij=vvG[vvH[i][0]][vvH[j][0]];
+			int IJ=-1;
+			for(int k=0;k<H;k++)
+			{
+				vector<int>::const_iterator p;
+				p=std::find(vvH[k].begin(),vvH[k].end(),ij);
+				if(p!=vvH[k].end())
+				{
+					IJ=k;
+					break;
+				}
+			}
+			I[j]=IJ;
+		}
+		ret[i]=I;
+	}
+	return ret;
+}
+
+void quotientRing::printTable()
+{
+	printRing(this);
+}
+
+int quotientRing::add(int a,int b)
+{
+	return m_Add[a][b];
+}
+
+int quotientRing::mul(int a,int b)
+{
+	return m_Mul[a][b];	
+}
+
+int quotientRing::size()
+{
+	return m_Add.size();
+}
+
+#endif
+
+//b8N8N9
+string calcb8N8N9(IRing* r){
+	int IdRing(IRing* r);				
+	vector<int> ZA=Center(r);
+	int b8=IsIdeal(r,ZA);
+	char szN8[1024]={0};			
+	Subring N8(r,ZA); 	
+	if(b8==1){
+		quotientRing rmodN8(r,ZA);
+		if(N8.size()==1||N8.size()==r->size())				
+			sprintf(szN8,"[%d,%d]",N8.size(),rmodN8.size());
+		else
+			sprintf(szN8,"[R%d_%d,R%d_%d]",N8.size(),IdRing(&N8),rmodN8.size(),IdRing(&rmodN8));
+	}else{
+		if(N8.size()==1||N8.size()==r->size())	
+			sprintf(szN8,"[%d]",N8.size());	
+		else
+			sprintf(szN8,"[R%d_%d]",N8.size(),IdRing(&N8));	
+	}			
+	vector<int> vN9=calN9(r);   		
+	Subring N9(r,vN9); 	
+	quotientRing rmodN9(r,vN9); 
+	char szN9[1024]={0};
+	if(N9.size()==1||N9.size()==r->size())				
+		sprintf(szN9,"[%d,%d]",N9.size(),rmodN9.size());
+	else
+		sprintf(szN9,"[R%d_%d,R%d_%d]",N9.size(),IdRing(&N9),rmodN9.size(),IdRing(&rmodN9));
+	char sz[1024]={0};			
+	sprintf(sz,"%d,%s,%s",b8,szN8,szN9);
+	return sz;
+}
+			
+
 //-----------------------------Begin of IdRing---------------------------------
 class RIDHelper
 {
@@ -942,7 +1125,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[2];//idx=0:秩、idx=1:C2不变量	
+	map<pair<int,int>,string> m_Str[3];//idx=0:秩、idx=1:C2不变量、idx=2:b8N8N9不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -4889,6 +5072,10 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("C2R27.csv",27,1);
 	int c2cnt=m_Str[1].size();	
     printf("c2cnt=%d\n",c2cnt);	
+	iret=LoadStr("b8N8N9R16.csv",16,2);	
+	iret=LoadStr("b8N8N9R27.csv",27,2);
+	int n89cnt=m_Str[2].size();	
+    printf("n89cnt=%d\n",n89cnt);		
 }
 
 RIDHelper::~RIDHelper(){
@@ -5029,7 +5216,7 @@ int IdRing(IRing* r){
 		int rk=Rank(r);
 		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
 		if(rk0>0 && rk0!=rk){
-			printf("出错了，环的秩rk=%d与ID=%d,rk0=%d不匹配！\n",rk,vID[0],rk0);
+			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！\n",rk,vID[0],rk0);
 		}
    } 
 #endif
@@ -5038,10 +5225,19 @@ int IdRing(IRing* r){
 		string C2=calcC2(r);
 		string C20=idHelper.StrFromID(r->size(),vID[0],1);
 		if(C20!="" && C20!=C2){
-			printf("出错了，环的C2=%s与ID=%d,C20=%s不匹配！\n",C2.c_str(),vID[0],C20.c_str());
+			printf("出错了，环的C2=%s与ID=%d,C2=%s不匹配！\n",C2.c_str(),vID[0],C20.c_str());
 		}
    } 
-#endif  
+#endif 
+#if 1 
+   if(r->size()==16||r->size()==27){
+		string b8N8N9=calcb8N8N9(r);
+		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
+		if(b8N8N9!="" && b8N8N90!=b8N8N9){
+			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str());
+		}
+   } 
+#endif 
    return vID[0];
 }
 
