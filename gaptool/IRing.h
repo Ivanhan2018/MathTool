@@ -1107,7 +1107,7 @@ string calcb8N8N9(IRing* r){
 	quotientRing rmodN9(r,vN9); 
 	char szN9[1024]={0};
 	if(N9.size()==1||N9.size()==r->size())				
-		sprintf(szN9,"[%d,%d]",N9.size(),rmodN9.size());
+		sprintf(szN9,"[%d,%d]",N9.size(),r->size()/N9.size());
 	else
 		sprintf(szN9,"[R%d_%d,R%d_%d]",N9.size(),IdRing(&N9),rmodN9.size(),IdRing(&rmodN9));
 	char sz[1024]={0};			
