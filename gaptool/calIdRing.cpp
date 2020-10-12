@@ -202,6 +202,23 @@ void FiniteRing::printTable()
 	}
 #else
 	int ID=IdRing(this);
+#ifdef N89
+	string b8N8N9=calcb8N8N9(this);
+	printf("%d,%s\n",ID,b8N8N9.c_str());
+#elif defined(C2_)
+	string C2=calcC2(this);
+	printf("%d,%s\n",ID,C2.c_str());		
+#elif defined(RK)
+	int rk=Rank(this);
+	printf("%d,%d\n",ID,rk);
+#elif defined(_I1I2)
+	string I1=calcI1(this);
+	string I2=calcI2(this);   
+	printf("%d,%s,%s\n",ID,I1.c_str(),I2.c_str());
+#elif defined(RI)
+	string str=calcRingInvariant(this);  
+	printf("%d,%s\n",ID,str.c_str());	
+#else
 	string str=calcRingInvariant(this);
 	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());
 	int rk=Rank(this);
@@ -218,7 +235,8 @@ void FiniteRing::printTable()
 	if(m_n<64){	
 		string I4=calcI4(this);
 		printf("I4=%s\n",I4.c_str());
-	}	
+	}
+#endif	
 #endif	
 	//printRing(this);	
 }

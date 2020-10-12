@@ -5058,24 +5058,24 @@ RIDHelper::RIDHelper(){
 	int cnt0=m_RingInvariant.size();
 	int iret=LoadData("RingInvariant.csv",0);	
 	int cnt1=m_RingInvariant.size();
-    printf("iret=%d,%d-%d=%d\n",iret,cnt1,cnt0,cnt1-cnt0);	
+    //printf("iret=%d,%d-%d=%d\n",iret,cnt1,cnt0,cnt1-cnt0);	
 	int cnt2=m_I1I2.size();	
 	int iret1=LoadData("I1I2.csv",1);	
 	int cnt3=m_I1I2.size();
-    printf("iret1=%d,%d-%d=%d\n",iret1,cnt3,cnt2,cnt3-cnt2);
+    //printf("iret1=%d,%d-%d=%d\n",iret1,cnt3,cnt2,cnt3-cnt2);
 	iret=LoadStr("RankR16.csv",16,0);	
 	iret=LoadStr("RankR27.csv",27,0);
 	iret=LoadStr("RankR81.csv",81,0);
 	int rcnt=m_Str[0].size();	
-    printf("rcnt=%d\n",rcnt);	
+    //printf("rcnt=%d\n",rcnt);	
 	iret=LoadStr("C2R16.csv",16,1);	
 	iret=LoadStr("C2R27.csv",27,1);
 	int c2cnt=m_Str[1].size();	
-    printf("c2cnt=%d\n",c2cnt);	
+    //printf("c2cnt=%d\n",c2cnt);	
 	iret=LoadStr("b8N8N9R16.csv",16,2);	
 	iret=LoadStr("b8N8N9R27.csv",27,2);
 	int n89cnt=m_Str[2].size();	
-    printf("n89cnt=%d\n",n89cnt);		
+    //printf("n89cnt=%d\n",n89cnt);		
 }
 
 RIDHelper::~RIDHelper(){
