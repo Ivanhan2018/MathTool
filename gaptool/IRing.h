@@ -5070,10 +5070,12 @@ RIDHelper::RIDHelper(){
     //printf("rcnt=%d\n",rcnt);	
 	iret=LoadStr("C2R16.csv",16,1);	
 	iret=LoadStr("C2R27.csv",27,1);
+	iret=LoadStr("C2R81.csv",81,1);	
 	int c2cnt=m_Str[1].size();	
     //printf("c2cnt=%d\n",c2cnt);	
 	iret=LoadStr("b8N8N9R16.csv",16,2);	
 	iret=LoadStr("b8N8N9R27.csv",27,2);
+	iret=LoadStr("b8N8N9R81.csv",81,2);	
 	int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);		
 }
@@ -5212,28 +5214,20 @@ int IdRing(IRing* r){
    }    
 #endif 
 #if 1
-   if(r->size()==16||r->size()==27||r->size()==81){
+   if(r->size()==81){
 		int rk=Rank(r);
 		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
 		if(rk0>0 && rk0!=rk){
 			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！\n",rk,vID[0],rk0);
 		}
-   } 
-#endif
-#if 1 
-   if(r->size()==16||r->size()==27){
 		string C2=calcC2(r);
 		string C20=idHelper.StrFromID(r->size(),vID[0],1);
 		if(C20!="" && C20!=C2){
 			printf("出错了，环的C2=%s与ID=%d,C2=%s不匹配！\n",C2.c_str(),vID[0],C20.c_str());
 		}
-   } 
-#endif 
-#if 1 
-   if(r->size()==16||r->size()==27){
 		string b8N8N9=calcb8N8N9(r);
 		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
-		if(b8N8N9!="" && b8N8N90!=b8N8N9){
+		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str());
 		}
    } 
