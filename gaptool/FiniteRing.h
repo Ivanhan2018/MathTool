@@ -1469,7 +1469,7 @@ void findquotientring(IRing *r,int n)
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				printf("i=%d,j=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,j,ni,ID,strR.c_str());				
 				//S1i.printTable();
 #if PRINT_LOG			
 				fout<<i<<","<<j<<"=>";

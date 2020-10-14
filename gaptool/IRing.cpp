@@ -6094,7 +6094,7 @@ void findsubring1(IRing *r,int n)
 		int cnt1=M.size();
 		if(cnt1>cnt){		
 			printf("cnt1=%d:R%d_%d->i=%d=>%s\n",cnt1,ni,ID,i,IMStr(r,i).c_str());	
-            if((ni==32||ni==81||ni==64) && ID>0){
+            if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6150,7 +6150,7 @@ void findsubring2(IRing *r,int n)
 			string str=IMStr(r,i);
 			string strj=IMStr(r,j);			
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s;%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
-            if((ni==32||ni==81||ni==64) && ID>0){
+            if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6220,7 +6220,7 @@ void findsubring3(IRing *r,int n)
 			string strj=IMStr(r,j);
 			string strk=IMStr(r,k);				
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d=>%s;%s;%s\n",cnt1,ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());			
-            if((ni==32||ni==81||ni==64) && ID>0){
+            if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6296,7 +6296,7 @@ void findsubring4(IRing *r,int n)
 			string strk=IMStr(r,k);		
 			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s\n",cnt1,ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
 #endif
-            if((ni==32||ni==81||ni==64) && ID>0){
+            if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6379,7 +6379,7 @@ void findquotientring(IRing *r,int n)
 			if((ni==32||ni==27||ni==81) && ID==-1 || (ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end())){
 				printRing0(&S1i,ID);
 			}	
-            if((ni==32||ni==81||ni==64) && ID>0){
+            if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
@@ -6783,6 +6783,8 @@ int Mrijk(int argc, char* argv[])
 			n0=27;
 		else if(_n0==81)
 			n0=81;
+		else if(_n0==243)
+			n0=243;		
 		else if(_n0==16)
 			n0=16;		
 		else

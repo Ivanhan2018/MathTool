@@ -3671,9 +3671,9 @@ bool testQR(IRing *r,int n,vector<int>& v){
 	int ni=S1i.size();	
 	int ID=IdRing(&S1i);		
 	printf("R%d_%d/R%d_%d=R%d_%d\n",r->size(),IDr,S1i0.size(),IDr0,ni,ID);			
-	if(ni==n && ID==-1||(ni==81 && ID>0)){
+	if(ni==n && ID==-1||((n==81||n==243) && ID>0)){
 		if(n<32)printRing0(&S1i,ID);
-		if(n==81 && ID>0){
+		if((n==81||n==243) && ID>0){
 			char sz[100]="0";
 			sprintf(sz,"R%d_%d.txt",ni,ID);	
 			writeTable(&S1i,sz);
@@ -3769,7 +3769,9 @@ int main(int argc, char* argv[])
 		if(_n0==27)
 			n0=27;
 		else if(_n0==81)
-			n0=81;		
+			n0=81;	
+		else if(_n0==243)
+			n0=243;		
 		else
 			n0=32;		
 	}		
