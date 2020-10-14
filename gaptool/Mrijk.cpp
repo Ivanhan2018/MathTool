@@ -3671,15 +3671,14 @@ bool testQR(IRing *r,int n,vector<int>& v){
 	int ni=S1i.size();	
 	int ID=IdRing(&S1i);		
 	printf("R%d_%d/R%d_%d=R%d_%d\n",r->size(),IDr,S1i0.size(),IDr0,ni,ID);			
-	if(ni==n && ID==-1||((n==81||n==243) && ID>0)){
-		if(n<32)printRing0(&S1i,ID);
-		if((n==81||n==243) && ID>0){
-			char sz[100]="0";
-			sprintf(sz,"R%d_%d.txt",ni,ID);	
-			writeTable(&S1i,sz);
-		}
+	if(ni<32 && ID==-1)
+		printRing0(&S1i,ID);
+	if(ni>=81 && ID>0){
+		char sz[100]="0";
+		sprintf(sz,"R%d_%d.txt",ni,ID);	
+		writeTable(&S1i,sz);
 	}					
-	if(ni==n && ID==-1){		
+	if(ID==-1){		
 		string strR=calcRingInvariant(&S1i);			
 		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
 	}

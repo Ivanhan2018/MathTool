@@ -93,14 +93,15 @@ void findquotientring(IRing *r,int n)
 		if(cnt1>cnt){		
 			int IDr0=IdRing(&S1i0);
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);			
-			if(ni==n && ID==-1){
+			if(ni<32 && ID==-1)
 				printRing0(&S1i,ID);
+			if(ni>=81 && ID>0){
 				char sz[100]="0";
-				sprintf(sz,"R%d_%d.txt",ni,time(NULL));	
+				sprintf(sz,"R%d_%d.txt",ni,ID);	
 				writeTable(&S1i,sz);
 			}				
 		}	
-		if(ni==n && ID==-1) 	
+		if(ID==-1) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
@@ -151,14 +152,15 @@ void findquotientring3(IRing *r,int n)
 		if(cnt1>cnt){		
 			int IDr0=IdRing(&S1i0);
 			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d,k=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j,k);			
-			if(ni==n && ID==-1){
+			if(ni<32 && ID==-1)
 				printRing0(&S1i,ID);
+			if(ni>=81 && ID>0){
 				char sz[100]="0";
-				sprintf(sz,"R%d_%d.txt",ni,time(NULL));	
+				sprintf(sz,"R%d_%d.txt",ni,ID);	
 				writeTable(&S1i,sz);
 			}				
 		}	
-		if(ni==n && ID==-1) 	
+		if(ID==-1) 	
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
