@@ -3673,7 +3673,7 @@ bool testQR(IRing *r,int n,vector<int>& v){
 	printf("R%d_%d/R%d_%d=R%d_%d\n",r->size(),IDr,S1i0.size(),IDr0,ni,ID);			
 	if(ni<32 && ID==-1)
 		printRing0(&S1i,ID);
-	if(ni>=81 && ID>0){
+	if(ni>=64 && ID>0){
 		char sz[100]="0";
 		sprintf(sz,"R%d_%d.txt",ni,ID);	
 		writeTable(&S1i,sz);
@@ -3767,6 +3767,8 @@ int main(int argc, char* argv[])
 		int _n0=atoi(argv[6]);	
 		if(_n0==27)
 			n0=27;
+		else if(_n0==64)
+			n0=64;		
 		else if(_n0==81)
 			n0=81;	
 		else if(_n0==243)
