@@ -5218,17 +5218,20 @@ int IdRing(IRing* r){
 		int rk=Rank(r);
 		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
 		if(rk0>0 && rk0!=rk){
-			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！\n",rk,vID[0],rk0);
+			string strI1I2=calcI1(r)+","+calcI2(r);
+			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！I1I2=%s\n",rk,vID[0],rk0,strI1I2.c_str());
 		}
 		string C2=calcC2(r);
 		string C20=idHelper.StrFromID(r->size(),vID[0],1);
 		if(C20!="" && C20!=C2){
-			printf("出错了，环的C2=%s与ID=%d,C2=%s不匹配！\n",C2.c_str(),vID[0],C20.c_str());
+			string strI1I2=calcI1(r)+","+calcI2(r);
+			printf("出错了，环的C2=%s与ID=%d,C2=%s不匹配！I1I2=%s\n",C2.c_str(),vID[0],C20.c_str(),strI1I2.c_str());
 		}
 		string b8N8N9=calcb8N8N9(r);
 		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
-			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str());
+			string strI1I2=calcI1(r)+","+calcI2(r);
+			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！I1I2=%s\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str(),strI1I2.c_str());
 		}
    } 
 #endif 
