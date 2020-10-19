@@ -129,9 +129,14 @@ IRing* newRpppp(int ID,int p){
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;			
 	}
-	if(pItem && pItem->m_n1==1 && pItem->m_n2==4){
-		Mnr* r=new Mnr();   
-		r->m_r=new ZmodnZ(1,p*p);
+	if(pItem && pItem->m_n1==1 && (pItem->m_n2==4||pItem->m_n2==8||pItem->m_n2==16)){
+		Mnr* r=new Mnr();
+		if(pItem->m_n2==4)		
+			r->m_r=new ZmodnZ(1,p*p);
+		else if(pItem->m_n2==8)
+			r->m_r=new ZmodnZ(1,p*p*p);
+		else if(pItem->m_n2==16)
+			r->m_r=new ZmodnZ(1,p*p*p*p);		
 		r->m_n=pItem->m_n0; 
 		vector<MATRIXi8> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
@@ -143,8 +148,14 @@ IRing* newRpppp(int ID,int p){
 					A[j][k]=atoi(v[j*r->m_n+k].c_str());
 					if(A[j][k]==2)
 						A[j][k]=p;
-					else if(A[j][k]==3)
-						A[j][k]=1;
+					else if(A[j][k]==4)
+						A[j][k]=p*p;
+					else if(A[j][k]==8)
+						A[j][k]=p*p*p;					
+					else{
+						if(A[j][k]>1)
+							A[j][k]=1;
+					}
 				}
 			gen.push_back(A);
 		}	
