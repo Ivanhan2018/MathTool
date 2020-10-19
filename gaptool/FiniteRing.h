@@ -1412,6 +1412,8 @@ void findquotientring(IRing *r,int n)
 	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64 && r->size()!=243)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
+	if(r->size()<n*2)
+		return;	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -1495,6 +1497,8 @@ void findquotientring3(IRing *r,int n)
 	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64 && r->size()!=243)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
+	if(r->size()<n*2)
+		return;
 	map<pair<int,int>,pair<int,int>> M;
 	set<string> S;	
 	for(int i=0;i<r->size()-2;i++)		

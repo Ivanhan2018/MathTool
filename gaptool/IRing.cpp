@@ -6332,6 +6332,8 @@ void findquotientring(IRing *r,int n)
 	bool bFind=false;	
 	int ID=0;//IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
+	if(r->size()<n*2)
+		return;	
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -6879,7 +6881,7 @@ int Mrijk(int argc, char* argv[])
 }
 
 int testR16(){	   
-	   int IDs[]={273};
+	   int IDs[]={108,147,169,179};
 	   int cnt=sizeof(IDs)/sizeof(IDs[0]);
 	   for(int i=0;i<cnt;i++){
 		   IRing* r=newR16(IDs[i]);
@@ -6973,6 +6975,8 @@ int testRingData(int argc, char* argv[]){
 		if(in<=32 && iID<=0||str.substr(0,1)=="r"){
 			string strR=calcRingInvariant(r);
 			printf(":N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s",strR.c_str());
+			string N1=calcN1(r);
+			printf("\nN1=%s",N1.c_str());			
 			int rk=Rank(r);
 			printf("\nr=%d",rk);			
 			string I1=calcI1(r);

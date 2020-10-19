@@ -530,6 +530,35 @@ string calcN2(IRing* r){
 	return strN2;
 }
 
+string calcN1(IRing* r){
+	int n=r->size();
+	vector<int> v;
+	for(int i=1;i<n;i++){
+		for(int j=1;j<n;j++){
+			int ij=r->mul(i,j);
+			if(ij!=0){
+				v.push_back(ij);
+			}
+		}
+	}
+	std::sort(v.begin(),v.end());
+	vector<pair<int,int> > v1=doN1Vec(v);
+	vector<int> v2;
+	int cnt=v1.size();
+	for(int i=0;i<cnt;i++){
+		v2.push_back(v1[i].second);
+	}
+	std::sort(v2.begin(),v2.end());	
+	string str="[";
+	for(int i=0;i<cnt;i++){
+	   str+=itos(v2[i]);
+	   if(i<cnt-1)
+		   str+=",";   
+	}	   
+	str+="]";
+	return str;
+}
+
 string calcI1(IRing* r){
 	int IdRing(IRing* r);
 	int n=r->size();
@@ -1125,7 +1154,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[3];//idx=0:秩、idx=1:C2不变量、idx=2:b8N8N9不变量	
+	map<pair<int,int>,string> m_Str[4];//idx=0:秩、idx=1:C2不变量、idx=2:b8N8N9不变量、idx=3:N1不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -5077,7 +5106,11 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("b8N8N9R27.csv",27,2);
 	iret=LoadStr("b8N8N9R81.csv",81,2);	
 	int n89cnt=m_Str[2].size();	
-    //printf("n89cnt=%d\n",n89cnt);		
+    //printf("n89cnt=%d\n",n89cnt);	
+	iret=LoadStr("N1R16.csv",16,3);	
+	iret=LoadStr("N1R27.csv",27,3);	
+	int n1cnt=m_Str[3].size();
+    //printf("n1cnt=%d\n",n1cnt);	
 }
 
 RIDHelper::~RIDHelper(){
@@ -5211,9 +5244,22 @@ int IdRing(IRing* r){
 		if(p==vI1I2.end()){
 			printf("出错了，环不变量数据RingInvariant=%s,I1I2=%s与ID=%d不匹配！\n",strRingInvariant.c_str(),strI1I2.c_str(),vID[0]);
 		}
+		string N1=calcN1(r);
+		string N10=idHelper.StrFromID(r->size(),vID[0],3);
+		if(N10!="" && N10!=N1){
+			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！\n",N1.c_str(),vID[0],N10.c_str());
+		}		
    }    
 #endif 
 #if 1
+   if(r->size()==27){
+		string N1=calcN1(r);
+		string N10=idHelper.StrFromID(r->size(),vID[0],3);
+		if(N10!="" && N10!=N1){
+			string strI1I2=calcI1(r)+","+calcI2(r);			
+			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！I1I2=%s\n",N1.c_str(),vID[0],N10.c_str(),strI1I2.c_str());
+		}		
+   }
    if(r->size()==81){
 		int rk=Rank(r);
 		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
