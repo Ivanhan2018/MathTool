@@ -351,7 +351,9 @@ int main(int argc, char* argv[])
 			if(_n0==27)
 				n0=27;
 			else if(_n0==81)
-				n0=81;				
+				n0=81;	
+			else if(_n0==243)
+				n0=243;			
 			else
 				n0=32;		
 		}    		

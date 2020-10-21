@@ -451,7 +451,9 @@ int main(int argc, char **argv)
 		if(_n0==27)
 			g_a=27;
 		else if(_n0==81)
-			g_a=81;		
+			g_a=81;	
+		else if(_n0==243)
+			g_a=243;			
 		else
 			g_a=32;		
 	}
