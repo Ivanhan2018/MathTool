@@ -8,6 +8,89 @@
 #include <ctime>
 #include <fstream>
 
+IRing* newR2(int i,int p=2)
+{
+	if(i==1)
+	{
+		ZmodnZ* r=new ZmodnZ(p,p*p);
+		return r;
+	}
+	if(i==2)
+	{
+		ZmodnZ* r=new ZmodnZ(1,p);
+		return r;
+	}
+	return NULL;
+}
+
+IRing* newR4(int i,int p=2)
+{
+	if(i==1)
+	{
+		ZmodnZ* r=new ZmodnZ(p*p,p*p*p*p);
+		return r;
+	}
+	if(i==2)
+	{
+		ZmodnZ* r=new ZmodnZ(p,p*p*p);
+		return r;
+	}	
+	if(i==3)
+	{
+		ZmodnZ* r=new ZmodnZ(1,p*p);
+		return r;
+	}
+	if(i==4)
+	{
+		M2r* r=new M2r();
+	    r->initD(p);
+		return r;
+	}	
+	if(i==5)
+	{
+		Mnr* r=new Mnr();
+	    r->initE(p);
+		return r;
+	}	
+	if(i==6)
+	{
+		Mnr* r=new Mnr();
+	    r->initF(p);
+		return r;
+	}	
+	if(i==7)
+	{
+		M2r* r=new M2r();
+	    r->initG(p);
+		return r;
+	}
+	if(i==8)
+	{
+		M2r* r=new M2r();
+	    r->initH(p);
+		return r;
+	}
+	if(i==9)
+	{
+		M2r* r=new M2r();
+	    r->initI(p);
+		return r;
+	}
+	if(i==10)
+	{
+		M2r* r=new M2r();
+	    r->initJ(p);
+		return r;
+	}
+	if(i==11)
+	{
+		M2r* r=new M2r();
+	    r->initK(p);
+		return r;
+	}	
+	return NULL;
+}
+
 std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
 {
 	std::vector<string> ret;
@@ -104,13 +187,13 @@ int LoadData(char * pszFilePath)		//“从文件中读取数据”
 
 extern IRing* newRpppp(int ID,int p);
 
-IRing* newRpppp(int ID,int p){	
+IRing* newRpppp(int ID,int p,int n=16){	
    //if(ID!=32)
 	   //return NULL;
 	//p=2;
 	//if(p==3)return NULL;
 	//int n=p*p*p*p;
-	const CRingDataItem * pItem = Find(16,ID);
+	const CRingDataItem * pItem = Find(n,ID);
 	if(pItem && pItem->m_n1==1 && pItem->m_n2==2){
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -166,19 +249,85 @@ IRing* newRpppp(int ID,int p){
 	return NULL;	
 }
 
+IRing* newRpppRp(int ID1,int ID2,int p){	
+	IRing* ri=newRpppp(ID1,p,8);
+	if(!ri)return NULL;
+	IRing* rj=newR2(ID2,p);
+	if(!rj)return NULL;		
+	DecompositionRing* r= new DecompositionRing(ri,rj);
+	r->m_flag=1;	   
+	return r;
+}
+
+IRing* newRppRpp(int ID1,int ID2,int p){	
+	IRing* ri=newR4(ID1,p);
+	if(!ri)return NULL;
+	IRing* rj=newR4(ID2,p);
+	if(!rj)return NULL;		
+	DecompositionRing* r= new DecompositionRing(ri,rj);
+	r->m_flag=1;	   
+	return r;
+}
+
+void testDR(IRing* r16,IRing* r81){
+   if(!r16||!r81)
+	   return;
+	int ID16=IdRing(r16);
+	int ID81=(r81->size()>81)?0:IdRing(r81);			
+	#if 1
+		printf("R%d_%d,R%d_%d\n",r16->size(),ID16,r81->size(),ID81);
+	#else
+		string str=calcRingInvariant(r16);
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r16->size(),ID16,str.c_str());
+		string I1=calcI1(r16);
+		string I2=calcI2(r16);   
+		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
+		str=calcRingInvariant(r81);
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r81->size(),ID81,str.c_str());
+		I1=calcI1(r81);
+		I2=calcI2(r81);   
+		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
+	#endif	
+	return;
+}
+
 int main(int argc, char* argv[]){ 
 	int n1=273;
 	int n2=390;
+	int n=16;
 	if(argc>1)
 		n1=atoi(argv[1]);
 	if(argc>2)
 		n2=atoi(argv[2]);
+	if(argc>3)
+		n=atoi(argv[3]);	
 	int ret=LoadData("RingData.csv");
-	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());    
+	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size()); 
+#ifdef TDR
+	for(int i=1;i<=11;i++){
+		for(int j=i;j<=11;j++){
+			IRing* r16=newRppRpp(i,j,2);
+			IRing* r81=newRppRpp(i,j,3);
+			testDR(r16,r81);
+			delete r16;
+			delete r81;				
+		}
+	}
+	for(int i=1;i<=52;i++){
+		for(int j=1;j<=2;j++){		
+			IRing* r16=newRpppRp(i,j,2);
+			IRing* r81=newRpppRp(i,j,3);
+			testDR(r16,r81);
+			delete r16;
+			delete r81;	
+		}
+	}		
+	return 0;
+#endif
 	if(1){
 		for(int i=n1;i<=n2;i++){
-		   IRing* r16=newRpppp(i,2);
-		   IRing* r81=newRpppp(i,3);		   
+		   IRing* r16=newRpppp(i,2,n);
+		   IRing* r81=newRpppp(i,3,n);		   
 		   if(!r16||!r81)
 			   continue;
 			int ID16=IdRing(r16);

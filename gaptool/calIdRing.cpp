@@ -55,11 +55,32 @@ void writeTable(IRing* r,const char *path){
    }	
 }
 
+int g_b=0;
+string g_str="";
+void checkring(IRing *r,int ID){
+	if(r->size()==32||r->size()==64||r->size()==243){
+		if(ID<1){
+			string strR=calcRingInvariant(r);			
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+		}else{
+			if(g_b!=0 && g_str!=""){
+				char sz[1000]={0};
+				const char *sz1=(g_b==1?"_":"");				
+				sprintf(sz,"rename %s R%d%s%d.txt",g_str.c_str(),r->size(),sz1,ID);
+				system(sz);				
+			}
+		}			
+	}	
+}
+
 int g_a=16;
 void findquotientring(IRing *r,int n)
 {
 	int ID=IdRing(r);
-	printf("R%d_%d\n",r->size(),ID);	
+	printf("R%d_%d\n",r->size(),ID);
+#ifdef RI
+	checkring(r,ID);
+#endif	
 	map<pair<int,int>,pair<int,int>> M;
 	set<string> S;	
 	for(int i=0;i<r->size()-1;i++)		
@@ -117,6 +138,9 @@ void findquotientring3(IRing *r,int n)
 {
 	int ID=IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);	
+#ifdef RI
+	checkring(r,ID);
+#endif	
 	map<pair<int,int>,pair<int,int>> M;
 	set<string> S;	
 	for(int i=0;i<r->size()-2;i++)		
@@ -457,6 +481,10 @@ int main(int argc, char **argv)
 		else
 			g_a=32;		
 	}
+    if(argc>3){
+		g_b=atoi(argv[3]);
+		g_str=sz;
+	}		
 #endif
 
 	vector<char> A=lof2(sz);

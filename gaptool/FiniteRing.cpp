@@ -651,8 +651,9 @@ int main(int argc, char* argv[])
    if(argc>3)
 	   g_func=atoi(argv[3]); */
 	//return R16_iR4_j(argc,argv);
-	//return test3();
-	return testR8R8(g_func);
+	test2();
+	return test3();
+	//return testR8R8(g_func);
     /*for(int i=1;i<=52;i++){
 		IRing* r=newR8(i);
 		int ID=IdRing(r);
