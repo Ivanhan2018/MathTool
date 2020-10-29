@@ -260,8 +260,15 @@ IRing* newRpppp(int ID,int p,int n=16){
 			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
 			vector<string> v=split(vv[i],",");
 			for(int j=0;j<r->m_n;j++)
-				for(int k=0;k<r->m_n;k++)
+				for(int k=0;k<r->m_n;k++){
 					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+					if(A[j][k]==2)
+						A[j][k]=p;
+					else if(A[j][k]==4)
+						A[j][k]=p*p;
+					else if(A[j][k]==8)
+						A[j][k]=p*p*p;	
+				}					
 			gen.push_back(A);
 		}	
 		r->m_flag=1;
