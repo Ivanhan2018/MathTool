@@ -2,6 +2,7 @@
 #define FINITERING_H
 
 //#include"IRing.h"
+//#define RPPP
 #define R16_I1I2
 //#define R32_DEL
 #include<ctime>
@@ -462,7 +463,31 @@ IRing* newR8(int i)
 	}
 	if(i==12)
 	{
+#ifdef RPPP // R16_93/R2_1=R8_12
+		static int g_R8_12Add[8][8]={
+			{0,1,2,3,4,5,6,7},
+			{1,3,4,5,6,0,7,2},
+			{2,4,0,6,1,7,3,5},
+			{3,5,6,0,7,1,2,4},
+			{4,6,1,7,3,2,5,0},
+			{5,0,7,1,2,3,4,6},
+			{6,7,3,2,5,4,0,1},
+			{7,2,5,4,0,6,1,3},
+		};
+		static int g_R8_12Mul2[8][8]={
+			{0,0,0,0,0,0,0,0},
+			{0,0,3,0,3,0,3,3},
+			{0,3,3,0,0,3,3,0},
+			{0,0,0,0,0,0,0,0},
+			{0,3,0,0,3,3,0,3},
+			{0,0,3,0,3,0,3,3},
+			{0,3,3,0,0,3,3,0},
+			{0,3,0,0,3,3,0,3},
+		};
+		FiniteRing* r=new FiniteRing(8,&g_R8_12Add[0][0],&g_R8_12Mul2[0][0],0);		
+#else
 		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_12Mul[0][0],0);
+#endif
 		return r;
 	}
 	if(i==13)
@@ -549,7 +574,28 @@ IRing* newR8(int i)
 	}
 	if(i==22)
 	{
-		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_22Mul[0][0],0);
+		//R16_105/R2_1=R8_22
+		static int g_R8_22Add[8][8]={
+			{0,1,2,3,4,5,6,7},
+			{1,2,3,0,5,6,7,4},
+			{2,3,0,1,6,7,4,5},
+			{3,0,1,2,7,4,5,6},
+			{4,5,6,7,2,3,0,1},
+			{5,6,7,4,3,0,1,2},
+			{6,7,4,5,0,1,2,3},
+			{7,4,5,6,1,2,3,0},
+		};
+		static int g_R8_22Mul2[8][8]={
+			{0,0,0,0,0,0,0,0},
+			{0,6,2,4,1,7,3,5},
+			{0,2,0,2,2,0,2,0},
+			{0,4,2,6,3,7,1,5},
+			{0,1,2,3,4,5,6,7},
+			{0,7,0,7,5,2,5,2},
+			{0,3,2,1,6,5,4,7},
+			{0,5,0,5,7,2,7,2},
+		};	
+		FiniteRing* r=new FiniteRing(8,&g_R8_22Add[0][0],&g_R8_22Mul2[0][0],0);	
 		return r;
 	}
 	if(i==23)
@@ -1458,7 +1504,8 @@ void findquotientring(IRing *r,int n)
 			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
 		    static vector<int> vIDs(IDs,IDs+cnt);
 			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
-			if(ni<=27 && ID==-1){
+			//if(ni<=27 && ID==-1||(ni==8 && ID==22)||(ni==27 && ID==22)){
+			if(ni<=27 && ID==-1){	
 				printRing0(&S1i,ID);
 			}	
             if(ni>=32 && ID>0){

@@ -437,7 +437,7 @@ int main(void)
 		//ZimodnZ r200(GaussianInteger(10,10));
 		//r200.printTable();
 	}
-	if(1)
+	if(0)
 	{	
 		ZimodnZ r128(GaussianInteger(12,8));
 		//r128.printTable();

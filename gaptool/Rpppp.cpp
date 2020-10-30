@@ -8,6 +8,118 @@
 #include <ctime>
 #include <fstream>
 
+#if 1
+void printRing0(IRing* r,int ID){
+   int n=r->size();
+   printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
+   for(int i=0;i<n;i++){
+	   printf("{"); 
+	   for(int j=0;j<n;j++){
+		  int ij=r->add(i,j);
+		  printf("%d",ij);
+		  if(j<n-1)
+			printf(",");  
+	   } 
+       printf("},\n");   
+   }
+   printf("};\n");    
+   printf("static int g_R%d_%dMul[%d][%d]={\n",n,ID,n,n);   
+   for(int i=0;i<n;i++){
+	   printf("{"); 
+	   for(int j=0;j<n;j++){
+		  int ij=r->mul(i,j);
+		  printf("%d",ij);
+		  if(j<n-1)
+			printf(",");  
+	   } 
+       printf("},\n");   
+   }
+   printf("};\n"); 
+}
+
+void findquotientring(IRing *r,int n)
+{
+#define PRINT_LOG 0	
+	bool bFind=false;	
+	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64 && r->size()!=243)?0:IdRing(r);
+	printf("R%d_%d\n",r->size(),ID);	
+	if(r->size()<n*2)
+		return;	
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
+    ofstream fout(sz);
+    string strCmd="del ";
+	strCmd+=sz;	
+#endif	
+	map<pair<int,int>,pair<int,int>> M;	
+	set<string> S;	
+	for(int i=0;i<r->size()-1;i++)		
+    //int i=0;
+	for(int j=i+1;j<r->size();j++)
+	{
+		vector<int> v;
+		v.push_back(i);		
+		v.push_back(j);
+		Subring S1i0;
+		bool bn=S1i0.init(r,v,r->size()/n);
+		if(!bn)
+			continue;
+		if(S1i0.m_Set.size()!=r->size()/n)
+			continue;
+		vector<int> v0=v;
+		v=S1i0.m_Set;
+		int iret1=IsIdeal(r,v); 
+		if(iret1!=1)
+			continue;
+		quotientRing S1i(r,v);
+		int ni=S1i.size();	
+		int IDr=ID;
+		bool b=IsRing(&S1i);
+		if(!b){
+			continue;
+		}			
+		int ID=IdRing(&S1i);	
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){		
+			int IDr0=IdRing(&S1i0);
+			printf("cnt1=%d:R%d_%d/R%d_%d=R%d_%d->i=%d,j=%d\n",cnt1,r->size(),IDr,S1i0.size(),IDr0,ni,ID,i,j);			
+			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
+		    static vector<int> vIDs(IDs,IDs+cnt);
+			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
+			if(ni<=27 && ID==-1||(ni==8 && ID==12)||(ni==27 && ID==12)){
+			//if(ni<=27 && ID==-1){	
+				printRing0(&S1i,ID);
+			}			
+		}	
+		if(ID==-1) 	
+		{		
+			string strR=calcRingInvariant(&S1i);
+			if(S.find(strR)==S.end()){				
+				printf("i=%d,j=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,j,ni,ID,strR.c_str());				
+				//S1i.printTable();
+#if PRINT_LOG			
+				fout<<i<<","<<j<<"=>";
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+				bFind=true;
+#endif
+		}
+			S.insert(strR);
+			//break;
+		}
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("商环表示已输出到文件%s\n",sz);
+#endif	
+}
+#endif
+
 IRing* newR2(int i,int p=2)
 {
 	if(i==1)
@@ -352,6 +464,15 @@ int main(int argc, char* argv[]){
 		}
 	}		
 	return 0;
+#endif
+#if 1
+	//IRing* r16=newRpppp(93,2,16);
+	//IRing* r81=newRpppp(93,3,16);
+	IRing* r16=newRppRpp(5,2,2);
+	IRing* r81=newRppRpp(5,2,3);	
+	findquotientring(r16,8);
+	findquotientring(r81,27);
+	return 0;	
 #endif
 	if(1){
 		for(int i=n1;i<=n2;i++){
