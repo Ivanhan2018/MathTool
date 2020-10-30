@@ -1330,10 +1330,12 @@ int testRingDataA(int argc, char* argv[]){
 			Func[fun](r,n0);			
 		}		
 		printf("\n");	
-/* 		for(int i=0;i<in;i++){		
-			string stri=PolynomialRing::sPoly(r->m_Set[i]);		
-			printf("i=%d=>%s\n",i,stri.c_str());	
-		} */		
+		if(in<=81){
+			for(int i=0;i<in;i++){		
+				string stri=PolynomialRing::sPoly(r->m_Set[i]);		
+				printf("i=%d=>%s\n",i,stri.c_str());	
+			}
+		}		
 	}
 	delete r;
 	r=NULL;
