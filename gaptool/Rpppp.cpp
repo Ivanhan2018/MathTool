@@ -8,7 +8,7 @@
 #include <ctime>
 #include <fstream>
 
-#if 1
+#if 0
 void printRing0(IRing* r,int ID){
    int n=r->size();
    printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
@@ -89,8 +89,8 @@ void findquotientring(IRing *r,int n)
 			static int cnt=sizeof(IDs)/sizeof(IDs[0]);
 		    static vector<int> vIDs(IDs,IDs+cnt);
 			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
-			if(ni<=27 && ID==-1||(ni==8 && ID==12)||(ni==27 && ID==12)){
-			//if(ni<=27 && ID==-1){	
+			//if(ni<=27 && ID==-1||(ni==8 && ID==12)||(ni==27 && ID==12)){
+			if(ni<=27 && ID==-1){	
 				printRing0(&S1i,ID);
 			}			
 		}	
@@ -465,7 +465,7 @@ int main(int argc, char* argv[]){
 	}		
 	return 0;
 #endif
-#if 1
+#if 0
 	//IRing* r16=newRpppp(93,2,16);
 	//IRing* r81=newRpppp(93,3,16);
 	IRing* r16=newRppRpp(5,2,2);
