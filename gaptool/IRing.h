@@ -5291,7 +5291,7 @@ int IdRing(IRing* r){
 				return 0;//ID不确定，还需要新的环不变量确定编号
 			}
 			else if(vID023.size()<=0){
-			   printf("出错了，环不变量数据Q1有误！\n");
+			   printf("出错了，环不变量数据Q1有误！Q1=%s\n",Q1.c_str());
 			   return 0;
 			}
 			return vID023[0];		
