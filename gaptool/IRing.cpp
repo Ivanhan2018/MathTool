@@ -6990,6 +6990,8 @@ int testRingData(int argc, char* argv[]){
 		if(in<=32 && iID<=0||str.substr(0,1)=="r"){
 			string strR=calcRingInvariant(r);
 			printf(":N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s",strR.c_str());
+			string Q1=calcQ1(r);
+			printf("\nQ1=%s",Q1.c_str());			
 			string N1=calcN1(r);
 			printf("\nN1=%s",N1.c_str());			
 			int rk=Rank(r);

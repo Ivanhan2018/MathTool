@@ -1144,6 +1144,54 @@ string calcb8N8N9(IRing* r){
 	return sz;
 }
 			
+string calcQ1(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();
+	int p=2;
+	for(int p=2;p<=n;p++){
+		if(n%p==0)
+			break;
+	}
+	if(p==n){
+		return "[]";
+	}
+	vector<int> v1; 
+	for(int i=1;i<n;i++){
+	   vector<int> v;
+	   v.push_back(i);
+	   Subring S1i0;
+	   bool b=S1i0.init(r,v,p);
+	   if(!b)
+		   continue;
+		if(S1i0.m_Set.size()!=p)
+			continue;
+		vector<int> v0=v;
+		v=S1i0.m_Set;
+		int iret1=IsIdeal(r,v); 
+		if(iret1!=1)
+			continue;
+		quotientRing S1i(r,v);
+		bool b1=IsRing(&S1i);
+		if(!b1){
+			continue;
+		}			
+		int ID=IdRing(&S1i);
+		auto it=std::find(v1.begin(),v1.end(),ID);
+		if(it==v1.end()){
+			v1.push_back(ID);
+		}
+	}
+	std::sort(v1.begin(),v1.end());	
+	int cnt=v1.size();  
+	string str="[";
+	for(int i=0;i<cnt;i++){
+	   str+=itos(v1[i]);
+	   if(i<cnt-1)
+		   str+=",";   
+	}	   
+	str+="]";
+	return str;
+}
 
 //-----------------------------Begin of IdRing---------------------------------
 class RIDHelper
@@ -1154,7 +1202,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[4];//idx=0:秩、idx=1:C2不变量、idx=2:b8N8N9不变量、idx=3:N1不变量	
+	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:C2不变量、idx=2:b8N8N9不变量、idx=3:N1不变量、idx=4:Q1不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -5110,7 +5158,10 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("N1R16.csv",16,3);	
 	iret=LoadStr("N1R27.csv",27,3);	
 	int n1cnt=m_Str[3].size();
-    //printf("n1cnt=%d\n",n1cnt);	
+    //printf("n1cnt=%d\n",n1cnt);
+	iret=LoadStr("Q1R16.csv",16,4);	
+	int q1cnt=m_Str[4].size();
+    //printf("q1cnt=%d\n",q1cnt);	
 }
 
 RIDHelper::~RIDHelper(){
@@ -5217,18 +5268,33 @@ int IdRing(IRing* r){
 		// 调用set_intersection之前要加上sort，否则计算的来的交集有可能不准。例如R32_2022和R32_2018
 		std::sort(vID.begin(),vID.end());
 		std::sort(vID2.begin(),vID2.end());
-		set_intersection(vID.begin(),vID.end(),vID2.begin(),vID2.end(),back_inserter(vID02)); 
-		if(vID02.size()!=1){
-			#if 1
-			 printf("[");
-			 for(int i=0;i<vID.size();i++){
-				 printf("%d,",vID[i]);
-			 }
-			 printf("]\n");
-			#endif	
-		}			
+		set_intersection(vID.begin(),vID.end(),vID2.begin(),vID2.end(),back_inserter(vID02)); 			
         if(vID02.size()>1){		
-			return 0;//ID不确定，还需要新的环不变量确定编号
+			string Q1=calcQ1(r);
+			vector<int> vID023;
+			for(int k=0;k<vID02.size();k++){
+				string Q10=idHelper.StrFromID(r->size(),vID02[k],4);
+				if(Q10==Q1){		
+					vID023.push_back(vID02[k]);
+				}
+			}
+			if(vID023.size()!=1){
+				#if 1
+				 printf("[");
+				 for(int i=0;i<vID.size();i++){
+					 printf("%d,",vID[i]);
+				 }
+				 printf("]\n");
+				#endif	
+			}			
+            if(vID023.size()>1){
+				return 0;//ID不确定，还需要新的环不变量确定编号
+			}
+			else if(vID023.size()<=0){
+			   printf("出错了，环不变量数据Q1有误！\n");
+			   return 0;
+			}
+			return vID023[0];		
 	   }
 	   else if(vID02.size()<=0){
 		   printf("出错了，环不变量数据I1I2遗漏或有误！\n");
@@ -5244,15 +5310,53 @@ int IdRing(IRing* r){
 		if(p==vI1I2.end()){
 			printf("出错了，环不变量数据RingInvariant=%s,I1I2=%s与ID=%d不匹配！\n",strRingInvariant.c_str(),strI1I2.c_str(),vID[0]);
 		}
+		int rk=Rank(r);
+		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
+		if(rk0>0 && rk0!=rk){
+			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！\n",rk,vID[0],rk0);
+		}	
+		string C2=calcC2(r);
+		string C20=idHelper.StrFromID(r->size(),vID[0],1);
+		if(C20!="" && C20!=C2){
+			printf("出错了，环的C2=%s与ID=%d,C2=%s不匹配！\n",C2.c_str(),vID[0],C20.c_str());
+		}
+		string b8N8N9=calcb8N8N9(r);
+		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
+		if(b8N8N90!="" && b8N8N90!=b8N8N9){
+			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str());
+		}			
 		string N1=calcN1(r);
 		string N10=idHelper.StrFromID(r->size(),vID[0],3);
 		if(N10!="" && N10!=N1){
 			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！\n",N1.c_str(),vID[0],N10.c_str());
+		}	
+		string Q1=calcQ1(r);
+		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
+		if(Q10!="" && Q10!=Q1){		
+			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！\n",Q1.c_str(),vID[0],Q10.c_str());
 		}		
    }    
 #endif 
 #if 1
    if(r->size()==27){
+		int rk=Rank(r);
+		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
+		if(rk0>0 && rk0!=rk){
+			string strI1I2=calcI1(r)+","+calcI2(r);
+			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！I1I2=%s\n",rk,vID[0],rk0,strI1I2.c_str());
+		}	
+		string C2=calcC2(r);
+		string C20=idHelper.StrFromID(r->size(),vID[0],1);
+		if(C20!="" && C20!=C2){
+			string strI1I2=calcI1(r)+","+calcI2(r);
+			printf("出错了，环的C2=%s与ID=%d,C2=%s不匹配！I1I2=%s\n",C2.c_str(),vID[0],C20.c_str(),strI1I2.c_str());
+		}
+		string b8N8N9=calcb8N8N9(r);
+		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
+		if(b8N8N90!="" && b8N8N90!=b8N8N9){
+			string strI1I2=calcI1(r)+","+calcI2(r);
+			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！I1I2=%s\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str(),strI1I2.c_str());
+		}		
 		string N1=calcN1(r);
 		string N10=idHelper.StrFromID(r->size(),vID[0],3);
 		if(N10!="" && N10!=N1){
@@ -5278,7 +5382,7 @@ int IdRing(IRing* r){
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			string strI1I2=calcI1(r)+","+calcI2(r);
 			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！I1I2=%s\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str(),strI1I2.c_str());
-		}
+		}		
    } 
 #endif 
    return vID[0];
