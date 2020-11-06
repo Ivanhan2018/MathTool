@@ -487,7 +487,11 @@ int main(int argc, char **argv)
 		else if(_n0==243)
 			g_a=243;
 		else if(_n0==8)
-			g_a=8;			
+			g_a=8;	
+		else if(_n0==9)
+			g_a=9;	
+		else if(_n0==3)
+			g_a=3;		
 		else
 			g_a=32;		
 	}
