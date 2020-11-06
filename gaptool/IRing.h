@@ -5143,7 +5143,7 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("RankR16.csv",16,0);	
 	iret=LoadStr("RankR27.csv",27,0);
 	iret=LoadStr("RankR81.csv",81,0);
-	int rcnt=m_Str[0].size();	
+/* 	int rcnt=m_Str[0].size();	
     //printf("rcnt=%d\n",rcnt);	
 	iret=LoadStr("C2R16.csv",16,1);	
 	iret=LoadStr("C2R27.csv",27,1);
@@ -5156,8 +5156,8 @@ RIDHelper::RIDHelper(){
 	int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);	
 	iret=LoadStr("N1R16.csv",16,3);	
-	iret=LoadStr("N1R27.csv",27,3);	
-	int n1cnt=m_Str[3].size();
+	iret=LoadStr("N1R27.csv",27,3);	 
+	int n1cnt=m_Str[3].size();*/
     //printf("n1cnt=%d\n",n1cnt);
 	iret=LoadStr("Q1R16.csv",16,4);	
 	iret=LoadStr("Q1R27.csv",27,4);	
