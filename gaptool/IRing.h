@@ -1193,6 +1193,78 @@ string calcQ1(IRing* r){
 	return str;
 }
 
+string calcS2(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();	
+	vector<std::vector<int> > vv;
+	for(int i=0;i<n;i++){
+		for(int j=i+1;j<n;j++){
+			vector<int> v;
+			v.push_back(i);		
+			v.push_back(j);
+			Subring S1i0;
+			bool bn=S1i0.init(r,v,n/2+1);
+			if(!bn)
+				continue;
+			if(S1i0.m_Set.size()==1||S1i0.m_Set.size()==r->size())
+				continue;
+			vector<int> v0=v;
+			v=S1i0.m_Set;
+			int iret1=IsIdeal(r,v);
+			if(iret1!=1)
+				continue;			
+			std::sort(v.begin(),v.end());
+			auto it=std::find_if(vv.begin(),vv.end(),[v](vector<int>& obj)->bool{
+						return IsEqual(obj,const_cast<vector<int>&>(v));
+				}); 
+			if(it==vv.end()){
+				vv.push_back(v);
+			}			
+		}
+	}
+	std::sort(vv.begin(),vv.end(),[](vector<int>& a,vector<int>& b)->bool{
+		                return a.size()>b.size();
+				});
+	vector<std::vector<int> > vv1;				
+	int cnt=vv.size();				
+	for(int i=0;i<cnt;i++){
+		    vector<int> v=vv[i];
+			auto it=std::find_if(vv1.begin(),vv1.end(),[v](vector<int>& obj)->bool{
+						vector<int> v1;
+						set_intersection(obj.begin(),obj.end(),v.begin(),v.end(),back_inserter(v1)); 
+						if(v1.size()==v.size() && v.size()<=obj.size())
+							return true;
+						return false;						
+				}); 
+			if(it==vv1.end()){
+				vv1.push_back(v);
+			}	
+	}	
+	vector<pair<int,int> > v;
+	int cnt1=vv1.size();  
+	for(int i=0;i<cnt1;i++){
+		Subring S1i0(r,vv1[i]);
+		int ni=S1i0.size();			
+		int IDi=IdRing(&S1i0);
+        v.push_back(make_pair(ni,IDi));		
+	}	
+	std::sort(v.begin(),v.end());
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2)
+	{
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
 //-----------------------------Begin of IdRing---------------------------------
 class RIDHelper
 {
@@ -1202,7 +1274,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:C2不变量、idx=2:b8N8N9不变量、idx=3:N1不变量、idx=4:Q1不变量	
+	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:C2不变量、idx=2:b8N8N9不变量、idx=3:S2不变量、idx=4:Q1不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -5153,12 +5225,12 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("b8N8N9R16.csv",16,2);	
 	iret=LoadStr("b8N8N9R27.csv",27,2);
 	iret=LoadStr("b8N8N9R81.csv",81,2);	
-	int n89cnt=m_Str[2].size();	
+	int n89cnt=m_Str[2].size();*/	
     //printf("n89cnt=%d\n",n89cnt);	
-	iret=LoadStr("N1R16.csv",16,3);	
-	iret=LoadStr("N1R27.csv",27,3);	 
-	int n1cnt=m_Str[3].size();*/
-    //printf("n1cnt=%d\n",n1cnt);
+	iret=LoadStr("S2R16.csv",16,3);	
+	iret=LoadStr("S2R27.csv",27,3);	 
+	int n1cnt=m_Str[3].size();
+    //printf("s2cnt=%d\n",s2cnt);
 	iret=LoadStr("Q1R16.csv",16,4);	
 	iret=LoadStr("Q1R27.csv",27,4);	
 	iret=LoadStr("Q1R81.csv",81,4);		
@@ -5326,12 +5398,12 @@ int IdRing(IRing* r){
 		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str());
-		}			
-		string N1=calcN1(r);
-		string N10=idHelper.StrFromID(r->size(),vID[0],3);
-		if(N10!="" && N10!=N1){
-			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！\n",N1.c_str(),vID[0],N10.c_str());
-		} */	
+		}*/			
+		string S2=calcS2(r);
+		string S20=idHelper.StrFromID(r->size(),vID[0],3);
+		if(S20!="" && S20!=S2){
+			printf("出错了，环的S2=%s与ID=%d,S2=%s不匹配！\n",S2.c_str(),vID[0],S20.c_str());
+		} 	
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){		
@@ -5358,13 +5430,13 @@ int IdRing(IRing* r){
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			string strI1I2=calcI1(r)+","+calcI2(r);
 			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！I1I2=%s\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str(),strI1I2.c_str());
-		}		
-		string N1=calcN1(r);
-		string N10=idHelper.StrFromID(r->size(),vID[0],3);
-		if(N10!="" && N10!=N1){
-			string strI1I2=calcI1(r)+","+calcI2(r);			
-			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！I1I2=%s\n",N1.c_str(),vID[0],N10.c_str(),strI1I2.c_str());
-		} */	
+		}*/		
+		string S2=calcS2(r);
+		string S20=idHelper.StrFromID(r->size(),vID[0],3);
+		if(S20!="" && S20!=S2){
+			string strI1I2=calcI1(r)+","+calcI2(r);					
+			printf("出错了，环的S2=%s与ID=%d,S2=%s不匹配！I1I2=%s\n",S2.c_str(),vID[0],S20.c_str(),strI1I2.c_str());
+		}	
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){	
