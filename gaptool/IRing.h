@@ -5232,11 +5232,11 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("b8N8N9R16.csv",16,2);	
 	iret=LoadStr("b8N8N9R27.csv",27,2);
 	iret=LoadStr("b8N8N9R81.csv",81,2);	
-	int n89cnt=m_Str[2].size();*/	
+	int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);	
 	iret=LoadStr("N1R16.csv",16,1);	
 	iret=LoadStr("N1R27.csv",27,1);	 
-	int n1cnt=m_Str[1].size();
+	int n1cnt=m_Str[1].size();*/
     //printf("n1cnt=%d\n",n1cnt);	
 	iret=LoadStr("S2R16.csv",16,3);	
 	iret=LoadStr("S2R27.csv",27,3);	 
@@ -5407,12 +5407,12 @@ int IdRing(IRing* r){
 		if(rk0>0 && rk0!=rk){
 			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！\n",rk,vID[0],rk0);
 		}	
- 		string N1=calcN1(r);
+ 		/*string N1=calcN1(r);
 		string N10=idHelper.StrFromID(r->size(),vID[0],1);
 		if(N10!="" && N10!=N1){
 			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！\n",N1.c_str(),vID[0],N10.c_str());
 		}
-		/*string b8N8N9=calcb8N8N9(r);
+		string b8N8N9=calcb8N8N9(r);
 		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str());
@@ -5437,13 +5437,13 @@ int IdRing(IRing* r){
 			string strI1I2=calcI1(r)+","+calcI2(r);
 			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！I1I2=%s\n",rk,vID[0],rk0,strI1I2.c_str());
 		}	
- 		string N1=calcN1(r);
+ 		/*string N1=calcN1(r);
 		string N10=idHelper.StrFromID(r->size(),vID[0],1);
 		if(N10!="" && N10!=N1){
 			string strI1I2=calcI1(r)+","+calcI2(r);
 			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！I1I2=%s\n",N1.c_str(),vID[0],N10.c_str(),strI1I2.c_str());
 		}
-		/*string b8N8N9=calcb8N8N9(r);
+		string b8N8N9=calcb8N8N9(r);
 		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			string strI1I2=calcI1(r)+","+calcI2(r);
