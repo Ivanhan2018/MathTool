@@ -5402,12 +5402,12 @@ int IdRing(IRing* r){
 		if(p==vI1I2.end()){
 			printf("出错了，环不变量数据RingInvariant=%s,I1I2=%s与ID=%d不匹配！\n",strRingInvariant.c_str(),strI1I2.c_str(),vID[0]);
 		}
-		int rk=Rank(r);
+		/*int rk=Rank(r);
 		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
 		if(rk0>0 && rk0!=rk){
 			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！\n",rk,vID[0],rk0);
 		}	
- 		/*string N1=calcN1(r);
+ 		string N1=calcN1(r);
 		string N10=idHelper.StrFromID(r->size(),vID[0],1);
 		if(N10!="" && N10!=N1){
 			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！\n",N1.c_str(),vID[0],N10.c_str());
@@ -5416,12 +5416,12 @@ int IdRing(IRing* r){
 		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str());
-		}*/			
+		}			
 		string S2=calcS2(r);
 		string S20=idHelper.StrFromID(r->size(),vID[0],3);
 		if(S20!="" && S20!=S2){
 			printf("出错了，环的S2=%s与ID=%d,S2=%s不匹配！\n",S2.c_str(),vID[0],S20.c_str());
-		} 	
+		}*/ 	
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){		
@@ -5431,13 +5431,13 @@ int IdRing(IRing* r){
 #endif 
 #if 1
    if(r->size()==27){
-		int rk=Rank(r);
+		/*int rk=Rank(r);
 		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
 		if(rk0>0 && rk0!=rk){
 			string strI1I2=calcI1(r)+","+calcI2(r);
 			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！I1I2=%s\n",rk,vID[0],rk0,strI1I2.c_str());
 		}	
- 		/*string N1=calcN1(r);
+ 		string N1=calcN1(r);
 		string N10=idHelper.StrFromID(r->size(),vID[0],1);
 		if(N10!="" && N10!=N1){
 			string strI1I2=calcI1(r)+","+calcI2(r);
@@ -5448,13 +5448,13 @@ int IdRing(IRing* r){
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			string strI1I2=calcI1(r)+","+calcI2(r);
 			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！I1I2=%s\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str(),strI1I2.c_str());
-		}*/		
+		}		
 		string S2=calcS2(r);
 		string S20=idHelper.StrFromID(r->size(),vID[0],3);
 		if(S20!="" && S20!=S2){
 			string strI1I2=calcI1(r)+","+calcI2(r);					
 			printf("出错了，环的S2=%s与ID=%d,S2=%s不匹配！I1I2=%s\n",S2.c_str(),vID[0],S20.c_str(),strI1I2.c_str());
-		}	
+		}*/	
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){	
