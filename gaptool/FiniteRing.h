@@ -444,7 +444,24 @@ IRing* newR8(int i)
 	}	
 	if(i==8)
 	{
-		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_8Mul[0][0],0);
+		//FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_8Mul[0][0],0);
+		M2r* r=new M2r();
+		MATRIXi A(2,vector<int>(2,0));
+		MATRIXi B(2,vector<int>(2,0));
+		A[0][0]=0;
+		A[0][1]=1;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=2;
+		B[0][1]=0;
+		B[1][0]=0;
+		B[1][1]=0;
+		vector<MATRIXi> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		r->m_r=new ZmodnZ(1,4);
+		r->m_flag=1;
+		r->m_Set=M2r::FR(r->m_r,gen); 
 		return r;
 	}
 	if(i==9)
@@ -454,8 +471,25 @@ IRing* newR8(int i)
 	}
 	if(i==10)
 	{
-		FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_10Mul[0][0],0);
-		return r;
+		//FiniteRing* r=new FiniteRing(8,&g_R8_24Add[0][0],&g_R8_10Mul[0][0],0);
+		M2r* r=new M2r();
+		MATRIXi A(2,vector<int>(2,0));
+		MATRIXi B(2,vector<int>(2,0));
+		A[0][0]=2;
+		A[0][1]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		B[0][0]=2;
+		B[0][1]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		vector<MATRIXi> gen;
+		gen.push_back(A);
+		gen.push_back(B);
+		r->m_r=new ZmodnZ(1,4);
+		r->m_flag=1;
+		r->m_Set=M2r::FR(r->m_r,gen);   
+		return r;		
 	}
 	if(i==11)
 	{
