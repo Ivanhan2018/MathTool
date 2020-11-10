@@ -283,6 +283,20 @@ string V2S(vector<int>& v){
 }
 #endif
 
+string V2S(vector<pair<int,int> >& v1){
+	string str="[";
+	for(int i=0;i<v1.size();i++){
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
+		str+=sz;
+	}
+	if(str.size()>2){
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
 vector<int>  DivisorsInt(int n){
 	vector<int> ret;
 	if(n<1)
@@ -456,6 +470,22 @@ vector<tuple<int,int,int> > doN2Vec(vector<pair<int,int> >& v){
 }
 #endif
 
+vector<tuple<int,int,int,int> > doN3Vec(vector<tuple<int,int,int> >& v){
+	vector<tuple<int,int,int,int> > ret;
+	int n=v.size();
+	for(int i=0;i<n;i++){
+		tuple<int,int,int> vi=v[i];
+		vector<tuple<int,int,int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](tuple<int,int,int,int>& obj)->bool{if(get<0>(obj)==get<0>(vi) && get<1>(obj)==get<1>(vi) && get<2>(obj)==get<2>(vi))return true;return false;});
+		if(it==ret.end()){
+			ret.push_back(make_tuple(get<0>(vi),get<1>(vi),get<2>(vi),1));
+		}else{
+			int cnt=get<3>(*it);
+			ret[it-ret.begin()]=make_tuple(get<0>(vi),get<1>(vi),get<2>(vi),cnt+1);
+		}
+	}
+	return ret;
+}
+
 bool IsConjugacy(IRing* r,int a,int b){
     int N=r->size();
     for(int i=0;i<N;i++){
@@ -499,6 +529,38 @@ string calcC2(IRing* r){
 	str+="]";
 	return str;
 }
+
+string calcN3(IRing* r){
+	int IsNil(IRing* r,int i);	
+	int n=r->size();
+	vector<pair<int,int> > v;
+	for(int i=1;i<n;i++){
+		vector<int> S1=Order(r,i);			
+		int o=S1.size();
+		int ni=IsNil(r,i);					
+		v.push_back(make_pair(o,ni));
+	}
+	vector<tuple<int,int,int> > v1=doN2Vec(v);
+	std::sort(v1.begin(),v1.end(),[](tuple<int,int,int>& a,tuple<int,int,int>& b)->bool{
+					if(get<0>(a)!=get<0>(b))
+						return get<0>(a)<get<0>(b);				
+					return get<1>(a)<get<1>(b);	
+				});	
+	string str="[";
+	for(int i=0;i<v1.size();i++)
+	{
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
+		str+=sz;
+	}
+	if(str.size()>2)
+	{
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
 string calcN2(IRing* r){
 	int n=r->size();
 	vector<pair<int,int> > v;
@@ -1279,7 +1341,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:N1不变量、idx=2:b8N8N9不变量、idx=3:S2不变量、idx=4:Q1不变量	
+	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:N3不变量、idx=2:b8N8N9不变量、idx=3:S2不变量、idx=4:Q1不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -5231,13 +5293,13 @@ RIDHelper::RIDHelper(){
     //printf("c2cnt=%d\n",c2cnt);	
 	iret=LoadStr("b8N8N9R16.csv",16,2);	
 	iret=LoadStr("b8N8N9R27.csv",27,2);
-	iret=LoadStr("b8N8N9R81.csv",81,2);	
-	int n89cnt=m_Str[2].size();	
+	iret=LoadStr("b8N8N9R81.csv",81,2);*/	
+	//int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);	
-	iret=LoadStr("N1R16.csv",16,1);	
-	iret=LoadStr("N1R27.csv",27,1);	 
-	int n1cnt=m_Str[1].size();*/
-    //printf("n1cnt=%d\n",n1cnt);	
+	iret=LoadStr("N3R16.csv",16,1);	
+	iret=LoadStr("N3R27.csv",27,1);	 
+	int n3cnt=m_Str[1].size();
+    //printf("n3cnt=%d\n",n3cnt);	
 	iret=LoadStr("S2R16.csv",16,3);	
 	iret=LoadStr("S2R27.csv",27,3);	 
 	int s2cnt=m_Str[3].size();
@@ -5406,11 +5468,11 @@ int IdRing(IRing* r){
 		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
 		if(rk0>0 && rk0!=rk){
 			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！\n",rk,vID[0],rk0);
-		}	
- 		string N1=calcN1(r);
-		string N10=idHelper.StrFromID(r->size(),vID[0],1);
-		if(N10!="" && N10!=N1){
-			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！\n",N1.c_str(),vID[0],N10.c_str());
+		}*/	
+ 		string N3=calcN3(r);
+		string N30=idHelper.StrFromID(r->size(),vID[0],1);
+		if(N30!="" && N30!=N3){
+			printf("出错了，环的N3=%s与ID=%d,N3=%s不匹配！\n",N3.c_str(),vID[0],N30.c_str());
 		}
 		string b8N8N9=calcb8N8N9(r);
 		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
@@ -5436,14 +5498,14 @@ int IdRing(IRing* r){
 		if(rk0>0 && rk0!=rk){
 			string strI1I2=calcI1(r)+","+calcI2(r);
 			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！I1I2=%s\n",rk,vID[0],rk0,strI1I2.c_str());
-		}	
- 		string N1=calcN1(r);
-		string N10=idHelper.StrFromID(r->size(),vID[0],1);
-		if(N10!="" && N10!=N1){
+		}*/	
+ 		string N3=calcN3(r);
+		string N30=idHelper.StrFromID(r->size(),vID[0],1);
+		if(N30!="" && N30!=N3){
 			string strI1I2=calcI1(r)+","+calcI2(r);
-			printf("出错了，环的N1=%s与ID=%d,N1=%s不匹配！I1I2=%s\n",N1.c_str(),vID[0],N10.c_str(),strI1I2.c_str());
+			printf("出错了，环的N3=%s与ID=%d,N3=%s不匹配！I1I2=%s\n",N3.c_str(),vID[0],N30.c_str(),strI1I2.c_str());
 		}
-		string b8N8N9=calcb8N8N9(r);
+		/*string b8N8N9=calcb8N8N9(r);
 		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
 		if(b8N8N90!="" && b8N8N90!=b8N8N9){
 			string strI1I2=calcI1(r)+","+calcI2(r);
