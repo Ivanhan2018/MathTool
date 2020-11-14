@@ -3848,7 +3848,7 @@ RIDHelper::RIDHelper(){
 	m_RingInvariant.insert(make_pair("[1,15,16,0,0,0],4,0,0,32,1,11,31,480,31,8,[1,7,20,4,0,0],[[2,2,112],[2,4,112],[4,2,144],[4,4,176]],[[8,12],[16,16],[32,4]]",4720));//R16_173:		
 	m_RingInvariant.insert(make_pair("[1,15,16,0,0,0],4,0,0,32,1,11,31,480,31,8,[1,3,28,0,0,0],[[2,2,112],[2,4,112],[4,2,144],[4,4,176]],[[8,12],[16,16],[32,4]]",4721));//R16_173:
 	m_RingInvariant.insert(make_pair("[1,15,16,0,0,0],4,0,0,32,1,11,31,512,31,4,[1,7,24,0,0,0],[[2,2,96],[2,4,96],[4,2,128],[4,4,192]],[[8,16],[16,8],[32,8]]",4722));	
-	m_RingInvariant.insert(make_pair("[1,15,16,0,0,0],4,0,0,32,1,11,31,480,31,8,[1,3,28,0,0,0],[[2,2,112],[2,4,112],[4,2,144],[4,4,176]],[[8,12],[16,16],[32,4]]",4723));//R16_146:	
+	//m_RingInvariant.insert(make_pair("[1,15,16,0,0,0],4,0,0,32,1,11,31,480,31,8,[1,3,28,0,0,0],[[2,2,112],[2,4,112],[4,2,144],[4,4,176]],[[8,12],[16,16],[32,4]]",4723));//R16_146:	
 	m_RingInvariant.insert(make_pair("[1,15,16,0,0,0],4,0,0,32,1,7,31,448,31,8,[1,3,16,12,0,0],[[2,2,144],[2,4,144],[4,2,144],[4,4,144]],[[8,24],[32,8]]",4724));//R16_131:	
 	m_RingInvariant.insert(make_pair("[1,15,16,0,0,0],4,0,0,32,5,7,15,272,15,4,[1,7,16,8,0,0],[[2,2,64],[2,4,192],[4,2,240],[4,4,256]],[[1,16],[8,8],[16,4],[32,4]]",4725));//R16_177:		
 	m_RingInvariant.insert(make_pair("[1,15,16,0,0,0],4,0,0,32,5,11,15,272,31,2,[1,11,12,8,0,0],[[2,2,64],[2,4,240],[4,2,192],[4,4,256]],[[4,16],[8,8],[16,7],[32,1]]",4726));//R16_179:	
@@ -4622,6 +4622,7 @@ RIDHelper::RIDHelper(){
 	int s2cnt=m_Str[3].size();
     //printf("s2cnt=%d\n",s2cnt);
 	iret=LoadStr("Q1R16.csv",16,4);	
+	iret=LoadStr("Q1R32.csv",32,4);	
 	iret=LoadStr("Q1R27.csv",27,4);	
 	iret=LoadStr("Q1R81.csv",81,4);		
 	int q1cnt=m_Str[4].size();
@@ -4725,23 +4726,23 @@ int IdRing(IRing* r){
    vector<int> vID=idHelper.IDFromRingInvariant(strRingInvariant);
    if(vID.size()<=0)	   
 	   return -1;//没有RingInvariant数据
-   if(vID.size()>1){   
-	    string strI1I2=calcI1(r)+","+calcI2(r);
-		vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	
+   if(vID.size()>1){ 
+		string Q1=calcQ1(r);
 		vector<int> vID02;
-		// 调用set_intersection之前要加上sort，否则计算的来的交集有可能不准。例如R32_2022和R32_2018
-		std::sort(vID.begin(),vID.end());
-		std::sort(vID2.begin(),vID2.end());
-		set_intersection(vID.begin(),vID.end(),vID2.begin(),vID2.end(),back_inserter(vID02)); 			
-        if(vID02.size()>1){		
-			string Q1=calcQ1(r);
-			vector<int> vID023;
-			for(int k=0;k<vID02.size();k++){
-				string Q10=idHelper.StrFromID(r->size(),vID02[k],4);
-				if(Q10==Q1){		
-					vID023.push_back(vID02[k]);
-				}
+		for(int k=0;k<vID.size();k++){
+			string Q10=idHelper.StrFromID(r->size(),vID[k],4);
+			if(Q10==Q1){		
+				vID02.push_back(vID[k]);
 			}
+		}			
+        if(vID02.size()>1){		
+			string strI1I2=calcI1(r)+","+calcI2(r);
+			vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	
+			vector<int> vID023;
+			// 调用set_intersection之前要加上sort，否则计算的来的交集有可能不准。例如R32_2022和R32_2018
+			std::sort(vID02.begin(),vID02.end());
+			std::sort(vID2.begin(),vID2.end());
+			set_intersection(vID02.begin(),vID02.end(),vID2.begin(),vID2.end(),back_inserter(vID023)); 
 			if(vID023.size()!=1){
 				#if 1
 				 printf("[");
@@ -4755,7 +4756,7 @@ int IdRing(IRing* r){
 				return 0;//ID不确定，还需要新的环不变量确定编号
 			}
 			else if(vID023.size()<=0){
-			   printf("出错了，环不变量数据Q1有误！Q1=%s\n",Q1.c_str());
+			   printf("出错了，环不变量数据I1I2遗漏或有误！I1I2=%s\n",strI1I2.c_str());
 			   return 0;
 			}
 			return vID023[0];		
@@ -4768,106 +4769,11 @@ int IdRing(IRing* r){
 			 }
 			 printf("]\n");
 			#endif			   
-			printf("出错了，环不变量数据I1I2遗漏或有误！I1I2=%s\n",strI1I2.c_str());
+		    printf("出错了，环不变量数据Q1有误！Q1=%s\n",Q1.c_str());
 			return 0;
 	   }
 	   return vID02[0];
    }   
-#ifdef R16_I1I2
-   if(r->size()==16){
-		string strI1I2=calcI1(r)+","+calcI2(r);
-		vector<string> vI1I2=idHelper.I1I2FromID(vID[0]);
-		vector<string>::iterator p=std::find(vI1I2.begin(),vI1I2.end(),strI1I2);
-		if(p==vI1I2.end()){
-			printf("出错了，环不变量数据RingInvariant=%s,I1I2=%s与ID=%d不匹配！\n",strRingInvariant.c_str(),strI1I2.c_str(),vID[0]);
-		}
-		/*int rk=Rank(r);
-		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
-		if(rk0>0 && rk0!=rk){
-			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！\n",rk,vID[0],rk0);
-		}*/	
- 		string N3=calcN3(r);
-		string N30=idHelper.StrFromID(r->size(),vID[0],1);
-		if(N30!="" && N30!=N3){
-			printf("出错了，环的N3=%s与ID=%d,N3=%s不匹配！\n",N3.c_str(),vID[0],N30.c_str());
-		}
-		/*string b8N8N9=calcb8N8N9(r);
-		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
-		if(b8N8N90!="" && b8N8N90!=b8N8N9){
-			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str());
-		}			
-		string S2=calcS2(r);
-		string S20=idHelper.StrFromID(r->size(),vID[0],3);
-		if(S20!="" && S20!=S2){
-			printf("出错了，环的S2=%s与ID=%d,S2=%s不匹配！\n",S2.c_str(),vID[0],S20.c_str());
-		}*/ 	
-		string Q1=calcQ1(r);
-		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
-		if(Q10!="" && Q10!=Q1){		
-			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！\n",Q1.c_str(),vID[0],Q10.c_str());
-		}		
-   }    
-#endif 
-#if 1
-   if(r->size()==27){
-		/*int rk=Rank(r);
-		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
-		if(rk0>0 && rk0!=rk){
-			string strI1I2=calcI1(r)+","+calcI2(r);
-			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！I1I2=%s\n",rk,vID[0],rk0,strI1I2.c_str());
-		}*/	
- 		string N3=calcN3(r);
-		string N30=idHelper.StrFromID(r->size(),vID[0],1);
-		if(N30!="" && N30!=N3){
-			string strI1I2=calcI1(r)+","+calcI2(r);
-			printf("出错了，环的N3=%s与ID=%d,N3=%s不匹配！I1I2=%s\n",N3.c_str(),vID[0],N30.c_str(),strI1I2.c_str());
-		}
-		/*string b8N8N9=calcb8N8N9(r);
-		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
-		if(b8N8N90!="" && b8N8N90!=b8N8N9){
-			string strI1I2=calcI1(r)+","+calcI2(r);
-			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！I1I2=%s\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str(),strI1I2.c_str());
-		}		
-		string S2=calcS2(r);
-		string S20=idHelper.StrFromID(r->size(),vID[0],3);
-		if(S20!="" && S20!=S2){
-			string strI1I2=calcI1(r)+","+calcI2(r);					
-			printf("出错了，环的S2=%s与ID=%d,S2=%s不匹配！I1I2=%s\n",S2.c_str(),vID[0],S20.c_str(),strI1I2.c_str());
-		}*/	
-		string Q1=calcQ1(r);
-		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
-		if(Q10!="" && Q10!=Q1){	
-			string strI1I2=calcI1(r)+","+calcI2(r);			
-			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！I1I2=%s\n",Q1.c_str(),vID[0],Q10.c_str(),strI1I2.c_str());
-		}		
-   }
-   if(r->size()==81){
-		int rk=Rank(r);
-		int rk0=atoi(idHelper.StrFromID(r->size(),vID[0],0).c_str());
-		if(rk0>0 && rk0!=rk){
-			string strI1I2=calcI1(r)+","+calcI2(r);
-			printf("出错了，环的秩rk=%d与ID=%d,rk=%d不匹配！I1I2=%s\n",rk,vID[0],rk0,strI1I2.c_str());
-		}
-/* 		string C2=calcC2(r);
-		string C20=idHelper.StrFromID(r->size(),vID[0],1);
-		if(C20!="" && C20!=C2){
-			string strI1I2=calcI1(r)+","+calcI2(r);
-			printf("出错了，环的C2=%s与ID=%d,C2=%s不匹配！I1I2=%s\n",C2.c_str(),vID[0],C20.c_str(),strI1I2.c_str());
-		}
-		string b8N8N9=calcb8N8N9(r);
-		string b8N8N90=idHelper.StrFromID(r->size(),vID[0],2);
-		if(b8N8N90!="" && b8N8N90!=b8N8N9){
-			string strI1I2=calcI1(r)+","+calcI2(r);
-			printf("出错了，环的b8N8N9=%s与ID=%d,b8N8N9=%s不匹配！I1I2=%s\n",b8N8N9.c_str(),vID[0],b8N8N90.c_str(),strI1I2.c_str());
-		} */
-		string Q1=calcQ1(r);
-		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
-		if(Q10!="" && Q10!=Q1){	
-			string strI1I2=calcI1(r)+","+calcI2(r);			
-			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！I1I2=%s\n",Q1.c_str(),vID[0],Q10.c_str(),strI1I2.c_str());
-		}			
-   } 
-#endif 
    return vID[0];
 }
 
