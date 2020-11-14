@@ -4594,9 +4594,9 @@ RIDHelper::RIDHelper(){
 	int iret=LoadData("RingInvariant.csv",0);	
 	int cnt1=m_RingInvariant.size();
     //printf("iret=%d,%d-%d=%d\n",iret,cnt1,cnt0,cnt1-cnt0);	
-	int cnt2=m_I1I2.size();	
+/* 	int cnt2=m_I1I2.size();	
 	int iret1=LoadData("I1I2.csv",1);	
-	int cnt3=m_I1I2.size();
+	int cnt3=m_I1I2.size(); */
     //printf("iret1=%d,%d-%d=%d\n",iret1,cnt3,cnt2,cnt3-cnt2);
 	iret=LoadStr("RankR16.csv",16,0);	
 	iret=LoadStr("RankR27.csv",27,0);
@@ -4735,8 +4735,9 @@ int IdRing(IRing* r){
 				vID02.push_back(vID[k]);
 			}
 		}			
-        if(vID02.size()>1){		
-			string strI1I2=calcI1(r)+","+calcI2(r);
+        if(vID02.size()>1){	
+			return 0;//ID不确定，还需要新的环不变量确定编号
+/* 			string strI1I2=calcI1(r)+","+calcI2(r);
 			vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	
 			vector<int> vID023;
 			// 调用set_intersection之前要加上sort，否则计算的来的交集有可能不准。例如R32_2022和R32_2018
@@ -4759,7 +4760,7 @@ int IdRing(IRing* r){
 			   printf("出错了，环不变量数据I1I2遗漏或有误！I1I2=%s\n",strI1I2.c_str());
 			   return 0;
 			}
-			return vID023[0];		
+			return vID023[0]; */		
 	   }
 	   else if(vID02.size()<=0){
 			#if 1
@@ -4774,6 +4775,15 @@ int IdRing(IRing* r){
 	   }
 	   return vID02[0];
    }   
+#if 1
+   if(r->size()==16||r->size()==27||r->size()==81){
+		string Q1=calcQ1(r);
+		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
+		if(Q10!="" && Q10!=Q1){			
+			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！\n",Q1.c_str(),vID[0],Q10.c_str());
+		}
+   }
+#endif
    return vID[0];
 }
 
