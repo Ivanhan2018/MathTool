@@ -1341,7 +1341,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:N3不变量、idx=2:b8N8N9不变量、idx=3:S2不变量、idx=4:Q1不变量	
+	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:RI2不变量、idx=2:b8N8N9不变量、idx=3:S2不变量、idx=4:Q1不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -4598,25 +4598,20 @@ RIDHelper::RIDHelper(){
 	int iret1=LoadData("I1I2.csv",1);	
 	int cnt3=m_I1I2.size(); */
     //printf("iret1=%d,%d-%d=%d\n",iret1,cnt3,cnt2,cnt3-cnt2);
-	iret=LoadStr("RankR16.csv",16,0);	
+	/*iret=LoadStr("RankR16.csv",16,0);	
 	iret=LoadStr("RankR27.csv",27,0);
 	iret=LoadStr("RankR81.csv",81,0);
-/* 	int rcnt=m_Str[0].size();	
+ 	int rcnt=m_Str[0].size();	
     //printf("rcnt=%d\n",rcnt);	
-	iret=LoadStr("C2R16.csv",16,1);	
-	iret=LoadStr("C2R27.csv",27,1);
-	iret=LoadStr("C2R81.csv",81,1);	
-	int c2cnt=m_Str[1].size();	
-    //printf("c2cnt=%d\n",c2cnt);	
 	iret=LoadStr("b8N8N9R16.csv",16,2);	
 	iret=LoadStr("b8N8N9R27.csv",27,2);
 	iret=LoadStr("b8N8N9R81.csv",81,2);*/	
 	//int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);	
-	iret=LoadStr("N3R16.csv",16,1);	
-	iret=LoadStr("N3R27.csv",27,1);	 
-	int n3cnt=m_Str[1].size();
-    //printf("n3cnt=%d\n",n3cnt);	
+	iret=LoadStr("RI2R16.csv",16,1);	
+	iret=LoadStr("RI2R27.csv",27,1);	 
+	int ri2cnt=m_Str[1].size();
+    //printf("ri2cnt=%d\n",ri2cnt);	
 	iret=LoadStr("S2R16.csv",16,3);	
 	iret=LoadStr("S2R27.csv",27,3);	 
 	int s2cnt=m_Str[3].size();
@@ -4718,6 +4713,16 @@ string calcRingInvariant(IRing* r){
 	return sz;
 }
 
+string calcRingInvariant2(IRing* r){
+	string strN1=calcN1(r);
+	string strC2=calcC2(r);
+	string strN3=calcN3(r);	
+    // N1C2N3
+	char sz[2048]={0};
+	sprintf(sz,"%s,%s,%s",strN1.c_str(),strC2.c_str(),strN3.c_str());	
+	return sz;
+}
+	
 int IdRing(IRing* r){	
    if(r->size()<=1)
 	   return 1;
@@ -4783,6 +4788,13 @@ int IdRing(IRing* r){
 			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！\n",Q1.c_str(),vID[0],Q10.c_str());
 		}
    }
+   if(r->size()==16||r->size()==27){
+		string RI2=calcRingInvariant2(r);
+		string RI20=idHelper.StrFromID(r->size(),vID[0],1);		
+		if(RI20!="" && RI2.find(RI20)==string::npos){			
+			printf("出错了，环的RI2=%s与ID=%d,RI2=%s不匹配！\n",RI2.c_str(),vID[0],RI20.c_str());
+		}
+   }   
 #endif
    return vID[0];
 }

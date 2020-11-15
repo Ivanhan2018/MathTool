@@ -238,19 +238,10 @@ void FiniteRing::printTable()
 	printf("%d,%s\n",ID,b8N8N9.c_str());
 #elif defined(Q1_)
 	string Q1=calcQ1(this);
-	printf("%d,%s\n",ID,Q1.c_str());
-#elif defined(N1_)
-	string N1=calcN1(this);
-	printf("%d,%s\n",ID,N1.c_str());
-#elif defined(N3_)
-	string N3=calcN3(this);
-	printf("%d,%s\n",ID,N3.c_str());	
+	printf("%d,%s\n",ID,Q1.c_str());	
 #elif defined(S2_)
 	string S2=calcS2(this);
-	printf("%d,%s\n",ID,S2.c_str());	
-#elif defined(C2_)
-	string C2=calcC2(this);
-	printf("%d,%s\n",ID,C2.c_str());		
+	printf("%d,%s\n",ID,S2.c_str());			
 #elif defined(RK)
 	int rk=Rank(this);
 	printf("%d,%d\n",ID,rk);
@@ -261,6 +252,9 @@ void FiniteRing::printTable()
 #elif defined(RI)
 	string str=calcRingInvariant(this);  
 	printf("%d,%s\n",ID,str.c_str());	
+#elif defined(RI2)
+	string str=calcRingInvariant2(this);  
+	printf("%d,%s\n",ID,str.c_str());		
 #else
 	string str=calcRingInvariant(this);
 	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());
