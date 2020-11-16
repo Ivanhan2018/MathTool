@@ -1260,10 +1260,50 @@ string calcQ1(IRing* r){
 	return str;
 }
 
+string calcH2(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();
+	int p=2;
+	for(;p<=n;p++){
+		if(n%p==0)
+			break;
+	}
+	if(p==n){
+		return "[]";
+	}
+	vector<pair<int,int> > v1; 	
+	for(int i=0;i<n;i++){
+		for(int j=i+1;j<n;j++){
+			vector<int> v;
+			v.push_back(i);		
+			v.push_back(j);
+			Subring S1i0;
+			bool b=S1i0.init(r,v,n/p);
+			if(!b)
+			   continue;
+			if(S1i0.m_Set.size()!=n/p)
+				continue;
+			vector<int> v0=v;
+			v=S1i0.m_Set;
+			int iret1=IsIdeal(r,v);
+			if(iret1==0)
+				continue;		
+			int ID=IdRing(&S1i0);
+			auto it=std::find(v1.begin(),v1.end(),make_pair(ID,iret1));
+			if(it==v1.end()){
+				v1.push_back(make_pair(ID,iret1));
+			}
+		}
+	}
+	std::sort(v1.begin(),v1.end());	 
+	string str=V2S(v1);
+	return str;
+}
+
 string calcS2(IRing* r){
 	int IdRing(IRing* r);
 	int n=r->size();	
-	vector<std::vector<int> > vv;
+	vector<vector<int> > vv;
 	for(int i=0;i<n;i++){
 		for(int j=i+1;j<n;j++){
 			vector<int> v;
@@ -1341,7 +1381,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:RI2不变量、idx=2:b8N8N9不变量、idx=3:S2不变量、idx=4:Q1不变量	
+	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:RI2不变量、idx=2:b8N8N9不变量、idx=3:H2不变量、idx=4:Q1不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -4608,14 +4648,14 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("b8N8N9R81.csv",81,2);*/	
 	//int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);	
-	iret=LoadStr("RI2R16.csv",16,1);	
+/* 	iret=LoadStr("RI2R16.csv",16,1);	
 	iret=LoadStr("RI2R27.csv",27,1);	 
-	int ri2cnt=m_Str[1].size();
+	int ri2cnt=m_Str[1].size(); */
     //printf("ri2cnt=%d\n",ri2cnt);	
-	iret=LoadStr("S2R16.csv",16,3);	
-	iret=LoadStr("S2R27.csv",27,3);	 
-	int s2cnt=m_Str[3].size();
-    //printf("s2cnt=%d\n",s2cnt);
+ 	iret=LoadStr("H2R16.csv",16,3);	
+	iret=LoadStr("H2R27.csv",27,3);	 
+	int h2cnt=m_Str[3].size();
+    //printf("h2cnt=%d\n",h2cnt);
 	iret=LoadStr("Q1R16.csv",16,4);	
 	iret=LoadStr("Q1R32.csv",32,4);	
 	iret=LoadStr("Q1R27.csv",27,4);	
@@ -4788,13 +4828,20 @@ int IdRing(IRing* r){
 			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！\n",Q1.c_str(),vID[0],Q10.c_str());
 		}
    }
-   if(r->size()==16||r->size()==27){
+    if(r->size()==16||r->size()==27){
+		string H2=calcH2(r);
+		string H20=idHelper.StrFromID(r->size(),vID[0],3);
+		if(H20!="" && H20!=H2){			
+			printf("出错了，环的H2=%s与ID=%d,H2=%s不匹配！\n",H2.c_str(),vID[0],H20.c_str());
+		}
+   }     
+/*    if(r->size()==16||r->size()==27){
 		string RI2=calcRingInvariant2(r);
 		string RI20=idHelper.StrFromID(r->size(),vID[0],1);		
 		if(RI20!="" && RI2.find(RI20)==string::npos){			
 			printf("出错了，环的RI2=%s与ID=%d,RI2=%s不匹配！\n",RI2.c_str(),vID[0],RI20.c_str());
 		}
-   }   
+   }  */  
 #endif
    return vID[0];
 }

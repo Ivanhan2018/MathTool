@@ -59,7 +59,7 @@ int main(int argc, char **argv){
 		IDs.push_back(iID);
 	}	
 	int cnt=IDs.size();
-	const char *szCmd[]={"RI","RI2","S2","N89"};
+	const char *szCmd[]={"RI","RI2","H2","S2","N89"};
 	int count=sizeof(szCmd)/sizeof(szCmd[0]);
 	for(int i=0;i<count;i++)	{
 		printf("%s²»±äÁ¿:\n",szCmd[i]);		
