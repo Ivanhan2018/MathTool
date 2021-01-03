@@ -4660,6 +4660,7 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("Q1R32.csv",32,4);	
 	iret=LoadStr("Q1R27.csv",27,4);	
 	iret=LoadStr("Q1R81.csv",81,4);		
+	iret=LoadStr("Q1R243.csv",243,4);	
 	int q1cnt=m_Str[4].size();
     //printf("q1cnt=%d\n",q1cnt);	
 }
@@ -4821,7 +4822,7 @@ int IdRing(IRing* r){
 	   return vID02[0];
    }   
 #if 1
-   if(r->size()==16||r->size()==27||r->size()==81){
+   if(r->size()==16||r->size()==27||r->size()==81||r->size()==243){
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){			
