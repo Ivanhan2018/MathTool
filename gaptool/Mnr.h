@@ -22,7 +22,8 @@ public:
    static vector<MATRIXi8> FR(IRing* r,vector<MATRIXi8>& gen); 
    static MATRIXi8 add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m);  
    static MATRIXi8 mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m); 
-   static string MStr(const MATRIXi8 &t,const char* szL="[",const char* szR="]");   
+   static string MStr(const MATRIXi8 &t,const char* szL="[",const char* szR="]"); 
+   static MATRIXi8 getMATRIXi8(int n,int m,int idx);    
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -332,6 +333,26 @@ MATRIXi8 Mnr::mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m)
 		}
 	}
 	return C;
+}
+
+MATRIXi8 Mnr::getMATRIXi8(int n,int m,int idx){
+	vector<TElem> v(n*n,0);
+	MATRIXi8 M(n,vector<TElem>(n,0));	
+	if(idx<=0){
+		return M;
+	}
+	int cnt=-1;
+	do {
+		for(int k=0;k<n*n;k++){
+			int i=k/n;
+			int j=k%n;
+			M[i][j]=v[k];
+		}
+		cnt++;
+		if(cnt==idx)
+			return M;
+	}while(nextV1(m,v));	
+	return M;	
 }
 
 bool Mnr::nextV1(int m,vector<TElem>& v){

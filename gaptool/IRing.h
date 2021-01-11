@@ -4822,7 +4822,7 @@ int IdRing(IRing* r){
 	   return vID02[0];
    }   
 #if 1
-   if(r->size()==16||r->size()==27||r->size()==81||r->size()==243){
+   if(r->size()==16||r->size()==32||r->size()==27||r->size()==81||r->size()==243){
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){			

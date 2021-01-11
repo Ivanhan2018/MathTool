@@ -2528,6 +2528,44 @@ int main(int argc, char* argv[])
 				mstr+=";";
 		}
 		printf("mstr=%s\n",mstr.c_str());		
+	}else if(mstr.substr(0,1)=="n"){
+		srand(time(NULL));
+		int N=powf(r->size(),n*n);
+		if(N<0)
+			N=10000;	
+		int cnt=GetRand(1,3);
+		if(mstr.size()>1){
+			int cnt1=atoi(mstr.substr(1,1).c_str());
+			if(cnt1>0 && cnt1<6){
+				cnt=cnt1;
+			}
+		}
+		mstr="";
+		for(int i=0;i<cnt;i++){
+			int ii=GetRand(1,N-1);
+			MATRIXi8 vi=Mnr::getMATRIXi8(n,r->size(),ii);
+			string stri=Mnr::MStr(vi,"","");		
+			mstr+=stri;
+			if(i<cnt-1)
+				mstr+=";";
+		}
+		printf("mstr=%s\n",mstr.c_str());		
+	}else if(mstr.substr(0,1)=="N"){
+		mstr=mstr.substr(1,mstr.size()-1);
+		vector<string> vs=split(mstr,";");		
+		int N=powf(r->size(),n*n);
+		if(N<0)
+			N=10000;	
+		int cnt=vs.size();
+		mstr="";
+		for(int i=0;i<cnt;i++){
+			MATRIXi8 vi=Mnr::getMATRIXi8(n,r->size(),atoi(vs[i].c_str()));
+			string stri=Mnr::MStr(vi,"","");
+			mstr+=stri;
+			if(i<cnt-1)
+				mstr+=";";
+		}
+		printf("mstr=%s\n",mstr.c_str());		
 	}
 	int fun=1;
 	string vstr="";
