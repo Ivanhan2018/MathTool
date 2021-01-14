@@ -106,6 +106,8 @@ bool Subring::init(IRing* r,const vector<int>& gens,int N){
 		}
 		cnt1=m_Set.size();
 	}while(cnt1>cnt);
+	if(N>0 && m_Set.size()>N)
+		return false;	
     return true;	
 }
 
