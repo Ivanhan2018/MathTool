@@ -2472,6 +2472,33 @@ bool testQR(IRing *r,int n,vector<int>& v){
 	return true;
 }
 
+int GetRandV(int r){
+	vector<int> v;
+	v.push_back(0);
+	v.push_back(1);	
+	if(r==4){
+		v.push_back(2);	
+	}
+	else if(r==8){
+		v.push_back(2);		
+		v.push_back(4);	
+	}
+	else if(r==16){
+		v.push_back(2);		
+		v.push_back(4);
+		v.push_back(8);		
+	}
+	else if(r==9){
+		v.push_back(3);			
+	}	
+	else if(r==27){
+		v.push_back(3);		
+		v.push_back(9);	
+	}	
+	int ii=GetRand(0,v.size()-1);
+	return v[ii];
+}
+
 int main(int argc, char* argv[])
 { 
     int n=2;
@@ -2527,7 +2554,30 @@ int main(int argc, char* argv[])
 			if(i<cnt-1)
 				mstr+=";";
 		}
-		printf("mstr=%s\n",mstr.c_str());		
+		printf("mstr=%s\n",mstr.c_str());
+	}else if(mstr.substr(0,1)=="R"){
+		srand(time(NULL));
+		int cnt=GetRand(1,3);
+		if(mstr.size()>1){
+			int cnt1=atoi(mstr.substr(1,1).c_str());
+			if(cnt1>0 && cnt1<6){
+				cnt=cnt1;
+			}
+		}
+		mstr="";
+		for(int i=0;i<cnt;i++){
+			string stri="";
+			for(int j=0;j<n*n;j++){
+				int ii=GetRandV(r->size());
+				stri+=itos(ii);
+				if(j<n*n-1)
+					stri+=",";		
+			}
+			mstr+=stri;
+			if(i<cnt-1)
+				mstr+=";";
+		}
+		printf("mstr=%s\n",mstr.c_str());			
 	}else if(mstr.substr(0,1)=="n"){
 		srand(time(NULL));
 		int N=powf(r->size(),n*n);
