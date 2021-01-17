@@ -1337,7 +1337,9 @@ int testRingDataA(int argc, char* argv[]){
 				else if(_n0==243)
 					n0=243;				
 				else if(_n0==8)
-					n0=8;					
+					n0=8;	
+				else if(_n0==16)
+					n0=16;				
 				else
 					n0=32;		
 			}	
