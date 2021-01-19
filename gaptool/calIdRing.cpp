@@ -1,8 +1,9 @@
 ﻿#include"IRing.h"
+#include<ctime>
+int g_c=1;
 
 #ifdef QR16
 #include"quotientring.h"
-#include<ctime>
 #include<fstream>
 #include<set>
 
@@ -245,6 +246,13 @@ void FiniteRing::printTable()
 #elif defined(RK)
 	int rk=Rank(this);
 	printf("%d,%d\n",ID,rk);
+#elif defined(SR_)
+	srand(time(NULL));
+	printf("%d",ID);	
+	for(int i=0;i<g_c;i++){
+		string SR=RandSubRing(this);
+		printf(",%s",SR.c_str());
+	}	
 #elif defined(_I1I2)
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
@@ -482,6 +490,9 @@ int main(int argc, char **argv)
 	else
 		strcpy(sz,argv[1]);
 	
+    if(argc>2){
+		g_c=atoi(argv[2]);
+	}		
 #ifdef QR16
     if(argc>2){
 		int _n0=atoi(argv[2]);	
