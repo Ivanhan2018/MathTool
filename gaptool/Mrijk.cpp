@@ -2629,6 +2629,13 @@ int main(int argc, char* argv[])
 				vi.push_back(atoi(vs[i].c_str()));
 			}
 			fun=-1;
+		}else if(vstr.substr(0,1)=="s"){
+			vstr=vstr.substr(1,vstr.size()-1);
+			vector<string> vs=split(vstr,",");
+			for(int i=0;i<vs.size();i++){
+				vi.push_back(atoi(vs[i].c_str()));
+			}
+			fun=-2;			
 		}else{
 			fun=atoi(argv[5]);
 			if(fun<0||fun>5){
@@ -2676,7 +2683,16 @@ int main(int argc, char* argv[])
 			Func[fun](R,n0);
 		else
 		{
-			testQR(R,n0,vi);
+			if(fun==-1)testQR(R,n0,vi);
+			else if(fun==-2){
+				int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243)?0:IdRing(R);
+				printf("r=R%d_%d",R->size(),IDr);
+				srand(time(NULL));	
+				for(int i=0;i<vi[2];i++){
+					string SR=RandSubRing(R,vi[0],vi[1]);
+					printf(",%s",SR.c_str());
+				}				
+			}
 		}	
 		delete R;
 		R=NULL;
@@ -2700,7 +2716,16 @@ int main(int argc, char* argv[])
 			Func[fun](R,n0);
 		else
 		{
-			testQR(R,n0,vi);
+			if(fun==-1)testQR(R,n0,vi);
+			else if(fun==-2){
+				int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243)?0:IdRing(R);
+				printf("r=R%d_%d",R->size(),IDr);
+				srand(time(NULL));	
+				for(int i=0;i<vi[2];i++){
+					string SR=RandSubRing(R,vi[0],vi[1]);
+					printf(",%s",SR.c_str());
+				}				
+			}
 		}		
 		delete R;
 		R=NULL;		

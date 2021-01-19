@@ -1411,6 +1411,37 @@ string RandSubRing(IRing* r){
 	return str;
 }
 
+string RandSubRing(IRing* r,int s,int m){
+	int IdRing(IRing* r);
+	int n=r->size();
+	if(n%s!=0||s>=n||s<2){
+		return "[]";
+	}
+	vector<int> v;
+    for(int i=0;i<m;i++){
+		int a=rand()%n;
+		auto it=std::find(v.begin(),v.end(),a);
+		if(it==v.end()){
+			v.push_back(a);
+		}		
+	}				
+	Subring S1i0;
+	bool b=S1i0.init(r,v,s);
+	if(!b)
+	   return "[]";
+	if(S1i0.m_Set.size()!=s)
+		return "[]";
+	vector<int> v0=v;
+	v=S1i0.m_Set;
+	int iret1=IsIdeal(r,v);
+	if(iret1==0)
+		return "[]";		
+	int ID=IdRing(&S1i0);
+	int rk=Rank(&S1i0);
+	string str="["+itos(ID)+","+itos(iret1)+","+itos(rk)+"]";
+	return str;
+}
+
 //-----------------------------Begin of IdRing---------------------------------
 class RIDHelper
 {
