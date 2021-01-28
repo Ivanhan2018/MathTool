@@ -3324,7 +3324,8 @@ public:
 	bool initR8(int ID=0);
 	bool initR16(int ID=0);	
 	bool initR16_2(int ID=0);
-	bool init(int n,int ID);	
+	bool init(int n,int ID);
+	bool init(int n0,int n1,int n2,const char* sz);	
 	// 成员变量
 	vector<MATRIXi> m_Set;
 	IRing* m_r;
@@ -3501,6 +3502,42 @@ bool M2r::init(int n,int ID){
 		return true;		
 	}	
 	return false;
+}
+
+bool M2r::init(int n0,int n1,int n2,const char* sz){
+	IRing* newR4(int ID,int p=2);	
+	IRing* newR8(int ID);
+	IRing* newR16(int ID);
+	IRing* newRing(int n,int ID);		
+	if(n0==2){
+		if(n1==1)
+			m_r=new ZmodnZ(1,n2);
+		else if(n1==4)
+			m_r=newR4(n2);
+		else if(n1==8)
+			m_r=newR8(n2);
+		else if(n1==16)
+			m_r=newR16(n2);	
+		else if(n1==9||n1==27)
+			m_r=newRing(n1,n2);	
+		else if(n1==32)
+			m_r=FiniteRing::newR32(n2);		
+		vector<MATRIXi> gen;		
+		vector<string> vv=split(sz,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi A(2,vector<int>(2,0));
+			vector<string> v=split(vv[i],",");
+			A[0][0]=atoi(v[0].c_str());
+			A[0][1]=atoi(v[1].c_str());
+			A[1][0]=atoi(v[2].c_str());
+			A[1][1]=atoi(v[3].c_str());
+			gen.push_back(A);
+		}	
+		m_flag=1;
+		m_Set=FR(m_r,gen); 
+		return true;		
+	}	
+	return false;	
 }
 
 bool M2r::initR8(int ID){
@@ -3788,7 +3825,8 @@ public:
 	bool initR8(int ID=0);
 	bool initR16(int ID=0);	
 	bool initR16_2(int ID=0);// 特征为2的16阶环，拆分原因：fatal error C1061: 编译器限制 : 块嵌套太深
-	bool init(int n,int ID);	
+	bool init(int n,int ID);
+	bool init(int n0,int n1,int n2,const char* sz);	
 	// 成员变量
 	vector<MATRIXi8> m_Set;
 	IRing* m_r;
@@ -3911,6 +3949,40 @@ bool Mnr::init(int n,int ID){
 		m_n=pItem->m_n0;	
 		vector<MATRIXi8> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(m_n,vector<TElem>(m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<m_n;j++)
+				for(int k=0;k<m_n;k++)
+					A[j][k]=atoi(v[j*m_n+k].c_str());
+			gen.push_back(A);
+		}	
+		m_flag=1;
+		m_Set=FR(m_r,gen); 
+		return true;		
+	}	
+	return false;
+}
+
+bool Mnr::init(int n0,int n1,int n2,const char* sz){
+	IRing* newR4(int ID,int p=2);	
+	IRing* newR8(int ID);
+	IRing* newR16(int ID);
+	IRing* newRing(int n,int ID);	
+	if(n0>2){
+		if(n1==1)
+			m_r=new ZmodnZ(1,n2);
+		else if(n1==4)
+			m_r=newR4(n2);		
+		else if(n1==8)
+			m_r=newR8(n2);
+		else if(n1==16)
+			m_r=newR16(n2);
+		else if(n1==9||n1==27)
+			m_r=newRing(n1,n2);		
+		m_n=n0;	
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(sz,";");
 		for(int i=0;i<vv.size();i++){
 			MATRIXi8 A(m_n,vector<TElem>(m_n,0));
 			vector<string> v=split(vv[i],",");
@@ -5176,6 +5248,40 @@ int testR16R2(){
 	return 0;
 }	
 
+int GetRand(int a,int b){
+	if(a>=b)
+		return a;
+	int iRet=rand()%(b-a+1)+a;
+	return iRet;
+}
+
+int GetRandV(int r){
+	vector<int> v;
+	v.push_back(0);
+	v.push_back(1);	
+	if(r==4){
+		v.push_back(2);	
+	}
+	else if(r==8){
+		v.push_back(2);		
+		v.push_back(4);	
+	}
+	else if(r==16){
+		v.push_back(2);		
+		v.push_back(4);
+		v.push_back(8);		
+	}
+	else if(r==9){
+		v.push_back(3);			
+	}	
+	else if(r==27){
+		v.push_back(3);		
+		v.push_back(9);	
+	}	
+	int ii=GetRand(0,v.size()-1);
+	return v[ii];
+}
+
 int testRingData(int argc, char* argv[]){ 
 	if(argc<3){
 		printf("usage:IRing n ID\n");
@@ -5188,24 +5294,40 @@ int testRingData(int argc, char* argv[]){
 		printf("没有配置R%d_%d的表示数据！\n",n,ID);
 		return 0;
 	}
+	string str="";
+	if(argc>3)
+		str=argv[3];
+	string mstr=pItem->m_mstr;
+	if(str.substr(0,1)=="e"){
+		int rn=(pItem->m_n1==1?pItem->m_n2:pItem->m_n1);	
+		string stri=";";
+		for(int j=0;j<pItem->m_n0*pItem->m_n0;j++){
+			int ii=GetRandV(rn);
+			stri+=itos(ii);
+			if(j<pItem->m_n0*pItem->m_n0-1)
+				stri+=",";		
+		}
+		mstr=pItem->m_mstr+stri;			
+		printf("R%d_%d的扩环,%d,%d,%d,mstr=%s\n",n,ID,pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr.c_str());
+        str.erase(str.begin());		
+	}	
 	IRing *r=NULL;
 	bool b=false;
 	if(pItem->m_n0==2){
 	    M2r *r1=new M2r;
-		b=r1->init(n,ID);
+		//b=r1->init(n,ID);
+		b=r1->init(pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr.c_str());
 		r=r1;
 	}else{
 	    Mnr *r1=new Mnr;
-		b=r1->init(n,ID);
+		//b=r1->init(n,ID);
+		b=r1->init(pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr.c_str());		
 		r=r1;		
 	}	
 	if(b && r){
 		int in=r->size();
 		int iID=IdRing(r);
-		printf("R%d_%d",in,iID);
-		string str="";
-		if(argc>3)
-			str=argv[3];
+		printf("R%d_%d",in,iID);		
 		if(str.substr(0,1)=="w"){
 			char sz1[128]={0};   
 			sprintf(sz1,"R%d%s%d.txt",r->size(),str.substr(1,1).c_str(),iID);
@@ -5228,7 +5350,7 @@ int testRingData(int argc, char* argv[]){
 		if(in>=16 && in<=256){
 			int fun=1;
 			if(argc>3){
-				fun=atoi(argv[3]);
+				fun=atoi(str.c_str());
 				if(fun<-1||fun>4){
 					fun=0;
 				}	
