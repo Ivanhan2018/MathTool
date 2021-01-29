@@ -4379,7 +4379,7 @@ string IMStr(IRing *r,int i)
 	return "";
 }
 
-int g_i=0;
+int g_i=1;
 void findsubring1(IRing *r,int n)
 {
 	set<pair<int,int>> M;
@@ -5296,13 +5296,15 @@ int testRingData(int argc, char* argv[]){
 	}
 	string str="";
 	if(argc>3)
-		str=argv[3];
+		str=argv[3];	
 	string mstr=pItem->m_mstr;
-	if(str.substr(0,1)=="e"){
+	if(str.substr(0,1)=="E"||str.substr(0,1)=="e"){
 		int rn=(pItem->m_n1==1?pItem->m_n2:pItem->m_n1);	
 		string stri=";";
+		bool bE=str.substr(0,1)=="E";
+		srand(time(NULL));
 		for(int j=0;j<pItem->m_n0*pItem->m_n0;j++){
-			int ii=GetRandV(rn);
+			int ii=bE?GetRandV(rn):GetRand(0,rn-1);
 			stri+=itos(ii);
 			if(j<pItem->m_n0*pItem->m_n0-1)
 				stri+=",";		
@@ -5362,19 +5364,29 @@ int testRingData(int argc, char* argv[]){
 					n0=27;
 				else if(_n0==81)
 					n0=81;	
+				else if(_n0==243)
+					n0=243;				
 				else if(_n0==8)
-					n0=8;					
+					n0=8;
+				else if(_n0==16)
+					n0=16;	
+				else if(_n0==32)
+					n0=32;				
 				else
-					n0=32;		
-			}				
+					n0=16;		
+			}
+			if(argc>5)
+				g_i=atoi(argv[5]);			
 			typedef void(*pF)(IRing *r,int n);
 			pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findquotientring};
 			Func[fun](r,n0);		
-		}
-		printf("\n");	
-		for(int i=0;i<in;i++){
-			string stri=IMStr(r,i);		
-			printf("i=%d=>%s\n",i,stri.c_str());	
+		}	
+		if(argc==3){
+			printf("\n");			
+			for(int i=0;i<in;i++){
+				string stri=IMStr(r,i);		
+				printf("i=%d=>%s\n",i,stri.c_str());	
+			}	
 		}		
 	}
 	return 0;
