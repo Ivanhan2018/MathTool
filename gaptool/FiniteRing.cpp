@@ -11,485 +11,66 @@ IRing* newR27(int i){
 	return NULL;
 }
 
-
-#ifndef Rn_H
-int g_M2Add[2][2]={
-	 {0,1},
-	 {1,0}
-};
-
-int g_M2Mul[2][2]={
-	 {0,0},
-	 {0,0}
-};
-
-int g_F2Add[2][2]={
-	 {0,1},
-	 {1,0}
-};
-int g_F2Mul[2][2]={
-	 {0,0},
-	 {0,1}
-};
-
-int g_M3Add[3][3]={
-	 {0,1,2},
-	 {1,2,0},
-	 {2,0,1}
-};
-int g_M3Mul[3][3]={
-	 {0,0,0},
-	 {0,0,0},
-	 {0,0,0}
-};
-
-int g_F3Add[3][3]={
-	 {0,1,2},
-	 {1,2,0},
-	 {2,0,1}
-};
-
-int g_F3Mul[3][3]={
-	 {0,0,0},
-	 {0,1,2},
-	 {0,2,1}
-};
-
-int g_F3M2Add[6][6]={
-	{0,1,2,3,4,5},
-	{1,0,3,2,5,4},
-	{2,3,4,5,0,1},
-	{3,2,5,4,1,0},
-	{4,5,0,1,2,3},
-	{5,4,1,0,3,2},
-};
-int g_F3M2Mul[6][6]={
-	{0,0,0,0,0,0},
-	{0,0,0,0,0,0},
-	{0,0,2,2,4,4},
-	{0,0,2,2,4,4},
-	{0,0,4,4,2,2},
-	{0,0,4,4,2,2},
-};
-
-// 环R8_3的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=8,1,1,4,2,1,3,20,3,8,[ 1, 2, 4, 8 ],[ 1, 2, 4, 4, 8, 8, 8, 8 ]
-// R8_3:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,1,2,4],8,1,1,4,2,1,3,20,3,8,[1,1,2,4],[[2,8,4],[4,4,4],[4,8,8],[8,2,4],[8,4,8],[8,8,16]]
-int g_Z8Mul[8][8]={
-	{0,0,0,0,0,0,0,0},
-	{0,1,2,3,4,5,6,7},
-	{0,2,4,6,0,2,4,6},
-	{0,3,6,1,4,7,2,5},
-	{0,4,0,4,0,4,0,4},
-	{0,5,2,7,4,1,6,3},
-	{0,6,4,2,0,6,4,2},
-	{0,7,6,5,4,3,2,1}
-};
-
-//C_4×C_2——>Z/4Z×F_2
-//加法表数据有误
-int g_Z4F2Add[8][8]={
-	{0,1,2,3,4,5,6,7},
-	{1,0,3,2,5,4,7,6},
-	{2,3,4,5,6,7,0,1},
-	{3,2,5,4,7,6,1,0},
-	{4,5,6,7,2,3,0,1},
-	{5,4,7,6,3,2,1,0},
-	{6,7,0,1,2,3,4,5},
-	{7,6,1,0,3,2,5,4},
-};
-
-// 环R8_14的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=4,1,1,6,4,1,1,24,5,8,[ 1, 2, 2, 4, 4, 8 ],[ 1, 2, 2, 4, 4, 4, 4, 4 ]
-// R8_14:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,3,4,0],4,1,1,6,4,1,1,24,5,8,[1,2,5,0],[[2,2,8],[2,4,10],[4,2,10],[4,4,12]]
-int g_Z4F2Mul[8][8]={
-	{0,0,0,0,0,0,0,0},
-	{0,1,0,1,0,1,0,1},
-	{0,0,2,2,4,4,6,6},
-	{0,1,2,3,4,5,6,7},
-	{0,0,4,4,0,0,4,4},
-	{0,1,4,5,0,1,4,5},
-	{0,0,6,6,4,4,2,2},
-	{0,1,6,7,4,5,2,3},
-};
-
-//R8_52:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,7,0,0],2,1,1,1,2,0,0,15,0,8,[1,1,0,6],[[2,2,49]]
-int g_F8Add[8][8]={
-	{0,   1,   2,   3,   4,   5,   6,   7},  
-	{1,   0,   4,   7,   2,   6,   5,   3},  
-	{2,   4,   0,   5,   1,   3,   7,   6},  
-	{3,   7,   5,   0,   6,   2,   4,   1},  
-	{4,   2,   1,   6,   0,   7,   3,   5},  
-	{5,   6,   3,   2,   7,   0,   1,   4},  
-	{6,   5,   7,   4,   3,   1,   0,   2},  
-	{7,   3,   6,   1,   5,   4,   2,   0}
-};
-
-int g_F8Mul[8][8]={ 
-	{0,   0,   0,   0,   0,   0,   0,   0},  
-	{0,   1,   2,   3,   4,   5,   6,   7}, 
-	{0,   2,   3,   4,   5,   6,   7,   1},  
-	{0,   3,   4,   5,   6,   7,   1,   2},  
-	{0,   4,   5,   6,   7,   1,   2,   3},  
-	{0,   5,   6,   7,   1,   2,   3,   4},  
-	{0,   6,   7,   1,   2,   3,   4,   5},  
-	{0,   7,   1,   2,   3,   4,   5,   6}
-};
-#endif
-
-int g_M3M2_M6Add[6][6]={
-	 {0,1,2,3,4,5},
-	 {1,2,3,4,5,0},
-	 {2,3,4,5,0,1},
-	 {3,4,5,0,1,2},
-	 {4,5,0,1,2,3},
-	 {5,0,1,2,3,4}
-}; 
-
-int g_M3M2_M6Mul[6][6]={
-	 {0,0,0,0,0,0},
-	 {0,0,0,0,0,0},
-	 {0,0,0,0,0,0},
-	 {0,0,0,0,0,0},
-	 {0,0,0,0,0,0},
-	 {0,0,0,0,0,0}
-};
-
-//R6_2
-int g_F3M2_R2Add[6][6]={
-	 {0,1,2,3,4,5},
-	 {1,2,3,4,5,0},
-	 {2,3,4,5,0,1},
-	 {3,4,5,0,1,2},
-	 {4,5,0,1,2,3},
-	 {5,0,1,2,3,4}
-};
-
-int g_F3M2_R2Mul[6][6]={
-	 {0,0,0,0,0,0},
-	 {0,2,4,0,2,4},
-	 {0,4,2,0,4,2},
-	 {0,0,0,0,0,0},
-	 {0,2,4,0,2,4},
-	 {0,4,2,0,4,2}
-};
-
-//R6_4
-int g_F3F2_Z6Add[6][6]={
-	 {0,1,2,3,4,5},
-	 {1,2,3,4,5,0},
-	 {2,3,4,5,0,1},
-	 {3,4,5,0,1,2},
-	 {4,5,0,1,2,3},
-	 {5,0,1,2,3,4}
-};
-
-int g_F3F2_Z6Mul[6][6]={
-	 {0,0,0,0,0,0},
-	 {0,1,2,3,4,5},
-	 {0,2,4,0,2,4},
-	 {0,3,0,3,0,3},
-	 {0,4,2,0,4,2},
-	 {0,5,4,3,2,1}
-};
-
-//R6_4
-int g_F3F2Add[6][6]={
-	{0,1,2,3,4,5},
-	{1,0,3,2,5,4},
-	{2,3,4,5,0,1},
-	{3,2,5,4,1,0},
-	{4,5,0,1,2,3},
-	{5,4,1,0,3,2},
-};
-
-int g_F3F2Mul[6][6]={
-	{0,0,0,0,0,0},
-	{0,1,0,1,0,1},
-	{0,0,2,2,4,4},
-	{0,1,2,3,4,5},
-	{0,0,4,4,2,2},
-	{0,1,4,5,2,3},
-};
-
-int g_C8Mul[8][8]={
-	{0, 1, 2, 3, 4, 5, 6, 7},
-	{1, 0, 3, 2, 5, 4, 7, 6},
-	{2, 3, 1, 0, 6, 7, 5, 4},
-	{3, 2, 0, 1, 7, 6, 4, 5},
-	{4, 5, 6, 7, 2, 3, 1, 0},
-	{5, 4, 7, 6, 3, 2, 0, 1},
-	{6, 7, 5, 4, 1, 0, 3, 2},
-	{7, 6, 4, 5, 0, 1, 2, 3}
-};
-
-int g_C8Mul_2[8][8]={
-	{0,1,2,3,4,5,6,7},
-	{1,2,3,4,5,6,7,0},
-	{2,3,4,5,6,7,0,1},
-	{3,4,5,6,7,0,1,2},
-	{4,5,6,7,0,1,2,3},
-	{5,6,7,0,1,2,3,4},
-	{6,7,0,1,2,3,4,5},
-	{7,0,1,2,3,4,5,6}
-};
-
-//int* g_C8Add=&g_C8Mul[0][0];//Error,与乘法表g_Z8Mul不相容
-int* g_C8Add=&g_C8Mul_2[0][0];
-
-// 环R8_2的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=8,1,0,8,1,3,3,32,7,8,[ 1, 2, 4, 8 ],[ 1, 2, 4, 4, 8, 8, 8, 8 ]
-// R8_2:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,1,2,4],8,1,0,8,1,3,3,32,7,8,[1,1,2,4],[[4,8,8],[8,4,8],[8,8,16]]
-int g_C8R2Mul[8][8]={
-	{0,0,0,0,0,0,0,0},
-	{0,2,4,6,0,2,4,6},
-	{0,4,0,4,0,4,0,4},
-	{0,6,4,2,0,6,4,2},
-	{0,0,0,0,0,0,0,0},
-	{0,2,4,6,0,2,4,6},
-	{0,4,0,4,0,4,0,4},
-	{0,6,4,2,0,6,4,2}
-};
-
-// 环R8_4的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=8,1,0,8,1,3,7,48,7,8,[ 1, 2, 4, 8 ],[ 1, 2, 4, 4, 8, 8, 8, 8 ]
-// R8_4:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,1,2,4],8,1,0,8,1,3,7,48,7,8,[1,1,2,4],[[8,8,16]]
-int g_C8R4Mul[8][8]={
-	{0,0,0,0,0,0,0,0},
-	{0,4,0,4,0,4,0,4},
-	{0,0,0,0,0,0,0,0},
-	{0,4,0,4,0,4,0,4},
-	{0,0,0,0,0,0,0,0},
-	{0,4,0,4,0,4,0,4},
-	{0,0,0,0,0,0,0,0},
-	{0,4,0,4,0,4,0,4},
-};
-
-
-int g_C2C4Mul[8][8]={
-	{0, 1, 2, 3, 4, 5, 6, 7},
-	{1, 0, 3, 2, 5, 4, 7, 6},
-	{2, 3, 0, 1, 6, 7, 4, 5},
-	{3, 2, 1, 0, 7, 6, 5, 4},
-	{4, 5, 6, 7, 1, 0, 3, 2},
-	{5, 4, 7, 6, 0, 1, 2, 3},
-	{6, 7, 4, 5, 3, 2, 1, 0},
-	{7, 6, 5, 4, 2, 3, 0, 1}
-};
-
-
-// C_2×C_2×C_2——>邢丹丹论文中的8阶环R_1
-//加法表数据有误
-int g_R8_C2C2C2_28_R1_Add[8][8]={
-	{0,1,2,3,4,5,6,7},
-	{1,0,3,2,5,4,7,6},
-	{2,3,0,1,6,7,4,5},
-	{3,2,0,1,7,6,5,4},
-	{4,5,6,7,0,1,2,3},
-	{5,4,7,6,1,0,3,2},
-	{6,7,4,5,2,3,0,1},
-	{7,6,5,4,3,2,1,0}
-};
-
-// 乘法表数据有误
-int g_R8_C2C2C2_28_1Mul[8][8]={
-	{0,0,0,0,0,0,0,0},
-	{0,1,0,0,0,1,0,1},
-	{0,0,2,2,0,0,2,2},
-	{0,0,2,3,0,1,2,3},
-	{0,0,0,0,4,4,4,4},
-	{0,1,0,1,4,5,4,5},
-	{0,0,2,2,4,4,6,6},
-	{0,1,2,3,4,5,6,7}
-};
-
-//R={{{a,0,0},{b,a,0},{c,0,a}}|a,b,c∈Z/2Z}<=M_3(Z/2Z)是8阶交换幺环
-//环R8_45的结构不变量n0,bA,bO,n1,n2,n4,n5,n6,n7,n8=2,1,1,4,2,3,3,24,3,8,[ 1, 2, 2, 2, 4, 8 ],[ 1, 2, 2, 2, 2, 4, 4, 4 ]
-//R8_45:N0n0bAbOn1n2n4n5n6n7n8S1N2=[1,7,0,0],2,1,1,4,2,3,3,24,3,8,[1,4,3,0],[[2,2,40]]
-int g_R8_C2C2C2_28_R1_Mul[8][8]={
-	 {0,0,0,0,0,0,0,0},
-	 {0,1,2,3,4,5,6,7},
-	 {0,2,0,2,0,2,0,2},
-	 {0,3,2,1,4,7,6,5},
-	 {0,4,0,4,0,4,0,4},
-	 {0,5,2,7,4,1,6,3},
-	 {0,6,0,6,0,6,0,6},
-	 {0,7,2,5,4,3,6,1}
-};
-
-
-
-int g_C2C2C2Mul[8][8]={
-	{0, 1, 2, 3, 4, 5, 6, 7},
-	{1, 0, 3, 2, 5, 4, 7, 6},
-	{2, 3, 0, 1, 6, 7, 4, 5},
-	{3, 2, 1, 0, 7, 6, 5, 4},
-	{4, 5, 6, 7, 0, 1, 2, 3},
-	{5, 4, 7, 6, 1, 0, 3, 2},
-	{6, 7, 4, 5, 2, 3, 0, 1},
-	{7, 6, 5, 4, 3, 2, 1, 0}
-};
-int* g_C2C2C2Add=&g_C2C2C2Mul[0][0];
-
-// C_2×C_2×C_2——>邢丹丹论文中的8阶环R_3
-// 乘法表数据有误
-int g_R8_C2C2C2_28_R3_Mul[8][8]={
-	 {0,0,0,0,0,0,0,0},
-	 {0,1,2,3,4,5,6,7},
-	 {0,2,0,2,0,2,0,2},
-	 {0,3,2,1,4,7,6,5},
-	 {0,4,0,4,3,7,3,7},//这一行后4个元素变了
-	 {0,5,2,7,7,2,5,0},//这一行后4个元素变了
-	 {0,6,0,6,3,5,3,5},//这一行后4个元素变了
-	 {0,7,2,5,7,0,5,2}//这一行后4个元素变了
-};
-
-// C_2×C_2×C_2——>邢丹丹论文中的8阶环R_2
-// 乘法表数据有误
-int g_R8_C2C2C2_28_R2_Mul[8][8]={
-	 {0,0,0,0,0,0,0,0},
-	 {0,1,2,3,4,5,6,7},
-	 {0,2,0,2,0,2,0,2},
-	 {0,3,2,1,4,7,6,5},
-	 {0,4,0,4,2,6,2,6},//这一行后4个元素变了
-	 {0,5,2,7,6,3,4,1},//这一行后4个元素变了
-	 {0,6,0,6,2,4,2,4},//这一行后4个元素变了
-	 {0,7,2,5,4,1,4,3}//这一行后3个元素变了
-};
-
-void test1()
-{
-    int *R8Add[]={&g_M2Add[0][0],&g_F2Add[0][0],&g_M3Add[0][0],&g_F3Add[0][0],&g_M3M2_M6Add[0][0],&g_F3M2_R2Add[0][0],&g_F3M2Add[0][0],&g_F3F2Add[0][0],g_C8Add,g_C8Add,g_C8Add,g_C2C4Add,&g_F4F2Add[0][0],&g_F4F2Add[0][0],&g_F4F2Add[0][0],&g_F4F2Add[0][0],&g_F8Add[0][0]};
-    int *R8Mul[]={&g_M2Mul[0][0],&g_F2Mul[0][0],&g_M3Mul[0][0],&g_F3Mul[0][0],&g_M3M2_M6Mul[0][0],&g_F3M2_R2Mul[0][0],&g_F3M2Mul[0][0],&g_F3F2Mul[0][0],&g_C8R2Mul[0][0],&g_Z8Mul[0][0],&g_C8R4Mul[0][0],&g_Z4F2Mul[0][0],&g_R8_C2C2C2_28_R1_Mul[0][0],&g_R8_C2C2C2_28_2Mul[0][0],&g_R8_C2C2C2_28_3Mul[0][0],&g_F4F2Mul[0][0],&g_F8Mul[0][0]};
-	int nArr[]={2,2,3,3,6,6,6,6,8,8,8,8,8,8,8,8,8};
-	int nDelt[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-	int nNum=sizeof(nArr)/sizeof(nArr[0]);
-	for(int i=0;i<nNum;i++)
-	{
-		FiniteRing fr(nArr[i],R8Add[i],R8Mul[i],nDelt[i]);
-		fr.printTable();
-	}	
-}
-
-int test2(int flag=0)
-{
-   set<int> vID;
-   int cnt=0;
-if(flag==0){
-	for(int i=1;i<=11;i++){
-		for(int j=i;j<=11;j++){
-			IRing* ri=newR4(i);
-			IRing* rj=newR4(j);
-			DecompositionRing* r= new DecompositionRing(ri,rj);
-			r->m_flag=1;
-			int ID=IdRing(r);
-			vID.insert(ID);
-			printf("R4_%d×R4_%d=R16_%d\n",i,j,ID);
-			delete r;
-			r=NULL;
-		}
-	}
-    for(int i=1;i<=52;i++){
-		IRing* ri=newR8(i);
-		if(!ri)continue;
-		for(int j=1;j<=2;j++){		
-			IRing* rj=new ZmodnZ(3-j,2*(3-j));
-			DecompositionRing* r= new DecompositionRing(ri,rj);
-			r->m_flag=1;
-			int ID=IdRing(r);
-			vID.insert(ID);
-			printf("R8_%d×R2_%d=R16_%d\n",i,j,ID);
-			//delete r;
-			//r=NULL;
-		}
-	}
-	
-}else{
-   for(int i=1;i<=121;i++)
-   {
-	   IRing* r=newR4R4(i);
-	   if(r){
-		   int ID=IdRing(r);
-		   printf("R4R4_%d=R%d_%d\n",i,r->size(),ID);
-		   //r->printTable();
-			if(vID.find(ID)!=vID.end()){
-				//printf("Hit%d:i=%d,ID=%d\n",cnt++,i,ID);
-			}
-			vID.insert(ID);
-			//string I1=calcI1(r);
-			//string I2=calcI2(r);   
-			//printf("R%d_%d:I1I2=%s,%s\n",r->size(),ID,I1.c_str(),I2.c_str());
-		    delete r;
-		    r=NULL;	
-	   }	   
-   }
-
-   for(int i=1;i<=104;i++)
-   {
-		int I=(i-1)%52+1;
-		int J=(i-1)/52+1;
-		//if(!(I==45)&& !(I==51))
-			//continue;	
-	   IRing* r=newR8R2(i);
-	   if(r){
-		   int ID=IdRing(r);
-		   printf("R8R2_%d=R%d_%d\n",i,r->size(),ID);
-		   //r->printTable();
-			if(vID.find(ID)!=vID.end()){
-				//printf("Hit%d:i=%d,ID=%d\n",cnt++,i,ID);
-			}
-			vID.insert(ID);
-
-			if(0){
-				string strR=calcRingInvariant(r);	
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2=%s\n",r->size(),ID,strR.c_str());				
-				string I1=calcI1(r);
-				string I2=calcI2(r);   
-				printf("R%d_%d:I1I2=%s,%s\n",r->size(),ID,I1.c_str(),I2.c_str());
-			}
-		   //delete r;
-		   //r=NULL;
-	   }	   
-   }
-}
-    printf("%d种16阶可分解环\n",vID.size());
-	for(auto it=vID.begin();it!=vID.end();it++){
-		printf("%d,",*it);
-	}
-	printf("\n");   
-   return 0;
-}
-
-int test3()
-{
-   set<int> vID;
+int testR16R81(){
+   set<int> vID2;
+   set<int> vID;   
    int cnt=0;
 	for(int i=1;i<=11;i++){
+		IRing* ri2=newR4(i);
+		int IDi2=IdRing(ri2);		
 		IRing* ri=newR4(i,3);
 		int IDi=IdRing(ri);
 		for(int j=i;j<=11;j++){
+			IRing* rj2=newR4(j);
+			int IDj2=IdRing(rj2);			
+			DecompositionRing* r2= new DecompositionRing(ri2,rj2);
+			r2->m_flag=1;			
 			IRing* rj=newR4(j,3);
 			int IDj=IdRing(rj);			
 			DecompositionRing* r= new DecompositionRing(ri,rj);
 			r->m_flag=1;
+			int ID2=IdRing(r2);
+			vID2.insert(ID2);			
 			int ID=IdRing(r);
 			vID.insert(ID);
-			printf("R9_%d×R9_%d=R81_%d\n",IDi,IDj,ID);
+			printf("R4_%d×R4_%d=R16_%d,R9_%d×R9_%d=R81_%d\n",IDi2,IDj2,ID2,IDi,IDj,ID);
 			//delete r;
 			//r=NULL;
 		}
 	}
     for(int i=1;i<=59;i++){
+		IRing* ri2=newR8(i);		
 		IRing* ri=newR27(i);
-		if(!ri)continue;
-		for(int j=1;j<=2;j++){		
-			IRing* rj=newR2(j,3);
-			DecompositionRing* r= new DecompositionRing(ri,rj);
-			r->m_flag=1;
-			int ID=IdRing(r);
-			vID.insert(ID);
-			printf("R27_%d×R3_%d=R81_%d\n",i,j,ID);
-			//delete r;
-			//r=NULL;
+		for(int j=1;j<=2;j++){
+			if(ri2){
+				IRing* rj=new ZmodnZ(3-j,2*(3-j));
+				DecompositionRing* r= new DecompositionRing(ri2,rj);
+				r->m_flag=1;
+				int ID=IdRing(r);
+				vID2.insert(ID);
+				printf("R8_%d×R2_%d=R16_%d,",i,j,ID);
+				//delete r;
+				//r=NULL;
+			}
+			if(ri){			
+				IRing* rj=newR2(j,3);
+				DecompositionRing* r= new DecompositionRing(ri,rj);
+				r->m_flag=1;
+				int ID=IdRing(r);
+				vID.insert(ID);
+				printf("R27_%d×R3_%d=R81_%d\n",i,j,ID);
+				//delete r;
+				//r=NULL;
+			}else{
+				printf("\n");
+			}
 		}
 	}
-	
+    printf("%d种16阶可分解环\n",vID2.size());
+	for(auto it=vID2.begin();it!=vID2.end();it++){
+		printf("%d,",*it);
+	}
+	printf("\n");	
     printf("%d种81阶可分解环\n",vID.size());
 	for(auto it=vID.begin();it!=vID.end();it++){
 		printf("%d,",*it);
@@ -498,89 +79,97 @@ int test3()
    return 0;
 }
 
-int g_i=1;
-int g_a=572;
-int testR8R4(int func)
-{
-   //R8R4:1~572
-   //R8R8:1~2400,2570~2704
-   //R8R8:1~1520
-   for(int i=g_i;i<=g_a;i++)
-   {
-	   IRing* r=newR8R4(i);
-	   if(r){		   
-		   printf("R8R4_%d\n",i);	   
-		   if(func==0)
-			   findquotientring(r,16);
-		   else if(func==1)
-			   findsubring2(r,16);		   
-		   else
-			   findsubring3(r,16);
-		   //delete r;
-		   //r=NULL;
-	   }	   
-   }
-	return 0;   
+int R81_iR3_j(int argc, char* argv[]){
+	int i0=1;
+	int j0=1;
+	if(argc>1)
+	   i0=atoi(argv[1]);
+    if(argc>2)
+	   j0=atoi(argv[2]);     
+	int fun=4;
+	if(argc>3){
+		fun=atoi(argv[3]);
+		if(fun<0||fun>4){
+			fun=0;
+		}	
+	}   
+	char* str1="81";
+    if(argc>4)	
+		str1=argv[4];   
+	int J=0;	
+ 	for(int i=i0;i<=495;i++){
+		for(int j=(J==0?j0:1);j<=2;j++){
+			J=1;
+			char sz[1000]={0};
+			sprintf(sz,"DPR0 R81_%d.txt R3_%d.txt R81_%d%R3_%d.txt %d %s",i,j,i,j,fun,str1);
+			printf("i=%d,j=%d\n",i,j);
+			system(sz);
+		} 
+	}
+	return 0;
 }
 
-int testR8R8(int func)
-{
-   //R8R4:1~572
-   //R8R8:1~2400,2570~2704
-   //R8R8:1~1520
-   for(int i=g_i;i<=g_a;i++)
-   {
-	   IRing* r=newR8R8(i);
-	   if(r){		   
-		   printf("R8R8_%d\n",i);
-		   if(func==0)
-			   findquotientring(r,16);
-		   else if(func==1)
-			   findsubring2(r,16);		   
-		   else
-			   findsubring3(r,16);
-		   //delete r;
-		   //r=NULL;
-	   }	   
-   }
-	return 0;   
+int R27_iR9_j(int argc, char* argv[]){
+	int i0=1;
+	int j0=1;
+	if(argc>1)
+	   i0=atoi(argv[1]);
+    if(argc>2)
+	   j0=atoi(argv[2]);     
+	int fun=4;
+	if(argc>3){
+		fun=atoi(argv[3]);
+		if(fun<0||fun>4){
+			fun=0;
+		}	
+	}   
+	char* str1="81";
+    if(argc>4)	
+		str1=argv[4];   
+	int J=0;	
+ 	for(int i=i0;i<=59;i++){
+		for(int j=(J==0?j0:1);j<=11;j++){
+			J=1;
+			char sz[1000]={0};
+			sprintf(sz,"DPR0 R27_%d.txt R9%d.txt R27_%d%R9_%d.txt %d %s",i,j,i,j,fun,str1);
+			printf("i=%d,j=%d\n",i,j);
+			system(sz);
+		} 
+	}
+	return 0;
 }
 
-int testR9R9()
-{
-   for(int i=g_i;i<=g_a;i++)//1~121
-   {
-	   IRing* r=newR4R4(i,3);
-	   if(r){
-		   printf("R9R9_%d\n",i);
-		   //findsubring(r,8);
-		   findquotientring(r,27);
-		   //delete r;
-		   //r=NULL;
-	   }	   
-   }
-	return 0;   
+int R27_iR27_j(int argc, char* argv[]){
+	int i0=1;
+	int j0=1;
+	if(argc>1)
+	   i0=atoi(argv[1]);
+    if(argc>2)
+	   j0=atoi(argv[2]);     
+	int fun=4;
+	if(argc>3){
+		fun=atoi(argv[3]);
+		if(fun<0||fun>4){
+			fun=0;
+		}	
+	}   
+	char* str1="81";
+    if(argc>4)	
+		str1=argv[4];   
+	int J=0;	
+ 	for(int i=i0;i<=59;i++){
+		for(int j=(J==0?j0:1);j<=59;j++){
+			J=1;
+			char sz[1000]={0};
+			sprintf(sz,"DPR0 R27_%d.txt R27_%d.txt R27_%d%R27_%d.txt %d %s",i,j,i,j,fun,str1);
+			printf("i=%d,j=%d\n",i,j);
+			system(sz);
+		} 
+	}
+	return 0;
 }
 
-int testM2R4(int i)
-{
-   //for(int i=1;i<=11;i++)//1~121
-   {
-	   IRing* r4=newR4(i);
-	   M2r* r=new M2r(r4);
-	   if(r){
-		   r->m_flag=1;
-		   printf("M2R4_%d\n",i);
-		   findquotientring(r,16);
-		   delete r;
-		   r=NULL;
-	   }	   
-   }	
-   return 0;
-}
-
-int R8_iR8_j(int argc, char* argv[])
-{
+int R8_iR8_j(int argc, char* argv[]){
 	int i0=1;
 	int j0=1;
 	if(argc>1)
@@ -610,8 +199,37 @@ int R8_iR8_j(int argc, char* argv[])
 	return 0;
 }
 
-int R16_iR4_j(int argc, char* argv[])
-{
+int R16_iR8_j(int argc, char* argv[]){
+	int i0=1;
+	int j0=1;
+	if(argc>1)
+	   i0=atoi(argv[1]);
+    if(argc>2)
+	   j0=atoi(argv[2]);     
+	int fun=4;
+	if(argc>3){
+		fun=atoi(argv[3]);
+		if(fun<0||fun>4){
+			fun=0;
+		}	
+	}   
+	char* str1="";
+    if(argc>4)	
+		str1=argv[4];   
+	int J=0;	
+ 	for(int i=i0;i<=390;i++){
+		for(int j=(J==0?j0:1);j<=52;j++){
+			J=1;
+			char sz[1000]={0};
+			sprintf(sz,"DPR0 R16%d.txt R8%d.txt R16_%d%R8_%d.txt %d %s",i,j,i,j,fun,str1);
+			printf("i=%d,j=%d\n",i,j);
+			system(sz);
+		} 
+	}
+	return 0;
+}
+
+int R16_iR4_j(int argc, char* argv[]){
 	int i0=1;
 	int j0=1;
 	if(argc>1)
@@ -641,27 +259,84 @@ int R16_iR4_j(int argc, char* argv[])
 	return 0;
 }
 
-int g_func=0;
-int main(int argc, char* argv[])
-{   
-/*    if(argc>1)
-	   g_i=atoi(argv[1]);
-   if(argc>2)
-	   g_a=atoi(argv[2]);   
-   if(argc>3)
-	   g_func=atoi(argv[3]); */
-	//return R16_iR4_j(argc,argv);
-	test2();
-	return test3();
-	//return testR8R8(g_func);
-    /*for(int i=1;i<=52;i++){
-		IRing* r=newR8(i);
-		int ID=IdRing(r);
-		bool b=IsRing(r);
-		const char* sz=b?"":"不是环";   
-		printf("%d:R%d_%d%s\n",i,r->size(),ID,sz);		
-	}		
-    */	
-   //system("pause");
-   return 0;
+int R16_iR2_j(int argc, char* argv[]){
+	int i0=1;
+	int j0=1;
+	if(argc>1)
+	   i0=atoi(argv[1]);
+    if(argc>2)
+	   j0=atoi(argv[2]);     
+	int fun=4;
+	if(argc>3){
+		fun=atoi(argv[3]);
+		if(fun<0||fun>4){
+			fun=0;
+		}	
+	}   
+	char* str1="";
+    if(argc>4)	
+		str1=argv[4];   
+	int J=0;	
+ 	for(int i=i0;i<=390;i++){
+		for(int j=(J==0?j0:1);j<=2;j++){
+			J=1;
+			char sz[1000]={0};
+			sprintf(sz,"DPR0 R16%d.txt R2_%d.txt R16_%d%R2_%d.txt %d %s",i,j,i,j,fun,str1);
+			printf("i=%d,j=%d\n",i,j);
+			system(sz);
+		} 
+	}
+	return 0;
+}
+
+int R8_iR4_j(int argc, char* argv[]){
+	int i0=1;
+	int j0=1;
+	if(argc>1)
+	   i0=atoi(argv[1]);
+    if(argc>2)
+	   j0=atoi(argv[2]);     
+	int fun=4;
+	if(argc>3){
+		fun=atoi(argv[3]);
+		if(fun<0||fun>4){
+			fun=0;
+		}	
+	}   
+	char* str1="";
+    if(argc>4)	
+		str1=argv[4];   
+	int J=0;	
+ 	for(int i=i0;i<=52;i++){
+		for(int j=(J==0?j0:1);j<=11;j++){
+			J=1;
+			char sz[1000]={0};
+			sprintf(sz,"DPR0 R8%d.txt R4%d.txt R8_%d%R4_%d.txt %d %s",i,j,i,j,fun,str1);
+			printf("i=%d,j=%d\n",i,j);
+			system(sz);
+		} 
+	}
+	return 0;
+}
+
+int main(int argc, char* argv[]){   
+#ifdef R16R8	
+	return R16_iR8_j(argc,argv);
+#elif defined(R16R4)
+	return R16_iR4_j(argc,argv);
+#elif defined(R16R2)
+	return R16_iR2_j(argc,argv);	
+#elif defined(R8R4)
+	return R8_iR4_j(argc,argv);	
+#elif defined(R8R8)
+	return R8_iR8_j(argc,argv);
+#elif defined(R81R3)
+	return R81_iR3_j(argc,argv);	
+#elif defined(R27R27)
+	return R27_iR27_j(argc,argv);	
+#elif defined(R27R9)
+	return R27_iR9_j(argc,argv);	
+#endif
+	testR16R81();
+	return 0;
 }
