@@ -4888,9 +4888,11 @@ IRing* newRing(int n,int ID){
 	IRing *r=NULL;	
 	if(n==9){
 		r=newR4(ID,3);
+	}else if(n==8){
+		r=FiniteRing::newR8(ID);
 	}else if(n==27){
 		r=FiniteRing::newR27(ID);
-	}
+	}	
 	if(r)
 		return r;
 	const CRingDataItem * pItem = Find(n,ID);
@@ -5392,6 +5394,20 @@ int testRingData(int argc, char* argv[]){
 	return 0;
 }	
 
+
+int testRingDataD(int n1,int ID1,int n2,int ID2){ 
+	IRing *r1=newRing(n1,ID1);
+	IRing *r2=newRing(n2,ID2);	
+	if(r1 && r2){	
+		DecompositionRing* r= new DecompositionRing(r1,r2);
+		r->m_flag=1;		
+		int in=r->size();
+		int iID=IdRing(r);
+		printf("R%d_%d",in,iID);		
+	}
+	return 0;
+}
+
 int main(int argc, char* argv[])
 { 	
 	// 将环表示数据配置到文件中，精简代码
@@ -5399,7 +5415,17 @@ int main(int argc, char* argv[])
 	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());
 #ifdef TRD	
 	return testRingData(argc,argv);	
-#endif	
+#elif defined(TDR)
+	if(argc<5){
+		printf("usage:DRing n1 ID1 n2 ID2\n");
+		return 0;
+	}
+	int n1=atoi(argv[1]);
+	int ID1=atoi(argv[2]);	
+	int n2=atoi(argv[3]);
+	int ID2=atoi(argv[4]);	
+	return testRingDataD(n1,ID1,n2,ID2);
+#endif
     //return testR16R2();
 	return Mrijk(argc,argv);	
 	// 129种16阶可分解环
