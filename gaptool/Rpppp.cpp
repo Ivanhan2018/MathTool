@@ -1,3 +1,5 @@
+#define PARSE_RING_FILE
+#include"FiniteRing.h"
 #include"quotientRing.h"
 #include<set>
 #include"DecompositionRing.h"
@@ -7,6 +9,16 @@
 #include"PolynomialRing.h"
 #include <ctime>
 #include <fstream>
+
+IRing* newRppp(int ID,int p){
+#ifdef PARSE_RING_FILE	
+	char sz[100]={0};
+	sprintf(sz,"R%d.%d.txt",p*p*p,ID);
+	FiniteRing* r=newRing(sz);
+	return r;	
+#endif
+	return NULL;
+}
 
 #if 0
 void printRing0(IRing* r,int ID){
@@ -120,6 +132,7 @@ void findquotientring(IRing *r,int n)
 }
 #endif
 
+/*
 IRing* newR2(int i,int p=2)
 {
 	if(i==1)
@@ -236,6 +249,7 @@ std::vector<string> split( const std::string& str, const std::string& delims, un
 	} while (pos != std::string::npos);
 	return ret;
 }
+*/
 
 // “环表示数据表”结点
 class CRingDataItem
@@ -273,8 +287,8 @@ const CRingDataItem * Find(int n,int ID)
 // “环表示数据表”缓冲
 int LoadData(char * pszFilePath)		//“从文件中读取数据”
 {
-	if( !g_mapRingDataCache.empty() )
-		return 2;//2已经载入数据了
+	//if( !g_mapRingDataCache.empty() )
+		//return 2;//2已经载入数据了
 
 	FILE * fp =fopen(pszFilePath, "r");
 	if( fp == NULL )
@@ -305,6 +319,9 @@ IRing* newRpppp(int ID,int p,int n=16){
 	//p=2;
 	//if(p==3)return NULL;
 	//int n=p*p*p*p;
+	int nn=n;
+	if(n<0)
+		n=-n;
 	const CRingDataItem * pItem = Find(n,ID);
 	if(pItem && pItem->m_n1==1 && pItem->m_n2==2){
 		Mnr* r=new Mnr();   
@@ -386,7 +403,51 @@ IRing* newRpppp(int ID,int p,int n=16){
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;			
+	}		
+	if(pItem && pItem->m_n1==8 && pItem->m_n2==22){	
+		Mnr* r=new Mnr();   
+		r->m_r=newRppp(pItem->m_n2,p);		
+		r->m_n=pItem->m_n0; 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+					if(A[j][k]==2)
+						A[j][k]=p;
+					else if(A[j][k]==4)
+						A[j][k]=p*p;
+					else if(A[j][k]==8)
+						A[j][k]=p*p*p;	
+				}					
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
 	}	
+	if(pItem && pItem->m_n1==8 && pItem->m_n2==6){	
+		Mnr* r=new Mnr();   
+		r->m_r=newRppp(p==2?6:9,p);		
+		r->m_n=pItem->m_n0; 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+				}					
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
+	}		
 	return NULL;	
 }
 
@@ -443,7 +504,9 @@ int main(int argc, char* argv[]){
 	if(argc>3)
 		n=atoi(argv[3]);	
 	int ret=LoadData("RingData.csv");
-	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size()); 
+	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size()); 	
+	int ret2=LoadData("RingData2.csv");	
+	printf("ret2=%d,环表示数据表中的记录条数=%d\n",ret2,g_mapRingDataCache.size()); 
 #ifdef TDR
 	for(int i=1;i<=11;i++){
 		for(int j=i;j<=11;j++){
