@@ -1307,7 +1307,7 @@ int testRingDataA(int argc, char* argv[]){
 			printf("没有配置R%d_%d的表示数据！\n",n,ID);
 			return 0;
 		}
-		printf("n0=%d,m_vfvm=%s\n",n,pItem->m_vfvm.c_str());
+		printf("n0=%d,m_vfvm=%s\n",pItem->m_n0,pItem->m_vfvm.c_str());
 		r=new PolynomialRing;
 		b=r->init(n,ID);
 	}	
