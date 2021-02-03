@@ -450,7 +450,7 @@ IRing* newRpppp(int ID,int p,int n=16){
 	}
 	if(pItem && pItem->m_n1==8 && pItem->m_n2==12){	
 		Mnr* r=new Mnr();   
-		r->m_r=newRppp(p==2?12:54,p);		
+		r->m_r=newRppp((nn>0||p==2)?12:54,p);		
 		r->m_n=pItem->m_n0; 
 		vector<MATRIXi8> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
