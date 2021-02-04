@@ -1252,7 +1252,7 @@ void findquotientring(PolynomialRing *r,int n)
 		    static vector<int> vIDs(IDs,IDs+cnt);
 			vector<int>::iterator p1=std::find(vIDs.begin(),vIDs.end(),ID);
 			//if(ni<=27 && ID==-1||(ni==8 && ID==22)||(ni==27 && ID==22)){
-			if(ni<=27 && ID==-1||(ni==8 && (ID==12||ID==6||ID==18))||(ni==27 && (ID==12||ID==9||ID==6||ID==53||ID==54||ID==55))){					
+			if(ni<=27 && ID==-1||(ni==8 && (ID==9||ID==18))||(ni==27 && (ID==6||ID==53||ID==55))){					
 			//if(ni==16 && std::find(vIDs.begin(),vIDs.end(),ID)!=vIDs.end()){
 				printRing0(&S1i,ID);
 				char sz1[128]={0};   
