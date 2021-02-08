@@ -1352,13 +1352,15 @@ int testRingDataA(int argc, char* argv[]){
 			typedef void(*pF)(PolynomialRing *r,int n);
 			pF Func[]={findsubring,findsubring3,findquotientring};
 			Func[fun](r,n0);			
-		}		
-		printf("\n");	
-		if(in<=81){
-			for(int i=0;i<in;i++){		
-				string stri=PolynomialRing::sPoly(r->m_Set[i]);		
-				printf("i=%d=>%s\n",i,stri.c_str());	
-			}
+		}
+		if(argc==3){		
+			printf("\n");	
+			if(in<=81){
+				for(int i=0;i<in;i++){		
+					string stri=PolynomialRing::sPoly(r->m_Set[i]);		
+					printf("i=%d=>%s\n",i,stri.c_str());	
+				}
+			}	
 		}		
 	}
 	delete r;
