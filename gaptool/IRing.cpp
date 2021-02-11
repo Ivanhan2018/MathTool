@@ -100,6 +100,17 @@ int LoadData(char * pszFilePath)		//“从文件中读取数据”
 	return 0;//0成功
 }
 
+vector<int> FindRID(int n,int n0,int n1,int n2){
+	map<pair<int,int>,CRingDataItem>::iterator it;
+	vector<int> v;
+	for( it = g_mapRingDataCache.begin(); it != g_mapRingDataCache.end(); ++it){
+		if(it->second.m_n==n && it->second.m_n0==n0 && it->second.m_n1==n1 && it->second.m_n2==n2){
+			v.push_back(it->second.m_ID);
+		}
+	}
+	return v;
+}
+
 int g_a=1;
 
 // 有限循环环mZ/nZ，这里限制m|n
@@ -5470,7 +5481,7 @@ int main(int argc, char* argv[])
 	int ret=LoadData("RingData.csv");
 	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());
 #ifdef TRD	
-	return testRingData(argc,argv);	
+	return testRingData(argc,argv);
 #elif defined(TDR)
 	if(argc<5){
 		printf("usage:DRing n1 ID1 n2 ID2\n");
@@ -5481,6 +5492,22 @@ int main(int argc, char* argv[])
 	int n2=atoi(argv[3]);
 	int ID2=atoi(argv[4]);	
 	return testRingDataD(n1,ID1,n2,ID2);
+#elif defined(FRID)	
+	if(argc<5){
+		printf("usage:FRID n n0 n1 n2\n");
+		return 0;
+	}	
+    int n=atoi(argv[1]);
+    int n0=atoi(argv[2]);
+    int n1=atoi(argv[3]);
+    int n2=atoi(argv[4]);	
+	vector<int> vID=FindRID(n,n0,n1,n2);
+    printf("已找到%d种R%d(%d,%d,%d):\n",vID.size(),n,n0,n1,n2);
+	for(auto it=vID.begin();it!=vID.end();it++){
+		printf("%d,",*it);
+	}
+	printf("\n");
+	return 0;
 #endif
     //return testR16R2();
 	return Mrijk(argc,argv);	
