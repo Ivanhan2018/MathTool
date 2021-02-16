@@ -10,10 +10,13 @@
 #include <ctime>
 #include <fstream>
 
-IRing* newRppp(int ID,int p){
+IRing* newRppp(int ID,int p,int k=3){
 #ifdef PARSE_RING_FILE	
+    int pk=1;
+	for(int i=0;i<k;i++)
+		pk*=p;
 	char sz[100]={0};
-	sprintf(sz,"R%d.%d.txt",p*p*p,ID);
+	sprintf(sz,"R%d.%d.txt",pk,ID);
 	FiniteRing* r=newRing(sz);
 	return r;	
 #endif
@@ -534,7 +537,26 @@ IRing* newRpppp(int ID,int p,int n=16){
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;			
-	}		
+	}
+	if(pItem && pItem->m_n1==16 && pItem->m_n2==130){	
+		Mnr* r=new Mnr();   
+		r->m_r=newRppp(p==2?130:294,p,4);		
+		r->m_n=pItem->m_n0; 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+				}					
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
+	}	
 	return NULL;	
 }
 
