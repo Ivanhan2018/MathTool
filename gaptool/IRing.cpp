@@ -3566,10 +3566,8 @@ bool M2r::init(int n,int ID){
 			m_r=newRing(pItem->m_n1,pItem->m_n2);	
 		else if(pItem->m_n1==32)
 			m_r=FiniteRing::newR32(pItem->m_n2);
-#ifdef _WIN64
 		else if(pItem->m_n1==81)
-			m_r=FiniteRing::newR81(pItem->m_n2);
-#endif		
+			m_r=FiniteRing::newR81(pItem->m_n2);		
 		vector<MATRIXi> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
 		for(int i=0;i<vv.size();i++){
@@ -3606,10 +3604,8 @@ bool M2r::init(int n0,int n1,int n2,const char* sz){
 			m_r=newRing(n1,n2);	
 		else if(n1==32)
 			m_r=FiniteRing::newR32(n2);
-#ifdef _WIN64
 		else if(n1==81)
-			m_r=FiniteRing::newR81(n2);
-#endif			
+			m_r=FiniteRing::newR81(n2);			
 		vector<MATRIXi> gen;		
 		vector<string> vv=split(sz,";");
 		for(int i=0;i<vv.size();i++){
