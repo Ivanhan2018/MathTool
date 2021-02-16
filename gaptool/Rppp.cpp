@@ -511,7 +511,7 @@ Rppp':
 		B[1][0]=1;
 		B[1][1]=1;
 		B[1][2]=0;
-		B[1][3]=0; 
+		B[1][3]=0;
 		B[2][0]=1;
 		B[2][1]=0;
 		B[2][2]=1;
@@ -527,7 +527,7 @@ Rppp':
 		C[1][0]=1;
 		C[1][1]=1;
 		C[1][2]=0;
-		C[1][3]=0; 
+		C[1][3]=0;
 		C[2][0]=0;
 		C[2][1]=0;
 		C[2][2]=1;
@@ -542,6 +542,50 @@ Rppp':
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 		
 		return r;
+   }else if(ID==31){
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=4; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(4,vector<TElem>(4,0)); 
+		MATRIXi8 B(4,vector<TElem>(4,0)); 		
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=1;
+		A[0][3]=0;
+		A[1][0]=0;
+		A[1][1]=0;
+		A[1][2]=0;
+		A[1][3]=1; 
+		A[2][0]=0;
+		A[2][1]=0;
+		A[2][2]=0;
+		A[2][3]=0;
+		A[3][0]=0;
+		A[3][1]=0;
+		A[3][2]=0;
+		A[3][3]=0;
+		B[0][0]=0;
+		B[0][1]=0;
+		B[0][2]=0;
+		B[0][3]=0;
+		B[1][0]=1;
+		B[1][1]=0;
+		B[1][2]=1;
+		B[1][3]=0; 
+		B[2][0]=0;
+		B[2][1]=0;
+		B[2][2]=0;
+		B[2][3]=0;
+		B[3][0]=0;
+		B[3][1]=0;
+		B[3][2]=1;
+		B[3][3]=0;	
+		gen.push_back(A);
+		gen.push_back(B);		
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 		
+		return r;		
    }else if(ID==32){
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
@@ -549,17 +593,10 @@ Rppp':
 		vector<MATRIXi8> gen;		
 		MATRIXi8 A(4,vector<TElem>(4,0)); 
 		MATRIXi8 B(4,vector<TElem>(4,0)); 		
-		A[0][3]=1;
-		A[1][1]=1;
-		A[1][2]=1;
-		A[1][3]=1; 
-		A[2][1]=1;
-		A[2][2]=1;
-		A[2][3]=1;
-		B[0][3]=1;
+		A[2][0]=1;
+		A[3][2]=1;
 		B[1][0]=1;
-		B[2][0]=1;
-		B[2][3]=1;
+		B[3][1]=1;
 		gen.push_back(A);
 		gen.push_back(B);		
 		r->m_flag=1;
@@ -1195,29 +1232,36 @@ Rppp':
 		gen.push_back(B);
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen);		
-		return r;		
-   }else if(ID==59){//Rppp(59,3)=R27_59,µ«Rppp(59,2)=R4_6
+		return r;	
+   }else if(ID==57){//Rppp(57,3)=R27_57,µ«Rppp(57,2)=R8_33
 		Mnr* r=new Mnr();   
 		r->m_r=new ZmodnZ(1,p);
-		r->m_n=4; 
+		r->m_n=5; 
 		vector<MATRIXi8> gen;		
-		MATRIXi8 A(4,vector<TElem>(4,0)); 		
-		A[0][0]=0;
+		MATRIXi8 A(5,vector<TElem>(5,0)); 
 		A[0][1]=1;
-		A[0][2]=1;
-		A[0][3]=1;		
+		A[2][0]=1;
+		A[2][3]=1;
+		A[3][0]=1;		
+		gen.push_back(A);
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+		return r;			
+   }else if(ID==59){//Rppp(59,3)=R27_59,µ«Rppp(59,2)=R8_52
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=3; 
+		vector<MATRIXi8> gen;		
+		MATRIXi8 A(3,vector<TElem>(3,0)); 		
+		A[0][0]=0;
+		A[0][1]=0;
+		A[0][2]=1;		
 		A[1][0]=0;
 		A[1][1]=1;
-		A[1][2]=1;
-		A[1][3]=1;	
+		A[1][2]=1;	
 		A[2][0]=1;
 		A[2][1]=1;
-		A[2][2]=1;
-		A[2][3]=0;
-		A[3][0]=0;
-		A[3][1]=0;
-		A[3][2]=1;
-		A[3][3]=0;	   	
+		A[2][2]=0;
 		gen.push_back(A);
 		r->m_flag=1;
 		r->m_Set=Mnr::FR(r->m_r,gen); 
@@ -1271,10 +1315,15 @@ IRing* newRpp(int ID,int p){
    }	
 }
 
-int main()
-{ 
+int main(int argc, char* argv[]){ 
+	int n1=1;
+	int n2=59;
+	if(argc>1)
+		n1=atoi(argv[1]);
+	if(argc>2)
+		n2=atoi(argv[2]);
 	if(1){
-		for(int i=1;i<=59;i++){
+		for(int i=n1;i<=n2;i++){
 		   IRing* r8=newRppp(i,2);
 		   IRing* r27=newRppp(i,3);		   
 		   if(!r8||!r27)
