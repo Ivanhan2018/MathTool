@@ -312,6 +312,7 @@ int LoadData(char * pszFilePath)		//“从文件中读取数据”
 }
 
 extern IRing* newRpppp(int ID,int p);
+extern IRing* newRpppp3(int ID,int p);
 
 IRing* newRpppp(int ID,int p,int n=16){	
    //if(ID!=32)
@@ -508,6 +509,128 @@ IRing* newRpppp(int ID,int p,int n=16){
 	return NULL;	
 }
 
+IRing* newRpppp3(int ID,int p,int n=81){	
+   //if(ID!=32)
+	   //return NULL;
+	//p=2;
+	//if(p==3)return NULL;
+	//int n=p*p*p*p;
+	int nn=n;
+	if(n<0)
+		n=-n;
+	const CRingDataItem * pItem = Find(n,ID);
+	if(pItem && pItem->m_n1==1 && pItem->m_n2==3){
+		Mnr* r=new Mnr();   
+		r->m_r=new ZmodnZ(1,p);
+		r->m_n=pItem->m_n0; 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+					if(A[j][k]>=p)
+						A[j][k]=1;				
+				}
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
+	}
+	if(pItem && pItem->m_n1==1 && (pItem->m_n2==9||pItem->m_n2==27||pItem->m_n2==81)){
+		Mnr* r=new Mnr();
+		if(pItem->m_n2==9)		
+			r->m_r=new ZmodnZ(1,p*p);
+		else if(pItem->m_n2==27)
+			r->m_r=new ZmodnZ(1,p*p*p);
+		else if(pItem->m_n2==81)
+			r->m_r=new ZmodnZ(1,p*p*p*p);		
+		r->m_n=pItem->m_n0; 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+					if(A[j][k]==3)
+						A[j][k]=p;
+					else if(A[j][k]==9)
+						A[j][k]=p*p;
+					else if(A[j][k]==27)
+						A[j][k]=p*p*p;					
+					else{
+						if(A[j][k]>1)
+							A[j][k]=1;
+					}
+				}
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
+	}
+	if(pItem && pItem->m_n1==27 && pItem->m_n2==14){
+		ZmodnZ* rpp=new ZmodnZ(1,p*p);
+		ZmodnZ* rp=new ZmodnZ(1,p);
+		DecompositionRing* rppp= new DecompositionRing(rpp,rp);
+		rppp->m_flag=1;		
+		Mnr* r=new Mnr();   
+		r->m_r=rppp;		
+		r->m_n=pItem->m_n0; 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+					if(A[j][k]==3)
+						A[j][k]=p;
+					else if(A[j][k]==9)
+						A[j][k]=p*p;
+					else if(A[j][k]>=p*p*p)
+						A[j][k]=1;					
+				}					
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
+	}		
+	if(pItem && pItem->m_n1==27 && pItem->m_n2==22){	
+		Mnr* r=new Mnr();   
+		r->m_r=newRppp(pItem->m_n2,p);		
+		r->m_n=pItem->m_n0; 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+					if(A[j][k]==3)
+						A[j][k]=p;
+					else if(A[j][k]==9)
+						A[j][k]=p*p;
+					else if(A[j][k]>=p*p*p)
+						A[j][k]=1;		
+				}					
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
+	}	
+	return NULL;	
+}
+
 IRing* newRpppRp(int ID1,int ID2,int p){	
 	IRing* ri=newRpppp(ID1,p,8);
 	if(!ri)return NULL;
@@ -584,6 +707,17 @@ int main(int argc, char* argv[]){
 		}
 	}		
 	return 0;
+#elif defined(RP3)
+	for(int i=n1;i<=n2;i++){
+	   IRing* r16=newRpppp3(i,2,n);
+	   IRing* r81=newRpppp3(i,3,n);		   
+	   if(!r16||!r81)
+		   continue;
+		int ID16=IdRing(r16);
+		int ID81=(r81->size()>81 && r81->size()!=243)?0:IdRing(r81);			
+		printf("Rpppp3(%d,3)=R%d_%d,Rpppp3(%d,2)=R%d_%d\n",i,r81->size(),ID81,i,r16->size(),ID16);					
+	}
+    return 0;
 #endif
 #if 0
 	//IRing* r16=newRpppp(93,2,16);
