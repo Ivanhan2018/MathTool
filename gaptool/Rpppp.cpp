@@ -506,6 +506,35 @@ IRing* newRpppp(int ID,int p,int n=16){
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;			
 	}	
+	if(pItem && pItem->m_n1==16 && pItem->m_n2==6){	
+		ZmodnZ* rppp=new ZmodnZ(1,p*p*p);
+		ZmodnZ* rp=new ZmodnZ(1,p);
+		DecompositionRing* rpppp= new DecompositionRing(rppp,rp);
+		rpppp->m_flag=1;		
+		Mnr* r=new Mnr();   
+		r->m_r=rpppp;		
+		r->m_n=pItem->m_n0; 	 
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<r->m_n;j++)
+				for(int k=0;k<r->m_n;k++){
+					A[j][k]=atoi(v[j*r->m_n+k].c_str());
+					if(A[j][k]==2)
+						A[j][k]=p;
+					else if(A[j][k]==4)
+						A[j][k]=p*p;
+					else if(A[j][k]==8)
+						A[j][k]=p*p*p;	
+				}					
+			gen.push_back(A);
+		}	
+		r->m_flag=1;
+		r->m_Set=Mnr::FR(r->m_r,gen); 
+        return r;			
+	}		
 	return NULL;	
 }
 
@@ -677,6 +706,9 @@ int main(int argc, char* argv[]){
 	int n1=273;
 	int n2=390;
 	int n=16;
+#ifdef RP3
+	n=81;
+#endif	
 	if(argc>1)
 		n1=atoi(argv[1]);
 	if(argc>2)

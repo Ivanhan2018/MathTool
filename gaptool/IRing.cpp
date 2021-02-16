@@ -303,7 +303,8 @@ public:
 	static IRing* newR8(int i);
 	static IRing* newR16(int i);	
 	static IRing* newR32(int i);
-	static IRing* newR27(int i);	
+	static IRing* newR27(int i);
+	static IRing* newR81(int i);	
 public:
 	// 实现抽象基类的方法
 	virtual void printTable();
@@ -3298,6 +3299,24 @@ IRing* FiniteRing::newR16(int i){
 	return NULL;
 }
 
+IRing* FiniteRing::newR81(int i){
+	if(i==6)
+	{
+		ZmodnZ* r27=new ZmodnZ(1,27);
+		ZmodnZ* r3=new ZmodnZ(1,3);
+		DecompositionRing* r= new DecompositionRing(r27,r3);
+		r->m_flag=1;		
+		return r;
+	}
+#ifdef PARSE_RING_FILE	
+	char sz[100]={0};
+	sprintf(sz,"R81.%d.txt",i);
+	FiniteRing* r=newRing(sz);
+	return r;	
+#endif
+	return NULL;
+}
+
 void printRing0(IRing* r,int ID){
    int n=r->size();
    printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
@@ -3546,7 +3565,11 @@ bool M2r::init(int n,int ID){
 		else if(pItem->m_n1==9||pItem->m_n1==27)
 			m_r=newRing(pItem->m_n1,pItem->m_n2);	
 		else if(pItem->m_n1==32)
-			m_r=FiniteRing::newR32(pItem->m_n2);		
+			m_r=FiniteRing::newR32(pItem->m_n2);
+#ifdef _WIN64
+		else if(pItem->m_n1==81)
+			m_r=FiniteRing::newR81(pItem->m_n2);
+#endif		
 		vector<MATRIXi> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
 		for(int i=0;i<vv.size();i++){
@@ -3582,7 +3605,11 @@ bool M2r::init(int n0,int n1,int n2,const char* sz){
 		else if(n1==9||n1==27)
 			m_r=newRing(n1,n2);	
 		else if(n1==32)
-			m_r=FiniteRing::newR32(n2);		
+			m_r=FiniteRing::newR32(n2);
+#ifdef _WIN64
+		else if(n1==81)
+			m_r=FiniteRing::newR81(n2);
+#endif			
 		vector<MATRIXi> gen;		
 		vector<string> vv=split(sz,";");
 		for(int i=0;i<vv.size();i++){
@@ -5183,7 +5210,11 @@ int Mrijk(int argc, char* argv[])
 	}else if(n1==9||n1==27){
 		r=newRing(n1,n2);		
 	}else if(n1==32){
-		r=FiniteRing::newR32(n2);		
+		r=FiniteRing::newR32(n2);	
+#ifdef _WIN64
+	}else if(n1==81){
+		r=FiniteRing::newR81(n2);
+#endif		
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}

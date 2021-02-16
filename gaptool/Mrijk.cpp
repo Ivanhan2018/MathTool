@@ -2666,6 +2666,24 @@ IRing* newR16(int i){
 	return NULL;
 }
 
+IRing* newR81(int i){
+	if(i==6)
+	{
+		ZmodnZ* r27=new ZmodnZ(1,27);
+		ZmodnZ* r3=new ZmodnZ(1,3);
+		DecompositionRing* r= new DecompositionRing(r27,r3);
+		r->m_flag=1;		
+		return r;
+	}
+#ifdef PARSE_RING_FILE	
+	char sz[100]={0};
+	sprintf(sz,"R81.%d.txt",i);
+	FiniteRing* r=newRing(sz);
+	return r;	
+#endif
+	return NULL;
+}
+
 int GetRand(int a,int b){
 	if(a>=b)
 		return a;
@@ -2752,6 +2770,11 @@ int GetRandV(int r){
 	else if(r==27){
 		v.push_back(3);		
 		v.push_back(9);	
+	}
+	else if(r==81){
+		v.push_back(3);		
+		v.push_back(9);
+		v.push_back(27);		
 	}	
 	int ii=GetRand(0,v.size()-1);
 	return v[ii];
@@ -2780,7 +2803,11 @@ int main(int argc, char* argv[])
 	}else if(n1==27){	
 		r=newR27(n2);		
 	}else if(n1==32){
-		r=newR32(n2);		
+		r=newR32(n2);
+#ifdef _WIN64
+	}else if(n1==81){
+		r=newR81(n2);
+#endif		
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}
