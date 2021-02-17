@@ -2950,7 +2950,22 @@ int main(int argc, char* argv[])
 				mstr+=";";
 		}
 		printf("mstr=%s\n",mstr.c_str());		
-	}
+	}else if(mstr.substr(0,1)=="T"){
+		mstr=mstr.substr(1,mstr.size()-1);
+		string mstr1=""; 
+		for(int j=0;j<mstr.size();j++){
+			if(mstr[j]=='2')
+				mstr1.push_back('3');
+			else if(mstr[j]=='4')
+				mstr1.push_back('9');
+			else if(mstr[j]=='8')
+				mstr1.push_back('27');	
+			else
+				mstr1.push_back(mstr[j]);				
+		}
+		mstr=mstr1;			
+		printf("mstr=%s\n",mstr.c_str());		
+	}	
 	int fun=1;
 	string vstr="";
 	vector<int> vi;	
