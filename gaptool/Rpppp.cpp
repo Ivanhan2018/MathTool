@@ -433,28 +433,9 @@ IRing* newRpppp(int ID,int p,int n=16){
 		r->m_Set=Mnr::FR(r->m_r,gen); 
         return r;			
 	}	
-	if(pItem && pItem->m_n1==8 && pItem->m_n2==6){	
+	if(pItem && pItem->m_n1==8 && (pItem->m_n2==6||pItem->m_n2==9)){	
 		Mnr* r=new Mnr();   
-		r->m_r=newRppp(p==2?6:9,p);		
-		r->m_n=pItem->m_n0; 
-		vector<MATRIXi8> gen;		
-		vector<string> vv=split(pItem->m_mstr,";");
-		for(int i=0;i<vv.size();i++){
-			MATRIXi8 A(r->m_n,vector<TElem>(r->m_n,0));
-			vector<string> v=split(vv[i],",");
-			for(int j=0;j<r->m_n;j++)
-				for(int k=0;k<r->m_n;k++){
-					A[j][k]=atoi(v[j*r->m_n+k].c_str());
-				}					
-			gen.push_back(A);
-		}	
-		r->m_flag=1;
-		r->m_Set=Mnr::FR(r->m_r,gen); 
-        return r;			
-	}
-	if(pItem && pItem->m_n1==8 && pItem->m_n2==9){	
-		Mnr* r=new Mnr();   
-		r->m_r=newRppp(p==2?9:6,p);		
+		r->m_r=newRppp(pItem->m_n2,p);		
 		r->m_n=pItem->m_n0; 
 		vector<MATRIXi8> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
