@@ -83,7 +83,7 @@ int LoadData(char * pszFilePath)		//“从文件中读取数据”
 	if( fp == NULL )
 		return 1;//1打开文件失败
 
-	char sz[200] = {0};
+	char sz[240] = {0};
 	CRingDataItem item;
 	int n = 0;
 	n = fscanf(fp, "%s", sz);

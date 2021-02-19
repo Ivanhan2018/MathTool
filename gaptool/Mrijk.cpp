@@ -2976,7 +2976,6 @@ int main(int argc, char* argv[])
 			vector<string> vs=split(vstr,",");
 			for(int i=0;i<vs.size();i++){
 				vi.push_back(atoi(vs[i].c_str()));
-				printf("%d,",vi[i]);				
 			}
 			fun=-1;
 		}else if(vstr.substr(0,1)=="s"){
