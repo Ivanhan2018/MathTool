@@ -5451,6 +5451,21 @@ int testRingData(int argc, char* argv[]){
 		mstr=pItem->m_mstr+stri;			
 		printf("R%d_%dµÄÀ©»·,%d,%d,%d,mstr=%s\n",n,ID,pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr.c_str());
         str.erase(str.begin());		
+	}else if(str.substr(0,1)=="T"){
+		string mstr1="";
+		srand(time(NULL));		
+		int ix=GetRand(0,mstr.size()-1);		
+		for(int j=0;j<mstr.size();j++){
+			if(j==ix && mstr[j]=='0')
+				mstr1.push_back('1');
+			else if(j==ix && mstr[j]=='1')
+				mstr1.push_back('0');
+			else
+				mstr1.push_back(mstr[j]);			
+		}
+		mstr=mstr1;					
+		printf("%d,%d,%d,mstr=%s\n",pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr.c_str());
+        str.erase(str.begin());		
 	}	
 	IRing *r=NULL;
 	bool b=false;
