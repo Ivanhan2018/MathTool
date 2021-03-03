@@ -4727,13 +4727,94 @@ void findsubring4(IRing *r,int n)
 		int cnt1=M.size();
 		if(cnt1>cnt){
 #if 1
-			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d\n",cnt1,ni,ID,t,i,j,k);	
+            int rk=Rank(&S1i);
+			printf("cnt1=%d:R%d_%d(rk=%d)->t=%d,i=%d,j=%d,k=%d\n",cnt1,ni,ID,rk,t,i,j,k);	
 #else
 			string strt=IMStr(r,t);		
 			string str=IMStr(r,i);
 			string strj=IMStr(r,j);
 			string strk=IMStr(r,k);		
 			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s\n",cnt1,ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
+#endif
+            if((ni==32||ni==81||ni==64||ni==243) && ID>0){
+				char sz1[128]={0};   
+				sprintf(sz1,"R%d_%d.txt",ni,ID);
+				writeTable(&S1i,sz1);                  
+			}			
+		}	
+		if(ID==-1)   
+		{					
+			string strR=calcRingInvariant(&S1i);
+			if(S.find(strR)==S.end()){			
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+#if 0//PRINT_LOG			
+				fout<<t<<","<<i<<","<<j<<","<<k<<"=>";
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+				bFind=true;
+#endif
+		}
+			S.insert(strR);
+			//break;
+		}		   
+	}
+#if PRINT_LOG
+	fout.close();	
+	if(!bFind)	
+		system(strCmd.c_str());
+	else
+		printf("子环表示已输出到文件%s\n",sz);
+#endif	
+}
+
+void findsubring5(IRing *r,int n)
+{
+#define PRINT_LOG 0	
+	bool bFind=false;	
+#if PRINT_LOG
+    char sz[100]="0";
+	sprintf(sz,"R%d_%d.txt",r->size(),time(NULL));
+    ofstream fout(sz);
+    string strCmd="del ";
+	strCmd+=sz;	
+#endif	
+	map<pair<int,int>,pair<int,int>> M;	
+	set<string> S;		
+	int ID=0;//IdRing(r);
+	printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
+	for(int s=g_i;s<r->size()-4;s++)	
+	for(int t=s+1;t<r->size()-3;t++)		
+	for(int i=t+1;i<r->size()-2;i++)		
+	for(int j=i+1;j<r->size()-1;j++)
+	for(int k=j+1;k<r->size();k++)		
+	{
+		vector<int> v;
+		v.push_back(s);		
+		v.push_back(t);			
+		v.push_back(i);		
+		v.push_back(j);	
+		v.push_back(k);			
+		Subring S1i;
+		bool bn=S1i.init(r,v,n);
+		if(!bn)
+			continue;
+		int ni=S1i.size();
+		//if(ni!=n)
+			//continue;
+		int ID=IdRing(&S1i);
+		int cnt=M.size();
+		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
+		int cnt1=M.size();
+		if(cnt1>cnt){
+#if 1
+            int rk=Rank(&S1i);
+			printf("cnt1=%d:R%d_%d(rk=%d)->s=%d,t=%d,i=%d,j=%d,k=%d\n",cnt1,ni,ID,rk,s,t,i,j,k);	
+#else
+			string strs=IMStr(r,s);	
+			string strt=IMStr(r,t);		
+			string str=IMStr(r,i);
+			string strj=IMStr(r,j);
+			string strk=IMStr(r,k);		
+			printf("cnt1=%d:R%d_%d->s=%d,t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s;%s\n",cnt1,ni,ID,s,t,i,j,k,strs.c_str(),strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
 #endif
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
@@ -5302,12 +5383,12 @@ int Mrijk(int argc, char* argv[])
 		int fun=1;
         if(argc>5){
             fun=atoi(argv[5]);
-			if(fun<0||fun>3){
+			if(fun<0||fun>4){
 				fun=0;
 			}	
 		}	
 		typedef void(*pF)(IRing *r,int n);
-		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4};
+		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findsubring5};
 		Func[fun](R,n0);
 		delete R;
 		R=NULL;
@@ -5317,12 +5398,12 @@ int Mrijk(int argc, char* argv[])
 		int fun=1;
         if(argc>5){
             fun=atoi(argv[5]);
-			if(fun<0||fun>3){
+			if(fun<0||fun>4){
 				fun=0;
 			}	
 		}		
 		typedef void(*pF)(IRing *r,int n);
-		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4};
+		pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findsubring5};
 		Func[fun](R,n0);	
 		delete R;
 		R=NULL;		
@@ -5507,7 +5588,7 @@ int testRingData(int argc, char* argv[]){
 			int fun=1;
 			if(argc>3){
 				fun=atoi(str.c_str());
-				if(fun<-1||fun>4){
+				if(fun<-1||fun>5){
 					fun=0;
 				}	
 			}	
@@ -5532,7 +5613,7 @@ int testRingData(int argc, char* argv[]){
 			if(argc>5)
 				g_i=atoi(argv[5]);			
 			typedef void(*pF)(IRing *r,int n);
-			pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findquotientring};
+			pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findsubring5,findquotientring};
 			Func[fun](r,n0);		
 		}	
 		if(argc==3){
