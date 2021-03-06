@@ -3075,7 +3075,7 @@ IRing* FiniteRing::newR16(int i){
 		{0,2,0,2,2,0,2,0,2,0,2,0,0,2,0,2},
 	};
 	
-	if(i==130||i==156||i==229){
+	if(i==127||i==130||i==156||i==229){
 		char sz[100]={0};
 		sprintf(sz,"R16.%d.txt",i);
 		FiniteRing* r=newRing(sz);
