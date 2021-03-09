@@ -4642,8 +4642,8 @@ RIDHelper::RIDHelper(){
 	/*---------------end of R32_5348~R32_5571----------------*/			
 #endif
 	//R36
-	m_RingInvariant.insert(make_pair("[1,3,8,0,24,0,0,0,0],6,1,1,18,4,2,2,147,17,36",99));		
-	m_RingInvariant.insert(make_pair("[1,3,8,0,24,0,0,0,0],6,1,1,20,4,1,1,136,19,36",119));	
+	//m_RingInvariant.insert(make_pair("[1,3,8,0,24,0,0,0,0],6,1,1,18,4,2,2,147,17,36",99));		
+	//m_RingInvariant.insert(make_pair("[1,3,8,0,24,0,0,0,0],6,1,1,20,4,1,1,136,19,36",119));	
 	
 	int cnt0=m_RingInvariant.size();
 	int iret=LoadData("RingInvariant.csv",0);	

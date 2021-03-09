@@ -2999,7 +2999,11 @@ int main(int argc, char* argv[])
 		if(_n0==27)
 			n0=27;
 		else if(_n0==8)
-			n0=8;		
+			n0=8;
+		else if(_n0==24)
+			n0=24;	
+		else if(_n0==36)
+			n0=36;		
 		else if(_n0==64)
 			n0=64;		
 		else if(_n0==81)

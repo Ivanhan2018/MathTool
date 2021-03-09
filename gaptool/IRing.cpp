@@ -5316,7 +5316,11 @@ int Mrijk(int argc, char* argv[])
 		else if(_n0==243)
 			n0=243;		
 		else if(_n0==16)
-			n0=16;		
+			n0=16;
+		else if(_n0==24)
+			n0=24;	
+		else if(_n0==36)
+			n0=36;			
 		else
 			n0=32;		
 	}	
@@ -5607,6 +5611,10 @@ int testRingData(int argc, char* argv[]){
 					n0=16;	
 				else if(_n0==32)
 					n0=32;	
+				else if(_n0==24)
+					n0=24;		
+				else if(_n0==36)
+					n0=36;				
 				else if(_n0==64)
 					n0=64;					
 				else
@@ -5638,7 +5646,11 @@ int testRingDataD(int n1,int ID1,int n2,int ID2){
 		r->m_flag=1;		
 		int in=r->size();
 		int iID=IdRing(r);
-		printf("R%d_%d",in,iID);		
+		printf("R%d_%d",in,iID);
+		if(iID==-1){
+			string strR=calcRingInvariant(r);
+			printf(":%s\n",strR.c_str());	
+		}	
 	}
 	return 0;
 }
