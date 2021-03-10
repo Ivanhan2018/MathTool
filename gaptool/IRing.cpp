@@ -5655,8 +5655,37 @@ int testRingDataD(int n1,int ID1,int n2,int ID2){
 	return 0;
 }
 
-int main(int argc, char* argv[])
-{ 	
+int DR(int argc, char* argv[]){ 
+	if(argc<3){
+		printf("usage:DR n1 ID1 n2 ID2\n");
+		return 0;
+	}	
+	int n1=atoi(argv[1]);
+	int ID1=atoi(argv[2]);	
+	int n2=atoi(argv[3]);
+	int ID2=atoi(argv[4]);
+	string str="";
+	if(argc>5)
+		str=argv[5];
+	IRing *r1=newRing(n1,ID1);
+	IRing *r2=newRing(n2,ID2);
+	if(r1 && r2){	
+		DecompositionRing* r= new DecompositionRing(r1,r2);
+		r->m_flag=1;		
+		int in=r->size();
+		int iID=IdRing(r);
+		printf("R%d_%d",in,iID);		
+		if(str.substr(0,1)=="w"){
+			char sz1[128]={0};   
+			sprintf(sz1,"R%d%s%d.txt",r->size(),str.substr(1,1).c_str(),iID);
+			writeTable(r,sz1);
+			printf("\n写入文件%s\n",sz1);			
+		}
+	}
+	return 0;
+}
+
+int main(int argc, char* argv[]){ 	
 	// 将环表示数据配置到文件中，精简代码
 	int ret=LoadData("RingData.csv");
 	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());
@@ -5672,6 +5701,8 @@ int main(int argc, char* argv[])
 	int n2=atoi(argv[3]);
 	int ID2=atoi(argv[4]);	
 	return testRingDataD(n1,ID1,n2,ID2);
+#elif defined(DR_)	
+	return DR(argc,argv);
 #elif defined(FRID)	
 	if(argc<5){
 		printf("usage:FRID n n0 n1 n2\n");
