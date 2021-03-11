@@ -1266,7 +1266,7 @@ void findsubring1(IRing *r,int n)
 {
 	set<pair<int,int>> M;
 	set<string> S;	
-	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
+	int ID=(r->size()>243||r->size()==128)?0:IdRing(r);
 	//srand(time(NULL));
 	//g_i=rand()%r->size();
 	//printf("R%d_%d g_i=%d\n",r->size(),ID,g_i);
@@ -1315,7 +1315,7 @@ void findsubring2(IRing *r,int n)
 {
 #define PRINT_LOG 0	
 	bool bFind=false;	
-	int ID=0;//(r->size()>32 && r->size()!=81)?0:IdRing(r);
+	int ID=(r->size()>243 || r->size()==128)?0:IdRing(r);
 #if PRINT_LOG
     char sz[100]="0";
 	sprintf(sz,"R%d_%d_%d.txt",r->size(),ID,time(NULL));
@@ -1400,7 +1400,7 @@ void findsubring3(IRing *r,int n)
 #endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;	
-	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
+	int ID=(r->size()>243 || r->size()==128)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 	int i0=0;
@@ -1476,7 +1476,7 @@ void findsubring4(IRing *r,int n)
 #endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
-	int ID=(r->size()>32 && r->size()!=81)?0:IdRing(r);
+	int ID=(r->size()>243 || r->size()==128)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);
 	int i0=0;
@@ -1550,7 +1550,7 @@ void findquotientring(IRing *r,int n)
 {
 #define PRINT_LOG 0	
 	bool bFind=false;	
-	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64 && r->size()!=243)?0:IdRing(r);
+	int ID=(r->size()>243 || r->size()==128)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 	if(r->size()<n*2)
@@ -1636,7 +1636,7 @@ void findquotientring(IRing *r,int n)
 
 void findquotientring3(IRing *r,int n)
 {
-	int ID=(r->size()>32 && r->size()!=81 && r->size()!=64 && r->size()!=243)?0:IdRing(r);
+	int ID=(r->size()>243 || r->size()==128)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 	if(r->size()<n*2)

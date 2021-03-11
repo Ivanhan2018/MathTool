@@ -3003,7 +3003,9 @@ int main(int argc, char* argv[])
 		else if(_n0==24)
 			n0=24;	
 		else if(_n0==36)
-			n0=36;		
+			n0=36;	
+		else if(_n0==54)
+			n0=54;
 		else if(_n0==64)
 			n0=64;		
 		else if(_n0==81)
