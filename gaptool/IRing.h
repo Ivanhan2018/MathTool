@@ -159,7 +159,7 @@ Subring::Subring(IRing* r,const vector<int>& gens)
 	init(r,gens,0);
 }
 
-bool IsEqual(vector<int>& a,vector<int>& b){
+bool IsEqual(const vector<int>& a,const vector<int>& b){
     int na=a.size();
 	int nb=b.size();
 	if(na!=nb)
@@ -444,7 +444,7 @@ vector<pair<int,int> > doN1Vec(vector<int>& v){
 	int n=v.size();
 	for(int i=0;i<n;i++){
 		int vi=v[i];
-		vector<pair<int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](pair<int,int>& obj)->bool{if(vi==obj.first)return true;return false;});
+		vector<pair<int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](const pair<int,int>& obj)->bool{if(vi==obj.first)return true;return false;});
 		if(it==ret.end()){
 			ret.push_back(make_pair(vi,1));
 		}else{
@@ -460,7 +460,7 @@ vector<tuple<int,int,int> > doN2Vec(vector<pair<int,int> >& v){
 	int n=v.size();
 	for(int i=0;i<n;i++){
 		pair<int,int> vi=v[i];
-		vector<tuple<int,int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](tuple<int,int,int>& obj)->bool{if(get<0>(obj)==vi.first && get<1>(obj)==vi.second)return true;return false;});
+		vector<tuple<int,int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](const tuple<int,int,int>& obj)->bool{if(get<0>(obj)==vi.first && get<1>(obj)==vi.second)return true;return false;});
 		if(it==ret.end()){
 			ret.push_back(make_tuple(vi.first,vi.second,1));
 		}else{
@@ -477,7 +477,7 @@ vector<tuple<int,int,int,int> > doN3Vec(vector<tuple<int,int,int> >& v){
 	int n=v.size();
 	for(int i=0;i<n;i++){
 		tuple<int,int,int> vi=v[i];
-		vector<tuple<int,int,int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](tuple<int,int,int,int>& obj)->bool{if(get<0>(obj)==get<0>(vi) && get<1>(obj)==get<1>(vi) && get<2>(obj)==get<2>(vi))return true;return false;});
+		vector<tuple<int,int,int,int> >::const_iterator it=std::find_if(ret.begin(),ret.end(),[vi](const tuple<int,int,int,int>& obj)->bool{if(get<0>(obj)==get<0>(vi) && get<1>(obj)==get<1>(vi) && get<2>(obj)==get<2>(vi))return true;return false;});
 		if(it==ret.end()){
 			ret.push_back(make_tuple(get<0>(vi),get<1>(vi),get<2>(vi),1));
 		}else{
@@ -543,7 +543,7 @@ string calcN3(IRing* r){
 		v.push_back(make_pair(o,ni));
 	}
 	vector<tuple<int,int,int> > v1=doN2Vec(v);
-	std::sort(v1.begin(),v1.end(),[](tuple<int,int,int>& a,tuple<int,int,int>& b)->bool{
+	std::sort(v1.begin(),v1.end(),[](const tuple<int,int,int>& a,const tuple<int,int,int>& b)->bool{
 					if(get<0>(a)!=get<0>(b))
 						return get<0>(a)<get<0>(b);				
 					return get<1>(a)<get<1>(b);	
@@ -608,7 +608,7 @@ string calcN1(IRing* r){
 		}
 	}
 	vector<tuple<int,int,int> > v1=doN2Vec(v);
-	std::sort(v1.begin(),v1.end(),[](tuple<int,int,int>& a,tuple<int,int,int>& b)->bool{
+	std::sort(v1.begin(),v1.end(),[](const tuple<int,int,int>& a,const tuple<int,int,int>& b)->bool{
 					if(get<2>(a)!=get<2>(b))
 						return get<2>(a)<get<2>(b);
 					return get<0>(a)<get<0>(b);	
@@ -1323,7 +1323,7 @@ string calcS2(IRing* r){
 			if(iret1!=1)
 				continue;			
 			std::sort(v.begin(),v.end());
-			auto it=std::find_if(vv.begin(),vv.end(),[v](vector<int>& obj)->bool{
+			auto it=std::find_if(vv.begin(),vv.end(),[v](const vector<int>& obj)->bool{
 						return IsEqual(obj,const_cast<vector<int>&>(v));
 				}); 
 			if(it==vv.end()){
@@ -1331,14 +1331,14 @@ string calcS2(IRing* r){
 			}			
 		}
 	}
-	std::sort(vv.begin(),vv.end(),[](vector<int>& a,vector<int>& b)->bool{
+	std::sort(vv.begin(),vv.end(),[](const vector<int>& a,const vector<int>& b)->bool{
 		                return a.size()>b.size();
 				});
 	vector<std::vector<int> > vv1;				
 	int cnt=vv.size();				
 	for(int i=0;i<cnt;i++){
 		    vector<int> v=vv[i];
-			auto it=std::find_if(vv1.begin(),vv1.end(),[v](vector<int>& obj)->bool{
+			auto it=std::find_if(vv1.begin(),vv1.end(),[v](const vector<int>& obj)->bool{
 						vector<int> v1;
 						set_intersection(obj.begin(),obj.end(),v.begin(),v.end(),back_inserter(v1)); 
 						if(v1.size()==v.size() && v.size()<=obj.size())
