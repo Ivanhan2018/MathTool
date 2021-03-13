@@ -5353,7 +5353,7 @@ int Mrijk(int argc, char* argv[])
 		return 0;
 	}	
 	if(n>2||n==1){
-		if(n>2 && r->size()>4||(n>3 &&r->size()==4)){
+		if(n>2 && r->size()>4||(n>3 &&r->size()==4)||n>4){
 			if((argc>6 && n0==16)||argc>7)
 				FindMnr3(r,n,ijk,n0);
 			else
