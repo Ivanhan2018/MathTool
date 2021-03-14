@@ -844,6 +844,71 @@ int Rank(IRing* r){
 	return 4;//rank>=4  
 }
 
+int Rank5(IRing* r){
+	int n=r->size();
+	if(n<4)
+		return 1;	
+	for(int i=1;i<n;i++){
+	   vector<int> vi;
+	   vi.push_back(i);	   
+	   Subring si(r,vi);
+	   si.m_flag=0;
+	   int ni=si.size();
+	   if(ni==n){
+			return 1;
+	   }
+   }
+	for(int i=1;i<n-1;i++){
+		for(int j=i+1;j<n;j++){		
+		   vector<int> vi;
+		   vi.push_back(i);	
+		   vi.push_back(j);	   
+		   Subring si(r,vi);
+		   si.m_flag=0;
+		   int ni=si.size();
+		   if(ni==n){
+				return 2;
+		   }
+	   }  
+	}
+	for(int i=1;i<n-2;i++){
+		for(int j=i+1;j<n-1;j++){	
+			for(int k=j+1;k<n;k++){		
+			   vector<int> vi;
+			   vi.push_back(i);	
+			   vi.push_back(j);
+			   vi.push_back(k);		   
+			   Subring si(r,vi);
+			   si.m_flag=0;
+			   int ni=si.size();
+			   if(ni==n){
+					return 3;
+			   }
+		   } 
+		}
+	}
+	for(int i=1;i<n-3;i++){
+		for(int j=i+1;j<n-2;j++){	
+			for(int k=j+1;k<n-1;k++){		
+				for(int m=k+1;m<n;m++){	
+				   vector<int> vi;
+				   vi.push_back(i);	
+				   vi.push_back(j);
+				   vi.push_back(k);	
+				   vi.push_back(m);  
+				   Subring si(r,vi);
+				   si.m_flag=0;
+				   int ni=si.size();
+				   if(ni==n){
+						return 4;
+				   }
+				}
+		   } 
+		}
+	}	
+	return 5;//rank>=5,ÀýÈçR32_5348=R16_301¡ÁR2_1¡¢R64_1039=R16_301¡ÁR4_4¡¢R64_1040=R16_301¡ÁR4_6  
+}
+
 int ZeroNum(IRing* r){
     int n=r->size();
 	int iRet=0;

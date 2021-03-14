@@ -246,6 +246,9 @@ void FiniteRing::printTable()
 #elif defined(RK)
 	int rk=Rank(this);
 	printf("%d,%d\n",ID,rk);
+#elif defined(RK5)
+	int rk=Rank5(this);
+	printf("%d,%d\n",ID,rk);	
 #elif defined(SR_)
 	srand(time(NULL));
 	printf("%d",ID);	
