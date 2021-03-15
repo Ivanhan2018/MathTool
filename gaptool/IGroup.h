@@ -94,7 +94,7 @@ string itos(int i)
 }
 
 string V2S(vector<int>& v){
-   string str="[";
+   string str="";
    int n=v.size();
    for(int i=0;i<n;i++)
    {
@@ -102,7 +102,7 @@ string V2S(vector<int>& v){
 	   if(i<n-1)
 		   str+=",";   
    }	   
-   str+="]";
+   str+="";
    return str;
 }
 
