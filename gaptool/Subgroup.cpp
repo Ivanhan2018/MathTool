@@ -4,7 +4,7 @@
 #include<set>
 
 string V2S(vector<unsigned char>& v){
-   string str="[";
+   string str="";
    int n=v.size();
    for(int i=0;i<n;i++)
    {
@@ -12,7 +12,7 @@ string V2S(vector<unsigned char>& v){
 	   if(i<n-1)
 		   str+=",";   
    }	   
-   str+="]";
+   str+="";
    return str;
 }
 
@@ -41,7 +41,7 @@ void FindPermGroup2(int n,int m)
 		gM.insert(make_pair(ni,ID));
 		int cnt1=gM.size();
 		if(cnt1>cnt){
-			printf("%d,%d->%s,%s=>GAP[%d,%d]:\n",i,j,V2S(vi).c_str(),V2S(vj).c_str(),G.size(),ID);				
+			printf("G%d_%d:%d,%d->%s;%s\n",G.size(),ID,i,j,V2S(vi).c_str(),V2S(vj).c_str());				
 		}
 		if(ID==-1){		
 			string N0=calcN0(&G);  
@@ -85,7 +85,7 @@ void FindPermGroup3(int n,int m)
 		gM.insert(make_pair(ni,ID));
 		int cnt1=gM.size();
 		if(cnt1>cnt){
-			printf("%d,%d,%d->%s,%s,%s=>GAP[%d,%d]:\n",i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str(),G.size(),ID);				
+			printf("G%d_%d:%d,%d,%d->%s;%s;%s\n",G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());				
 		}
 		if(ID==-1){		
 			string N0=calcN0(&G);  
@@ -132,7 +132,7 @@ void QFindPermGroup2(int n,int m)
 		gM.insert(make_pair(ni,ID));
 		int cnt1=gM.size();
 		if(cnt1>cnt){
-			printf("%d,%d->%s,%s=>GAP[%d,%d]:\n",i,j,V2S(vi).c_str(),V2S(vj).c_str(),G.size(),ID);				
+			printf("G%d_%d:%d,%d->%s;%s\n",G.size(),ID,i,j,V2S(vi).c_str(),V2S(vj).c_str());				
 		}
 		if(ID==-1){		
 			string N0=calcN0(&G);  
@@ -180,7 +180,7 @@ void QFindPermGroup3(int n,int m)
 		gM.insert(make_pair(ni,ID));
 		int cnt1=gM.size();
 		if(cnt1>cnt){
-			printf("%d,%d,%d->%s,%s,%s=>GAP[%d,%d]:\n",i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str(),G.size(),ID);				
+			printf("G%d_%d:%d,%d,%d->%s;%s;%s\n",G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());				
 		}
 		if(ID==-1){		
 			string N0=calcN0(&G);  

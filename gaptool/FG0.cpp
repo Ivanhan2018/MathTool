@@ -38,6 +38,60 @@ std::vector<string> split( const std::string& str, const std::string& delims, un
 	return ret;
 }
 
+// “置换表示数据表”结点
+class CPermGroupDataItem
+{
+public:
+	CPermGroupDataItem() 
+	{
+		m_n=0;
+		m_ID=0;
+        m_str="";		
+	}
+
+	int m_n;
+	int m_ID;	
+	string m_str;
+};
+
+map<pair<int,int>,CPermGroupDataItem> g_mapPermGroupDataCache;
+
+const CPermGroupDataItem * Find(int n,int ID)
+{
+	map<pair<int,int>,CPermGroupDataItem>::const_iterator it;
+	it = g_mapPermGroupDataCache.find(make_pair(n,ID));
+	if( it != g_mapPermGroupDataCache.end() )
+		return &(it->second);
+	return NULL;
+}
+
+// “置换表示数据表”缓冲
+int LoadData(char * pszFilePath)		//“从文件中读取数据”
+{
+	if( !g_mapPermGroupDataCache.empty() )
+		return 2;//2已经载入数据了
+
+	FILE * fp =fopen(pszFilePath, "r");
+	if( fp == NULL )
+		return 1;//1打开文件失败
+
+	char sz[240] = {0};
+	CPermGroupDataItem item;
+	int n = 0;
+	n = fscanf(fp, "%s", sz);
+	while( n > 0 && !feof(fp) )
+	{
+		n = fscanf(fp, "%d,%d,%s\n", &item.m_n, &item.m_ID, sz);
+		if( n > 0 )
+		{
+			item.m_str = sz;
+			g_mapPermGroupDataCache.insert( make_pair(make_pair(item.m_n,item.m_ID),item));
+		}
+	}
+	fclose(fp);
+	return 0;//0成功
+}
+
 vector<SnE> readGens(const char *path){
     vector<SnE> S;
 	ifstream fin(path);
@@ -152,15 +206,40 @@ int main(int argc, char* argv[])
 	if(string(argv[0]).find("FG",0)!=string::npos)
 		return oldFG(argc,argv);
 
-	if(argc<2)
+    // 将置换表示数据配置到文件中
+	int ret=LoadData("PermGroupData.csv");
+	printf("ret=%d,置换表示数据表中的记录条数=%d\n",ret,g_mapPermGroupDataCache.size());
+
+	int N=2;	
+	if(argc<N)
 	{
-		printf("Usage:  PermGroup arg1\n");
+		printf("Usage:  PermGroup arg1|n ID [w]\n");
 		printf("eg:PermGroup 4,5,6,9,3,2,7,1,8;6,1,7,4,2,5,9,3,8\n");
+		printf("eg:PermGroup 72 41\n");		
 		return 0;
 	}
 	
+	string str=argv[1];
+	if(str.find(",",0)!=string::npos){     
+	}else{
+		int n=atoi(argv[1]);
+		int ID=atoi(argv[2]);
+		const CPermGroupDataItem * pItem = Find(n,ID);
+		if(!pItem){
+			printf("没有配置G%d_%d的表示数据！\n",n,ID);
+			return 0;
+		}
+		str=pItem->m_str;
+		printf("str=%s\n",str.c_str());
+		N=3;
+	}
+	
+	string strN="";
+	if(argc>N)
+		strN=argv[N];	
+		
 	vector<SnE> S;
-	vector<string> vN=split(argv[1],";");
+	vector<string> vN=split(str,";");
 	for(int i=0;i<vN.size();i++)
 	{
 		vector<string> vNi=split(vN[i],",");
@@ -173,12 +252,16 @@ int main(int argc, char* argv[])
 	}
 	Sn G;
 	G.init(S);
-	G.printSet();	
-	G.printTable();	
+	//G.printSet();	
+	//G.printTable();	
 	int ID=IdGroup(&G);
-	char sz[128]={0};   
-	sprintf(sz,"G%d.%d.txt",G.size(),ID);
-	writeTable(&G,sz);
+	string strG=calcGroupInvariant(&G);  
+	printf("G%d_%d:%s\n",G.size(),ID,strG.c_str());	
+	if(strN.substr(0,1)=="w"){	
+		char sz[128]={0};   
+		sprintf(sz,"G%d.%d.txt",G.size(),ID);
+		writeTable(&G,sz);
+	}
 	
 	return 0;
 }

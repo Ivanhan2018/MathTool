@@ -1522,6 +1522,19 @@ string calckKEZDCANS(IGroup* g){
 	return sz;
 }
 
+// N0C1NkkKEZDCANS
+string calcGroupInvariant(IGroup* g){
+	char sz[1024]={0};
+	string N0=calcN0(g);  
+	string C1=calcC1(g);	
+	string Nk=calcNk(g);	
+	//string S2=calcS2(g);
+	string kKEZDCANS=calckKEZDCANS(g); 
+	sprintf(sz,"%s,%s,%s;%s",N0.c_str(),C1.c_str(),Nk.c_str(),kKEZDCANS.c_str());
+	//sprintf(sz,"%s,%s,%s;%s;%s",N0.c_str(),C1.c_str(),Nk.c_str(),S2.c_str(),kKEZDCANS.c_str());  
+	return sz;
+}
+
 //-----------------------------End of calckKEZDCANS---------------------------------
 
 int IdGroup(IGroup* g){
