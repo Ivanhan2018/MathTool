@@ -3,7 +3,7 @@
 #include<stdlib.h>
 #include<set>
 
-string V2S(vector<unsigned char>& v){
+/* string V2S(vector<unsigned char>& v){
    string str="";
    int n=v.size();
    for(int i=0;i<n;i++)
@@ -14,7 +14,7 @@ string V2S(vector<unsigned char>& v){
    }	   
    str+="";
    return str;
-}
+} */
 
 set<string> gS;
 set<std::pair<int,int>> gM;

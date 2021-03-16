@@ -29,6 +29,7 @@ public:
    Sn(int n);
    Sn(int n,TSnE* a,TSnE* b);   
    // 成员函数
+   void init(int n);
    void init(const vector<SnE> & gen);
    bool init(const vector<SnE> & gen,int N);
    vector<int> EvenSet();// 所有的偶置换
@@ -106,6 +107,11 @@ vector<SnE> Sn::FG(const vector<SnE> & gen)
 }
 
 Sn::Sn(int n)
+{
+   init(n);
+}
+
+void Sn::init(int n)
 {
    m_n=n;
    SnE v(n);

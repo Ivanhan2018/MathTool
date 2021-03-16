@@ -3,6 +3,7 @@
 #include <iostream>
 #include <complex>
 //#include <ctime>
+#include<set>
 
 std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
 {
@@ -90,6 +91,103 @@ int LoadData(char * pszFilePath)		//“从文件中读取数据”
 	}
 	fclose(fp);
 	return 0;//0成功
+}
+
+set<string> gS;
+set<std::pair<int,int>> gM;
+int g_a=0;
+void QFindPermGroup2(Sn *sn,int n0)
+{	
+    int m=sn->size();
+	for(int i=g_a;i<m;i++)		
+	for(int j=i+1;j<m;j++){	
+		vector<SnE> S;
+		SnE vi=sn->s_Arr[i];
+		SnE vj=sn->s_Arr[j];
+		S.push_back(vi);
+		S.push_back(vj);
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);
+		Subgroup G;
+		bool b=G.init(sn,v,n0);
+		if(!b)
+			continue;
+		int ni=G.size();
+		//bool bG=IsGroup(&G);
+		//if(!bG)
+		//	continue;
+		int ID=IdGroup(&G);
+		int cnt=gM.size();
+		gM.insert(make_pair(ni,ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+			printf("G%d_%d:%d,%d->%s;%s\n",G.size(),ID,i,j,V2S(vi).c_str(),V2S(vj).c_str());				
+		}
+		if(ID==-1){		
+			string N0=calcN0(&G);  
+			string C1=calcC1(&G);	
+			string Nk=calcNk(&G);	
+			string S2=calcS2(&G);
+			string kKEZDCANS=calckKEZDCANS(&G);
+			string strG=N0+C1+Nk+S2+kKEZDCANS;
+			if(gS.find(strG)==gS.end()){			
+				printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
+				printf("S2=%s\n",S2.c_str());
+				printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());			
+			}
+			gS.insert(strG);
+		}
+	}
+}
+
+void QFindPermGroup3(Sn *sn,int n0)
+{	
+    int m=sn->size();
+	for(int i=g_a;i<m;i++)		
+	for(int j=i+1;j<m;j++){
+	for(int k=j+1;k<m;k++){		
+		vector<SnE> S;
+		SnE vi=sn->s_Arr[i];
+		SnE vj=sn->s_Arr[j];
+		SnE vk=sn->s_Arr[k];
+		S.push_back(vi);
+		S.push_back(vj);
+		S.push_back(vk);
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);
+		Subgroup G;
+		bool b=G.init(sn,v,n0);
+		if(!b)
+			continue;
+		int ni=G.size();
+		//bool bG=IsGroup(&G);
+		//if(!bG)
+		//	continue;
+		int ID=IdGroup(&G);
+		int cnt=gM.size();
+		gM.insert(make_pair(ni,ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+			printf("G%d_%d:%d,%d,%d->%s;%s;%s\n",G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());				
+		}
+		if(ID==-1){		
+			string N0=calcN0(&G);  
+			string C1=calcC1(&G);	
+			string Nk=calcNk(&G);	
+			string S2=calcS2(&G);
+			string kKEZDCANS=calckKEZDCANS(&G); 
+			string strG=N0+C1+Nk+S2+kKEZDCANS;
+			if(gS.find(strG)==gS.end()){			
+				printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
+				printf("S2=%s\n",S2.c_str());
+				printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());			
+			}
+			gS.insert(strG);
+		}
+	}
+	}
 }
 
 vector<SnE> readGens(const char *path){
@@ -215,12 +313,17 @@ int main(int argc, char* argv[])
 	{
 		printf("Usage:  PermGroup arg1|n ID [w]\n");
 		printf("eg:PermGroup 4,5,6,9,3,2,7,1,8;6,1,7,4,2,5,9,3,8\n");
-		printf("eg:PermGroup 72 41\n");		
+		printf("eg:PermGroup 72 41\n");	
+		printf("eg:PermGroup S10\n");		
 		return 0;
 	}
 	
+	int bSn=0;
 	string str=argv[1];
-	if(str.find(",",0)!=string::npos){     
+	if(str.find(",",0)!=string::npos){   
+	}else if(str.substr(0,1)=="S"){
+         str.erase(str.begin());
+         bSn=atoi(str.c_str());		 
 	}else{
 		int n=atoi(argv[1]);
 		int ID=atoi(argv[2]);
@@ -237,31 +340,59 @@ int main(int argc, char* argv[])
 	string strN="";
 	if(argc>N)
 		strN=argv[N];	
-		
-	vector<SnE> S;
-	vector<string> vN=split(str,";");
-	for(int i=0;i<vN.size();i++)
-	{
-		vector<string> vNi=split(vN[i],",");
-		int N=vNi.size();
-		SnE viN1(N);
-		for(int j=0;j<N;j++){
-			viN1[j]=atoi(vNi[j].c_str());
-		}
-		S.push_back(viN1);		
+	
+	Sn *G=new Sn();
+	if(bSn>0){
+		G->init(bSn);
+	}else{
+		vector<SnE> S;
+		vector<string> vN=split(str,";");
+		for(int i=0;i<vN.size();i++)
+		{
+			vector<string> vNi=split(vN[i],",");
+			int N=vNi.size();
+			SnE viN1(N);
+			for(int j=0;j<N;j++){
+				viN1[j]=atoi(vNi[j].c_str());
+			}
+			S.push_back(viN1);		
+		}		
+		G->init(S);
 	}
-	Sn G;
-	G.init(S);
 	//G.printSet();	
 	//G.printTable();	
-	int ID=IdGroup(&G);
-	string strG=calcGroupInvariant(&G);  
-	printf("G%d_%d:%s\n",G.size(),ID,strG.c_str());	
+	int ID=G->size()>120?0:IdGroup(G);  
+	printf("G%d_%d:\n",G->size(),ID);
+	if(strN.substr(0,1)=="r"){	
+		string strG=calcGroupInvariant(G);	
+		printf("%s\n",strG.c_str());
+	}	
 	if(strN.substr(0,1)=="w"){	
 		char sz[128]={0};   
-		sprintf(sz,"G%d.%d.txt",G.size(),ID);
-		writeTable(&G,sz);
+		sprintf(sz,"G%d.%d.txt",G->size(),ID);
+		writeTable(G,sz);
+		printf("写入完毕！\n");
 	}
+	
+	int fun=0;
+	if(argc>N){
+		fun=atoi(strN.c_str());
+		if(fun<-1||fun>1){
+			fun=0;
+		}	
+	}	
+	int n0=120;
+	if(argc>N+1){
+		n0=atoi(argv[N+1]);
+	}	
+	g_a=argc>(N+2)?atoi(argv[N+2]):0;	
+	
+	typedef void(*pF)(Sn *g,int n0);
+	pF Func[]={QFindPermGroup2,QFindPermGroup3};
+	Func[fun](G,n0);
+    
+    delete G;
+    G=NULL;	
 	
 	return 0;
 }

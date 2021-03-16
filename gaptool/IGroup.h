@@ -106,6 +106,19 @@ string V2S(vector<int>& v){
    return str;
 }
 
+string V2S(vector<unsigned char>& v){
+   string str="";
+   int n=v.size();
+   for(int i=0;i<n;i++)
+   {
+	   str+=itos(v[i]);
+	   if(i<n-1)
+		   str+=",";   
+   }	   
+   str+="";
+   return str;
+}
+
 // 一个群g的子群s
 struct Subgroup:public IGroup
 {
