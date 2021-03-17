@@ -207,7 +207,7 @@ void QFindquotientGroup1(GL2Zn *g,int n0)
 		if(!b)
 			continue;
 		int ni=s.size();
-		if(g->size()/ni>n0||ni==1)
+		if(m%n0==0 && g->size()/ni!=n0 || ni==1)
 			continue;
 		int isN=IsNormalSubgroup(g,s.m_Set,true);
 		if(isN!=1)
@@ -259,7 +259,7 @@ void QFindquotientGroup2(GL2Zn *g,int n0)
 		if(!b)
 			continue;
 		int ni=s.size();
-		if(g->size()/ni>n0||ni==1)
+		if(m%n0==0 && g->size()/ni!=n0 || ni==1)
 			continue;
 		int isN=IsNormalSubgroup(g,s.m_Set,true);
 		if(isN!=1)
@@ -315,7 +315,7 @@ void QFindquotientGroup3(GL2Zn *g,int n0)
 		if(!b)
 			continue;
 		int ni=s.size();
-		if(g->size()/ni>n0||ni==1)
+		if(m%n0==0 && g->size()/ni!=n0 || ni==1)
 			continue;
 		int isN=IsNormalSubgroup(g,s.m_Set,true);
 		if(isN!=1)

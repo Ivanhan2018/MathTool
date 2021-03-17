@@ -728,6 +728,13 @@ IDHelper::IDHelper(){
 	m_N0.insert(make_pair("1,11,20,4,0,4,0,0",12));
 	m_N0.insert(make_pair("1,23,0,4,0,12,0,0",13));
 	m_N0.insert(make_pair("1,7,0,4,0,28,0,0",14));	
+	//G42	
+	m_N0.insert(make_pair("1,7,14,14,6,0,0,0",1));
+	m_N0.insert(make_pair("1,1,14,14,6,6,0,0",2));
+	m_N0.insert(make_pair("1,3,2,0,6,18,12,0",3));
+	m_N0.insert(make_pair("1,7,2,14,6,0,12,0",4));
+	m_N0.insert(make_pair("1,21,2,0,6,0,12,0",5));
+	m_N0.insert(make_pair("1,1,2,2,6,6,12,12",6));
 	//G45
 	m_N0.insert(make_pair("1,2,4,6,8,24",1));
 	m_N0.insert(make_pair("1,8,4,0,32,0",2));	
