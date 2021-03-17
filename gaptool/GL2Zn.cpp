@@ -1,4 +1,5 @@
 #include"GL2Zn.h"
+#include"quotientGroup.h"
 #include<set>
 #include<fstream>
 
@@ -83,6 +84,7 @@ int LoadData(char * pszFilePath)		//“从文件中读取数据”
 	n = fscanf(fp, "%s", sz);
 	while( n > 0 && !feof(fp) )
 	{
+		sz[0] = '\0';
 		n = fscanf(fp, "%d,%d,%d,%d,%s\n", &item.m_n, &item.m_ID, &item.m_n0, &item.m_n1, sz);
 		if( n > 0 )
 		{
@@ -174,6 +176,163 @@ void findgroup3(GL2Zn *g,int N)
 			printf("G%d_%d:%d,%d,%d->%s;%s;%s\n",G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());				
 		}
 		if(ni<m && ID==-1){		
+			string N0=calcN0(&G);  
+			string C1=calcC1(&G);	
+			string Nk=calcNk(&G);	
+			string S2=calcS2(&G);
+			string kKEZDCANS=calckKEZDCANS(&G);
+			string strG=N0+C1+Nk+S2+kKEZDCANS;
+			if(gS.find(strG)==gS.end()){			
+				printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
+				printf("S2=%s\n",S2.c_str());
+				printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());			
+			}
+			gS.insert(strG);
+		}
+	}
+	}
+}
+
+void QFindquotientGroup1(GL2Zn *g,int n0)
+{	
+    int m=g->size();
+	for(int i=g_a;i<m;i++){	
+		vector<TM2> S;
+		TM2 vi=g->s_Arr[i];
+		S.push_back(vi);
+		vector<int> v;
+		v.push_back(i);
+		Subgroup s;
+		bool b=s.init(g,v,m/2);
+		if(!b)
+			continue;
+		int ni=s.size();
+		if(g->size()/ni>n0||ni==1)
+			continue;
+		int isN=IsNormalSubgroup(g,s.m_Set,true);
+		if(isN!=1)
+			continue;	
+		quotientGroup G(g,s.m_Set);		
+		//bool bG=IsGroup(&G);
+		//if(!bG)
+		//	continue;
+		int ID=IdGroup(&G);
+		int cnt=gM.size();
+		gM.insert(make_pair(G.size(),ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+			int sID=IdGroup(&s);
+			printf("G%d_%d/G%d_%d=G%d_%d:%d->%s\n",m,0,ni,sID,G.size(),ID,i,V2S(vi).c_str());				
+		}
+		if(ID==-1){		
+			string N0=calcN0(&G);  
+			string C1=calcC1(&G);	
+			string Nk=calcNk(&G);	
+			string S2=calcS2(&G);
+			string kKEZDCANS=calckKEZDCANS(&G);
+			string strG=N0+C1+Nk+S2+kKEZDCANS;
+			if(gS.find(strG)==gS.end()){			
+				printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
+				printf("S2=%s\n",S2.c_str());
+				printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());			
+			}
+			gS.insert(strG);
+		}
+	}
+}
+
+void QFindquotientGroup2(GL2Zn *g,int n0)
+{	
+    int m=g->size();
+	for(int i=g_a;i<m;i++)		
+	for(int j=i+1;j<m;j++){	
+		vector<TM2> S;
+		TM2 vi=g->s_Arr[i];
+		TM2 vj=g->s_Arr[j];		
+		S.push_back(vi);
+		S.push_back(vj);		
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);
+		Subgroup s;
+		bool b=s.init(g,v,m/2);
+		if(!b)
+			continue;
+		int ni=s.size();
+		if(g->size()/ni>n0||ni==1)
+			continue;
+		int isN=IsNormalSubgroup(g,s.m_Set,true);
+		if(isN!=1)
+			continue;	
+		quotientGroup G(g,s.m_Set);		
+		//bool bG=IsGroup(&G);
+		//if(!bG)
+		//	continue;
+		int ID=IdGroup(&G);
+		int cnt=gM.size();
+		gM.insert(make_pair(G.size(),ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+			int sID=IdGroup(&s);
+			printf("G%d_%d/G%d_%d=G%d_%d:%d,%d->%s,%s\n",m,0,ni,sID,G.size(),ID,i,j,V2S(vi).c_str(),V2S(vj).c_str());				
+		}
+		if(ID==-1){		
+			string N0=calcN0(&G);  
+			string C1=calcC1(&G);	
+			string Nk=calcNk(&G);	
+			string S2=calcS2(&G);
+			string kKEZDCANS=calckKEZDCANS(&G);
+			string strG=N0+C1+Nk+S2+kKEZDCANS;
+			if(gS.find(strG)==gS.end()){			
+				printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
+				printf("S2=%s\n",S2.c_str());
+				printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());			
+			}
+			gS.insert(strG);
+		}
+	}
+}
+
+void QFindquotientGroup3(GL2Zn *g,int n0)
+{	
+    int m=g->size();
+	for(int i=g_a;i<m;i++)		
+	for(int j=i+1;j<m;j++){
+	for(int k=j+1;k<m;k++){	
+		vector<TM2> S;
+		TM2 vi=g->s_Arr[i];
+		TM2 vj=g->s_Arr[j];		
+		TM2 vk=g->s_Arr[k];		
+		S.push_back(vi);
+		S.push_back(vj);
+		S.push_back(vk);		
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);
+		v.push_back(k);
+		Subgroup s;
+		bool b=s.init(g,v,m/2);
+		if(!b)
+			continue;
+		int ni=s.size();
+		if(g->size()/ni>n0||ni==1)
+			continue;
+		int isN=IsNormalSubgroup(g,s.m_Set,true);
+		if(isN!=1)
+			continue;	
+		quotientGroup G(g,s.m_Set);		
+		//bool bG=IsGroup(&G);
+		//if(!bG)
+		//	continue;
+		int ID=IdGroup(&G);
+		int cnt=gM.size();
+		gM.insert(make_pair(G.size(),ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+			int sID=IdGroup(&s);
+			printf("G%d_%d/G%d_%d=G%d_%d:%d,%d,%d->%s,%s,%s\n",m,0,ni,sID,G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());			
+		}
+		if(ID==-1){		
 			string N0=calcN0(&G);  
 			string C1=calcC1(&G);	
 			string Nk=calcNk(&G);	
@@ -334,31 +493,31 @@ int main(int argc,char *argv[]){
 		return 0;		
 	}
 	
-	vector<TM2> gen;		
-	vector<string> vv=split(pItem->m_mstr,";");
-	for(int i=0;i<vv.size();i++){
-		TM2 A(4);
-		vector<string> v=split(vv[i],",");
-		A[0]=atoi(v[0].c_str());
-		A[1]=atoi(v[1].c_str());
-		A[2]=atoi(v[2].c_str());
-		A[3]=atoi(v[3].c_str());
-		gen.push_back(A);
-	}	
-    GL2Zn g;
-	g.m_n=pItem->m_n1;
-	g.s_Arr=GL2Zn::FG(gen,g.m_n);
-	
-	int ID1=IdGroup(&g);
-	string strG=calcGroupInvariant(&g);  
-	printf("G%d_%d:%s\n",g.size(),ID1,strG.c_str());	
+    GL2Zn *g=new GL2Zn();
+	if(pItem->m_mstr==""){
+		g->init(pItem->m_n1);
+	}else{
+		vector<TM2> gen;		
+		vector<string> vv=split(pItem->m_mstr,";");
+		for(int i=0;i<vv.size();i++){
+			TM2 A(4);
+			vector<string> v=split(vv[i],",");
+			A[0]=atoi(v[0].c_str());
+			A[1]=atoi(v[1].c_str());
+			A[2]=atoi(v[2].c_str());
+			A[3]=atoi(v[3].c_str());
+			gen.push_back(A);
+		}	
+		g->m_n=pItem->m_n1;
+		g->s_Arr=GL2Zn::FG(gen,g->m_n);
+	}
 	
 	int fun=0;
 	string str="";
 	if(argc>3){
 		str=argv[3];
 		fun=atoi(str.c_str());
-		if(fun<-1||fun>1){
+		if(fun<-1||fun>4){
 			fun=0;
 		}	
 	}	
@@ -368,15 +527,23 @@ int main(int argc,char *argv[]){
 	}	
 	g_a=argc>5?atoi(argv[5]):0;
 	
+	int ID1=g->size()>120?0:IdGroup(g);  
+	printf("G%d_%d:\n",g->size(),ID1);
+	if(str.substr(0,1)=="r"){	
+		string strG=calcGroupInvariant(g);	
+		printf("%s\n",strG.c_str());
+	}	
 	if(str.substr(0,1)=="w"){	
 		char sz[128]={0};   
-		sprintf(sz,"G%d.%d.txt",g.size(),ID1);
-		writeTable(&g,sz);
+		sprintf(sz,"G%d.%d.txt",g->size(),ID1);
+		writeTable(g,sz);
 	}		
 	typedef void(*pF)(GL2Zn *g,int N);
-	pF Func[]={findgroup2,findgroup3};
-	Func[fun](&g,n0);
+	pF Func[]={findgroup2,findgroup3,QFindquotientGroup1,QFindquotientGroup2,QFindquotientGroup3};
+	Func[fun](g,n0);
 	
+	delete g;
+	g=NULL;
 	//int n=argc>2?atoi(argv[2]):12;
 	//test1(19);
     //for(int i=3;i<10;i++)

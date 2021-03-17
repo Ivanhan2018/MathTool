@@ -1,4 +1,5 @@
 #include"PermGroup.h"
+#include"quotientGroup.h"
 #include <fstream>
 #include <iostream>
 #include <complex>
@@ -171,6 +172,164 @@ void QFindPermGroup3(Sn *sn,int n0)
 		int cnt1=gM.size();
 		if(cnt1>cnt){
 			printf("G%d_%d:%d,%d,%d->%s;%s;%s\n",G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());				
+		}
+		if(ID==-1){		
+			string N0=calcN0(&G);  
+			string C1=calcC1(&G);	
+			string Nk=calcNk(&G);	
+			string S2=calcS2(&G);
+			string kKEZDCANS=calckKEZDCANS(&G); 
+			string strG=N0+C1+Nk+S2+kKEZDCANS;
+			if(gS.find(strG)==gS.end()){			
+				printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
+				printf("S2=%s\n",S2.c_str());
+				printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());			
+			}
+			gS.insert(strG);
+		}
+	}
+	}
+}
+
+void QFindquotientGroup1(Sn *sn,int n0)
+{	
+    int m=sn->size();
+	for(int i=g_a;i<m;i++){	
+		vector<SnE> S;
+		SnE vi=sn->s_Arr[i];
+		S.push_back(vi);
+		vector<int> v;
+		//v.push_back(0);
+		v.push_back(i);
+		Subgroup s;
+		bool b=s.init(sn,v,m/2);
+		if(!b)
+			continue;
+		int ni=s.size();
+		if(sn->size()/ni>n0||ni==1)
+			continue;
+		int isN=IsNormalSubgroup(sn,s.m_Set,true);
+		if(isN!=1)
+			continue;	
+		quotientGroup G(sn,s.m_Set);		
+		//bool bG=IsGroup(&G);
+		//if(!bG)
+		//	continue;
+		int ID=IdGroup(&G);
+		int cnt=gM.size();
+		gM.insert(make_pair(G.size(),ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+			int sID=IdGroup(&s);
+			printf("G%d_%d/G%d_%d=G%d_%d:%d->%s\n",m,0,ni,sID,G.size(),ID,i,V2S(vi).c_str());				
+		}
+		if(ID==-1){		
+			string N0=calcN0(&G);  
+			string C1=calcC1(&G);	
+			string Nk=calcNk(&G);	
+			string S2=calcS2(&G);
+			string kKEZDCANS=calckKEZDCANS(&G);
+			string strG=N0+C1+Nk+S2+kKEZDCANS;
+			if(gS.find(strG)==gS.end()){			
+				printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
+				printf("S2=%s\n",S2.c_str());
+				printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());			
+			}
+			gS.insert(strG);
+		}
+	}
+}
+
+void QFindquotientGroup2(Sn *sn,int n0)
+{	
+    int m=sn->size();
+	for(int i=g_a;i<m;i++)		
+	for(int j=i+1;j<m;j++){	
+		vector<SnE> S;
+		SnE vi=sn->s_Arr[i];
+		SnE vj=sn->s_Arr[j];
+		S.push_back(vi);
+		S.push_back(vj);
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);
+		Subgroup s;
+		bool b=s.init(sn,v,m/2);
+		if(!b)
+			continue;
+		int ni=s.size();
+		if(sn->size()/ni>n0)
+			continue;
+		int isN=IsNormalSubgroup(sn,s.m_Set,true);
+		if(isN!=1)
+			continue;	
+		quotientGroup G(sn,s.m_Set);		
+		//bool bG=IsGroup(&G);
+		//if(!bG)
+		//	continue;
+		int ID=IdGroup(&G);
+		int cnt=gM.size();
+		gM.insert(make_pair(G.size(),ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+			int sID=IdGroup(&s);
+			printf("G%d_%d/G%d_%d=G%d_%d:%d,%d->%s,%s\n",m,0,ni,sID,G.size(),ID,i,j,V2S(vi).c_str(),V2S(vj).c_str());				
+		}
+		if(ID==-1){		
+			string N0=calcN0(&G);  
+			string C1=calcC1(&G);	
+			string Nk=calcNk(&G);	
+			string S2=calcS2(&G);
+			string kKEZDCANS=calckKEZDCANS(&G);
+			string strG=N0+C1+Nk+S2+kKEZDCANS;
+			if(gS.find(strG)==gS.end()){			
+				printf("N0C1Nk=%s,%s,%s\n",N0.c_str(),C1.c_str(),Nk.c_str());  
+				printf("S2=%s\n",S2.c_str());
+				printf("kKEZDCANS=%s\n",kKEZDCANS.c_str());			
+			}
+			gS.insert(strG);
+		}
+	}
+}
+
+void QFindquotientGroup3(Sn *sn,int n0)
+{	
+    int m=sn->size();
+	for(int i=g_a;i<m;i++)		
+	for(int j=i+1;j<m;j++){
+	for(int k=j+1;k<m;k++){		
+		vector<SnE> S;
+		SnE vi=sn->s_Arr[i];
+		SnE vj=sn->s_Arr[j];
+		SnE vk=sn->s_Arr[k];
+		S.push_back(vi);
+		S.push_back(vj);
+		S.push_back(vk);
+		vector<int> v;
+		v.push_back(i);
+		v.push_back(j);
+		v.push_back(k);
+		Subgroup s;
+		bool b=s.init(sn,v,m/2);
+		if(!b)
+			continue;
+		int ni=s.size();
+		if(sn->size()/ni>n0)
+			continue;
+		int isN=IsNormalSubgroup(sn,s.m_Set,true);
+		if(isN!=1)
+			continue;	
+		quotientGroup G(sn,s.m_Set);
+		//bool bG=IsGroup(&G);
+		//if(!bG)
+		//	continue;
+		int ID=IdGroup(&G);
+		int cnt=gM.size();
+		gM.insert(make_pair(G.size(),ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+			int sID=IdGroup(&s);
+			printf("G%d_%d/G%d_%d=G%d_%d:%d,%d,%d->%s,%s,%s\n",m,0,ni,sID,G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());				
 		}
 		if(ID==-1){		
 			string N0=calcN0(&G);  
@@ -377,7 +536,7 @@ int main(int argc, char* argv[])
 	int fun=0;
 	if(argc>N){
 		fun=atoi(strN.c_str());
-		if(fun<-1||fun>1){
+		if(fun<-1||fun>4){
 			fun=0;
 		}	
 	}	
@@ -388,7 +547,7 @@ int main(int argc, char* argv[])
 	g_a=argc>(N+2)?atoi(argv[N+2]):0;	
 	
 	typedef void(*pF)(Sn *g,int n0);
-	pF Func[]={QFindPermGroup2,QFindPermGroup3};
+	pF Func[]={QFindPermGroup2,QFindPermGroup3,QFindquotientGroup1,QFindquotientGroup2,QFindquotientGroup3};
 	Func[fun](G,n0);
     
     delete G;

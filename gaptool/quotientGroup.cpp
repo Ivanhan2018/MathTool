@@ -4,18 +4,18 @@
 #include<stdlib.h>
 #include<set>
 
-string V2S(vector<unsigned char>& v){
-   string str="[";
-   int n=v.size();
-   for(int i=0;i<n;i++)
-   {
-	   str+=itos(v[i]);
-	   if(i<n-1)
-		   str+=",";   
-   }	   
-   str+="]";
-   return str;
-}
+//string V2S(vector<unsigned char>& v){
+//   string str="[";
+//   int n=v.size();
+//   for(int i=0;i<n;i++)
+//   {
+//	   str+=itos(v[i]);
+//	   if(i<n-1)
+//		   str+=",";   
+//   }	   
+//   str+="]";
+//   return str;
+//}
 
 set<string> gS;
 set<std::pair<int,int>> gM;
