@@ -133,7 +133,7 @@ void findgroup2(GL2Zn *g,int N)
 		if(cnt1>cnt){
 			printf("G%d_%d:%d,%d->%s;%s\n",G.size(),ID,i,j,V2S(vi).c_str(),V2S(vj).c_str());				
 		}
-		if(ni<m && ID==-1){		
+		if(ID<1){		
 			string N0=calcN0(&G);  
 			string C1=calcC1(&G);	
 			string Nk=calcNk(&G);	
@@ -175,7 +175,7 @@ void findgroup3(GL2Zn *g,int N)
 		if(cnt1>cnt){
 			printf("G%d_%d:%d,%d,%d->%s;%s;%s\n",G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());				
 		}
-		if(ni<m && ID==-1){		
+		if(ID<1){		
 			string N0=calcN0(&G);  
 			string C1=calcC1(&G);	
 			string Nk=calcNk(&G);	
@@ -224,7 +224,7 @@ void QFindquotientGroup1(GL2Zn *g,int n0)
 			int sID=IdGroup(&s);
 			printf("G%d_%d/G%d_%d=G%d_%d:%d->%s\n",m,0,ni,sID,G.size(),ID,i,V2S(vi).c_str());				
 		}
-		if(ID==-1){		
+		if(ID<1){		
 			string N0=calcN0(&G);  
 			string C1=calcC1(&G);	
 			string Nk=calcNk(&G);	
@@ -276,7 +276,7 @@ void QFindquotientGroup2(GL2Zn *g,int n0)
 			int sID=IdGroup(&s);
 			printf("G%d_%d/G%d_%d=G%d_%d:%d,%d->%s,%s\n",m,0,ni,sID,G.size(),ID,i,j,V2S(vi).c_str(),V2S(vj).c_str());				
 		}
-		if(ID==-1){		
+		if(ID<1){		
 			string N0=calcN0(&G);  
 			string C1=calcC1(&G);	
 			string Nk=calcNk(&G);	
@@ -332,7 +332,7 @@ void QFindquotientGroup3(GL2Zn *g,int n0)
 			int sID=IdGroup(&s);
 			printf("G%d_%d/G%d_%d=G%d_%d:%d,%d,%d->%s,%s,%s\n",m,0,ni,sID,G.size(),ID,i,j,k,V2S(vi).c_str(),V2S(vj).c_str(),V2S(vk).c_str());			
 		}
-		if(ID==-1){		
+		if(ID<1){		
 			string N0=calcN0(&G);  
 			string C1=calcC1(&G);	
 			string Nk=calcNk(&G);	
