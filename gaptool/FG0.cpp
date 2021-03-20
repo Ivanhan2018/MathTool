@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <complex>
-//#include <ctime>
+#include <ctime>
 #include<set>
 
 std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
@@ -457,6 +457,19 @@ int oldFG(int argc, char* argv[])
 	return 0;
 }
 
+int GetRand(int a,int b){
+	if(a>=b)
+		return a;
+	int iRet=rand()%(b-a+1)+a;
+	return iRet;
+}
+
+int fact(int n){
+	static int result[]={1,2,6,24,120,720,5040,40320,362880,362880};
+    int idx=(n<1||n>10?0:n-1);
+	return result[idx];
+}
+
 int main(int argc, char* argv[])
 {
     //if(strspn(argv[0],"FG")==0)
@@ -481,8 +494,47 @@ int main(int argc, char* argv[])
 	string str=argv[1];
 	if(str.find(",",0)!=string::npos){   
 	}else if(str.substr(0,1)=="S"){
-         str.erase(str.begin());
-         bSn=atoi(str.c_str());		 
+		str.erase(str.begin());
+		bSn=atoi(str.c_str());
+		string mstr=argv[2];
+		if(bSn>0 && mstr.substr(0,1)=="n"){
+			srand(time(NULL));
+			int N1=fact(bSn);
+			if(N1<=0)
+				N1=10000;	
+			int cnt=GetRand(1,3);
+			if(mstr.size()>1){
+				int cnt1=atoi(mstr.substr(1,1).c_str());
+				if(cnt1>0 && cnt1<6){
+					cnt=cnt1;
+				}
+			}
+			str="";
+			for(int i=0;i<cnt;i++){
+				int ii=GetRand(1,N1-1);
+				SnE vi=Sn::getSnE(bSn,ii);		
+				str+=V2S(vi);
+				if(i<cnt-1)
+					str+=";";
+			}
+			printf("str=%s\n",str.c_str());
+			N=3;
+			bSn=0;
+		}else if(bSn>0 && mstr.substr(0,1)=="N"){
+			mstr=mstr.substr(1,mstr.size()-1);
+			vector<string> vs=split(mstr,";");		
+			int cnt=vs.size();
+			str="";
+			for(int i=0;i<cnt;i++){
+				SnE vi=Sn::getSnE(bSn,atoi(vs[i].c_str()));
+				str+=V2S(vi);
+				if(i<cnt-1)
+					str+=";";
+			}
+			printf("str=%s\n",str.c_str());
+			N=3;
+			bSn=0;			
+		}
 	}else{
 		int n=atoi(argv[1]);
 		int ID=atoi(argv[2]);

@@ -2937,9 +2937,6 @@ int main(int argc, char* argv[])
 	}else if(mstr.substr(0,1)=="N"){
 		mstr=mstr.substr(1,mstr.size()-1);
 		vector<string> vs=split(mstr,";");		
-		int N=powf(r->size(),n*n);
-		if(N<0)
-			N=10000;	
 		int cnt=vs.size();
 		mstr="";
 		for(int i=0;i<cnt;i++){
