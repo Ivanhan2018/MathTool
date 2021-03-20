@@ -5641,24 +5641,6 @@ int testRingData(int argc, char* argv[]){
 	return 0;
 }	
 
-
-int testRingDataD(int n1,int ID1,int n2,int ID2){ 
-	IRing *r1=newRing(n1,ID1);
-	IRing *r2=newRing(n2,ID2);	
-	if(r1 && r2){	
-		DecompositionRing* r= new DecompositionRing(r1,r2);
-		r->m_flag=1;		
-		int in=r->size();
-		int iID=IdRing(r);
-		printf("R%d_%d",in,iID);
-		if(iID==-1){
-			string strR=calcRingInvariant(r);
-			printf(":%s\n",strR.c_str());	
-		}	
-	}
-	return 0;
-}
-
 int DR(int argc, char* argv[]){ 
 	if(argc<3){
 		printf("usage:DR n1 ID1 n2 ID2\n");
@@ -5678,13 +5660,55 @@ int DR(int argc, char* argv[]){
 		r->m_flag=1;		
 		int in=r->size();
 		int iID=IdRing(r);
-		printf("R%d_%d",in,iID);		
+		printf("R%d_%d",in,iID);	
+		if(iID==-1){
+			string strR=calcRingInvariant(r);
+			printf(":%s\n",strR.c_str());	
+		}		
 		if(str.substr(0,1)=="w"){
 			char sz1[128]={0};   
 			sprintf(sz1,"R%d%s%d.txt",r->size(),str.substr(1,1).c_str(),iID);
 			writeTable(r,sz1);
 			printf("\n写入文件%s\n",sz1);			
 		}
+		if(str!="" && str!="w"){
+			int fun=1;
+			fun=atoi(str.c_str());
+			if(fun<-1||fun>5){
+				fun=0;
+			}		
+			int n0=16;
+			if(argc>6){
+				int _n0=atoi(argv[6]);	
+				if(_n0==27)
+					n0=27;
+				else if(_n0==81)
+					n0=81;	
+				else if(_n0==243)
+					n0=243;				
+				else if(_n0==8)
+					n0=8;
+				else if(_n0==16)
+					n0=16;	
+				else if(_n0==32)
+					n0=32;	
+				else if(_n0==24)
+					n0=24;		
+				else if(_n0==36)
+					n0=36;
+				else if(_n0==54)
+					n0=54;					
+				else if(_n0==64)
+					n0=64;					
+				else
+					n0=16;		
+			}
+			if(argc>7)
+				g_i=atoi(argv[7]);			
+			typedef void(*pF)(IRing *r,int n);
+			pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findsubring5,findquotientring};
+			Func[fun](r,n0);		
+		}			
 	}
 	return 0;
 }
@@ -5695,16 +5719,6 @@ int main(int argc, char* argv[]){
 	printf("ret=%d,环表示数据表中的记录条数=%d\n",ret,g_mapRingDataCache.size());
 #ifdef TRD	
 	return testRingData(argc,argv);
-#elif defined(TDR)
-	if(argc<5){
-		printf("usage:DRing n1 ID1 n2 ID2\n");
-		return 0;
-	}
-	int n1=atoi(argv[1]);
-	int ID1=atoi(argv[2]);	
-	int n2=atoi(argv[3]);
-	int ID2=atoi(argv[4]);	
-	return testRingDataD(n1,ID1,n2,ID2);
 #elif defined(DR_)	
 	return DR(argc,argv);
 #elif defined(FRID)	
