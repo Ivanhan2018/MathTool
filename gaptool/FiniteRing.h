@@ -1553,7 +1553,7 @@ void findquotientring(IRing *r,int n)
 	int ID=(r->size()>81 && r->size()!=243 || r->size()==72)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
-	if(r->size()<n*2)
+	if(r->size()<n*2||r->size()%n>0)
 		return;	
 #if PRINT_LOG
     char sz[100]="0";
@@ -1639,7 +1639,7 @@ void findquotientring3(IRing *r,int n)
 	int ID=(r->size()>81 && r->size()!=243 || r->size()==72)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
-	if(r->size()<n*2)
+	if(r->size()<n*2||r->size()%n>0)
 		return;
 	map<pair<int,int>,pair<int,int>> M;
 	set<string> S;	
