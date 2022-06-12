@@ -1,6 +1,57 @@
 ﻿#include"IRing.h"
 #include<ctime>
-int g_c=1;
+#include"quotientring.h"
+#include<fstream>
+#include<set>
+
+void printRing0(IRing* r,int ID){
+   int n=r->size();
+   printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
+   for(int i=0;i<n;i++){
+	   printf("{"); 
+	   for(int j=0;j<n;j++){
+		  int ij=r->add(i,j);
+		  printf("%d",ij);
+		  if(j<n-1)
+			printf(",");  
+	   } 
+       printf("},\n");   
+   }
+   printf("};\n");    
+   printf("static int g_R%d_%dMul[%d][%d]={\n",n,ID,n,n);   
+   for(int i=0;i<n;i++){
+	   printf("{"); 
+	   for(int j=0;j<n;j++){
+		  int ij=r->mul(i,j);
+		  printf("%d",ij);
+		  if(j<n-1)
+			printf(",");  
+	   } 
+       printf("},\n");   
+   }
+   printf("};\n"); 
+}
+
+void writeTable(IRing* r,const char *path){
+   ofstream fout(path);
+   int n=r->size();
+   fout<<"[R"<<n<<"Add]"<<endl;   
+   for(int i=0;i<n;i++){
+	   for(int j=0;j<n;j++){
+		  int ij=r->add(i,j);
+		  fout<<ij+1<<" ";
+	   } 
+       fout<<endl;   
+   }
+   fout<<"[R"<<n<<"Mul]"<<endl;   
+   for(int i=0;i<n;i++){
+	   for(int j=0;j<n;j++){
+		  int ij=r->mul(i,j);
+		  fout<<ij+1<<" "; 
+	   } 
+       fout<<endl;	   
+   }	
+}
 
 vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> > &sets){
 	vector<int> vSet;				
@@ -20,6 +71,12 @@ vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> 
 	if(iret1==0)
 		return vSet; 	
 	int ID=IdRing(&S1i0);	
+	if(ID<1){
+		string strR=calcRingInvariant(&S1i0);			
+		printf("子环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",s,ID,strR.c_str());	
+		if(ID<0 && s<32)
+			printRing0(&S1i0,ID);		
+	}	
 	string str=V2S(v)+"=>"+V2S(vSet)+"=R"+itos(s)+"_"+itos(ID);	
 	if(iret1==1){
 		str+="是理想";
@@ -28,6 +85,12 @@ vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> 
 		bool b=IsRing(&S1i);
 		if(b){
 			int IDi=IdRing(&S1i);
+			if(IDi<1){
+				string strR=calcRingInvariant(&S1i);			
+				printf("商环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,IDi,strR.c_str());	
+				if(IDi<0 && ni<32)
+					printRing0(&S1i,IDi);				
+			}		
 			str+=",商环R"+itos(ni)+"_"+itos(IDi);	
 		}	
 	}
@@ -101,62 +164,10 @@ void combination(IRing* r,int s)
 	}
 }
 
-#include"quotientring.h"
-#include<fstream>
-#include<set>
-
-void printRing0(IRing* r,int ID){
-   int n=r->size();
-   printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
-   for(int i=0;i<n;i++){
-	   printf("{"); 
-	   for(int j=0;j<n;j++){
-		  int ij=r->add(i,j);
-		  printf("%d",ij);
-		  if(j<n-1)
-			printf(",");  
-	   } 
-       printf("},\n");   
-   }
-   printf("};\n");    
-   printf("static int g_R%d_%dMul[%d][%d]={\n",n,ID,n,n);   
-   for(int i=0;i<n;i++){
-	   printf("{"); 
-	   for(int j=0;j<n;j++){
-		  int ij=r->mul(i,j);
-		  printf("%d",ij);
-		  if(j<n-1)
-			printf(",");  
-	   } 
-       printf("},\n");   
-   }
-   printf("};\n"); 
-}
-
-void writeTable(IRing* r,const char *path){
-   ofstream fout(path);
-   int n=r->size();
-   fout<<"[R"<<n<<"Add]"<<endl;   
-   for(int i=0;i<n;i++){
-	   for(int j=0;j<n;j++){
-		  int ij=r->add(i,j);
-		  fout<<ij+1<<" ";
-	   } 
-       fout<<endl;   
-   }
-   fout<<"[R"<<n<<"Mul]"<<endl;   
-   for(int i=0;i<n;i++){
-	   for(int j=0;j<n;j++){
-		  int ij=r->mul(i,j);
-		  fout<<ij+1<<" "; 
-	   } 
-       fout<<endl;	   
-   }	
-}
-
 int g_b=0;
 string g_str="";
 int g_a=16;
+int g_c=1;
 
 // 根据环的加法、乘法凯莱表分析其结构的小工具IdRing.exe
 // 直接从凯莱表构造一个有限环
