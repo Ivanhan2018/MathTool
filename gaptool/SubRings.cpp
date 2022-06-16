@@ -4,6 +4,10 @@
 #include<fstream>
 #include<set>
 
+int g_a=16;
+int g_b=0;
+int g_c=0;
+
 void printRing0(IRing* r,int ID){
    int n=r->size();
    printf("static int g_R%d_%dAdd[%d][%d]={\n",n,ID,n,n);   
@@ -103,6 +107,8 @@ vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> 
 //从 indexs 集合中选择 num 个元素进行组合并保证返回的组合中没有重复的元素
 void combination(IRing* r,int s,int num)
 {
+    static int s_i=0;
+    static time_t s_t=0;
 	std::vector<std::vector<int> > sets;
 	std::vector<int> indexs;
 	int n=r->size();	
@@ -119,6 +125,7 @@ void combination(IRing* r,int s,int num)
 
 	do
 	{
+		s_i=(s_i+1)%1000;
 		std::vector<int> currentCombination;
 		for (size_t i = 0; i < elements.size(); ++i)
 		{
@@ -127,12 +134,26 @@ void combination(IRing* r,int s,int num)
 				currentCombination.push_back(indexs[i]);
 			}
 		}
+		int n1=sets.size();			
 		SubRings(r,s,currentCombination,sets);
+		int n2=sets.size();
+		if(g_c>0){
+			if(n2>n1){
+				s_t=time(NULL);				
+			}else{
+				if(s_t>0 && s_i==0 && time(NULL)-s_t>g_c*60){
+					printf("超过%d分钟，终止计算！\n",g_c);
+					return;
+				}
+			}
+		}		
 	} while (prev_permutation(elements.begin(), elements.end()));
 }
 
 void combination(IRing* r,int s)
 {
+    static int s_i=0;
+    static time_t s_t=0;
 	std::vector<std::vector<int> > sets;
 	std::vector<int> indexs;
 	int n=r->size();	
@@ -151,6 +172,7 @@ void combination(IRing* r,int s)
 
 		do
 		{
+			s_i=(s_i+1)%1000;	
 			std::vector<int> currentCombination;
 			for (size_t i = 0; i < elements.size(); ++i)
 			{
@@ -159,15 +181,22 @@ void combination(IRing* r,int s)
 					currentCombination.push_back(indexs[i]);
 				}
 			}
+			int n1=sets.size();			
 			SubRings(r,s,currentCombination,sets);
+			int n2=sets.size();
+			if(g_c>0){
+				if(n2>n1){
+					s_t=time(NULL);				
+				}else{
+					if(s_t>0 && s_i==0 && time(NULL)-s_t>g_c*60){
+						printf("超过%d分钟，终止计算！\n",g_c);
+						return;
+					}
+				}
+			}			
 		} while (prev_permutation(elements.begin(), elements.end()));
 	}
 }
-
-int g_b=0;
-string g_str="";
-int g_a=16;
-int g_c=1;
 
 // 根据环的加法、乘法凯莱表分析其结构的小工具IdRing.exe
 // 直接从凯莱表构造一个有限环
@@ -396,17 +425,16 @@ int main(int argc, char **argv)
 	}
 	else
 		strcpy(sz,argv[1]);
-	
-    if(argc>2){
-		g_c=atoi(argv[2]);
-	}		
+			
     if(argc>2){
 		g_a=atoi(argv[2]);			
 	}
     if(argc>3){
 		g_b=atoi(argv[3]);
-		g_str=sz;
-	}		
+	}
+    if(argc>4){
+		g_c=atoi(argv[4]);
+	}	
 
 	vector<char> A=lof2(sz);
 	string strA=CharArrToStr(CharArrToNormal(A));
