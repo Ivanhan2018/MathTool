@@ -7,6 +7,41 @@
 int g_a=16;
 int g_b=0;
 int g_c=0;
+string g_str="";
+
+std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
+{
+	std::vector<string> ret;
+	unsigned int numSplits = 0;
+	// Use STL methods 
+	size_t start, pos;
+	start = 0;
+	do 
+	{
+		pos = str.find_first_of(delims, start);
+		if (pos == start)
+		{
+			// Do nothing
+			start = pos + 1;
+		}
+		else if (pos == std::string::npos || (maxSplits && numSplits == maxSplits))
+		{
+			// Copy the rest of the std::string
+			ret.push_back( str.substr(start) );
+			break;
+		}
+		else
+		{
+			// Copy up to delimiter
+			ret.push_back( str.substr(start, pos - start) );
+			start = pos + 1;
+		}
+		// parse up to next real data
+		start = str.find_first_not_of(delims, start);
+		++numSplits;
+	} while (pos != std::string::npos);
+	return ret;
+}
 
 void printRing0(IRing* r,int ID){
    int n=r->size();
@@ -221,10 +256,51 @@ public:
 
 void FiniteRing::printTable()
 {
+#ifdef SR_
+	vector<int> v;
+	if(g_str!="")
+	{
+		vector<string> All=split(g_str,",");
+		for(int i=0;i<All.size();i++)
+		{
+			int iElem=atoi(All[i].c_str());
+			v.push_back(iElem);
+		}
+	}
+	if(v.size()>0)
+	{
+		vector<int> vSet;
+		IRing *r=this;
+		int s=this->size();	
+		Subring S1i0;
+		bool b=S1i0.init(r,v,s);
+		if(!b)
+		   return;	
+		vSet=S1i0.m_Set;
+		std::sort(vSet.begin(),vSet.end());	
+		int iret1=IsIdeal(r,vSet);
+		if(iret1==0)
+			return;  		
+		int ni=S1i0.size();	
+		if(ni==this->size())
+			return;		
+		int ID=IdRing(&S1i0);
+		char sz[100]="0";
+		sprintf(sz,"R%d_%d.txt",ni,ID);	
+		writeTable(&S1i0,sz);
+		string strR=calcRingInvariant(&S1i0);			
+		printf("子环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());	
+		string str=V2S(v)+"=>"+V2S(vSet)+"=R"+itos(ni)+"_"+itos(ID);	
+		if(iret1==1)str+="是理想";
+		else if(iret1==2)str+="不是理想";
+		printf("%s\n",str.c_str());		
+	}	
+#else
 	if(g_b>0)
 		combination(this,g_a,g_b);
 	else
 		combination(this,g_a);
+#endif
 }
 
 int FiniteRing::add(int a,int b)
@@ -251,41 +327,6 @@ FiniteRing::FiniteRing(int n,int* a,int* m,int delt)
     m_Mul=m;
     m_delt=delt;	
 }
-
-std::vector<string> split( const std::string& str, const std::string& delims, unsigned int maxSplits = 0)
-{
-	std::vector<string> ret;
-	unsigned int numSplits = 0;
-	// Use STL methods 
-	size_t start, pos;
-	start = 0;
-	do 
-	{
-		pos = str.find_first_of(delims, start);
-		if (pos == start)
-		{
-			// Do nothing
-			start = pos + 1;
-		}
-		else if (pos == std::string::npos || (maxSplits && numSplits == maxSplits))
-		{
-			// Copy the rest of the std::string
-			ret.push_back( str.substr(start) );
-			break;
-		}
-		else
-		{
-			// Copy up to delimiter
-			ret.push_back( str.substr(start, pos - start) );
-			start = pos + 1;
-		}
-		// parse up to next real data
-		start = str.find_first_not_of(delims, start);
-		++numSplits;
-	} while (pos != std::string::npos);
-	return ret;
-}
-
 
 vector<char> lof(const char *fn)
 {
@@ -427,7 +468,8 @@ int main(int argc, char **argv)
 		strcpy(sz,argv[1]);
 			
     if(argc>2){
-		g_a=atoi(argv[2]);			
+		g_a=atoi(argv[2]);
+		g_str=argv[2];		
 	}
     if(argc>3){
 		g_b=atoi(argv[3]);
