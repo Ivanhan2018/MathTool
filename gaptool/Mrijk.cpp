@@ -2853,7 +2853,8 @@ int main(int argc, char* argv[])
 		r=newR27(n2);		
 	}else if(n1==32){
 		r=newR32(n2);
-#ifdef _WIN64
+//#ifdef _WIN64
+#if defined(_WIN64)||defined(SQ)
 	}else if(n1==81){
 		r=newR81(n2);
 #endif		
@@ -2989,6 +2990,121 @@ int main(int argc, char* argv[])
 			}
 		}		
 	}
+#ifdef SQ
+	printf("vstr=%s,fun=%d\n",vstr.c_str(),fun);
+	IRing *R=NULL;
+	if(n>2||n==1){
+		Mnr* R1=new Mnr;	
+		vector<MATRIXi8> gen;		
+		vector<string> vv=split(mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi8 A(n,vector<TElem>(n,0));
+			vector<string> v=split(vv[i],",");
+			for(int j=0;j<n;j++)
+				for(int k=0;k<n;k++)
+					A[j][k]=atoi(v[j*n+k].c_str());
+			gen.push_back(A);
+		}			
+		R1->m_n=n;
+        R1->m_r=r;		
+		R1->m_Set=Mnr::FR(r,gen); 		
+		R1->m_flag=1;
+		R=R1;
+	}else{
+		M2r* R2=new M2r;
+		vector<MATRIXi> gen;		
+		vector<string> vv=split(mstr,";");
+		for(int i=0;i<vv.size();i++){
+			MATRIXi A(2,vector<int>(2,0));
+			vector<string> v=split(vv[i],",");
+			A[0][0]=atoi(v[0].c_str());
+			A[0][1]=atoi(v[1].c_str());
+			A[1][0]=atoi(v[2].c_str());
+			A[1][1]=atoi(v[3].c_str());
+			gen.push_back(A);
+		}
+        R2->m_r=r;		
+		R2->m_Set=M2r::FR(r,gen); 		
+		R2->m_flag=1;
+		R=R2;	
+	}
+   if(R){
+		int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243)?0:IdRing(R);
+		if(fun>-1){
+			printf("R%d_%d\n",R->size(),IDr);
+			char sz[100]="0";
+			sprintf(sz,"R%d%d.txt",R->size(),IDr);	
+			writeTable(R,sz);		
+			for(int i=0;i<R->size();i++){
+				string stri=IMStr(R,i);		
+				printf("i=%d=>%s\n",i,stri.c_str());	
+			}					
+		}
+		else if(fun==-1){
+			Subring S1i0;
+			bool bn=S1i0.init(R,vi,R->size());
+			if(bn){
+				int ni=S1i0.size();	
+				if(ni>1 && ni<R->size()){
+					int IDR=IDr;
+					IDr=IdRing(&S1i0);
+					vector<int> v=S1i0.m_Set;
+					int iret1=IsIdeal(R,v);
+					printf("非平凡子环R%d_%d%s\n",ni,IDr,IsIdealRetInfo(iret1));
+					if(iret1==1){
+						quotientRing S1i(R,v);
+						bool b=IsRing(&S1i);
+						if(b){
+							int ni=S1i.size();	
+							int ID=IdRing(&S1i);		
+							printf("R%d_%d/R%d_%d=R%d_%d\n",R->size(),IDR,S1i0.size(),IDr,ni,ID);
+							char sz[100]="0";
+							sprintf(sz,"R%d_%d.txt",ni,ID);	
+							writeTable(&S1i,sz);		
+							printRing0(&S1i,ID);
+							if(ID==-1){		
+								string strR=calcRingInvariant(&S1i);			
+								printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+							}							
+						}							
+					}					
+				}else{
+					printf("平凡子环R%d\n",ni);
+				}	
+				for(int i=0;i<ni;i++){
+					string stri=IMStr(&S1i0,i);		
+					printf("i=%d=>%s\n",i,stri.c_str());	
+				}	
+			}			
+		}
+		else if(fun==-2){
+			Subring S1i0;
+			bool bn=S1i0.init(R,vi,R->size());
+			if(bn){
+				int ni=S1i0.size();	
+				if(ni>1 && ni<R->size()){
+					IDr=IdRing(&S1i0);	
+					printf("非平凡子环R%d_%d\n",ni,IDr);
+					char sz[100]="0";
+					sprintf(sz,"R%d_%d.txt",ni,IDr);	
+					writeTable(&S1i0,sz);		
+					if(IDr==-1){		
+						string strR=calcRingInvariant(&S1i0);			
+						printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,IDr,strR.c_str());				
+					}			
+				}else{
+					printf("平凡子环R%d\n",ni);
+				}	
+				for(int i=0;i<ni;i++){
+					string stri=IMStr(&S1i0,i);		
+					printf("i=%d=>%s\n",i,stri.c_str());	
+				}	
+			}					
+		}	   
+		delete R;
+		R=NULL;	
+   }
+#else
 	//int n0=argc>6?32:16;   
     int n0=16;
     if(argc>6){
@@ -3082,6 +3198,6 @@ int main(int argc, char* argv[])
 		delete R;
 		R=NULL;		
 	}
-   
+#endif   
    return 0;
 }
