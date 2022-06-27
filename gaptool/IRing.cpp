@@ -5290,6 +5290,52 @@ void FindMnr3(IRing* r,int n,int m,int n0)
 	}
 }
 
+void FindMnr4(IRing* r,int n,int m,int n0)
+{	
+	for(int t=g_i;t<m;t++)
+	for(int i=t+1;i<m;i++)	
+	for(int j=i+1;j<m;j++)
+	for(int k=j+1;k<m;k++){	
+		vector<MATRIXi8> S;
+		MATRIXi8 vt=Mnr::getMATRIXi8(n,r->size(),t);		
+		MATRIXi8 vi=Mnr::getMATRIXi8(n,r->size(),i);
+		MATRIXi8 vj=Mnr::getMATRIXi8(n,r->size(),j);	
+		MATRIXi8 vk=Mnr::getMATRIXi8(n,r->size(),k);
+		S.push_back(vt);	
+		S.push_back(vi);
+		S.push_back(vj);
+		S.push_back(vk);		
+		Mnr R;
+		bool b=R.init(r,n,S,n0);	
+		if(!b)
+			continue;
+		int ni=R.size();
+		int ID=IdRing(&R);
+		int cnt=gM.size();
+		gM.insert(make_pair(ni,ID));
+		int cnt1=gM.size();
+		if(cnt1>cnt){
+				string strt=Mnr::MStr(vt,"","");			
+				string str=Mnr::MStr(vi,"","");
+				string strj=Mnr::MStr(vj,"","");
+				string strk=Mnr::MStr(vk,"","");				
+				printf("R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s\n",ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());
+				if((ni==32||ni==81||ni==64) && ID>0){
+					char sz1[128]={0};   
+					sprintf(sz1,"R%d_%d.txt",ni,ID);
+					writeTable(&R,sz1);                  
+				}
+		}
+		if(ID==-1){		
+			string strR=calcRingInvariant(&R);
+			if(gS.find(strR)==gS.end()){			
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());		
+			}
+			gS.insert(strR);
+		}
+	}
+}
+
 int Mrijk(int argc, char* argv[])
 { 
     int n=2;
@@ -5353,11 +5399,17 @@ int Mrijk(int argc, char* argv[])
 		return 0;
 	}	
 	if(n>2||n==1){
-		if(n>2 && r->size()>4||(n>3 &&r->size()==4)||n>4){
-			if((argc>6 && n0==16)||argc>7)
-				FindMnr3(r,n,ijk,n0);
-			else
-				FindMnr(r,n,ijk,n0);				
+		if(n>2 && r->size()>4||(n>3 &&r->size()>2)||n>4){
+			int fun2=0;
+			if(argc>7){
+				fun2=atoi(argv[7]);
+				if(fun2<0||fun2>2){
+					fun2=0;
+				}
+			}		
+			typedef void(*pF2)(IRing* r,int n,int m,int n0);
+			pF2 Func2[]={FindMnr,FindMnr3,FindMnr4};
+			Func2[fun2](r,n,ijk,n0);				
 			/*
 			Mnr R16;
 			MATRIXi8 A=Mnr::getMATRIXi8(n,r->size(),g_i);
@@ -5543,10 +5595,10 @@ int testRingData(int argc, char* argv[]){
 		srand(time(NULL));		
 		int ix=GetRand(0,mstr.size()-1);		
 		for(int j=0;j<mstr.size();j++){
-			if(j==ix && mstr[j]=='0')
-				mstr1.push_back('1');
+			if(j==ix && (mstr[j]=='0'||mstr[j]=='2'||mstr[j]=='3'))
+				mstr1.push_back('1');				
 			else if(j==ix && mstr[j]=='1')
-				mstr1.push_back('0');
+				mstr1.push_back('0');				
 			else
 				mstr1.push_back(mstr[j]);			
 		}
