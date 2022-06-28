@@ -1296,12 +1296,17 @@ int testRingDataA(int argc, char* argv[]){
 	PolynomialRing *r=NULL;
 	int n=atoi(argv[1]);
 	string mstr=argv[2];
+	bool bw=false;
+	if(mstr.substr(0,1)=="w"){
+		mstr.erase(mstr.begin());
+		bw=true;
+	}
 	if(mstr.find(",",0)!=string::npos){
 		printf("n0=%d,m_vfvm=%s\n",n,mstr.c_str());
 		r=new PolynomialRing;
 		b=r->init(n,mstr.c_str());        
 	}else{
-		int ID=atoi(argv[2]);
+		int ID=atoi(mstr.c_str());
 		const CRingDataAItem * pItem = Find(n,ID);
 		if(!pItem){
 			printf("没有配置R%d_%d的表示数据！\n",n,ID);
@@ -1315,6 +1320,12 @@ int testRingDataA(int argc, char* argv[]){
 		int in=r->size();
 		int iID=IdRing(r);
 		printf("R%d_%d",in,iID);	
+		if(bw){
+			char sz1[128]={0};   
+			sprintf(sz1,"R%d%d.txt",r->size(),iID);
+			writeTable(r,sz1);
+			printf("\n写入文件%s\n",sz1);				
+		}
 		if(in<=32 && iID<=0){
 			string strR=calcRingInvariant(r);
 			printf(":N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s",strR.c_str());
@@ -1322,7 +1333,7 @@ int testRingDataA(int argc, char* argv[]){
 			string I2=calcI2(r);			
 			printf("\nI1I2=%s,%s",I1.c_str(),I2.c_str());				
 		}
-		if(in>=16 && in<=729){
+		if(in>=16 && in<=729 && !bw){
 			int fun=0;
 			if(argc>3){
 				fun=atoi(argv[3]);
@@ -1355,7 +1366,7 @@ int testRingDataA(int argc, char* argv[]){
 		}
 		if(argc==3){		
 			printf("\n");	
-			if(in<=81){
+			if(in<=81||bw){
 				for(int i=0;i<in;i++){		
 					string stri=PolynomialRing::sPoly(r->m_Set[i]);		
 					printf("i=%d=>%s\n",i,stri.c_str());	
