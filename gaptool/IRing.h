@@ -798,7 +798,58 @@ string calcI4(IRing* r){
 	return str;
 }
 
+bool IsRingGen(IRing* r,vector<int>& v){
+	int s=r->size();				
+	Subring S1i0;
+	bool b=S1i0.init(r,v,s);
+	if(!b)
+	   return false;
+	if(S1i0.m_Set.size()!=s)
+		return false;
+	if(v.size()>=5){
+		string str=V2S(v);	
+		printf("RingGen:%s\n",str.c_str());
+	}
+	return true;
+}
+
 int Rank(IRing* r){
+	int n=r->size();
+	if(n<4)
+		return 1;
+	int s=n;
+	std::vector<std::vector<int> > sets;
+	std::vector<int> indexs;
+	for (int i = 0; i < n; i++)
+		indexs.push_back(i);
+	
+	for(int num=1;num<=n;num++){
+		std::vector<int> elements;
+		elements.resize(indexs.size());
+		for (int i = 0; i < num; i++)
+		{
+			elements.at(i) = 1;
+		}
+
+		do
+		{	
+			std::vector<int> currentCombination;
+			for (size_t i = 0; i < elements.size(); ++i)
+			{
+				if (elements[i])
+				{
+					currentCombination.push_back(indexs[i]);
+				}
+			}		
+			bool bGen=IsRingGen(r,currentCombination);
+			if(bGen)
+				return num;		
+		} while (prev_permutation(elements.begin(), elements.end()));
+	}
+	return 0;
+}
+
+int Rank4(IRing* r){
 	int n=r->size();
 	if(n<4)
 		return 1;	
