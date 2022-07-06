@@ -4523,6 +4523,7 @@ string Tmstr(const string& mstr){
 
 string g_nstr="";
 string g_nstr1="";
+int g_n0=81;
 int g_i=1;
 void findsubring1(IRing *r,int n)
 {
@@ -4552,12 +4553,12 @@ void findsubring1(IRing *r,int n)
 			printf("cnt1=%d:R%d_%d->i=%d=>%s\n",cnt1,ni,ID,i,IMStr(r,i).c_str());
 			if(g_nstr!=""){
 				char sz[1000]={0};
-				sprintf(sz,"Mrijk64 %s %s 4 81",g_nstr.c_str(),IMStr(r,i).c_str());
+				sprintf(sz,"Mrijk64 %s %s 4 %d",g_nstr.c_str(),IMStr(r,i).c_str(),g_n0);
 				system(sz);
 			}	
 			if(g_nstr1!=""){
 				char sz[1000]={0};
-				sprintf(sz,"Mrijk %s %s 4 81",g_nstr1.c_str(),Tmstr(IMStr(r,i)).c_str());
+				sprintf(sz,"Mrijk %s %s 4 %d",g_nstr1.c_str(),Tmstr(IMStr(r,i)).c_str(),g_n0);
 				system(sz);
 			}			
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
@@ -4618,12 +4619,12 @@ void findsubring2(IRing *r,int n)
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d=>%s;%s\n",cnt1,ni,ID,i,j,str.c_str(),strj.c_str());
 			if(g_nstr!=""){
 				char sz[1000]={0};
-				sprintf(sz,"Mrijk64 %s %s;%s 4 81",g_nstr.c_str(),str.c_str(),strj.c_str());
+				sprintf(sz,"Mrijk64 %s %s;%s 4 %d",g_nstr.c_str(),str.c_str(),strj.c_str(),g_n0);
 				system(sz);
 			}
 			if(g_nstr1!=""){
 				char sz[1000]={0};
-				sprintf(sz,"Mrijk %s %s;%s 4 81",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str());
+				sprintf(sz,"Mrijk %s %s;%s 4 %d",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),g_n0);
 				system(sz);
 			}			
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
@@ -4698,12 +4699,12 @@ void findsubring3(IRing *r,int n)
 			printf("cnt1=%d:R%d_%d->i=%d,j=%d,k=%d=>%s;%s;%s\n",cnt1,ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());
 			if(g_nstr!=""){
 				char sz[1000]={0};
-				sprintf(sz,"Mrijk64 %s %s;%s;%s 4 81",g_nstr.c_str(),str.c_str(),strj.c_str(),strk.c_str());
+				sprintf(sz,"Mrijk64 %s %s;%s;%s 4 %d",g_nstr.c_str(),str.c_str(),strj.c_str(),strk.c_str(),g_n0);
 				system(sz);
 			}
 			if(g_nstr1!=""){
 				char sz[1000]={0};
-				sprintf(sz,"Mrijk %s %s;%s;%s 4 81",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),Tmstr(strk).c_str());
+				sprintf(sz,"Mrijk %s %s;%s;%s 4 %d",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),Tmstr(strk).c_str(),g_n0);
 				system(sz);
 			}			
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
@@ -5280,12 +5281,12 @@ void FindMnr(IRing* r,int n,int m,int n0)
 				printf("R%d_%d->i=%d,j=%d=>%s;%s\n",ni,ID,i,j,str.c_str(),strj.c_str());
 				if(g_nstr!=""){
 					char sz[1000]={0};
-					sprintf(sz,"Mrijk64 %s %s;%s 4 81",g_nstr.c_str(),str.c_str(),strj.c_str());
+					sprintf(sz,"Mrijk64 %s %s;%s 4 %d",g_nstr.c_str(),str.c_str(),strj.c_str(),g_n0);
 					system(sz);
 				}
 				if(g_nstr1!=""){
 					char sz[1000]={0};
-					sprintf(sz,"Mrijk %s %s;%s 4 81",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str());
+					sprintf(sz,"Mrijk %s %s;%s 4 %d",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),g_n0);
 					system(sz);
 				}					
 				if((ni==32||ni==81||ni==64) && ID>0){
@@ -5332,12 +5333,12 @@ void FindMnr3(IRing* r,int n,int m,int n0)
 				printf("R%d_%d->i=%d,j=%d,k=%d=>%s;%s;%s\n",ni,ID,i,j,k,str.c_str(),strj.c_str(),strk.c_str());
 				if(g_nstr!=""){
 					char sz[1000]={0};
-					sprintf(sz,"Mrijk64 %s %s;%s;%s 4 81",g_nstr.c_str(),str.c_str(),strj.c_str(),strk.c_str());
+					sprintf(sz,"Mrijk64 %s %s;%s;%s 4 %d",g_nstr.c_str(),str.c_str(),strj.c_str(),strk.c_str(),g_n0);
 					system(sz);
 				}
 				if(g_nstr1!=""){
 					char sz[1000]={0};
-					sprintf(sz,"Mrijk %s %s;%s;%s 4 81",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),Tmstr(strk).c_str());
+					sprintf(sz,"Mrijk %s %s;%s;%s 4 %d",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),Tmstr(strk).c_str(),g_n0);
 					system(sz);
 				}					
 				if((ni==32||ni==81||ni==64) && ID>0){
@@ -5388,12 +5389,12 @@ void FindMnr4(IRing* r,int n,int m,int n0)
 				printf("R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s\n",ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());
 				if(g_nstr!=""){
 					char sz[1000]={0};
-					sprintf(sz,"Mrijk64 %s %s;%s;%s;%s 4 81",g_nstr.c_str(),strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());
+					sprintf(sz,"Mrijk64 %s %s;%s;%s;%s 4 %d",g_nstr.c_str(),strt.c_str(),str.c_str(),strj.c_str(),strk.c_str(),g_n0);
 					system(sz);
 				}
 				if(g_nstr1!=""){
 					char sz[1000]={0};
-					sprintf(sz,"Mrijk %s %s;%s;%s;%s 4 81",g_nstr1.c_str(),Tmstr(strt).c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),Tmstr(strk).c_str());
+					sprintf(sz,"Mrijk %s %s;%s;%s;%s 4 %d",g_nstr1.c_str(),Tmstr(strt).c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),Tmstr(strk).c_str(),g_n0);
 					system(sz);
 				}
 				if((ni==32||ni==81||ni==64) && ID>0){
@@ -5448,6 +5449,12 @@ int Mrijk(int argc, char* argv[])
 		else
 			n0=32;		
 	}	
+	if(argc>7){
+		int i7=atoi(argv[7]);
+		if(n0%16==0){
+			g_n0=(i7<27?729:i7);
+		}
+	}		
 	IRing* r=NULL;	
 	if(n1==4 && n2<=11){	
 		r=newR4(n2);
