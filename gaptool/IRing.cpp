@@ -4560,12 +4560,14 @@ void findsubring1(IRing *r,int n)
 				char sz[1000]={0};
 				sprintf(sz,"Mrijk %s %s 4 %d",g_nstr1.c_str(),Tmstr(IMStr(r,i)).c_str(),g_n0);
 				system(sz);
-			}			
+			}	
+#if WR			
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
-			}			
+			}
+#endif			
 		}
 		if(ID==-1) 
 		{					
@@ -4626,12 +4628,14 @@ void findsubring2(IRing *r,int n)
 				char sz[1000]={0};
 				sprintf(sz,"Mrijk %s %s;%s 4 %d",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),g_n0);
 				system(sz);
-			}			
+			}
+#if WR			
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
-			}				
+			}
+#endif			
 		}	
 		if(ID==-1)  
 		{		
@@ -4706,12 +4710,14 @@ void findsubring3(IRing *r,int n)
 				char sz[1000]={0};
 				sprintf(sz,"Mrijk %s %s;%s;%s 4 %d",g_nstr1.c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),Tmstr(strk).c_str(),g_n0);
 				system(sz);
-			}			
+			}	
+#if WR			
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
-			}			
+			}
+#endif			
 		}	
 		if(ID==-1)   
 		{					
@@ -4774,7 +4780,7 @@ void findsubring4(IRing *r,int n)
 		M.insert(make_pair(make_pair(ni,ID),make_pair(i,j)));
 		int cnt1=M.size();
 		if(cnt1>cnt){
-#if 1
+#if 0
 			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d\n",cnt1,ni,ID,t,i,j,k);	
 #else
 			string strt=IMStr(r,t);		
@@ -4782,12 +4788,24 @@ void findsubring4(IRing *r,int n)
 			string strj=IMStr(r,j);
 			string strk=IMStr(r,k);		
 			printf("cnt1=%d:R%d_%d->t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s\n",cnt1,ni,ID,t,i,j,k,strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
+			if(g_nstr!=""){
+				char sz[1000]={0};
+				sprintf(sz,"Mrijk64 %s %s;%s;%s;%s 4 %d",g_nstr.c_str(),strt.c_str(),str.c_str(),strj.c_str(),strk.c_str(),g_n0);
+				system(sz);
+			}
+			if(g_nstr1!=""){
+				char sz[1000]={0};
+				sprintf(sz,"Mrijk %s %s;%s;%s;%s 4 %d",g_nstr1.c_str(),Tmstr(strt).c_str(),Tmstr(str).c_str(),Tmstr(strj).c_str(),Tmstr(strk).c_str(),g_n0);
+				system(sz);
+			}
 #endif
+#if WR
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
-			}			
+			}
+#endif			
 		}	
 		if(ID==-1)   
 		{					
@@ -4863,11 +4881,13 @@ void findsubring5(IRing *r,int n)
 			string strk=IMStr(r,k);		
 			printf("cnt1=%d:R%d_%d->s=%d,t=%d,i=%d,j=%d,k=%d=>%s;%s;%s;%s;%s\n",cnt1,ni,ID,s,t,i,j,k,strs.c_str(),strt.c_str(),str.c_str(),strj.c_str(),strk.c_str());	
 #endif
+#if WR
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
-			}			
+			}
+#endif			
 		}	
 		if(ID==-1)   
 		{					
@@ -4953,12 +4973,14 @@ void findquotientring(IRing *r,int n)
 				char sz1[32]={0};   
 				sprintf(sz1,"R%d.%d.txt",ni,ID);
 				writeTable(&S1i,sz1); 				
-			}			
+			}
+#if WR			
             if((ni==32||ni==81||ni==64||ni==243) && ID>0){
 				char sz1[128]={0};   
 				sprintf(sz1,"R%d_%d.txt",ni,ID);
 				writeTable(&S1i,sz1);                  
-			}			
+			}
+#endif			
 		}	
 		if(ID==-1) 	
 		{		
@@ -5526,9 +5548,11 @@ int Mrijk(int argc, char* argv[])
 			int fun2=0;
 			if(argc>7){
 				fun2=atoi(argv[7]);
-				if(fun2<0||fun2>2){
+				if(fun2<0){
 					fun2=0;
-				}
+				}else if(fun2>2){
+					fun2=fun2%3;
+				}				
 			}		
 			typedef void(*pF2)(IRing* r,int n,int m,int n0);
 			pF2 Func2[]={FindMnr,FindMnr3,FindMnr4};
