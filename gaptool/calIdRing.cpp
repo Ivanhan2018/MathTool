@@ -226,6 +226,11 @@ public:
 
 void FiniteRing::printTable()
 {
+	bool b1=IsRing(this);
+	if(!b1){
+		printf("不是环\n");
+		return;
+	}	
 #ifdef QR16
 	if(m_n==128||m_n==256){
 		findquotientring3(this,g_a);
