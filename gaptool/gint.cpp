@@ -410,41 +410,72 @@ void findsubring2(ZimodnZ *r,int n){
 	}			
 }
 
-int main(void)
-{
-	//GaussianInteger v[]={GaussianInteger(0,-1),GaussianInteger(3,1)};
-	//int nv=sizeof(v)/sizeof(v[0]);
-	//for(int i=0;i<nv;i++)
-	//{
-	//	ZimodnZ r(v[i]);
-	//	r.printTable();
-	//}
-	//system("pause");
-	//return 0;
-	if(0)
-	{
-		ZimodnZ r32_1074(GaussianInteger(4,4));
-		r32_1074.printTable();
-		ZimodnZ r16_109;
-		r16_109.initFR(GaussianInteger(1,1),GaussianInteger(4,4));
-		r16_109.printTable();		
-		// ZimodnZ r8_16;
-		// r8_16.initFR(GaussianInteger(2,2),GaussianInteger(2,0),GaussianInteger(4,4));
-		// r8_16.printTable();
-		ZimodnZ r16_97;
-		r16_97.initFR(GaussianInteger(0,4),GaussianInteger(2,2),GaussianInteger(8,8));
-		r16_97.printTable();	
-		//ZimodnZ r200(GaussianInteger(10,10));
-		//r200.printTable();
+string IMStr(ZimodnZ *r,int i){
+	return gStr(r->m_Set[i]);
+}
+
+int main(int argc, char* argv[]){ 
+	if(argc<3){
+		printf("usage:gint m n\n");
+		return 0;
+	}	
+    int m0=atoi(argv[1]);
+    int n0=atoi(argv[2]);
+    int m1=argc>3?atoi(argv[3]):0;
+    int n1=argc>4?atoi(argv[4]):0;	
+    int m2=argc>5?atoi(argv[5]):0;
+    int n2=argc>6?atoi(argv[6]):0;
+    int m3=argc>7?atoi(argv[7]):0;	
+	if(argc==3||argc==4){	
+		ZimodnZ r(GaussianInteger(m0,n0));
+		char sz1[128]={0};   
+		sprintf(sz1,"R%d_[%d.%d].txt",r.size(),m0,n0);
+		writeTable(&r,sz1); 
+		printf("\n写入文件%s\n",sz1);	
+		findsubring2(&r,m1<=0?16:m1);
+		if(m1==0){
+			printf("\n");			
+			for(int i=0;i<r.size();i++){
+				string stri=IMStr(&r,i);		
+				printf("i=%d=>%s\n",i,stri.c_str());	
+			}	
+		}		
+		return 0;
 	}
-	if(0)
-	{	
-		ZimodnZ r128(GaussianInteger(12,8));
-		//r128.printTable();
-		writeTable(&r128,"R208_1.txt"); 		
-		findsubring2(&r128,32);
+	if(argc==5||argc==6){	
+		ZimodnZ r;
+		r.initFR(GaussianInteger(m1,n1),GaussianInteger(m0,n0));
+		char sz1[128]={0};   
+		sprintf(sz1,"R%d_[%d.%d]_[%d.%d].txt",r.size(),m1,n1,m0,n0);
+		writeTable(&r,sz1); 
+		printf("\n写入文件%s\n",sz1);		
+		findsubring2(&r,m2<=0?16:m2);
+		if(m2==0){
+			printf("\n");			
+			for(int i=0;i<r.size();i++){
+				string stri=IMStr(&r,i);		
+				printf("i=%d=>%s\n",i,stri.c_str());	
+			}	
+		}		
+		return 0;
 	}
-	//system("pause");
+	if(argc==7||argc==8){	
+		ZimodnZ r;
+		r.initFR(GaussianInteger(m2,n2),GaussianInteger(m1,n1),GaussianInteger(m0,n0));
+		char sz1[128]={0};   
+		sprintf(sz1,"R%d_[%d.%d]_[%d.%d]_[%d.%d].txt",r.size(),m2,n2,m1,n1,m0,n0);
+		writeTable(&r,sz1); 
+		printf("\n写入文件%s\n",sz1);		
+		findsubring2(&r,m3<=0?16:m3);
+		if(m3==0){
+			printf("\n");			
+			for(int i=0;i<r.size();i++){
+				string stri=IMStr(&r,i);		
+				printf("i=%d=>%s\n",i,stri.c_str());	
+			}	
+		}		
+		return 0;
+	}	
 	return 0;
 
 	int Norm=25;
