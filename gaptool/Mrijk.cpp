@@ -2779,7 +2779,7 @@ bool testQR(IRing *r,int n,vector<int>& v){
 	printf("R%d_%d/R%d_%d=R%d_%d\n",r->size(),IDr,S1i0.size(),IDr0,ni,ID);			
 	if(ni<32 && ID==-1)
 		printRing0(&S1i,ID);
-	if(ni>=64 && ID>0){
+	if(ni>=32 && ID>0){
 		char sz[100]="0";
 		sprintf(sz,"R%d_%d.txt",ni,ID);	
 		writeTable(&S1i,sz);
