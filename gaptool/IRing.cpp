@@ -3254,7 +3254,7 @@ public:
 	// 静态函数
    static int getidx(vector<MATRIXi> &Arr2,MATRIXi &Arr1);
    static bool IsEqual(const MATRIXi &t,const MATRIXi &m);
-   static vector<MATRIXi> FR(IRing* r,vector<MATRIXi>& gen); 
+   static vector<MATRIXi> FR(IRing* r,vector<MATRIXi>& gen,int N=0); 
    static MATRIXi add(IRing* r,const MATRIXi &t,const MATRIXi &m);  
    static MATRIXi mul(IRing* r,const MATRIXi &t,const MATRIXi &m);
    static string MStr(const MATRIXi &t,const char* szL="[",const char* szR="]");   
@@ -3284,7 +3284,7 @@ public:
 	bool initR16(int ID=0);	
 	bool initR16_2(int ID=0);
 	bool init(int n,int ID);
-	bool init(int n0,int n1,int n2,const char* sz);	
+	bool init(int n0,int n1,int n2,const char* sz,int N=0);	
 	// 成员变量
 	vector<MATRIXi> m_Set;
 	IRing* m_r;
@@ -3465,7 +3465,7 @@ bool M2r::init(int n,int ID){
 	return false;
 }
 
-bool M2r::init(int n0,int n1,int n2,const char* sz){
+bool M2r::init(int n0,int n1,int n2,const char* sz,int N){
 	IRing* newR4(int ID,int p=2);	
 	IRing* newR8(int ID);
 	IRing* newR16(int ID);
@@ -3497,10 +3497,10 @@ bool M2r::init(int n0,int n1,int n2,const char* sz){
 			gen.push_back(A);
 		}	
 		m_flag=1;
-		m_Set=FR(m_r,gen); 
-		return true;		
+		m_Set=FR(m_r,gen,N);
+		return m_Set.size()>0;		
 	}	
-	return false;	
+	return false;
 }
 
 bool M2r::initR8(int ID){
@@ -3559,10 +3559,10 @@ bool M2r::initR16_2(int ID){
 
 M2r::M2r(IRing* r,vector<MATRIXi>& gen){
 	m_r=r;
-	m_Set=FR(r,gen);
+	m_Set=FR(r,gen,0);
 }
 
-vector<MATRIXi> M2r::FR(IRing* r,vector<MATRIXi>& gen){
+vector<MATRIXi> M2r::FR(IRing* r,vector<MATRIXi>& gen,int N){
 	vector<MATRIXi> Set;
 	int n=gen[0].size();
 	MATRIXi E(n,vector<int>(n,0));
@@ -3577,6 +3577,10 @@ vector<MATRIXi> M2r::FR(IRing* r,vector<MATRIXi>& gen){
 	int cnt1=R;
 	do{
 		cnt=Set.size();
+		if(N>0 && cnt>N){
+			Set.clear();
+			return Set;
+		}			
 		for(int i=0;i<cnt;i++)
 		{
 			for(int j=0;j<cnt;j++)
@@ -3595,7 +3599,10 @@ vector<MATRIXi> M2r::FR(IRing* r,vector<MATRIXi>& gen){
 		}
 		cnt1=Set.size();
 	}while(cnt1>cnt);
-    return Set;	
+	if(N>0 && Set.size()>N){
+		Set.clear();
+	}	
+    return Set;
 }
 
 string M2r::MStr(const MATRIXi &t,const char* szL,const char* szR){
@@ -3761,7 +3768,7 @@ public:
    static int getidx(vector<MATRIXi8> &Arr2,MATRIXi8 &Arr1);
    static bool IsEqual(const MATRIXi8 &t,const MATRIXi8 &m);	
    static bool nextV1(int m,vector<TElem>& v);
-   static vector<MATRIXi8> FR(IRing* r,vector<MATRIXi8>& gen); 
+   static vector<MATRIXi8> FR(IRing* r,vector<MATRIXi8>& gen,int N=0); 
    static MATRIXi8 add(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m);  
    static MATRIXi8 mul(IRing* r,const MATRIXi8 &t,const MATRIXi8 &m); 
    static string MStr(const MATRIXi8 &t,const char* szL="[",const char* szR="]");   
@@ -3789,7 +3796,7 @@ public:
 	bool initR16(int ID=0);	
 	bool initR16_2(int ID=0);// 特征为2的16阶环，拆分原因：fatal error C1061: 编译器限制 : 块嵌套太深
 	bool init(int n,int ID);
-	bool init(int n0,int n1,int n2,const char* sz);	
+	bool init(int n0,int n1,int n2,const char* sz,int N=0);	
 	// 成员变量
 	vector<MATRIXi8> m_Set;
 	IRing* m_r;
@@ -3927,7 +3934,7 @@ bool Mnr::init(int n,int ID){
 	return false;
 }
 
-bool Mnr::init(int n0,int n1,int n2,const char* sz){
+bool Mnr::init(int n0,int n1,int n2,const char* sz,int N){
 	IRing* newR4(int ID,int p=2);	
 	IRing* newR8(int ID);
 	IRing* newR16(int ID);
@@ -3955,7 +3962,7 @@ bool Mnr::init(int n0,int n1,int n2,const char* sz){
 			gen.push_back(A);
 		}	
 		m_flag=1;
-		m_Set=FR(m_r,gen); 
+		m_Set=FR(m_r,gen,N); 
 		return true;		
 	}	
 	return false;
@@ -4036,7 +4043,7 @@ string Mnr::MStr(const MATRIXi8 &t,const char* szL,const char* szR){
 	return str;
 }
 
-vector<MATRIXi8> Mnr::FR(IRing* r,vector<MATRIXi8>& gen){
+vector<MATRIXi8> Mnr::FR(IRing* r,vector<MATRIXi8>& gen,int N){
 	vector<MATRIXi8> Set;
 	int n=gen[0].size();
 	MATRIXi8 E(n,vector<TElem>(n,0));
@@ -4051,6 +4058,10 @@ vector<MATRIXi8> Mnr::FR(IRing* r,vector<MATRIXi8>& gen){
 	int cnt1=R;
 	do{
 		cnt=Set.size();
+		if(N>0 && cnt>N){
+			Set.clear();
+			return Set;
+		}		
 		for(int i=0;i<cnt;i++)
 		{
 			for(int j=0;j<cnt;j++)
@@ -4069,6 +4080,9 @@ vector<MATRIXi8> Mnr::FR(IRing* r,vector<MATRIXi8>& gen){
 		}
 		cnt1=Set.size();
 	}while(cnt1>cnt);
+	if(N>0 && Set.size()>N){
+		Set.clear();
+	}	
     return Set;	
 }
 
@@ -5559,10 +5573,10 @@ int testRingData(int argc, char* argv[]){
 	if(argc>3)
 		str=argv[3];	
 	string mstr=pItem->m_mstr;
-	if(str.substr(0,1)=="E"||str.substr(0,1)=="e"){
+	if(str.substr(0,1)=="E"){
 		int rn=(pItem->m_n1==1?pItem->m_n2:pItem->m_n1);	
 		string stri=";";
-		bool bE=str.substr(0,1)=="E";
+		bool bE=pItem->m_n1==1;
 		srand(time(NULL));
 		for(int j=0;j<pItem->m_n0*pItem->m_n0;j++){
 			int ii=bE?GetRandV(rn):GetRand(0,rn-1);
@@ -5631,8 +5645,7 @@ int testRingData(int argc, char* argv[]){
 	IRing *r2=r;
 	bool b2=b;
 	string mstr2=mstr;
-	if(b && r && str.substr(0,1)=="t"){
-		str.erase(str.begin());
+	if(b && r && (str.substr(0,1)=="e"||str.substr(0,1)=="t")){
 		int in=r->size();
 		int p=2;
 		for(;p<=in;p++){
@@ -5642,8 +5655,11 @@ int testRingData(int argc, char* argv[]){
 		int np=r->size()*p;
 		int cnt=0;
 		int rn=(pItem->m_n1==1?pItem->m_n2:pItem->m_n1);
-		bool bE=pItem->m_n1==1;
-		srand(time(NULL));
+		bool bE=(pItem->m_n1==1&&str.substr(0,1)=="t");
+		str.erase(str.begin());
+		time_t now=time(NULL);
+		srand(now);
+		vector<IRing *> vIR;
 		do{
 			string stri=";";
 			for(int j=0;j<pItem->m_n0*pItem->m_n0;j++){
@@ -5655,24 +5671,33 @@ int testRingData(int argc, char* argv[]){
 			mstr2=mstr+stri;					
 			if(pItem->m_n0==2){
 				M2r *r1=new M2r;
-				b2=r1->init(pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr2.c_str());
+				b2=r1->init(pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr2.c_str(),np);
 				r2=r1;
 			}else{
 				Mnr *r1=new Mnr;
-				b2=r1->init(pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr2.c_str());		
+				b2=r1->init(pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr2.c_str(),np);		
 				r2=r1;		
 			}			
 			cnt++;
+			time_t now1=time(NULL);
+			if(cnt>0 && cnt%1000==0){
+				printf("耗时%I64d秒,进度:%d/10000\n",now1-now,cnt);
+				now=now1;
+			}
 			if(r2->size()==np && b2){
 				printf("R%d_%d的扩环,%d,%d,%d,mstr=%s\n",n,ID,pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr2.c_str());
 				r=r2;
 				b=b2;
 				break;
 			}
-		}while(r2->size()!=np && cnt<100);
-        if(r2->size()!=np || cnt>=100){
+			vIR.push_back(r2);
+		}while(r2->size()!=np && cnt<10000);
+        if(r2->size()!=np || cnt>=10000){
 			printf("没有找到R%d_%d的%d阶扩环,%d,%d,%d,mstr=%s\n",n,ID,np,pItem->m_n0,pItem->m_n1,pItem->m_n2,mstr2.c_str());
-		}		
+		}
+        for(int i=0;i<vIR.size()-1;i++){
+			if(vIR[i])delete vIR[i];
+		}
 	}
 	if(b && r){
 		int in=r->size();
