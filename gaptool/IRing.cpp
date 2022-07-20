@@ -5652,11 +5652,19 @@ int testRingData(int argc, char* argv[]){
 			if(in%p==0)
 				break;
 		}	
-		int np=r->size()*p;
+		int np=r->size()*p;		
 		int cnt=0;
 		int rn=(pItem->m_n1==1?pItem->m_n2:pItem->m_n1);
 		bool bE=(pItem->m_n1==1&&str.substr(0,1)=="t");
 		str.erase(str.begin());
+		for(int i=0;i<3;i++){
+			if(str.substr(0,1)=="e"||str.substr(0,1)=="t"){
+				np*=p;	
+				str.erase(str.begin());
+			}else{
+				break;
+			}			
+		}
 		time_t now=time(NULL);
 		srand(now);
 		vector<IRing *> vIR;
