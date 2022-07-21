@@ -5765,7 +5765,13 @@ int testRingData(int argc, char* argv[]){
 					n0=16;		
 			}
 			if(argc>5)
-				g_i=atoi(argv[5]);			
+				g_i=atoi(argv[5]);
+			if(argc>6){
+				int i6=atoi(argv[6]);
+				if(n0%16==0){
+					g_n0=(i6<27?729:i6);
+				}
+			}		
 			typedef void(*pF)(IRing *r,int n);
 			pF Func[]={findsubring1,findsubring2,findsubring3,findsubring4,findsubring5,findquotientring};
 			Func[fun](r,n0);		
