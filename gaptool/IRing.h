@@ -275,7 +275,7 @@ int IsLeftIdeal(IRing* r,vector<int> &I){
 
 // 判断子环I是否是环r的右理想
 int IsRightIdeal(IRing* r,vector<int> &I){
- //进一步判断是否是左理想
+ //进一步判断是否是右理想
  for(int i=0;i<r->size();i++){//任意纯量环元素c
   for(int j=0;j<I.size();j++){//任意向量模元素a
    int ac=r->mul(I[j],i);  
