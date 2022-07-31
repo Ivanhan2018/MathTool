@@ -1416,6 +1416,57 @@ string calcH2(IRing* r){
 		if(n%p==0)
 			break;
 	}
+	if(p==n||p*p==n){
+		return "[]";
+	}
+	vector<pair<int,int> > v1;
+	for(int i=0;i<n;i++){
+		for(int j=i+1;j<n;j++){
+			vector<int> v;
+			v.push_back(i);		
+			v.push_back(j);
+			Subring S1i0;
+			bool b=S1i0.init(r,v,p*p);
+			if(!b)
+			   continue;
+			if(S1i0.m_Set.size()!=p*p)
+				continue;
+			vector<int> v0=v;
+			v=S1i0.m_Set;
+			int iret1=IsIdeal(r,v); 
+			if(iret1==0)
+				continue;
+			if(iret1==2){
+				int iret1L=IsLeftIdeal(r,v);
+				int iret1R=IsRightIdeal(r,v);			
+				if(iret1L==1 && iret1R==2)
+					iret1=3;//是左理想
+				else if(iret1L==2 && iret1R==1)
+					iret1=4;//是右理想		
+				else{
+					iret1=2;//既不是左理想，也不是右理想	
+				}				
+			}
+			int ID=IdRing(&S1i0);
+			auto it=std::find(v1.begin(),v1.end(),make_pair(ID,iret1));
+			if(it==v1.end()){
+				v1.push_back(make_pair(ID,iret1));
+			}
+	}
+	}
+	std::sort(v1.begin(),v1.end());	 
+	string str=V2S(v1);
+	return str;
+}
+
+string calcH1(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();
+	int p=2;
+	for(;p<=n;p++){
+		if(n%p==0)
+			break;
+	}
 	if(p==n){
 		return "[]";
 	}
@@ -1435,7 +1486,18 @@ string calcH2(IRing* r){
 			v=S1i0.m_Set;
 			int iret1=IsIdeal(r,v);
 			if(iret1==0)
-				continue;		
+				continue;	
+			if(iret1==2){
+				int iret1L=IsLeftIdeal(r,v);
+				int iret1R=IsRightIdeal(r,v);			
+				if(iret1L==1 && iret1R==2)
+					iret1=3;//是左理想
+				else if(iret1L==2 && iret1R==1)
+					iret1=4;//是右理想		
+				else{
+					iret1=2;//既不是左理想，也不是右理想	
+				}				
+			}
 			int ID=IdRing(&S1i0);
 			auto it=std::find(v1.begin(),v1.end(),make_pair(ID,iret1));
 			if(it==v1.end()){
@@ -4809,16 +4871,16 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("b8N8N9R81.csv",81,2);*/	
 	//int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);	
-#ifdef USE_H2RI2	
+#ifdef USE_RI2		
  	iret=LoadStr("RI2R16.csv",16,1);	
 	iret=LoadStr("RI2R27.csv",27,1);	 
 	int ri2cnt=m_Str[1].size(); /**/
     //printf("ri2cnt=%d\n",ri2cnt);	
+#endif	
  	iret=LoadStr("H2R16.csv",16,3);	
 	iret=LoadStr("H2R27.csv",27,3);	 
 	int h2cnt=m_Str[3].size();
     //printf("h2cnt=%d\n",h2cnt);
-#endif
 	iret=LoadStr("Q1R16.csv",16,4);	
 	iret=LoadStr("Q1R32.csv",32,4);	
 	iret=LoadStr("Q1R27.csv",27,4);	
@@ -4991,14 +5053,14 @@ int IdRing(IRing* r){
 			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！\n",Q1.c_str(),vID[0],Q10.c_str());
 		}
    }   
-#ifdef USE_H2RI2
-    if(r->size()==16||r->size()==27){
+   if(r->size()==16||r->size()==27){
 		string H2=calcH2(r);
 		string H20=idHelper.StrFromID(r->size(),vID[0],3);
 		if(H20!="" && H20!=H2){			
 			printf("出错了，环的H2=%s与ID=%d,H2=%s不匹配！\n",H2.c_str(),vID[0],H20.c_str());
 		}
-   }     
+   } 
+#ifdef USE_RI2   
     if(r->size()==16||r->size()==27){
 		string RI2=calcRingInvariant2(r);
 		string RI20=idHelper.StrFromID(r->size(),vID[0],1);		
