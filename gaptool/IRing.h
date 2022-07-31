@@ -258,6 +258,36 @@ int IsIdeal(IRing* r,vector<int> &I){
  return 1;//是理想
 }
 
+// 判断子环I是否是环r的左理想
+int IsLeftIdeal(IRing* r,vector<int> &I){
+ //进一步判断是否是左理想
+ for(int i=0;i<r->size();i++){//任意纯量环元素c
+  for(int j=0;j<I.size();j++){//任意向量模元素a
+   int ca=r->mul(i,I[j]);
+	vector<int>::iterator p=std::find(I.begin(),I.end(),ca);
+	if(p==I.end()){
+		return 2;// 是子环但不是左理想
+	}   
+  }
+ }
+ return 1;//是左理想
+}
+
+// 判断子环I是否是环r的右理想
+int IsRightIdeal(IRing* r,vector<int> &I){
+ //进一步判断是否是左理想
+ for(int i=0;i<r->size();i++){//任意纯量环元素c
+  for(int j=0;j<I.size();j++){//任意向量模元素a
+   int ac=r->mul(I[j],i);  
+	vector<int>::iterator p1=std::find(I.begin(),I.end(),ac);
+	if(p1==I.end()){
+		return 2;// 是子环但不是右理想
+	}
+  }
+ }
+ return 1;//是右理想
+}
+
 const char* IsIdealRetInfo(int iret){
 	const char* sz[]={"不构成环","构成理想","构成非理想子环"};
 	return sz[iret];

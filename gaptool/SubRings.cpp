@@ -92,7 +92,7 @@ void writeTable(IRing* r,const char *path){
    }	
 }
 
-vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> > &sets){
+vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> > &sets,std::vector<int> &J){
 	vector<int> vSet;				
 	Subring S1i0;
 	bool b=S1i0.init(r,v,s);
@@ -118,6 +118,13 @@ vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> 
 	}	
 	string str=V2S(v)+"=>"+V2S(vSet)+"=R"+itos(s)+"_"+itos(ID);	
 	if(iret1==1){
+		if(J.size()==0){
+			J=vSet;
+		}else{
+			vector<int> J1;
+			set_intersection(J.begin(),J.end(),vSet.begin(),vSet.end(),back_inserter(J1));
+			J=J1;
+		}
 		str+="是理想";
 		quotientRing S1i(r,vSet);
 		int ni=S1i.size();	
@@ -133,7 +140,23 @@ vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> 
 			str+=",商环R"+itos(ni)+"_"+itos(IDi);	
 		}	
 	}
-	if(iret1==2)str+="不是理想";
+	//if(iret1==2)str+="不是理想";
+	else if(iret1==2){
+		int iret1L=IsLeftIdeal(r,vSet);
+		int iret1R=IsRightIdeal(r,vSet);			
+		if(iret1L==2)str+="不是左理想";else {
+			str+="是左理想";
+			if(J.size()==0){
+				J=vSet;
+			}else{
+				vector<int> J1;
+				set_intersection(J.begin(),J.end(),vSet.begin(),vSet.end(),back_inserter(J1));
+				J=J1;
+			}			
+		}
+		str+=",";
+		if(iret1R==2)str+="不是右理想";else str+="是右理想";			
+	}	
 	printf("%s\n",str.c_str()); 
 	sets.push_back(vSet);
 	return vSet;
@@ -145,6 +168,7 @@ void combination(IRing* r,int s,int num)
     static int s_i=0;
     static time_t s_t=0;
 	std::vector<std::vector<int> > sets;
+	std::vector<int> J;	
 	std::vector<int> indexs;
 	int n=r->size();	
 	for (int i = 0; i < n; i++)
@@ -170,7 +194,7 @@ void combination(IRing* r,int s,int num)
 			}
 		}
 		int n1=sets.size();			
-		SubRings(r,s,currentCombination,sets);
+		SubRings(r,s,currentCombination,sets,J);
 		int n2=sets.size();
 		if(g_c>0){
 			if(n2>n1){
@@ -185,11 +209,24 @@ void combination(IRing* r,int s,int num)
 	} while (prev_permutation(elements.begin(), elements.end()));
 }
 
+bool IsPIdem(IRing* r,vector<int>& J,int a,int i1){
+	int n=r->size();
+	for(int i=0;i<n;i++){	
+		int ca=r->mul(i,a);
+		vector<int>::iterator p=std::find(J.begin(),J.end(),ca);
+		if(p==J.end()){
+			return false;;
+		}   
+	}	
+	return true;
+}
+
 void combination(IRing* r,int s)
 {
     static int s_i=0;
     static time_t s_t=0;
 	std::vector<std::vector<int> > sets;
+	std::vector<int> J;
 	std::vector<int> indexs;
 	int n=r->size();	
 	for (int i = 0; i < n; i++)
@@ -217,7 +254,7 @@ void combination(IRing* r,int s)
 				}
 			}
 			int n1=sets.size();			
-			SubRings(r,s,currentCombination,sets);
+			SubRings(r,s,currentCombination,sets,J);
 			int n2=sets.size();
 			if(g_c>0){
 				if(n2>n1){
@@ -230,6 +267,29 @@ void combination(IRing* r,int s)
 				}
 			}			
 		} while (prev_permutation(elements.begin(), elements.end()));
+	}
+	int p=2;
+	for(;p<=n;p++){
+		if(n%p==0)
+			break;
+	}
+	if(n==s*p){
+		vector<int> Idem=calIdem(r);
+		int n2=Idem.size();	
+		printf("Jacobson根:%s,幂等元集合:%s\n",V2S(J).c_str(),V2S(Idem).c_str());			
+		int i1=One(r);
+		if(i1>-1){
+			vector<int> PIdem;
+			for(int i=1;i<n2 && i!=i1;i++){
+				int e=Idem[i];
+				vector<int> S=Order(r,e);			
+				int e1=S[S.size()-1];		 
+				int a=r->add(i1,e1);	
+				bool b=IsPIdem(r,J,a,i1);
+				if(b)PIdem.push_back(e);
+			}		
+			printf("幺环,非平凡主幂等元集合:%s\n",V2S(PIdem).c_str());			
+		}	
 	}
 }
 
@@ -291,8 +351,15 @@ void FiniteRing::printTable()
 		string strR=calcRingInvariant(&S1i0);			
 		printf("子环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());	
 		string str=V2S(v)+"=>"+V2S(vSet)+"=R"+itos(ni)+"_"+itos(ID);	
-		if(iret1==1)str+="是理想";
-		else if(iret1==2)str+="不是理想";
+		if(iret1==1)str+="是理想";		
+		//else if(iret1==2)str+="不是理想";
+		else if(iret1==2){
+			int iret1L=IsLeftIdeal(r,vSet);
+			int iret1R=IsRightIdeal(r,vSet);			
+			if(iret1L==2)str+="不是左理想";else str+="是左理想";
+			str+=",";
+			if(iret1R==2)str+="不是右理想";else str+="是右理想";			
+		}
 		printf("%s\n",str.c_str());		
 	}	
 #else
