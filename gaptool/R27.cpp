@@ -29,7 +29,7 @@ vector<int> FindR27ID(int idx,int p=3){
 	};	
 	int cnt=sizeof(szN0n0bAbO)/sizeof(szN0n0bAbO[0]);
 	vector<int> v;
-	if(idx<0 || idx>cnt){
+	if(idx<0 || idx>=cnt){
 		return v;
 	}
 	string str=szN0n0bAbO[idx];

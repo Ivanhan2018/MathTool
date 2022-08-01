@@ -515,6 +515,8 @@ int main(int argc, char **argv)
 			g_a=243;
 		else if(_n0==8)
 			g_a=8;	
+		else if(_n0==4)
+			g_a=4;		
 		else if(_n0==9)
 			g_a=9;	
 		else if(_n0==3)
