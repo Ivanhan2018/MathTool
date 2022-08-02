@@ -4884,7 +4884,8 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("Q1R16.csv",16,4);	
 	iret=LoadStr("Q1R32.csv",32,4);	
 	iret=LoadStr("Q1R27.csv",27,4);	
-	iret=LoadStr("Q1R81.csv",81,4);		
+	iret=LoadStr("Q1R81.csv",81,4);	
+	iret=LoadStr("Q1R125.csv",125,4);		
 	iret=LoadStr("Q1R243.csv",243,4);	
 	int q1cnt=m_Str[4].size();
     //printf("q1cnt=%d\n",q1cnt);	
