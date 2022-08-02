@@ -280,15 +280,17 @@ void combination(IRing* r,int s)
 		int i1=One(r);
 		if(i1>-1){
 			vector<int> PIdem;
-			for(int i=1;i<n2 && i!=i1;i++){
+			for(int i=1;i<n2;i++){
 				int e=Idem[i];
+				// if(e==i1)
+					// continue;
 				vector<int> S=Order(r,e);			
 				int e1=S[S.size()-1];		 
 				int a=r->add(i1,e1);	
 				bool b=IsPIdem(r,J,a,i1);
 				if(b)PIdem.push_back(e);
 			}		
-			printf("幺环,非平凡主幂等元集合:%s\n",V2S(PIdem).c_str());			
+			printf("幺环(幺元:%d),非平凡主幂等元集合:%s\n",i1,V2S(PIdem).c_str());			
 		}	
 	}
 }
