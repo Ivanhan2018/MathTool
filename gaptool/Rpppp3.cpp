@@ -547,16 +547,37 @@ int main(int argc, char* argv[]){
 	// IRing* r81=newRppRpp(5,2,3);	
 	// findquotientring(r16,8);
 	// findquotientring(r81,27);
+    int n0=27;
+    if(argc>4){
+		int _n0=atoi(argv[4]);	
+		if(_n0==27)
+			n0=27;		
+		else if(_n0==81)
+			n0=81;			
+		else
+			n0=27;		
+	}			
 	if(n1>1){
 		for(int i=n2;i<=n;i++){
-		   IRing* r=newRpppp3(i,n1,27);
+		   IRing* r=newRpppp3(i,n1,n0);
 		   if(!r)
 			   continue;
-			int ID=IdRing(r);			
-			string str=calcRingInvariant(r);
-			printf("i=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s,",i,r->size(),ID,str.c_str());
-			string Q1=calcQ1(r);
-			printf("Q1=%s\n",Q1.c_str());			
+		   if(r->size()>n1*n1*n1 && n0==81){
+			   if(r->size()==n1*n1*n1*n1){
+				printf("i=%d->R%d\n",i,r->size());
+			   }else{
+				printf("i=%d->R%dµÄÉÌ»·:",i,r->size());
+				//findquotientring(r,n1*n1*n1);
+				string Q1=calcQ1(r);
+				printf("Q1=%s\n",Q1.c_str());				   
+			   }				
+		   }else{
+				int ID=IdRing(r);			
+				string str=calcRingInvariant(r);
+				printf("i=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s,",i,r->size(),ID,str.c_str());
+				string Q1=calcQ1(r);
+				printf("Q1=%s\n",Q1.c_str());			   
+		   }
 		}
 	}
     return 0;	
