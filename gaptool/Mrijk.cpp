@@ -3029,7 +3029,7 @@ int main(int argc, char* argv[])
 		R=R2;	
 	}
    if(R){
-		int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243)?0:IdRing(R);
+		int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243 && R->size()!=125)?0:IdRing(R);
 		if(fun>-1){
 			printf("R%d_%d\n",R->size(),IDr);
 			char sz[100]="0";
@@ -3124,7 +3124,9 @@ int main(int argc, char* argv[])
 		else if(_n0==81)
 			n0=81;	
 		else if(_n0==243)
-			n0=243;		
+			n0=243;	
+		else if(_n0==125)
+			n0=125;			
 		else
 			n0=32;		
 	}		
@@ -3153,7 +3155,7 @@ int main(int argc, char* argv[])
 		{
 			if(fun==-1)testQR(R,n0,vi);
 			else if(fun==-2){
-				int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243)?0:IdRing(R);
+				int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243 && R->size()!=125)?0:IdRing(R);
 				printf("r=R%d_%d",R->size(),IDr);
 				srand(time(NULL));	
 				for(int i=0;i<vi[2];i++){
@@ -3186,7 +3188,7 @@ int main(int argc, char* argv[])
 		{
 			if(fun==-1)testQR(R,n0,vi);
 			else if(fun==-2){
-				int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243)?0:IdRing(R);
+				int IDr=(R->size()>32 && R->size()!=81 && R->size()!=64 && R->size()!=243 && R->size()!=125)?0:IdRing(R);
 				printf("r=R%d_%d",R->size(),IDr);
 				srand(time(NULL));	
 				for(int i=0;i<vi[2];i++){
