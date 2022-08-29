@@ -1203,6 +1203,32 @@ vector<int> Center(IRing* r){
 	return ret;
 }
 
+// 20220828:新增幺环不变量m0：R16Y=R16_52(m0=0),R16X=R16_105(m0=1),R27_22(m0=0),R27_32(m0=1)
+int calcm0(IRing* r){
+    int n=r->size();
+	int e=One(r);
+	if(e==-1)
+		return -1;
+	//int e2=r->add(e,e);
+	int e2=0;
+	int p=2;
+	for(;p<=n;p++){
+		if(n%p==0)
+			break;
+	}
+	for(int i=0;i<p;i++){
+		e2=r->add(e2,e);	
+	}
+ 	for(int i=1;i<n;i++){
+		int i2=r->mul(i,i);	
+        if(i2!=e2){
+			continue;
+		}
+		return 1;
+	}
+	return 0;
+}
+
 #ifndef QUOTIENTRING_H
 #define QUOTIENTRING_H
 
@@ -1685,7 +1711,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[5];//idx=0:秩、idx=1:RI2不变量、idx=2:b8N8N9不变量、idx=3:N4不变量、idx=4:Q1不变量	
+	map<pair<int,int>,string> m_Str[6];//idx=0:秩、idx=1:RI2不变量、idx=2:b8N8N9不变量、idx=3:N4不变量、idx=4:Q1不变量、idx=5:m0不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -4914,7 +4940,11 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("Q1R125.csv",125,4);		
 	iret=LoadStr("Q1R243.csv",243,4);	
 	int q1cnt=m_Str[4].size();
-    //printf("q1cnt=%d\n",q1cnt);	
+    //printf("q1cnt=%d\n",q1cnt);
+	iret=LoadStr("m0R16.csv",16,5);	
+	iret=LoadStr("m0R27.csv",27,5);
+	iret=LoadStr("m0R81.csv",81,5);
+ 	int m0cnt=m_Str[5].size();
 }
 
 RIDHelper::~RIDHelper(){
@@ -5034,6 +5064,17 @@ int IdRing(IRing* r){
 			}
 		}			
         if(vID02.size()>1){	
+			int im0=calcm0(r);
+			string m0=itos(im0);
+			vector<int> vID03;
+			for(int k=0;k<vID02.size();k++){
+				string m00=idHelper.StrFromID(r->size(),vID02[k],5);
+				if(m00==m0){		
+					vID03.push_back(vID[k]);
+				}
+			}
+			if(vID03.size()==1)
+				return vID03[0];
 			return 0;//ID不确定，还需要新的环不变量确定编号
 /* 			string strI1I2=calcI1(r)+","+calcI2(r);
 			vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	
@@ -5080,11 +5121,12 @@ int IdRing(IRing* r){
 			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！\n",Q1.c_str(),vID[0],Q10.c_str());
 		}
    }   
-   if(r->size()==16||r->size()==27){
-		string N4=calcN4(r);
-		string N40=idHelper.StrFromID(r->size(),vID[0],3);
-		if(N40!="" && N40!=N4){			
-			printf("出错了，环的N4=%s与ID=%d,N4=%s不匹配！\n",N4.c_str(),vID[0],N40.c_str());
+   if(r->size()==16||r->size()==27||r->size()==81){
+		int im0=calcm0(r);
+		string m0=itos(im0);
+		string m00=idHelper.StrFromID(r->size(),vID[0],5);
+		if(m00!="" && m00!=m0){			
+			printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
 		}
    } 
 #ifdef USE_RI2   
