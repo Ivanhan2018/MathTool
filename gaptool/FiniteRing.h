@@ -1710,7 +1710,7 @@ Rppp':
 		FiniteRing* r=new FiniteRing(8,&g_R8_18Add[0][0],&g_R8_18Mul[0][0],0);
 		return r;	
    }else if(ID==22 && p==2){
-		//R16_105/R2_1=R8_22
+		//R16_52/R2_1=R8_22
 		static int g_R8_22Add[8][8]={
 			{0,1,2,3,4,5,6,7},
 			{1,2,3,0,5,6,7,4},

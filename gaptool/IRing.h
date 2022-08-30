@@ -4944,6 +4944,7 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("m0R16.csv",16,5);	
 	iret=LoadStr("m0R27.csv",27,5);
 	iret=LoadStr("m0R81.csv",81,5);
+	iret=LoadStr("m0R125.csv",125,5);	
  	int m0cnt=m_Str[5].size();
 }
 
@@ -5109,7 +5110,7 @@ int IdRing(IRing* r){
 			 }
 			 printf("]\n");
 			#endif			   
-		    printf("出错了，环不变量数据Q1有误！Q1=%s\n",Q1.c_str());
+		    printf("出错了，%d阶环不变量数据Q1有误！Q1=%s\n",r->size(),Q1.c_str());
 			return 0;
 	   }
 	   return vID02[0];
@@ -5118,10 +5119,10 @@ int IdRing(IRing* r){
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){			
-			printf("出错了，环的Q1=%s与ID=%d,Q1=%s不匹配！\n",Q1.c_str(),vID[0],Q10.c_str());
+			printf("出错了，%d阶环的Q1=%s与ID=%d,Q1=%s不匹配！\n",r->size(),Q1.c_str(),vID[0],Q10.c_str());
 		}
    }   
-   if(r->size()==16||r->size()==27||r->size()==81){
+   if(r->size()==16||r->size()==27||r->size()==81||r->size()==125){
 		int im0=calcm0(r);
 		string m0=itos(im0);
 		string m00=idHelper.StrFromID(r->size(),vID[0],5);
@@ -5134,7 +5135,7 @@ int IdRing(IRing* r){
 		string RI2=calcRingInvariant2(r);
 		string RI20=idHelper.StrFromID(r->size(),vID[0],1);		
 		if(RI20!="" && RI2.find(RI20)==string::npos){			
-			printf("出错了，环的RI2=%s与ID=%d,RI2=%s不匹配！\n",RI2.c_str(),vID[0],RI20.c_str());
+			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),RI2.c_str(),vID[0],RI20.c_str());
 		}
    }  /**/  
 #endif
@@ -5142,7 +5143,7 @@ int IdRing(IRing* r){
 }
 
 //R16
-static int IDs[]={-1,35,36,37,50,51,52};
+static int IDs[]={-1,35,36,37,50,51};
 
 bool isR16ID(int i){
 	if(i==6||i==13||i==14||i==15||i==28||i==29||i==30||i==31||i==32||i==33||i==34||i==118||i==119||i==120||i==121||i==122||i==123||i==124||i==125||i==126||i==127||i==128||i==130||i==131||i==134||i==135||i==136||i==137||i==138||i==139||i==140||i==141||i==142||i==143||i==144||i==145||i==146||i==156||i==171||i==172||i==173||i==175||i==176||i==178||i==179||i==181||i==182||i==228||i==239||i==241||i==244||i==246||i==248||i==275||i==276||i==282||i==286)
