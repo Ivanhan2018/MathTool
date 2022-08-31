@@ -907,7 +907,8 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 
         // 分析乘法结构
 	bool bA=IsAbelian(vvA1);
-	int bO=One(vvA1)>-1;
+	int e=One(vvA1);
+	int bO=e>-1;
         int n1=NoInvNum(vvA1);
 	int n2=IdempotentNum(vvA1);
 	int n4=Nil2Num(vvA1);
@@ -917,7 +918,7 @@ bool SaveGnEOrder(const char *srcfn,const char *Desfn,const char *DesGn=0)
 
         vector<int> ZA=CenterOfG(vvA1);
 	int n8=ZA.size();
-	
+	printf("e=%d\n",e);
 	printf("环的结构不变量N0,n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,S1=%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s\n",N0.c_str(),n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,S1.c_str());
         fout<<"环的结构不变量N0,n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,S1="<<N0<<n0<<","<<bA<<","<<bO<<","<<n1<<","<<n2<<","<<n4<<","<<n5<<","<<n6<<","<<n7<<","<<n8<<S1<<endl;
 
