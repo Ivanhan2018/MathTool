@@ -251,6 +251,15 @@ void FiniteRing::printTable()
 #elif defined(_m0)
 	int m0=calcm0(this);
 	printf("%d,%d\n",ID,m0);	
+#elif defined(OLR)
+	int bO=OneExNum(this,1);
+	int bL=OneExNum(this,2);
+	int bR=OneExNum(this,3);	
+	printf("%d,%d,%d,%d\n",ID,bO,bL,bR);
+#elif defined(LR)
+	int bL=OneExNum(this,2);
+	int bR=OneExNum(this,3);	
+	printf("%d,%d,%d\n",ID,bL,bR);	
 #elif defined(RK)
 	int rk=Rank(this);
 	printf("%d,%d\n",ID,rk);	

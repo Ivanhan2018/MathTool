@@ -1154,6 +1154,53 @@ bool IsOne(IRing* r,int i3){
 	return true;
 }
 
+bool IsOneL(IRing* r,int i3){
+    int n=r->size();
+	if(i3<0||i3>=n)
+		return false;
+	for (int i=0; i<n; i++){
+		if(r->mul(i3,i)!=i)
+			return false;
+	}
+	return true;
+}
+
+bool IsOneR(IRing* r,int i3){
+    int n=r->size();
+	if(i3<0||i3>=n)
+		return false;
+	for (int i=0; i<n; i++){
+		if(r->mul(i,i3)!=i)
+			return false;
+	}
+	return true;
+}
+
+// 0-不是单位元 1-单位元 2-左单位元 3-右单位元
+int IsOneEx(IRing* r,int i3){
+	bool bL=IsOneL(r,i3);
+	bool bR=IsOneR(r,i3);	
+	if(bL && bR)
+		return 1;
+	if(bL)
+		return 2;
+	if(bR)
+		return 3;		
+	return 0;
+}
+
+/*
+非交换环R4_7{0,a,b,a+b}，两个左单位元：a,a+b，没有右单位元。a^2=a,a·b=b,b·a=0,b^2=0
+非交换环R4_8{0,a,b,a+b}，两个右单位元：a,a+b，没有左单位元。a^2=a,a·b=0,b·a=b,b^2=0
+*/
+// bLR：1-单位元个数bO、2-左单位元个数bL、3-右单位元个数bR
+int OneExNum(IRing* r,int bLR){
+    int n=r->size();
+	int iRet=0;
+	for(int i1=0;i1<n;i1++){if(IsOneEx(r,i1)==bLR)iRet++;}
+	return iRet;
+}
+
 int One(IRing* r){
     int n=r->size();
 	for (int i3=0; i3<n; i3++){if(IsOne(r,i3))return i3;}
@@ -1711,7 +1758,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[6];//idx=0:秩、idx=1:RI2不变量、idx=2:b8N8N9不变量、idx=3:N4不变量、idx=4:Q1不变量、idx=5:m0不变量	
+	map<pair<int,int>,string> m_Str[6];//idx=0:秩、idx=1:RI2不变量、idx=2:LR不变量、idx=3:N4不变量、idx=4:Q1不变量、idx=5:m0不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -4923,6 +4970,8 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("b8N8N9R81.csv",81,2);*/	
 	//int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);	
+ 	iret=LoadStr("LRR16.csv",16,2);	
+	iret=LoadStr("LRR27.csv",27,2);	
 #ifdef USE_RI2		
  	iret=LoadStr("RI2R16.csv",16,1);	
 	iret=LoadStr("RI2R27.csv",27,1);	 
@@ -5130,6 +5179,19 @@ int IdRing(IRing* r){
 			printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
 		}
    } 
+#ifdef USE_LR   
+   if(r->size()==16||r->size()==27){
+		int bL=OneExNum(r,2);
+		int bR=OneExNum(r,3);
+		char szLR[20]={0};
+		sprintf(szLR,"%d,%d",bL,bR);
+		string sLR=szLR;
+		string LR0=idHelper.StrFromID(r->size(),vID[0],2);		
+		if(LR0!="" && LR0!=sLR){			
+			printf("出错了，%d阶环的LR=%s与ID=%d,LR=%s不匹配！\n",r->size(),sLR.c_str(),vID[0],LR0.c_str());
+		}
+   }  
+#endif   
 #ifdef USE_RI2   
     if(r->size()==16||r->size()==27){
 		string RI2=calcRingInvariant2(r);
