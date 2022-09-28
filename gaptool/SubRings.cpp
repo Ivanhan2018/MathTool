@@ -362,7 +362,19 @@ void FiniteRing::printTable()
 			str+=",";
 			if(iret1R==2)str+="不是右理想";else str+="是右理想";			
 		}
-		printf("%s\n",str.c_str());		
+		printf("%s\n",str.c_str());	
+		if(iret1==1){
+			quotientRing S1i(r,vSet);
+			int ni1=S1i.size();	
+			bool b=IsRing(&S1i);
+			if(b){
+				int IDi=IdRing(&S1i);
+				char sz1[100]="0";
+				sprintf(sz1,"R%d_%d.txt",ni1,IDi);	
+				writeTable(&S1i,sz1);			
+				printf("商环R%d_%d已经写入文件\n",ni1,IDi);
+			}			
+		}		
 	}	
 #else
 	if(g_b>0)
