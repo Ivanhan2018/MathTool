@@ -512,12 +512,12 @@ A与B的直积
 (I,J)的编号为n*(I-1)+(J-1)+1，这里1<=I<=nA，1<=J<=nB
 直积的乘法表为：(x1,y1)×(x2,y2)=(x1*x2,y1+y2)，显然幺元是(1,1)=1
 */
-bool IsInnerDirectProduct(IRing* r,const vector<int>& A,const vector<int>& B)
+bool IsInnerDirectProduct(IRing* r,const vector<int>& A,const vector<int>& B,const vector<int>& IDs)
 {
 	int n=r->size();
 	int nA=A.size();
 	int nB=B.size();
-	if(nA*nB!=r->size())
+	if(nA*nB!=n||IDs.size()!=n)
 		return false;
 		
 	map<pair<int,int>,int> mT;
@@ -528,9 +528,10 @@ bool IsInnerDirectProduct(IRing* r,const vector<int>& A,const vector<int>& B)
 	for(int j=0;j<nB;j++)
 	{
         int k=nB*i+j;
+		k=IDs[k];
 		vT[k]=make_pair(A[i],B[j]);
 		mT.insert(make_pair(make_pair(A[i],B[j]),k));
-	}
+	}	
 	for(int i=0;i<n;i++)
 	for(int j=0;j<n;j++)
 	{
@@ -539,21 +540,19 @@ bool IsInnerDirectProduct(IRing* r,const vector<int>& A,const vector<int>& B)
 		pair<int,int> s=make_pair(r->add(a.first,b.first),r->add(a.second,b.second)); 
 		pair<int,int> m=make_pair(r->mul(a.first,b.first),r->mul(a.second,b.second));
 		vA[n*i+j]=mT[s];
-		vM[n*i+j]=mT[m];		
+		vM[n*i+j]=mT[m];	
+		if(vA[n*i+j]!=r->add(i,j))
+			return false;
+		if(vM[n*i+j]!=r->mul(i,j))
+			return false;
 	}
-	FiniteRing r2(n,&vA[0],&vM[0],0);
-	bool b1=IsRing(&r2);
-	if(b1){
-		int ID=IdRing(&r2);
-		printf("内直积R%d_%d:\n",n,ID);	
-		for(int i=0;i<n;i++)
-		{
-			pair<int,int> a=vT[i];
-			printf("i=%d=>(%d,%d)\n",i,a.first,a.second);		
-		}		
-		printRing(&r2);	
+	printf("内直积:\n");	
+	for(int i=0;i<n;i++)
+	{
+		pair<int,int> a=vT[i];
+		printf("i=%d=>(%d,%d)\n",i,a.first,a.second);		
 	}
-    return b1;
+    return true;
 }
 
 int main(int argc, char **argv)
@@ -610,7 +609,7 @@ int main(int argc, char **argv)
 		scanf("%s",sz3);
 	}
 	else
-		strcpy(sz3,argv[3]);
+		strcpy(sz3,argv[3]);		
 #endif
 
 	vector<char> A=lof2(sz);
@@ -630,6 +629,18 @@ int main(int argc, char **argv)
 		printf("不是环\n");
 		return 0;
 	}
+	int m=r.size();
+	vector<int> IDs(m);
+	for(int i=0;i<m;i++)
+		IDs[i]=i;
+	if(argc>4)
+	{
+		vector<string> v=split(argv[4],",");
+		if(v.size()!=m)
+			return 0;
+		for(int i=0;i<m;i++)
+			IDs[i]=atoi(v[i].c_str());
+	}	
 	vector<int> v1;
 	vector<int> v2;
 	vector<string> vstrA=split(sz2,",");
@@ -643,9 +654,25 @@ int main(int argc, char **argv)
 	{
 		int iElem=atoi(vstrB[i].c_str());
 		v2.push_back(iElem);
-	}	
-	bool bI=IsInnerDirectProduct(&r,v1,v2);
-	printf("%s是内直积。\n",bI?"":"不");
+	}
+	if(argc<=4){
+		std::vector<int> indexs;	
+		for (int i = 0; i < m; i++)
+			indexs.push_back(i);
+		bool bI=false;	
+		do
+		{
+			bI=IsInnerDirectProduct(&r,v1,v2,indexs);
+			if(bI){
+				string str=V2S(indexs);			
+				printf("第4个参数:%s,是可分解环。\n",str.c_str());	
+				break;
+			}				
+		} while (next_permutation(indexs.begin(), indexs.end()));		
+	}else{
+		bool bI=IsInnerDirectProduct(&r,v1,v2,IDs);
+		if(bI)printf("是可分解环。\n");		
+	}
 #endif
 
 	//system("pause");
