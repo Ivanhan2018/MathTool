@@ -259,7 +259,7 @@ void FiniteRing::printTable()
 #elif defined(LR)
 	int bL=OneExNum(this,2);
 	int bR=OneExNum(this,3);	
-	printf("%d,%d,%d\n",ID,bL,bR);	
+	printf("%d,%d,%d\n",ID,bL,bR);			
 #elif defined(RK)
 	int rk=Rank(this);
 	printf("%d,%d\n",ID,rk);	
@@ -507,6 +507,55 @@ int IsLegalTable(const vector<int> &mtx)
 	return bLegal?n1:0;
 }
 
+/*
+A与B的直积
+(I,J)的编号为n*(I-1)+(J-1)+1，这里1<=I<=nA，1<=J<=nB
+直积的乘法表为：(x1,y1)×(x2,y2)=(x1*x2,y1+y2)，显然幺元是(1,1)=1
+*/
+bool IsInnerDirectProduct(IRing* r,const vector<int>& A,const vector<int>& B)
+{
+	int n=r->size();
+	int nA=A.size();
+	int nB=B.size();
+	if(nA*nB!=r->size())
+		return false;
+		
+	map<pair<int,int>,int> mT;
+	vector<pair<int,int> > vT(n);
+	vector<int> vA(n*n);
+	vector<int> vM(n*n);
+	for(int i=0;i<nA;i++)
+	for(int j=0;j<nB;j++)
+	{
+        int k=nB*i+j;
+		vT[k]=make_pair(A[i],B[j]);
+		mT.insert(make_pair(make_pair(A[i],B[j]),k));
+	}
+	for(int i=0;i<n;i++)
+	for(int j=0;j<n;j++)
+	{
+		pair<int,int> a=vT[i];
+		pair<int,int> b=vT[j];
+		pair<int,int> s=make_pair(r->add(a.first,b.first),r->add(a.second,b.second)); 
+		pair<int,int> m=make_pair(r->mul(a.first,b.first),r->mul(a.second,b.second));
+		vA[n*i+j]=mT[s];
+		vM[n*i+j]=mT[m];		
+	}
+	FiniteRing r2(n,&vA[0],&vM[0],0);
+	bool b1=IsRing(&r2);
+	if(b1){
+		int ID=IdRing(&r2);
+		printf("内直积R%d_%d:\n",n,ID);	
+		for(int i=0;i<n;i++)
+		{
+			pair<int,int> a=vT[i];
+			printf("i=%d=>(%d,%d)\n",i,a.first,a.second);		
+		}		
+		printRing(&r2);	
+	}
+    return b1;
+}
+
 int main(int argc, char **argv)
 {
 	char sz[100]={0};
@@ -544,7 +593,24 @@ int main(int argc, char **argv)
     if(argc>3){
 		g_b=atoi(argv[3]);
 		g_str=sz;
-	}		
+	}
+#elif defined(IDP_)
+	char sz2[100]={0};
+	char sz3[100]={0};
+	if(argc<3)
+	{
+		printf("请输入理想1：");
+		scanf("%s",sz2);
+	}
+	else
+		strcpy(sz2,argv[2]);
+	if(argc<4)
+	{
+		printf("请输入理想2：");
+		scanf("%s",sz3);
+	}
+	else
+		strcpy(sz3,argv[3]);
 #endif
 
 	vector<char> A=lof2(sz);
@@ -558,6 +624,29 @@ int main(int argc, char **argv)
 
 	FiniteRing r(n,&vA[0],&vM[0],1);
 	r.printTable();
+#if defined(IDP_)	
+	bool b1=IsRing(&r);
+	if(!b1){
+		printf("不是环\n");
+		return 0;
+	}
+	vector<int> v1;
+	vector<int> v2;
+	vector<string> vstrA=split(sz2,",");
+	for(int i=0;i<vstrA.size();i++)
+	{
+		int iElem=atoi(vstrA[i].c_str());
+		v1.push_back(iElem);
+	}	
+	vector<string> vstrB=split(sz3,",");
+	for(int i=0;i<vstrB.size();i++)
+	{
+		int iElem=atoi(vstrB[i].c_str());
+		v2.push_back(iElem);
+	}	
+	bool bI=IsInnerDirectProduct(&r,v1,v2);
+	printf("%s是内直积。\n",bI?"":"不");
+#endif
 
 	//system("pause");
 	return 0;
