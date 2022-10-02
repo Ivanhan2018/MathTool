@@ -291,7 +291,10 @@ void FiniteRing::printTable()
 	printf("%d,%s\n",ID,H2.c_str());
 #elif defined(N4_)
 	string N4=calcN4(this);
-	printf("%d,%s\n",ID,N4.c_str());	
+	printf("%d,%s\n",ID,N4.c_str());
+#elif defined(bN_)
+	int bN=IsNilpotent(this);
+	printf("%d,%d\n",ID,bN);	
 #else
 	string str=calcRingInvariant(this);
 	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());
@@ -299,6 +302,8 @@ void FiniteRing::printTable()
 	printf("Q1=%s\n",Q1.c_str());
 	int m0=calcm0(this);
 	printf("m0=%d\n",m0);	
+	int bN=IsNilpotent(this);
+	printf("bN=%d\n",bN);		
 	int rk=Rank(this);
 	printf("r=%d\n",rk);
 	string b8N8N9=calcb8N8N9(this);

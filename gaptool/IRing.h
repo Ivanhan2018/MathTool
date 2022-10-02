@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<sstream>
+#include<set>
 #include<vector>
 #include<map>
 #include<tuple>
@@ -1135,6 +1136,70 @@ vector<int> calN9(IRing* r){
 			N9.push_back(i9);
 	}
 	return N9;
+}
+
+vector<int> IdealProduct(IRing* r,const vector<int>& A,const vector<int>& B){
+    int nA=A.size();	
+    int nB=B.size();
+    set<int> S;	
+	for (int i=0; i<nA; i++){
+		int I=0;
+		for (int j=0; j<nB; j++){
+			int ij=r->mul(A[i],B[j]);
+			I=r->add(I,ij);
+			S.insert(ij);
+			S.insert(I);
+		}
+		S.insert(I);
+	}
+	vector<int> V;
+	V.assign(S.begin(),S.end());	
+	int cnt=0,cnt1=0;
+	do{
+		cnt=V.size();
+		if(cnt==1)
+			break;
+		for(int i=0;i<cnt;i++){
+			for(int j=0;j<cnt;j++){
+				int IJ=r->add(V[i],V[j]);
+				vector<int>::iterator p=std::find(V.begin(),V.end(),IJ);
+				if(p==V.end()){
+					V.push_back(IJ);
+				}
+			}
+		}
+		cnt1=V.size();
+	}while(cnt1!=cnt);
+	if(V.size()>0){
+		std::sort(V.begin(),V.end());
+	}
+	return V;
+}
+
+//>0表示幂零环的幂零指数，0表示非幂零环
+int IsNilpotent(IRing* r){
+	int n=r->size();
+	vector<int> S0;
+	for(int i=0;i<n;i++){
+		S0.push_back(i);
+	}
+	vector<int> S=S0;	
+	int cnt=S.size();	
+	if(cnt==1)
+		return 1;
+	int iret=1;	
+	bool bE=false;
+	do{
+		vector<int> S1=IdealProduct(r,S,S0);
+		iret++;		
+		bE=IsEqual(S1,S);
+		S=S1;
+		if(S.size()==1)
+			return iret; 	
+	}while(!bE);
+	string str=V2S(S);
+	//printf("iret=%d,cnt=%d,str=%s\n",iret,S.size(),str.c_str());
+    return 0;
 }
 
 bool IsAbelian(IRing* r){
