@@ -3515,7 +3515,9 @@ bool M2r::init(int n,int ID){
 		else if(pItem->m_n1==32)
 			m_r=FiniteRing::newR32(pItem->m_n2);
 		else if(pItem->m_n1==81)
-			m_r=FiniteRing::newR81(pItem->m_n2);		
+			m_r=FiniteRing::newR81(pItem->m_n2);
+		else if(pItem->m_n2%pItem->m_n1==0)
+			m_r=new ZmodnZ(pItem->m_n1,pItem->m_n2);			
 		vector<MATRIXi> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
 		for(int i=0;i<vv.size();i++){
@@ -3553,7 +3555,9 @@ bool M2r::init(int n0,int n1,int n2,const char* sz,int N){
 		else if(n1==32)
 			m_r=FiniteRing::newR32(n2);
 		else if(n1==81)
-			m_r=FiniteRing::newR81(n2);			
+			m_r=FiniteRing::newR81(n2);	
+		else if(n2%n1==0)
+			m_r=new ZmodnZ(n1,n2);			
 		vector<MATRIXi> gen;		
 		vector<string> vv=split(sz,";");
 		for(int i=0;i<vv.size();i++){
@@ -3984,7 +3988,9 @@ bool Mnr::init(int n,int ID){
 		else if(pItem->m_n1==16)
 			m_r=newR16(pItem->m_n2);
 		else if(pItem->m_n1==9||pItem->m_n1==27)
-			m_r=newRing(pItem->m_n1,pItem->m_n2);		
+			m_r=newRing(pItem->m_n1,pItem->m_n2);
+		else if(pItem->m_n2%pItem->m_n1==0)
+			m_r=new ZmodnZ(pItem->m_n1,pItem->m_n2);			
 		m_n=pItem->m_n0;	
 		vector<MATRIXi8> gen;		
 		vector<string> vv=split(pItem->m_mstr,";");
@@ -4018,7 +4024,9 @@ bool Mnr::init(int n0,int n1,int n2,const char* sz,int N){
 		else if(n1==16)
 			m_r=newR16(n2);
 		else if(n1==9||n1==27)
-			m_r=newRing(n1,n2);		
+			m_r=newRing(n1,n2);
+		else if(n2%n1==0)
+			m_r=new ZmodnZ(n1,n2);			
 		m_n=n0;	
 		vector<MATRIXi8> gen;		
 		vector<string> vv=split(sz,";");
