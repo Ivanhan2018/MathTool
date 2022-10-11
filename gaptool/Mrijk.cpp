@@ -2923,10 +2923,10 @@ int main(int argc, char* argv[])
 	}else if(n1==32){
 		r=newR32(n2);
 //#ifdef _WIN64
-#if defined(_WIN64)||defined(SQ)
+//#if defined(_WIN64)||defined(SQ)
 	}else if(n1==81){
 		r=newR81(n2);
-#endif		
+//#endif		
 	}else if(n2%n1==0){
 		r=new ZmodnZ(n1,n2);
 	}
