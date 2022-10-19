@@ -97,7 +97,7 @@ int R81_iR3_j(int argc, char* argv[]){
     if(argc>4)	
 		str1=argv[4];   
 	int J=0;	
- 	for(int i=i0;i<=495;i++){
+ 	for(int i=i0;i<=514;i++){
 		for(int j=(J==0?j0:1);j<=2;j++){
 			J=1;
 			char sz[1000]={0};
