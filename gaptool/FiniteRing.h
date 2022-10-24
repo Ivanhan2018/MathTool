@@ -2606,7 +2606,7 @@ void findsubring3(IRing *r,int n)
 #endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;	
-	int ID=(r->size()>81 || r->size()==72)?0:IdRing(r);
+	int ID=(r->size()>81 && r->size()!=243 || r->size()==72)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);	
 	int i0=0;
@@ -2682,7 +2682,7 @@ void findsubring4(IRing *r,int n)
 #endif	
 	map<pair<int,int>,pair<int,int>> M;	
 	set<string> S;		
-	int ID=(r->size()>81 || r->size()==72)?0:IdRing(r);
+	int ID=(r->size()>81 && r->size()!=243 || r->size()==72)?0:IdRing(r);
 	printf("R%d_%d\n",r->size(),ID);
 	checkring(r,ID);
 	int i0=0;
