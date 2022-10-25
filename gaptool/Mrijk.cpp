@@ -555,6 +555,13 @@ IRing* newR27(int i){
 		FiniteRing* r=new FiniteRing(27,&g_R27_12Add[0][0],&g_R27_12Mul[0][0],0);
 		return r;
 	}
+	if(i==14){
+		ZmodnZ* r9=new ZmodnZ(1,9);
+		ZmodnZ* r3=new ZmodnZ(1,3);
+		DecompositionRing* r= new DecompositionRing(r9,r3);
+		r->m_flag=1;		
+		return r;
+	}	
 	if(i==22)
 	{
 		FiniteRing* r=new FiniteRing(27,&g_R27_22Add[0][0],&g_R27_22Mul[0][0],0);
