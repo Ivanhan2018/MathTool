@@ -2075,18 +2075,20 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("b8N8N9R81.csv",81,2);*/	
 	//int n89cnt=m_Str[2].size();	
     //printf("n89cnt=%d\n",n89cnt);	
- 	iret=LoadStr("LRR16.csv",16,2);	
-	iret=LoadStr("LRR27.csv",27,2);	
-	iret=LoadStr("LRR81.csv",81,2);		
+ 	// iret=LoadStr("LRR16.csv",16,2);	
+	// iret=LoadStr("LRR27.csv",27,2);	
+	// iret=LoadStr("LRR81.csv",81,2);		
 #ifdef USE_RI2		
  	iret=LoadStr("RI2R16.csv",16,1);	
-	iret=LoadStr("RI2R27.csv",27,1);	 
+	iret=LoadStr("RI2R27.csv",27,1);	
+	iret=LoadStr("RI2R32.csv",32,1);
+	iret=LoadStr("RI2R81.csv",81,1);	
 	int ri2cnt=m_Str[1].size(); /**/
     //printf("ri2cnt=%d\n",ri2cnt);	
 #endif	
- 	iret=LoadStr("bNR16.csv",16,3);	
-	iret=LoadStr("bNR27.csv",27,3);	
-	iret=LoadStr("bNR81.csv",81,3);	
+ 	// iret=LoadStr("bNR16.csv",16,3);	
+	// iret=LoadStr("bNR27.csv",27,3);	
+	// iret=LoadStr("bNR81.csv",81,3);	
  	// iret=LoadStr("N4R16.csv",16,3);	
 	// iret=LoadStr("N4R27.csv",27,3);	 
 	// int n4cnt=m_Str[3].size();
@@ -2196,12 +2198,16 @@ string calcRingInvariant(IRing* r){
 }
 
 string calcRingInvariant2(IRing* r){
+	int bN=IsNilpotent(r);	
+	int bL=OneExNum(r,2);
+	int bR=OneExNum(r,3);
 	string strN1=calcN1(r);
 	string strC2=calcC2(r);
-	string strN3=calcN3(r);	
-    // N1C2N3
+	string strN3=calcN3(r);
+	string strN4=calcN4(r);	
+    // bNbLbRN1C2N3N4
 	char sz[2048]={0};
-	sprintf(sz,"%s,%s,%s",strN1.c_str(),strC2.c_str(),strN3.c_str());	
+	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s",bN,bL,bR,strN1.c_str(),strC2.c_str(),strN3.c_str(),strN4.c_str());	
 	return sz;
 }
 	
@@ -2273,7 +2279,7 @@ int IdRing(IRing* r){
 	   }
 	   return vID02[0];
    }  
-   if(r->size()==16||r->size()==32||r->size()==27||r->size()==81||r->size()==243){
+   if(r->size()==32||r->size()==243){
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){			
@@ -2287,37 +2293,14 @@ int IdRing(IRing* r){
 		if(m00!="" && m00!=m0){			
 			printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
 		}
-   }  
-   if(r->size()==16||r->size()==27){
-		int bN=IsNilpotent(r);
-		string sbN=itos(bN);
-		string bN0=idHelper.StrFromID(r->size(),vID[0],3);		
-		if(bN0!="" && bN0!=sbN){			
-			printf("出错了，%d阶环的bN=%s与ID=%d,bN=%s不匹配！\n",r->size(),sbN.c_str(),vID[0],bN0.c_str());
-		}
    }      
-#ifdef USE_LR   
-   if(r->size()==16||r->size()==27){
-		int bL=OneExNum(r,2);
-		int bR=OneExNum(r,3);
-		char szLR[20]={0};
-		sprintf(szLR,"%d,%d",bL,bR);
-		string sLR=szLR;
-		string LR0=idHelper.StrFromID(r->size(),vID[0],2);		
-		if(LR0!="" && LR0!=sLR){			
-			printf("出错了，%d阶环的LR=%s与ID=%d,LR=%s不匹配！\n",r->size(),sLR.c_str(),vID[0],LR0.c_str());
-		}
-   }  
-#endif   
-#ifdef USE_RI2   
-    if(r->size()==16||r->size()==27){
+    if(r->size()==16||r->size()==27||r->size()==81){
 		string RI2=calcRingInvariant2(r);
 		string RI20=idHelper.StrFromID(r->size(),vID[0],1);		
 		if(RI20!="" && RI2.find(RI20)==string::npos){			
 			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),RI2.c_str(),vID[0],RI20.c_str());
 		}
-   }  /**/  
-#endif
+   }
    return vID[0];
 }
 
