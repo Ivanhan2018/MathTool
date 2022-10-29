@@ -1862,7 +1862,7 @@ int RIDHelper::LoadStr(char * pszFilePath,int n,int idx){
 	if( fp == NULL )
 		return 1;//1打开文件失败
 
-	char sz[400] = {0};
+	char sz[2048] = {0};//RI2R81.csv中的不变量数据超出400字节了
 	pair<pair<int,int>,string> item;
 	int n0 = 0;
 	n0 = fscanf(fp, "%s", sz);
@@ -2077,15 +2077,13 @@ RIDHelper::RIDHelper(){
     //printf("n89cnt=%d\n",n89cnt);	
  	// iret=LoadStr("LRR16.csv",16,2);	
 	// iret=LoadStr("LRR27.csv",27,2);	
-	// iret=LoadStr("LRR81.csv",81,2);		
-#ifdef USE_RI2		
+	// iret=LoadStr("LRR81.csv",81,2);			
  	iret=LoadStr("RI2R16.csv",16,1);	
 	iret=LoadStr("RI2R27.csv",27,1);	
 	iret=LoadStr("RI2R32.csv",32,1);
 	iret=LoadStr("RI2R81.csv",81,1);	
 	int ri2cnt=m_Str[1].size(); /**/
     //printf("ri2cnt=%d\n",ri2cnt);	
-#endif	
  	// iret=LoadStr("bNR16.csv",16,3);	
 	// iret=LoadStr("bNR27.csv",27,3);	
 	// iret=LoadStr("bNR81.csv",81,3);	
@@ -2295,10 +2293,10 @@ int IdRing(IRing* r){
 		}
    }      
     if(r->size()==16||r->size()==27||r->size()==81){
-		string RI2=calcRingInvariant2(r);
-		string RI20=idHelper.StrFromID(r->size(),vID[0],1);		
-		if(RI20!="" && RI2.find(RI20)==string::npos){			
-			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),RI2.c_str(),vID[0],RI20.c_str());
+		string sRI2=calcRingInvariant2(r);
+		string sRI20=idHelper.StrFromID(r->size(),vID[0],1);		
+		if(sRI20!="" && sRI2.find(sRI20)==string::npos){			
+			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),sRI2.c_str(),vID[0],sRI20.c_str());
 		}
    }
    return vID[0];
