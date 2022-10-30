@@ -80,6 +80,8 @@ int main(int argc, char* argv[]){
 			int ID=IdRing(r);
 #if defined(RI3)
 			string str=calcRingInvariant3(r);
+#elif defined(N89)
+			string str=calcb8N8N9(r);			
 #else	
 			string str=calcRingInvariant2(r);
 #endif		

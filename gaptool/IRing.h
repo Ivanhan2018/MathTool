@@ -2242,10 +2242,11 @@ string calcRingInvariant2(IRing* r){
 }
 
 string calcRingInvariant3(IRing* r){
+	string strb8N8N9=calcb8N8N9(r);	
 	string strQ2=calcQ2(r);
-    // Q2
+    // b8N8N9Q2
 	char sz[2048]={0};
-	sprintf(sz,"%s",strQ2.c_str());	
+	sprintf(sz,"%s,%s",strb8N8N9.c_str(),strQ2.c_str());	
 	return sz;
 }
 	
