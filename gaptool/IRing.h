@@ -1572,6 +1572,58 @@ string calcQ1(IRing* r){
 	return str;
 }
 
+string calcQ2(IRing* r){
+	int IdRing(IRing* r);
+	int n=r->size();
+	int p=2;
+	for(;p<=n;p++){
+		if(n%p==0)
+			break;
+	}
+	if(p==n||p*p==n){
+		return "[]";
+	}
+	vector<int> v1; 
+	for(int i=0;i<n;i++){
+		for(int j=i+1;j<n;j++){
+			vector<int> v;
+			v.push_back(i);		
+			v.push_back(j);
+			Subring S1i0;
+			bool b=S1i0.init(r,v,p*p);
+			if(!b)
+			   continue;
+			if(S1i0.m_Set.size()!=p*p)
+				continue;
+			vector<int> v0=v;
+			v=S1i0.m_Set;
+			int iret1=IsIdeal(r,v); 
+			if(iret1!=1)
+				continue;
+			quotientRing S1i(r,v);
+			bool b1=IsRing(&S1i);
+			if(!b1){
+				continue;
+			}			
+			int ID=IdRing(&S1i);
+			auto it=std::find(v1.begin(),v1.end(),ID);
+			if(it==v1.end()){
+				v1.push_back(ID);
+			}
+		}
+	}
+	std::sort(v1.begin(),v1.end());	
+	int cnt=v1.size();  
+	string str="[";
+	for(int i=0;i<cnt;i++){
+	   str+=itos(v1[i]);
+	   if(i<cnt-1)
+		   str+=",";   
+	}	   
+	str+="]";
+	return str;
+}
+
 string calcH2(IRing* r){
 	int IdRing(IRing* r);
 	int n=r->size();
@@ -1823,7 +1875,7 @@ public:
 private:
 	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
-	map<pair<int,int>,string> m_Str[6];//idx=0:秩、idx=1:RI2不变量、idx=2:LR不变量、idx=3:bN不变量、idx=4:Q1不变量、idx=5:m0不变量	
+	map<pair<int,int>,string> m_Str[6];//idx=0:秩、idx=1:RI2不变量、idx=2:RI3不变量、idx=3:bN不变量、idx=4:Q1不变量、idx=5:m0不变量	
 public:	
 	int LoadData(char * pszFilePath,int idx);		//“从文件中读取环结构不变量数据”
 	int LoadStr(char * pszFilePath,int n,int idx);	
@@ -2059,38 +2111,7 @@ RIDHelper::RIDHelper(){
 	
 	int cnt0=m_RingInvariant.size();
 	int iret=LoadData("RingInvariant.csv",0);	
-	int cnt1=m_RingInvariant.size();
-    //printf("iret=%d,%d-%d=%d\n",iret,cnt1,cnt0,cnt1-cnt0);	
-/* 	int cnt2=m_I1I2.size();	
-	int iret1=LoadData("I1I2.csv",1);	
-	int cnt3=m_I1I2.size(); */
-    //printf("iret1=%d,%d-%d=%d\n",iret1,cnt3,cnt2,cnt3-cnt2);
-	/*iret=LoadStr("RankR16.csv",16,0);	
-	iret=LoadStr("RankR27.csv",27,0);
-	iret=LoadStr("RankR81.csv",81,0);
- 	int rcnt=m_Str[0].size();	
-    //printf("rcnt=%d\n",rcnt);	
-	iret=LoadStr("b8N8N9R16.csv",16,2);	
-	iret=LoadStr("b8N8N9R27.csv",27,2);
-	iret=LoadStr("b8N8N9R81.csv",81,2);*/	
-	//int n89cnt=m_Str[2].size();	
-    //printf("n89cnt=%d\n",n89cnt);	
- 	// iret=LoadStr("LRR16.csv",16,2);	
-	// iret=LoadStr("LRR27.csv",27,2);	
-	// iret=LoadStr("LRR81.csv",81,2);			
- 	iret=LoadStr("RI2R16.csv",16,1);	
-	iret=LoadStr("RI2R27.csv",27,1);	
-	iret=LoadStr("RI2R32.csv",32,1);
-	iret=LoadStr("RI2R81.csv",81,1);	
-	int ri2cnt=m_Str[1].size(); /**/
-    //printf("ri2cnt=%d\n",ri2cnt);	
- 	// iret=LoadStr("bNR16.csv",16,3);	
-	// iret=LoadStr("bNR27.csv",27,3);	
-	// iret=LoadStr("bNR81.csv",81,3);	
- 	// iret=LoadStr("N4R16.csv",16,3);	
-	// iret=LoadStr("N4R27.csv",27,3);	 
-	// int n4cnt=m_Str[3].size();
-    //printf("n4cnt=%d\n",n4cnt);
+	int cnt1=m_RingInvariant.size();			
 	iret=LoadStr("Q1R16.csv",16,4);	
 	iret=LoadStr("Q1R32.csv",32,4);	
 	iret=LoadStr("Q1R27.csv",27,4);	
@@ -2104,6 +2125,17 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("m0R81.csv",81,5);
 	iret=LoadStr("m0R125.csv",125,5);	
  	int m0cnt=m_Str[5].size();
+ 	iret=LoadStr("RI2R16.csv",16,1);	
+	iret=LoadStr("RI2R27.csv",27,1);	
+	iret=LoadStr("RI2R32.csv",32,1);
+	iret=LoadStr("RI2R81.csv",81,1);	
+	int ri2cnt=m_Str[1].size();
+    //printf("ri2cnt=%d\n",ri2cnt);	
+ 	iret=LoadStr("RI3R16.csv",16,2);	
+	iret=LoadStr("RI3R27.csv",27,2);	
+	iret=LoadStr("RI3R32.csv",32,2);
+	iret=LoadStr("RI3R81.csv",81,2);
+	int ri3cnt=m_Str[2].size();	
 }
 
 RIDHelper::~RIDHelper(){
@@ -2208,6 +2240,14 @@ string calcRingInvariant2(IRing* r){
 	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s",bN,bL,bR,strN1.c_str(),strC2.c_str(),strN3.c_str(),strN4.c_str());	
 	return sz;
 }
+
+string calcRingInvariant3(IRing* r){
+	string strQ2=calcQ2(r);
+    // Q2
+	char sz[2048]={0};
+	sprintf(sz,"%s",strQ2.c_str());	
+	return sz;
+}
 	
 int IdRing(IRing* r){	
    if(r->size()<=1)
@@ -2299,6 +2339,13 @@ int IdRing(IRing* r){
 			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),sRI2.c_str(),vID[0],sRI20.c_str());
 		}
    }
+    if(r->size()==16||r->size()==81){
+		string sRI3=calcRingInvariant3(r);
+		string sRI30=idHelper.StrFromID(r->size(),vID[0],2);		
+		if(sRI30!="" && sRI3.find(sRI30)==string::npos){			
+			printf("出错了，%d阶环的RI3=%s与ID=%d,RI3=%s不匹配！\n",r->size(),sRI3.c_str(),vID[0],sRI30.c_str());
+		}		
+   }    
    return vID[0];
 }
 

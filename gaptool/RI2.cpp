@@ -77,8 +77,12 @@ int main(int argc, char* argv[]){
 	for(int i=n1;i<=n2;i++){	
 		IRing* r=newR(n,i);
 		if(r){
-			int ID=IdRing(r);		
-			string str=calcRingInvariant2(r);  
+			int ID=IdRing(r);
+#if defined(RI3)
+			string str=calcRingInvariant3(r);
+#else	
+			string str=calcRingInvariant2(r);
+#endif		
 			printf("%d,%s\n",ID,str.c_str());	
             delete r;
             r=NULL;			
