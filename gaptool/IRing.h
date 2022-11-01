@@ -999,6 +999,35 @@ int ZeroNum(IRing* r){
 	return iRet;
 }
 
+// 非零乘加法阶的分布N5
+string calcN5(IRing* r){
+    int n=r->size();	
+	vector<int> v;
+	for(int i=1;i<n;i++){
+		for(int j=1;j<n;j++){
+			int ij=r->mul(i,j);
+			if(ij!=0){
+				vector<int> S1=Order(r,ij);			
+				int o=S1.size();				
+				v.push_back(o);
+			}
+		}
+	}	
+	std::sort(v.begin(),v.end());
+	vector<pair<int,int> > v1=doN1Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++){
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
+		str+=sz;
+	}
+	if(str.size()>2){
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;
+}
+
 // 零乘个数的分布N6
 string calcN6(IRing* r){
     int n=r->size();	
@@ -2220,9 +2249,10 @@ string calcRingInvariant(IRing* r){
 	string strS1=calS1(r,true);
 	string strN2=calcN2(r);
 	string strN6=calcN6(r);	
-    // N0n0bAbOn1n2n4n5n6n7n8S1N2N6
+	string strN5=calcN5(r);	
+    // N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5
 	char sz[2048]={0};
-	sprintf(sz,"%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s,%s,%s",strN0.c_str(),n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,strS1.c_str(),strN2.c_str(),strN6.c_str());	
+	sprintf(sz,"%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s,%s,%s,%s",strN0.c_str(),n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,strS1.c_str(),strN2.c_str(),strN6.c_str(),strN5.c_str());	
 	//int len=strlen(sz);//Rpp(12,3):1576>1024
 	return sz;
 }
@@ -2278,7 +2308,7 @@ int IdRing(IRing* r){
 				}
 			}
 			if(vID03.size()==1)
-				return vID03[0];
+				return vID03[0];			
 			return 0;//ID不确定，还需要新的环不变量确定编号
 /* 			string strI1I2=calcI1(r)+","+calcI2(r);
 			vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	

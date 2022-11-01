@@ -289,15 +289,15 @@ void FiniteRing::printTable()
 #elif defined(H2_)
 	string H2=calcH2(this);
 	printf("%d,%s\n",ID,H2.c_str());
-#elif defined(N4_)
-	string N4=calcN4(this);
-	printf("%d,%s\n",ID,N4.c_str());
+#elif defined(N5_)
+	string N5=calcN5(this);
+	printf("%d,%s\n",ID,N5.c_str());
 #elif defined(bN_)
 	int bN=IsNilpotent(this);
 	printf("%d,%d\n",ID,bN);	
 #else
 	string str=calcRingInvariant(this);
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",size(),ID,str.c_str());
 	string Q1=calcQ1(this);
 	printf("Q1=%s\n",Q1.c_str());
 	int m0=calcm0(this);
