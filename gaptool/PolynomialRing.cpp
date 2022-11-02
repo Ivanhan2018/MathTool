@@ -738,7 +738,7 @@ void PolynomialRing::printTable()
 		str2+="],";
 	}
 	string str=calcRingInvariant(this);
-	printf("R%d_%d/(%s%s)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",m_r->size(),ID1,str2.c_str(),str1.c_str(),size(),ID,str.c_str());	
+	printf("R%d_%d/(%s%s)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",m_r->size(),ID1,str2.c_str(),str1.c_str(),size(),ID,str.c_str());	
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
 	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());	
@@ -1031,12 +1031,12 @@ void checkring(IRing *r,int ID){
 			writeTable(r,sz1);  
 		}else{
 			string strR=calcRingInvariant(r);			
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r->size(),ID,strR.c_str());	
 		}			
 	}
 	if((r->size()==27||r->size()==81) && ID==-1){	
 			string strR=calcRingInvariant(r);			
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r->size(),ID,strR.c_str());	
 	}	
 }
 
@@ -1103,11 +1103,11 @@ void findsubring(PolynomialRing *r,int n){
 			string strj=PolynomialRing::sPoly(r->m_Set[j]);
 			printf("%d->%s=>",j,strj.c_str());			
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 			//S1i.printTable();
 #if PRINT_LOG			
 			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5="<<strR<<endl;
 			bFind=true;
 #endif			
 			//break;
@@ -1187,11 +1187,11 @@ void findsubring3(PolynomialRing *r,int n){
 			string strk=PolynomialRing::sPoly(r->m_Set[k]);
 			printf("%d->%s=>",k,strk.c_str());				
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 			//S1i.printTable();
 #if PRINT_LOG			
 			fout<<i<<"->"<<str<<","<<j<<"->"<<strj<<","<<k<<"->"<<strk<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5="<<strR<<endl;
 			bFind=true;
 #endif			
 			//break;
@@ -1268,11 +1268,11 @@ void findquotientring(PolynomialRing *r,int n)
 		if(ni==n && ID==-1)	
 		{		
 			string strR=calcRingInvariant(&S1i);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 			//S1i.printTable();
 #if PRINT_LOG			
 			fout<<i<<","<<j<<"=>";
-			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+			fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5="<<strR<<endl;
 			bFind=true;
 #endif
 			//break;
@@ -1328,7 +1328,7 @@ int testRingDataA(int argc, char* argv[]){
 		}
 		if(in<=32 && iID<=0){
 			string strR=calcRingInvariant(r);
-			printf(":N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s",strR.c_str());
+			printf(":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s",strR.c_str());
 			string I1=calcI1(r);
 			string I2=calcI2(r);			
 			printf("\nI1I2=%s,%s",I1.c_str(),I2.c_str());				

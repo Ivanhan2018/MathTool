@@ -43,7 +43,7 @@ void FiniteRing::printTable()
 {
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,str.c_str());
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",size(),ID,str.c_str());
 	//printRing(this);	
 }
 
@@ -2458,12 +2458,12 @@ void checkring(IRing *r,int ID){
 			writeTable(r,sz1);  
 		}else{
 			string strR=calcRingInvariant(r);			
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r->size(),ID,strR.c_str());	
 		}			
 	}
 	if((r->size()==27||r->size()==81) && ID==-1){	
 			string strR=calcRingInvariant(r);			
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r->size(),ID,strR.c_str());	
 	}	
 }
 
@@ -2510,7 +2510,7 @@ void findsubring1(IRing *r,int n)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){		
-				printf("i=%d=>%s->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,IMStr(r,i).c_str(),ni,ID,strR.c_str());
+				printf("i=%d=>%s->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",i,IMStr(r,i).c_str(),ni,ID,strR.c_str());
 			}
 			S.insert(strR);	
 		}		   
@@ -2572,11 +2572,11 @@ void findsubring2(IRing *r,int n)
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){			
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 				//S1i.printTable();
 #if PRINT_LOG			
 				fout<<i<<","<<j<<"=>";
-				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5="<<strR<<endl;
 				bFind=true;
 #endif
 			}
@@ -2649,10 +2649,10 @@ void findsubring3(IRing *r,int n)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 #if 0//PRINT_LOG			
 				fout<<i<<","<<j<<","<<k<<"=>";
-				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5="<<strR<<endl;
 				bFind=true;
 #endif
 		}
@@ -2732,10 +2732,10 @@ void findsubring4(IRing *r,int n)
 		{					
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){			
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 #if 0//PRINT_LOG			
 				fout<<t<<","<<i<<","<<j<<","<<k<<"=>";
-				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5="<<strR<<endl;
 				bFind=true;
 #endif
 		}
@@ -2819,11 +2819,11 @@ void findquotientring(IRing *r,int n)
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
-				printf("i=%d,j=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,j,ni,ID,strR.c_str());				
+				printf("i=%d,j=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",i,j,ni,ID,strR.c_str());				
 				//S1i.printTable();
 #if PRINT_LOG			
 				fout<<i<<","<<j<<"=>";
-				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5="<<strR<<endl;
 				bFind=true;
 #endif
 		}
@@ -2895,7 +2895,7 @@ void findquotientring3(IRing *r,int n)
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 				//break;
 			}
 			S.insert(strR);

@@ -2868,7 +2868,7 @@ bool testQR(IRing *r,int n,vector<int>& v){
 	}		
 	if(ID==-1){		
 		string strR=calcRingInvariant(&S1i);			
-		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 	}
 	return true;
 }
@@ -3140,7 +3140,7 @@ int main(int argc, char* argv[])
 							printRing0(&S1i,ID);
 							if(ID==-1){		
 								string strR=calcRingInvariant(&S1i);			
-								printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+								printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 							}							
 						}							
 					}					
@@ -3166,7 +3166,7 @@ int main(int argc, char* argv[])
 					writeTable(&S1i0,sz);		
 					if(IDr==-1){		
 						string strR=calcRingInvariant(&S1i0);			
-						printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,IDr,strR.c_str());				
+						printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,IDr,strR.c_str());				
 					}			
 				}else{
 					printf("Æ½·²×Ó»·R%d\n",ni);

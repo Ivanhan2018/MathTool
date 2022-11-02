@@ -113,11 +113,11 @@ void findquotientring(IRing *r,int n)
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
-				printf("i=%d,j=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,j,ni,ID,strR.c_str());				
+				printf("i=%d,j=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",i,j,ni,ID,strR.c_str());				
 				//S1i.printTable();
 #if PRINT_LOG			
 				fout<<i<<","<<j<<"=>";
-				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6="<<strR<<endl;
+				fout<<"R"<<ni<<"_"<<ID<<":N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5="<<strR<<endl;
 				bFind=true;
 #endif
 		}
@@ -711,12 +711,12 @@ void testDR(IRing* r16,IRing* r81){
 		printf("R%d_%d,R%d_%d\n",r16->size(),ID16,r81->size(),ID81);
 	#else
 		string str=calcRingInvariant(r16);
-		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r16->size(),ID16,str.c_str());
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r16->size(),ID16,str.c_str());
 		string I1=calcI1(r16);
 		string I2=calcI2(r16);   
 		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 		str=calcRingInvariant(r81);
-		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r81->size(),ID81,str.c_str());
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r81->size(),ID81,str.c_str());
 		I1=calcI1(r81);
 		I2=calcI2(r81);   
 		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
@@ -794,12 +794,12 @@ int main(int argc, char* argv[]){
 			    printf("Rpppp(%d,2)=R%d_%d,Rpppp(%d,3)=R%d_%d\n",i,r16->size(),ID16,i,r81->size(),ID81);
 			#else
 				string str=calcRingInvariant(r16);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r16->size(),ID16,str.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r16->size(),ID16,str.c_str());
 				string I1=calcI1(r16);
 				string I2=calcI2(r16);   
 				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 				str=calcRingInvariant(r81);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r81->size(),ID81,str.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r81->size(),ID81,str.c_str());
 				I1=calcI1(r81);
 				I2=calcI2(r81);   
 				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());

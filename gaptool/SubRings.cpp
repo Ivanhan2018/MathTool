@@ -112,7 +112,7 @@ vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> 
 	int ID=IdRing(&S1i0);	
 	if(ID<1){
 		string strR=calcRingInvariant(&S1i0);			
-		printf("子环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",s,ID,strR.c_str());	
+		printf("子环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",s,ID,strR.c_str());	
 		if(ID<0 && s<32)
 			printRing0(&S1i0,ID);		
 	}	
@@ -133,7 +133,7 @@ vector<int> SubRings(IRing* r,int s,vector<int>& v,std::vector<std::vector<int> 
 			int IDi=IdRing(&S1i);
 			if(IDi<1){
 				string strR=calcRingInvariant(&S1i);			
-				printf("商环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,IDi,strR.c_str());	
+				printf("商环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,IDi,strR.c_str());	
 				if(IDi<0 && ni<32)
 					printRing0(&S1i,IDi);				
 			}		
@@ -351,7 +351,7 @@ void FiniteRing::printTable()
 		sprintf(sz,"R%d_%d.txt",ni,ID);	
 		writeTable(&S1i0,sz);
 		string strR=calcRingInvariant(&S1i0);			
-		printf("子环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());	
+		printf("子环R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());	
 		string str=V2S(v)+"=>"+V2S(vSet)+"=R"+itos(ni)+"_"+itos(ID);	
 		if(iret1==1)str+="是理想";		
 		//else if(iret1==2)str+="不是理想";

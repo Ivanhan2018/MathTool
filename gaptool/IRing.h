@@ -1902,7 +1902,7 @@ public:
 	RIDHelper();
 	~RIDHelper();
 private:
-	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6返回ID编号列表	
+	multimap<string,int> m_RingInvariant;//根据环的结构不变量N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5返回ID编号列表	
 	multimap<string,int> m_I1I2;//根据环的结构不变量I1I2返回ID编号列表		
 	map<pair<int,int>,string> m_Str[6];//idx=0:秩、idx=1:RI2不变量、idx=2:RI3不变量、idx=3:bN不变量、idx=4:Q1不变量、idx=5:m0不变量	
 public:	
@@ -2308,7 +2308,18 @@ int IdRing(IRing* r){
 				}
 			}
 			if(vID03.size()==1)
-				return vID03[0];			
+				return vID03[0];
+			//R81_281和R81_516的中心不一样
+			string sRI3=calcRingInvariant3(r);
+			vector<int> vID04;
+			for(int k=0;k<vID02.size();k++){
+				string sRI30=idHelper.StrFromID(r->size(),vID02[k],2);	
+				if(sRI3==sRI30){		
+					vID04.push_back(vID02[k]);
+				}
+			}		
+			if(vID04.size()==1)
+				return vID04[0];			
 			return 0;//ID不确定，还需要新的环不变量确定编号
 /* 			string strI1I2=calcI1(r)+","+calcI2(r);
 			vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	

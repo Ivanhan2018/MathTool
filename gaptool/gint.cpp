@@ -192,7 +192,7 @@ void ZimodnZ::printTable()
 		}
 		str2+="],";
 	}	
-	printf("Z[i]/(%s%s)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",str2.c_str(),str1.c_str(),size(),ID,str.c_str());	
+	printf("Z[i]/(%s%s)=R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",str2.c_str(),str1.c_str(),size(),ID,str.c_str());	
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
 	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
@@ -403,7 +403,7 @@ void findsubring2(ZimodnZ *r,int n){
 			if(S.find(strR)==S.end()){				
 				string str=gStr(r->m_Set[i]);
 				string strj=gStr(r->m_Set[j]);
-				printf("%d,%d=>%s,%s:R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",i,j,str.c_str(),strj.c_str(),ni,ID,strR.c_str());				
+				printf("%d,%d=>%s,%s:R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",i,j,str.c_str(),strj.c_str(),ni,ID,strR.c_str());				
 			}
 			S.insert(strR);			
 		}		   

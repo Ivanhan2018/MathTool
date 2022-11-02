@@ -133,7 +133,7 @@ void quotientRing::printTable()
 	string str=calcRingInvariant(this);
 	string Idem=V2S(calIdem(this));
 	string N9=V2S(calN9(this));	
-	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6IdemN9=%s,%s,%s\n",size(),ID,str.c_str(),Idem.c_str(),N9.c_str());
+	printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5IdemN9=%s,%s,%s\n",size(),ID,str.c_str(),Idem.c_str(),N9.c_str());
 	printRing(this);
 }
 

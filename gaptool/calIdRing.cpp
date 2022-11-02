@@ -62,7 +62,7 @@ void checkring(IRing *r,int ID){
 	if(r->size()==32||r->size()==64||r->size()==81||r->size()==243){
 		if(ID<1){
 			string strR=calcRingInvariant(r);			
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,strR.c_str());	
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r->size(),ID,strR.c_str());	
 		}else{
 			if(g_b!=0 && g_str!=""){
 				char sz[1000]={0};				
@@ -132,7 +132,7 @@ void findquotientring(IRing *r,int n)
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 				//break;
 			}
 			S.insert(strR);
@@ -194,7 +194,7 @@ void findquotientring3(IRing *r,int n)
 		{		
 			string strR=calcRingInvariant(&S1i);
 			if(S.find(strR)==S.end()){				
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",ni,ID,strR.c_str());				
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",ni,ID,strR.c_str());				
 				//break;
 			}
 			S.insert(strR);

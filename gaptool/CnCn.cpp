@@ -51,7 +51,7 @@ void CnCn::printTable()
 	}	
 	int ID=IdRing(this);
 	string str=calcRingInvariant(this);
-	printf("R%d_%d_C%dC%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",size(),ID,this->m_n,this->m_n,this->m_id,str.c_str());
+	printf("R%d_%d_C%dC%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",size(),ID,this->m_n,this->m_n,this->m_id,str.c_str());
 	string Q1=calcQ1(this);
 	printf("Q1=%s\n",Q1.c_str());	
 	char sz[100]={0};

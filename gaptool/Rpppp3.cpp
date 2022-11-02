@@ -228,12 +228,12 @@ void testDR(IRing* r16,IRing* r81){
 		printf("R%d_%d,R%d_%d\n",r16->size(),ID16,r81->size(),ID81);
 	#else
 		string str=calcRingInvariant(r16);
-		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r16->size(),ID16,str.c_str());
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r16->size(),ID16,str.c_str());
 		string I1=calcI1(r16);
 		string I2=calcI2(r16);   
 		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 		str=calcRingInvariant(r81);
-		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r81->size(),ID81,str.c_str());
+		printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r81->size(),ID81,str.c_str());
 		I1=calcI1(r81);
 		I2=calcI2(r81);   
 		printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
@@ -259,7 +259,7 @@ int main(int argc, char* argv[]){
 			   continue;
 			int ID=IdRing(r);			
 			string str=calcRingInvariant(r);
-			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r->size(),ID,str.c_str());					
+			printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r->size(),ID,str.c_str());					
 		}
 	}
     return 0;
@@ -272,7 +272,7 @@ int main(int argc, char* argv[]){
 			   continue;
 			int ID=IdRing(r);			
 			string str=calcRingInvariant(r);
-			printf("i=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s,",i,r->size(),ID,str.c_str());
+			printf("i=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s,",i,r->size(),ID,str.c_str());
 			string Q1=calcQ1(r);
 			printf("Q1=%s\n",Q1.c_str());			
 		}
@@ -331,7 +331,7 @@ int main(int argc, char* argv[]){
 		   }else{
 				int ID=IdRing(r);			
 				string str=calcRingInvariant(r);
-				printf("i=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s,",i,r->size(),ID,str.c_str());
+				printf("i=%d->R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s,",i,r->size(),ID,str.c_str());
 				string Q1=calcQ1(r);
 				printf("Q1=%s\n",Q1.c_str());			   
 		   }
@@ -351,12 +351,12 @@ int main(int argc, char* argv[]){
 			    printf("Rpppp3(%d,3)=R%d_%d,Rpppp3(%d,2)=R%d_%d\n",i,r81->size(),ID81,i,r16->size(),ID16);
 			#else
 				string str=calcRingInvariant(r16);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r16->size(),ID16,str.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r16->size(),ID16,str.c_str());
 				string I1=calcI1(r16);
 				string I2=calcI2(r16);   
 				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 				str=calcRingInvariant(r81);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r81->size(),ID81,str.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r81->size(),ID81,str.c_str());
 				I1=calcI1(r81);
 				I2=calcI2(r81);   
 				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());

@@ -1334,12 +1334,12 @@ int main(int argc, char* argv[]){
 			    printf("Rppp(%d,2)=R%d_%d,Rppp(%d,3)=R%d_%d\n",i,r8->size(),ID8,i,r27->size(),ID27);
 			#else
 				string str=calcRingInvariant(r8);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r8->size(),ID8,str.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r8->size(),ID8,str.c_str());
 				string I1=calcI1(r8);
 				string I2=calcI2(r8);   
 				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());				
 				str=calcRingInvariant(r27);
-				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6=%s\n",r27->size(),ID27,str.c_str());
+				printf("R%d_%d:N0n0bAbOn1n2n4n5n6n7n8S1N2N6N5=%s\n",r27->size(),ID27,str.c_str());
 				I1=calcI1(r27);
 				I2=calcI2(r27);   
 				printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
