@@ -302,6 +302,10 @@ void FiniteRing::printTable()
 	printf("Q1=%s\n",Q1.c_str());
 	int m0=calcm0(this);
 	printf("m0=%d\n",m0);	
+	string str2=calcRingInvariant2(this);  
+	printf("RI2=%s\n",str2.c_str());	
+	string str3=calcRingInvariant3(this);  
+	printf("RI3=%s\n",str3.c_str());	
 	int bN=IsNilpotent(this);
 	printf("bN=%d\n",bN);		
 	int rk=Rank(this);
