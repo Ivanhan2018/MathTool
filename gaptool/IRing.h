@@ -2302,14 +2302,14 @@ string calcRingInvariant2(IRing* r){
 	int bN=IsNilpotent(r);	
 	int bL=OneExNum(r,2);
 	int bR=OneExNum(r,3);
-	string strN1=calcN1(r);
+	//string strN1=calcN1(r);
 	string strC2=calcC2(r);
 	string strN3=calcN3(r);
 	string strN4=calcN4(r);
 	string strN7=calcN7(r);		
-    // bNbLbRN1C2N3N4N7
+    // bNbLbRC2N3N4N7
 	char sz[2048]={0};
-	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s,%s",bN,bL,bR,strN1.c_str(),strC2.c_str(),strN3.c_str(),strN4.c_str(),strN7.c_str());	
+	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s",bN,bL,bR,strC2.c_str(),strN3.c_str(),strN4.c_str(),strN7.c_str());	
 	return sz;
 }
 
@@ -2416,14 +2416,14 @@ int IdRing(IRing* r){
 			printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
 		}
    }      
-    if(r->size()==16||r->size()==27||r->size()==81){
+   if(r->size()==16||r->size()==27||r->size()==81){
 		string sRI2=calcRingInvariant2(r);
 		string sRI20=idHelper.StrFromID(r->size(),vID[0],1);		
 		if(sRI20!="" && sRI2.find(sRI20)==string::npos){			
 			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),sRI2.c_str(),vID[0],sRI20.c_str());
 		}
    }
-    if(r->size()==16||r->size()==27||r->size()==81){
+   if(r->size()==16||r->size()==27||r->size()==81){
 		string sRI3=calcRingInvariant3(r);
 		string sRI30=idHelper.StrFromID(r->size(),vID[0],2);		
 		if(sRI30!="" && sRI3.find(sRI30)==string::npos){			
