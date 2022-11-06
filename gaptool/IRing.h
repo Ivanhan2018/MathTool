@@ -1167,6 +1167,47 @@ vector<int> calN9(IRing* r){
 	return N9;
 }
 
+//>1表示幂等指数，0表示幂零环
+int IsIdem(IRing* r,int i2){
+    int n=r->size();	
+	if(i2<0||i2>=n)
+		return 0;
+	int m=i2;
+	for(int i=2;i<n+2;i++){
+		int mi=r->mul(m,i2);
+		if(mi==i2)
+			return i;
+		if(mi==0)
+			return 0;
+		m=mi;
+	}
+	return 1;
+}
+
+// 幂等指数分布
+string calcN7(IRing* r){
+    int n=r->size();
+	vector<int> v;
+	for(int i2=1;i2<n;i2++){
+		int I=IsIdem(r,i2);
+		if(I>=2)		
+			v.push_back(I);
+	}
+	std::sort(v.begin(),v.end());
+	vector<pair<int,int> > v1=doN1Vec(v);
+	string str="[";
+	for(int i=0;i<v1.size();i++){
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
+		str+=sz;
+	}
+	if(str.size()>2){
+		str=str.substr(0,str.size()-1);
+	}
+	str+="]";
+	return str;	
+}
+
 vector<int> IdealProduct(IRing* r,const vector<int>& A,const vector<int>& B){
     int nA=A.size();	
     int nB=B.size();
@@ -2264,10 +2305,11 @@ string calcRingInvariant2(IRing* r){
 	string strN1=calcN1(r);
 	string strC2=calcC2(r);
 	string strN3=calcN3(r);
-	string strN4=calcN4(r);	
-    // bNbLbRN1C2N3N4
+	string strN4=calcN4(r);
+	string strN7=calcN7(r);		
+    // bNbLbRN1C2N3N4N7
 	char sz[2048]={0};
-	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s",bN,bL,bR,strN1.c_str(),strC2.c_str(),strN3.c_str(),strN4.c_str());	
+	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s,%s",bN,bL,bR,strN1.c_str(),strC2.c_str(),strN3.c_str(),strN4.c_str(),strN7.c_str());	
 	return sz;
 }
 
@@ -2381,7 +2423,7 @@ int IdRing(IRing* r){
 			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),sRI2.c_str(),vID[0],sRI20.c_str());
 		}
    }
-    if(r->size()==16||r->size()==81){
+    if(r->size()==16||r->size()==27||r->size()==81){
 		string sRI3=calcRingInvariant3(r);
 		string sRI30=idHelper.StrFromID(r->size(),vID[0],2);		
 		if(sRI30!="" && sRI3.find(sRI30)==string::npos){			
