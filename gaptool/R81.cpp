@@ -1,6 +1,6 @@
 #include "IRing.h"
 
-// idx=0~16
+// idx=0~17
 vector<int> FindR81ID(int idx,int p=3){
     static RIDHelper help;
 	const char * szN0n0bAbO[]={ \
