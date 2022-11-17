@@ -289,9 +289,9 @@ void FiniteRing::printTable()
 #elif defined(H2_)
 	string H2=calcH2(this);
 	printf("%d,%s\n",ID,H2.c_str());
-#elif defined(N7_)
-	string N7=calcN7(this);
-	printf("%d,%s\n",ID,N7.c_str());
+#elif defined(N1_)
+	string N1=calcN1(this);
+	printf("%d,%s\n",ID,N1.c_str());
 #elif defined(bN_)
 	int bN=IsNilpotent(this);
 	printf("%d,%d\n",ID,bN);	

@@ -625,30 +625,34 @@ string calcN2(IRing* r){
 	return strN2;
 }
 
+// 零因子阶的分布N1
 string calcN1(IRing* r){
+	int IsNil(IRing* r,int i);
 	int n=r->size();
 	vector<pair<int,int> > v;
 	for(int i=1;i<n;i++){
 		for(int j=1;j<n;j++){
 			int ij=r->mul(i,j);
-			if(ij!=0){
-				vector<int> S1=Order(r,ij);			
-				int o=S1.size();				
-				v.push_back(make_pair(o,ij));
+			if(ij==0){
+				vector<int> S1=Order(r,i);			
+				int o=S1.size();
+				int ni=IsNil(r,i);
+				v.push_back(make_pair(o,ni));
+				break;
 			}
 		}
 	}
 	vector<tuple<int,int,int> > v1=doN2Vec(v);
 	std::sort(v1.begin(),v1.end(),[](const tuple<int,int,int>& a,const tuple<int,int,int>& b)->bool{
-					if(get<2>(a)!=get<2>(b))
-						return get<2>(a)<get<2>(b);
-					return get<0>(a)<get<0>(b);	
+					if(get<0>(a)!=get<0>(b))
+						return get<0>(a)<get<0>(b);
+					return get<1>(a)<get<1>(b);	
 				});	
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
 		char sz[200]={0};
-		sprintf(sz,"[%d,%d],",get<2>(v1[i]),get<0>(v1[i]));
+		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
 	if(str.size()>2)
@@ -1184,7 +1188,7 @@ int IsIdem(IRing* r,int i2){
 	return 1;
 }
 
-// 幂等指数分布
+// 幂等指数分布N7
 string calcN7(IRing* r){
     int n=r->size();
 	vector<int> v;
@@ -2302,14 +2306,14 @@ string calcRingInvariant2(IRing* r){
 	int bN=IsNilpotent(r);	
 	int bL=OneExNum(r,2);
 	int bR=OneExNum(r,3);
-	//string strN1=calcN1(r);
 	string strC2=calcC2(r);
 	string strN3=calcN3(r);
 	string strN4=calcN4(r);
-	string strN7=calcN7(r);		
-    // bNbLbRC2N3N4N7
+	string strN7=calcN7(r);	
+	string strN1=calcN1(r);	
+    // bNbLbRC2N3N4N7N1
 	char sz[2048]={0};
-	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s",bN,bL,bR,strC2.c_str(),strN3.c_str(),strN4.c_str(),strN7.c_str());	
+	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s,%s",bN,bL,bR,strC2.c_str(),strN3.c_str(),strN4.c_str(),strN7.c_str(),strN1.c_str());	
 	return sz;
 }
 
@@ -2408,14 +2412,14 @@ int IdRing(IRing* r){
 			printf("出错了，%d阶环的Q1=%s与ID=%d,Q1=%s不匹配！\n",r->size(),Q1.c_str(),vID[0],Q10.c_str());
 		}
    }   
-   if(/* r->size()==16||r->size()==27|| */r->size()==81||r->size()==125){
-		int im0=calcm0(r);
-		string m0=itos(im0);
-		string m00=idHelper.StrFromID(r->size(),vID[0],5);
-		if(m00!="" && m00!=m0){			
-			printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
-		}
-   }      
+   // if(/* r->size()==16||r->size()==27|| */r->size()==81||r->size()==125){
+		// int im0=calcm0(r);
+		// string m0=itos(im0);
+		// string m00=idHelper.StrFromID(r->size(),vID[0],5);
+		// if(m00!="" && m00!=m0){			
+			// printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
+		// }
+   // }      
    if(r->size()==16||r->size()==27||r->size()==81){
 		string sRI2=calcRingInvariant2(r);
 		string sRI20=idHelper.StrFromID(r->size(),vID[0],1);		

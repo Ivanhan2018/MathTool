@@ -85,7 +85,9 @@ int main(int argc, char* argv[]){
 #elif defined(N89)
 			string str=calcb8N8N9(r);	
 #elif defined(Q1_)
-			string str=calcQ1(r);		
+			string str=calcQ1(r);	
+#elif defined(N1_)
+			string str=calcN1(r);		
 #else	
 			string str=calcRingInvariant2(r);
 #endif		
