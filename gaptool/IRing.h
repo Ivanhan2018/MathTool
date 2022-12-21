@@ -426,6 +426,67 @@ string calcN0(IRing* r){
 	return strN0;
 }
 
+// 加法生成元
+vector<pair<int,int> > calcAddGen(IRing* r){
+    int n=r->size();
+	vector<pair<int,vector<int> > > vS1;	
+ 	for(int i=0;i<n;i++){
+		vector<int> S1=Order(r,i);
+		std::sort(S1.begin(),S1.end());
+		int ord=S1.size();
+		vector<pair<int,vector<int> > >::const_iterator it=std::find_if(vS1.begin(),vS1.end(),[S1](const pair<int,vector<int> >& obj)->bool{return IsEqual(obj.second,S1);});
+		if(it==vS1.end()){
+			vS1.push_back(make_pair(i,S1));	
+		}		
+	}
+	std::sort(vS1.begin(),vS1.end(),[](const pair<int,vector<int> >& a,const pair<int,vector<int> >& b)->bool{
+		                return a.second.size()>b.second.size();
+				});	
+				
+	int m=vS1.size();
+	vector<pair<int,int> > ret;
+	vector<int> vSet;	
+	if(m<=0)
+		return ret;
+	ret.push_back(make_pair(vS1[0].first,vS1[0].second.size()));		
+	vSet.insert(vSet.end(),vS1[0].second.begin(),vS1[0].second.end());
+	int cnt=vSet.size();
+	int cnt1=cnt;
+	if(cnt==n)
+		return ret;	
+	for(int k=1;k<m;k++)
+	{		
+		vector<int>::iterator p=std::find(vSet.begin(),vSet.end(),vS1[k].first);
+		if(p==vSet.end()){
+			ret.push_back(make_pair(vS1[k].first,vS1[k].second.size()));
+			vSet.insert(vSet.end(),vS1[k].second.begin(),vS1[k].second.end());
+			vSet.erase(unique(vSet.begin(), vSet.end()), vSet.end());			
+		}else{	
+			continue;
+		}
+		do{
+			cnt=vSet.size();
+			if(cnt==n)
+				return ret;
+			for(int i=0;i<cnt;i++)
+			{
+				for(int j=0;j<cnt;j++)
+				{
+					int IJ1=r->add(vSet[i],vSet[j]);
+					vector<int>::iterator p=std::find(vSet.begin(),vSet.end(),IJ1);
+					if(p==vSet.end()){
+						vSet.push_back(IJ1);
+					}
+				}
+			}
+			cnt1=vSet.size();
+		}while(cnt1>cnt);		   
+		if(cnt==n||cnt1==n)
+			return ret;
+	}
+	return ret;
+}
+
 #ifndef IGROUP_H
 //利用欧几里得算法计算两个数的最大公约数
 int gcd(int a, int b)

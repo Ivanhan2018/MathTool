@@ -311,7 +311,19 @@ void FiniteRing::printTable()
 	int rk=Rank(this);
 	printf("r=%d\n",rk);
 	string b8N8N9=calcb8N8N9(this);
-	printf("b8N8N9=%s\n",b8N8N9.c_str());	
+	printf("b8N8N9=%s\n",b8N8N9.c_str());
+	vector<pair<int,int> > v1=calcAddGen(this);
+	string str1="[";
+	for(int i=0;i<v1.size();i++){
+		char sz[200]={0};
+		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
+		str1+=sz;
+	}
+	if(str1.size()>2){
+		str1=str1.substr(0,str1.size()-1);
+	}
+	str1+="]";
+	printf("AddGen=%s\n",str1.c_str());	
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
 	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());
