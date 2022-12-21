@@ -324,6 +324,7 @@ void FiniteRing::printTable()
 	}
 	str1+="]";
 	printf("AddGen=%s\n",str1.c_str());	
+	calcCoordinate(this,v1);
 	string I1=calcI1(this);
 	string I2=calcI2(this);   
 	printf("I1I2=%s,%s\n",I1.c_str(),I2.c_str());

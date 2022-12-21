@@ -492,6 +492,73 @@ vector<pair<int,int> > calcAddGen(IRing* r){
 	return ret;
 }
 
+// 加法群元的坐标表示
+void calcCoordinate(IRing* r,const vector<pair<int,int> >& gen){
+	int m=gen.size();
+	if(m==1){
+		for(int i=0;i<gen[0].second;i++){
+			vector<int> Si=Order(r,gen[0].first);
+			int ai=Si[i];
+			printf("(%d)=%d\n",i,ai);		
+		}
+		return;		
+	}	
+	if(m==2){
+		for(int i=0;i<gen[0].second;i++){
+			vector<int> Si=Order(r,gen[0].first);
+			int ai=Si[i];
+			for(int j=0;j<gen[1].second;j++){
+				vector<int> Sj=Order(r,gen[1].first);
+				int aj=Sj[j];
+				int aij=r->add(ai,aj);
+				printf("(%d,%d)=%d\n",i,j,aij);	
+			}	
+		}
+		return;		
+	}
+	if(m==3){
+		for(int i=0;i<gen[0].second;i++){
+			vector<int> Si=Order(r,gen[0].first);
+			int ai=Si[i];
+			for(int j=0;j<gen[1].second;j++){
+				vector<int> Sj=Order(r,gen[1].first);
+				int aj=Sj[j];
+				int aij=r->add(ai,aj);
+				for(int k=0;k<gen[2].second;k++){
+					vector<int> Sk=Order(r,gen[2].first);
+					int ak=Sk[k];
+					int aijk=r->add(aij,ak);
+					printf("(%d,%d,%d)=%d\n",i,j,k,aijk);	
+				}
+			}	
+		}
+		return;		
+	}
+	if(m==4){
+		for(int i=0;i<gen[0].second;i++){
+			vector<int> Si=Order(r,gen[0].first);
+			int ai=Si[i];
+			for(int j=0;j<gen[1].second;j++){
+				vector<int> Sj=Order(r,gen[1].first);
+				int aj=Sj[j];
+				int aij=r->add(ai,aj);
+				for(int k=0;k<gen[2].second;k++){
+					vector<int> Sk=Order(r,gen[2].first);
+					int ak=Sk[k];
+					int aijk=r->add(aij,ak);
+					for(int t=0;t<gen[3].second;t++){
+						vector<int> St=Order(r,gen[3].first);
+						int at=St[t];
+						int aijkt=r->add(aijk,at);
+						printf("(%d,%d,%d,%d)=%d\n",i,j,k,t,aijkt);	
+					}	
+				}
+			}	
+		}
+		return;		
+	}	
+}
+
 #ifndef IGROUP_H
 //利用欧几里得算法计算两个数的最大公约数
 int gcd(int a, int b)
