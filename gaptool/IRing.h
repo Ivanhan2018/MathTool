@@ -437,6 +437,7 @@ vector<pair<int,int> > calcAddGen(IRing* r){
 		vector<pair<int,vector<int> > >::const_iterator it=std::find_if(vS1.begin(),vS1.end(),[S1](const pair<int,vector<int> >& obj)->bool{return IsEqual(obj.second,S1);});
 		if(it==vS1.end()){
 			vS1.push_back(make_pair(i,S1));	
+			//printf("i=%d,S1=%s\n",i,V2S(S1).c_str());
 		}		
 	}
 	std::sort(vS1.begin(),vS1.end(),[](const pair<int,vector<int> >& a,const pair<int,vector<int> >& b)->bool{
@@ -452,10 +453,13 @@ vector<pair<int,int> > calcAddGen(IRing* r){
 	vSet.insert(vSet.end(),vS1[0].second.begin(),vS1[0].second.end());
 	int cnt=vSet.size();
 	int cnt1=cnt;
+	int N=vS1[0].second.size();
 	if(cnt==n)
 		return ret;	
 	for(int k=1;k<m;k++)
 	{		
+		if(N*vS1[k].second.size()>n)
+			continue;
 		vector<int>::iterator p=std::find(vSet.begin(),vSet.end(),vS1[k].first);
 		if(p==vSet.end()){
 			ret.push_back(make_pair(vS1[k].first,vS1[k].second.size()));
@@ -464,6 +468,7 @@ vector<pair<int,int> > calcAddGen(IRing* r){
 		}else{	
 			continue;
 		}
+		N*=vS1[k].second.size();		
 		do{
 			cnt=vSet.size();
 			if(cnt==n)
