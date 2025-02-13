@@ -319,7 +319,7 @@ string V2S(vector<int>& v){
 string V2S(vector<pair<int,int> >& v1){
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -354,7 +354,7 @@ string simplyS1(vector<int>& S1){
 	string str="[";
 	for(int i=0;i<vOrders.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"%d,",vCounts[vOrders[i]]);
 		str+=sz;
 	}
@@ -415,7 +415,7 @@ string calcN0(IRing* r){
 	}
 	string strN0="[";
 	for(int i=0;i<vOrders.size();i++){
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"%d,",vCounts[vOrders[i]]);
 		strN0+=sz;
 	}
@@ -684,7 +684,7 @@ string calcC2(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -715,7 +715,7 @@ string calcN3(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -746,7 +746,7 @@ string calcN2(IRing* r){
 	string strN2="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		strN2+=sz;
 	}
@@ -784,7 +784,7 @@ string calcN1(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -819,7 +819,7 @@ string calcI1(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -857,7 +857,7 @@ string calcI2(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -904,7 +904,7 @@ string calcI3(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -954,7 +954,7 @@ string calcI4(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -1154,7 +1154,7 @@ string calcN5(IRing* r){
 	vector<pair<int,int> > v1=doN1Vec(v);
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -1181,7 +1181,7 @@ string calcN6(IRing* r){
 	vector<pair<int,int> > v1=doN1Vec(v);
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -1255,7 +1255,7 @@ string calcN4(IRing* r){
 	vector<pair<int,int> > v1=doN1Vec(v);
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -1334,7 +1334,7 @@ string calcN7(IRing* r){
 	vector<pair<int,int> > v1=doN1Vec(v);
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -1993,7 +1993,7 @@ string calcS2(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[512]={0};
+		char sz[20]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -2486,9 +2486,8 @@ int IdRing(IRing* r){
 					vID03.push_back(vID[k]);
 				}
 			}
-			if(vID03.size()==1){
-				string sRI3=calcRingInvariant3(r);	
-				printf("R%d_%d,m0=%d,RI3=%s\n",r->size(),vID03[0],im0,sRI3.c_str());	
+			if(vID03.size()==1){	
+				printf("R%d_%d,Q1=%s,m0=%d\n",r->size(),vID03[0],Q1.c_str(),im0);	
 				return vID03[0];
 			}
 			//R81_281和R81_516的中心不一样
@@ -2501,10 +2500,10 @@ int IdRing(IRing* r){
 				}
 			}		
 			if(vID04.size()==1){
-				printf("R%d_%d,RI3=%s,m0=%d\n",r->size(),vID04[0],sRI3.c_str(),im0);				
+				printf("R%d_%d,Q1=%s,m0=%d,RI3=%s\n",r->size(),vID04[0],Q1.c_str(),im0,sRI3.c_str());				
 				return vID04[0];	
 			}	
-			printf("R%d_%d,RI3=%s,m0=%d\n",r->size(),0,sRI3.c_str(),im0);	
+			printf("R%d_%d,Q1=%s,m0=%d,RI3=%s\n",r->size(),0,Q1.c_str(),im0,sRI3.c_str());	
 			return 0;//ID不确定，还需要新的环不变量确定编号
 /* 			string strI1I2=calcI1(r)+","+calcI2(r);
 			vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	
