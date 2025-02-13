@@ -283,6 +283,9 @@ void FiniteRing::printTable()
 #elif defined(RI2)
 	string str=calcRingInvariant2(this);  
 	printf("%d,%s\n",ID,str.c_str());	
+#elif defined(RI3)
+	string str=calcRingInvariant3(this);  
+	printf("%d,%s\n",ID,str.c_str());	
 #elif defined(H1_)
 	string H1=calcH1(this);
 	printf("%d,%s\n",ID,H1.c_str());
@@ -312,6 +315,7 @@ void FiniteRing::printTable()
 	printf("r=%d\n",rk);
 	string b8N8N9=calcb8N8N9(this);
 	printf("b8N8N9=%s\n",b8N8N9.c_str());
+/*
 	vector<pair<int,int> > v1=calcAddGen(this);
 	string str1="[";
 	for(int i=0;i<v1.size();i++){
@@ -336,6 +340,7 @@ void FiniteRing::printTable()
 		string I4=calcI4(this);
 		printf("I4=%s\n",I4.c_str());
 	}
+*/
 #endif	
 #endif	
 	//printRing(this);	

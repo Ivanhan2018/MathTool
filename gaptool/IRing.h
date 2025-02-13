@@ -319,7 +319,7 @@ string V2S(vector<int>& v){
 string V2S(vector<pair<int,int> >& v1){
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -354,7 +354,7 @@ string simplyS1(vector<int>& S1){
 	string str="[";
 	for(int i=0;i<vOrders.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"%d,",vCounts[vOrders[i]]);
 		str+=sz;
 	}
@@ -415,7 +415,7 @@ string calcN0(IRing* r){
 	}
 	string strN0="[";
 	for(int i=0;i<vOrders.size();i++){
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"%d,",vCounts[vOrders[i]]);
 		strN0+=sz;
 	}
@@ -684,7 +684,7 @@ string calcC2(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -715,7 +715,7 @@ string calcN3(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -746,7 +746,7 @@ string calcN2(IRing* r){
 	string strN2="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		strN2+=sz;
 	}
@@ -784,7 +784,7 @@ string calcN1(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -819,7 +819,7 @@ string calcI1(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -857,7 +857,7 @@ string calcI2(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -904,7 +904,7 @@ string calcI3(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -954,7 +954,7 @@ string calcI4(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -1154,7 +1154,7 @@ string calcN5(IRing* r){
 	vector<pair<int,int> > v1=doN1Vec(v);
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -1181,7 +1181,7 @@ string calcN6(IRing* r){
 	vector<pair<int,int> > v1=doN1Vec(v);
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -1255,7 +1255,7 @@ string calcN4(IRing* r){
 	vector<pair<int,int> > v1=doN1Vec(v);
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -1334,7 +1334,7 @@ string calcN7(IRing* r){
 	vector<pair<int,int> > v1=doN1Vec(v);
 	string str="[";
 	for(int i=0;i<v1.size();i++){
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d],",v1[i].first,v1[i].second);
 		str+=sz;
 	}
@@ -1725,7 +1725,7 @@ string calcb8N8N9(IRing* r){
 		sprintf(szN9,"[%d,%d]",N9.size(),r->size()/N9.size());
 	else
 		sprintf(szN9,"[R%d_%d,R%d_%d]",N9.size(),IdRing(&N9),rmodN9.size(),IdRing(&rmodN9));
-	char sz[1024]={0};			
+    char sz[2048]={0};	
 	sprintf(sz,"%d,%s,%s",b8,szN8,szN9);
 	return sz;
 }
@@ -1993,7 +1993,7 @@ string calcS2(IRing* r){
 	string str="[";
 	for(int i=0;i<v1.size();i++)
 	{
-		char sz[200]={0};
+		char sz[512]={0};
 		sprintf(sz,"[%d,%d,%d],",get<0>(v1[i]),get<1>(v1[i]),get<2>(v1[i]));
 		str+=sz;
 	}
@@ -2098,7 +2098,7 @@ int RIDHelper::LoadData(char * pszFilePath,int idx){
 	if( fp == NULL )
 		return 1;//1打开文件失败
 
-	char sz[400] = {0};
+	char sz[2048] = {0};
 	pair<string,int> item;
 	int n = 0;
 	n = fscanf(fp, "%s", sz);
@@ -2476,7 +2476,7 @@ int IdRing(IRing* r){
 				vID02.push_back(vID[k]);
 			}
 		}			
-        if(vID02.size()>1){	
+        if(vID02.size()>1){		
 			int im0=calcm0(r);
 			string m0=itos(im0);
 			vector<int> vID03;
@@ -2486,8 +2486,11 @@ int IdRing(IRing* r){
 					vID03.push_back(vID[k]);
 				}
 			}
-			if(vID03.size()==1)
+			if(vID03.size()==1){
+				string sRI3=calcRingInvariant3(r);	
+				printf("R%d_%d,m0=%d,RI3=%s\n",r->size(),vID03[0],im0,sRI3.c_str());	
 				return vID03[0];
+			}
 			//R81_281和R81_516的中心不一样
 			string sRI3=calcRingInvariant3(r);
 			vector<int> vID04;
@@ -2497,8 +2500,11 @@ int IdRing(IRing* r){
 					vID04.push_back(vID02[k]);
 				}
 			}		
-			if(vID04.size()==1)
-				return vID04[0];			
+			if(vID04.size()==1){
+				printf("R%d_%d,RI3=%s,m0=%d\n",r->size(),vID04[0],sRI3.c_str(),im0);				
+				return vID04[0];	
+			}	
+			printf("R%d_%d,RI3=%s,m0=%d\n",r->size(),0,sRI3.c_str(),im0);	
 			return 0;//ID不确定，还需要新的环不变量确定编号
 /* 			string strI1I2=calcI1(r)+","+calcI2(r);
 			vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	
@@ -2538,7 +2544,7 @@ int IdRing(IRing* r){
 	   }
 	   return vID02[0];
    }  
-   if(r->size()==32||r->size()==243){
+   if(r->size()==16||r->size()==27||r->size()==81||r->size()==32||r->size()==243){
 		string Q1=calcQ1(r);
 		string Q10=idHelper.StrFromID(r->size(),vID[0],4);
 		if(Q10!="" && Q10!=Q1){			
@@ -2553,20 +2559,23 @@ int IdRing(IRing* r){
 			// printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
 		// }
    // }      
-   if(r->size()==16||r->size()==27||r->size()==81){
+    /*if(r->size()==16||r->size()==27||r->size()==81){
 		string sRI2=calcRingInvariant2(r);
 		string sRI20=idHelper.StrFromID(r->size(),vID[0],1);		
 		if(sRI20!="" && sRI2.find(sRI20)==string::npos){			
 			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),sRI2.c_str(),vID[0],sRI20.c_str());
 		}
-   }
+   }*/
    if(r->size()==16||r->size()==27||r->size()==81){
 		string sRI3=calcRingInvariant3(r);
 		string sRI30=idHelper.StrFromID(r->size(),vID[0],2);		
 		if(sRI30!="" && sRI3.find(sRI30)==string::npos){			
 			printf("出错了，%d阶环的RI3=%s与ID=%d,RI3=%s不匹配！\n",r->size(),sRI3.c_str(),vID[0],sRI30.c_str());
+		}	
+        else{
+			printf("R%d_%d,RI3=%s\n",r->size(),vID[0],sRI3.c_str());
 		}		
-   }    
+   }     
    return vID[0];
 }
 
