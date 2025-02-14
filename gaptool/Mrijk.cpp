@@ -3189,6 +3189,10 @@ int main(int argc, char* argv[])
 			n0=27;
 		else if(_n0==8)
 			n0=8;
+		else if (_n0 == 16)
+			n0 = 16;
+		else if (_n0 == 32)
+			n0 = 32;
 		else if(_n0==24)
 			n0=24;	
 		else if(_n0==36)

@@ -2432,6 +2432,9 @@ string calcRingInvariant(IRing* r){
 	char sz[2048]={0};
 	sprintf(sz,"%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s,%s,%s,%s",strN0.c_str(),n0,bA,bO,n1,n2,n4,n5,n6,n7,n8,strS1.c_str(),strN2.c_str(),strN6.c_str(),strN5.c_str());	
 	//int len=strlen(sz);//Rpp(12,3):1576>1024
+	if(bO && (r->size()==32||r->size()==243)){
+		printf("%d阶幺环，RI=%s\n",r->size(),sz);
+	}	
 	return sz;
 }
 
@@ -2572,7 +2575,7 @@ int IdRing(IRing* r){
 			printf("出错了，%d阶环的RI3=%s与ID=%d,RI3=%s不匹配！\n",r->size(),sRI3.c_str(),vID[0],sRI30.c_str());
 		}	
         else{
-			if(vID[0]==507)printf("R%d_%d,RI3=%s\n",r->size(),vID[0],sRI3.c_str());
+			if(r->size()==81 && (vID[0]==507||vID[0]==366||vID[0]==347))printf("R%d_%d,RI3=%s\n",r->size(),vID[0],sRI3.c_str());
 		}		
    }     
    return vID[0];
