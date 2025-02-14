@@ -2503,7 +2503,7 @@ int IdRing(IRing* r){
 				printf("R%d_%d,Q1=%s,m0=%d,RI3=%s\n",r->size(),vID04[0],Q1.c_str(),im0,sRI3.c_str());				
 				return vID04[0];	
 			}	
-			printf("R%d_%d,Q1=%s,m0=%d,RI3=%s\n",r->size(),0,Q1.c_str(),im0,sRI3.c_str());	
+			printf("R%d_0(%d),Q1=%s,m0=%d,RI3=%s,RI=%s\n",r->size(),vID02[0],Q1.c_str(),im0,sRI3.c_str(),strRingInvariant.c_str());	
 			return 0;//ID不确定，还需要新的环不变量确定编号
 /* 			string strI1I2=calcI1(r)+","+calcI2(r);
 			vector<int> vID2=idHelper.IDFromI1I2(strI1I2);	
@@ -2572,7 +2572,7 @@ int IdRing(IRing* r){
 			printf("出错了，%d阶环的RI3=%s与ID=%d,RI3=%s不匹配！\n",r->size(),sRI3.c_str(),vID[0],sRI30.c_str());
 		}	
         else{
-			printf("R%d_%d,RI3=%s\n",r->size(),vID[0],sRI3.c_str());
+			if(vID[0]==507)printf("R%d_%d,RI3=%s\n",r->size(),vID[0],sRI3.c_str());
 		}		
    }     
    return vID[0];
