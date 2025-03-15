@@ -1,4 +1,5 @@
 ﻿#include"IRing.h"
+#include<cmath>//sqrtf
 #include<ctime>
 #include"quotientring.h"
 #include<fstream>

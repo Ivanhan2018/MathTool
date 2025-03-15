@@ -1,4 +1,5 @@
 ﻿#include"IRing.h"
+#include<cmath>//sqrtf
 #include<ctime>
 int g_c=1;
 
