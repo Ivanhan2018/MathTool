@@ -13,6 +13,10 @@
 #include<functional>
 using namespace std;
 
+//warning: ISO C++ forbids converting a string constant to 'char*' [-Wwrite-strings]
+//#pragma GCC diagnostic ignored "-Wwrite-strings"
+//ªÚ’ﬂg++ -Wno-write-strings -o IRing.exe IRing.cpp
+
 struct IRing
 {
 	virtual ~IRing(){};	

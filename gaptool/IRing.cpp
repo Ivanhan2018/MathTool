@@ -2,6 +2,7 @@
 //#define RPPP2
 #define R16_I1I2
 #include"quotientRing.h"
+#include<cmath>//sqrtf
 #include <ctime>
 #include <fstream>
 #include <set>
@@ -4440,8 +4441,10 @@ string Tmstr(const string& mstr){
 			mstr1.push_back('3');
 		else if(mstr[j]=='4')
 			mstr1.push_back('9');
-		else if(mstr[j]=='8')
-			mstr1.push_back('27');	
+		else if(mstr[j]=='8'){
+			mstr1.push_back('2');
+			mstr1.push_back('7');
+		}	
 		else
 			mstr1.push_back(mstr[j]);				
 	}
