@@ -93,12 +93,14 @@ vector<Polynomial> PolynomialRing::FR(Polynomial &a,vector<Polynomial> &v,int or
 		cnt=S.size();
 		for(int i=0;i<S.size();i++){
 			for(int j=0;j<S.size();j++){
-				Polynomial ij=mod(mul(S[i],S[j],ord),a,ord);
+				Polynomial ijm=mul(S[i],S[j],ord);
+				Polynomial ij=mod(ijm,a,ord);
 				vector<Polynomial>::iterator p=std::find(S.begin(),S.end(),ij);
 				if(p==S.end()){
 					S.push_back(ij);
 				}
-				Polynomial ij1=mod(add(S[i],S[j],ord),a,ord);
+				Polynomial ija=add(S[i],S[j],ord);
+				Polynomial ij1=mod(ija,a,ord);
 				vector<Polynomial>::iterator p1=std::find(S.begin(),S.end(),ij1);
 				if(p1==S.end()){
 					S.push_back(ij1);
