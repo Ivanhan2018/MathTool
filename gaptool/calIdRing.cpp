@@ -245,7 +245,13 @@ void FiniteRing::printTable()
 	printf("%d,%s\n",ID,b8N8N9.c_str());
 #elif defined(Q1_)
 	string Q1=calcQ1(this);
-	printf("%d,%s\n",ID,Q1.c_str());	
+	printf("%d,%s\n",ID,Q1.c_str());
+#elif defined(Q3_)
+	string Q3 = calcQ3(this);
+	printf("%d,%s\n", ID, Q3.c_str());
+#elif defined(I2_)
+	string I2 = calI2(this);
+	printf("%d,%s\n", ID, I2.c_str());
 #elif defined(S2_)
 	string S2=calcS2(this);
 	printf("%d,%s\n",ID,S2.c_str());

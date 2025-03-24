@@ -800,6 +800,43 @@ string calcN1(IRing* r){
 	return str;
 }
 
+string calI2(IRing* r){
+	int IdRing(IRing* r);
+	int n = r->size();
+	int p = 2;
+	for (; p <= n; p++){
+		if (n%p == 0)
+			break;
+	}
+	if (p == n){
+		return "[]";
+	}
+
+	vector<pair<int, int> > v1;
+	for (int i = 0; i<n; i++){
+		for (int j = i + 1; j<n; j++){
+			vector<int> vi;
+			vi.push_back(i);
+			vi.push_back(j);
+			Subring si;
+			bool b = si.init(r, vi, n / 2 + 1);
+			if (!b)
+				continue;
+			int ni = si.size();
+			if (ni<n && ni>1){
+				int ID = IdRing(&si);
+				auto it = std::find(v1.begin(), v1.end(), make_pair(ni, ID));
+				if (it == v1.end()){
+					v1.push_back(make_pair(ni, ID));
+				}
+			}
+		}
+	}
+	std::sort(v1.begin(), v1.end());
+	string str = V2S(v1);
+	return str;
+}
+
 string calcI1(IRing* r){
 	int IdRing(IRing* r);
 	int n=r->size();
@@ -808,7 +845,6 @@ string calcI1(IRing* r){
 	   vector<int> vi;
 	   vi.push_back(i);
 	   Subring si;
-	   //bool b=si.init(r,vi,n-1);
 	   bool b=si.init(r,vi,n/2+1);
 	   if(!b)
 		   continue;
@@ -845,7 +881,6 @@ string calcI2(IRing* r){
 		   vi.push_back(i);
 		   vi.push_back(j);		   
 		   Subring si;
-		   //bool b=si.init(r,vi,n-1);
 		   bool b=si.init(r,vi,n/2+1);
 		   if(!b)
 			   continue;
@@ -885,7 +920,6 @@ string calcI3(IRing* r){
 		   vi.push_back(j);
 		   vi.push_back(k);		   
 		   Subring si;
-		   //bool b=si.init(r,vi,n-1);
 		   bool b=si.init(r,vi,n/2+1);
 		   if(!b)
 			   continue;
@@ -934,7 +968,6 @@ string calcI4(IRing* r){
 		   vi.push_back(j);
 		   vi.push_back(k);		   
 		   Subring si;
-		   //bool b=si.init(r,vi,n-1);
 		   bool b=si.init(r,vi,n/2+1);
 		   if(!b)
 			   continue;
@@ -1835,6 +1868,58 @@ string calcQ2(IRing* r){
 	return str;
 }
 
+string calcQ3(IRing* r){
+	int IdRing(IRing* r);
+	int n = r->size();
+	int p = 2;
+	for (; p <= n; p++){
+		if (n%p == 0)
+			break;
+	}
+	if (p == n || p*p*p == n){
+		return "[]";
+	}
+	vector<int> v1;
+	for (int i = 0; i<n; i++){
+		for (int j = i + 1; j<n; j++){
+			vector<int> v;
+			v.push_back(i);
+			v.push_back(j);
+			Subring S1i0;
+			bool b = S1i0.init(r, v, p*p*p);
+			if (!b)
+				continue;
+			if (S1i0.m_Set.size() != p*p*p)
+				continue;
+			vector<int> v0 = v;
+			v = S1i0.m_Set;
+			int iret1 = IsIdeal(r, v);
+			if (iret1 != 1)
+				continue;
+			quotientRing S1i(r, v);
+			bool b1 = IsRing(&S1i);
+			if (!b1){
+				continue;
+			}
+			int ID = IdRing(&S1i);
+			auto it = std::find(v1.begin(), v1.end(), ID);
+			if (it == v1.end()){
+				v1.push_back(ID);
+			}
+		}
+	}
+	std::sort(v1.begin(), v1.end());
+	int cnt = v1.size();
+	string str = "[";
+	for (int i = 0; i<cnt; i++){
+		str += itos(v1[i]);
+		if (i<cnt - 1)
+			str += ",";
+	}
+	str += "]";
+	return str;
+}
+
 string calcH2(IRing* r){
 	int IdRing(IRing* r);
 	int n=r->size();
@@ -2336,10 +2421,10 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("m0R81.csv",81,5);
 	iret=LoadStr("m0R125.csv",125,5);	
  	int m0cnt=m_Str[5].size();
- 	iret=LoadStr("RI2R16.csv",16,1);	
-	iret=LoadStr("RI2R27.csv",27,1);	
-	iret=LoadStr("RI2R32.csv",32,1);
-	iret=LoadStr("RI2R81.csv",81,1);	
+ 	iret=LoadStr("Q3R16.csv",16,1);	
+	//iret=LoadStr("I2R27.csv",27,1);	
+	//iret=LoadStr("I2R32.csv",32,1);
+	//iret=LoadStr("I2R81.csv",81,1);	
 	int ri2cnt=m_Str[1].size();
     //printf("ri2cnt=%d\n",ri2cnt);	
  	iret=LoadStr("RI3R16.csv",16,2);	
@@ -2443,18 +2528,21 @@ string calcRingInvariant(IRing* r){
 }
 
 string calcRingInvariant2(IRing* r){
-	int bN=IsNilpotent(r);	
-	int bL=OneExNum(r,2);
-	int bR=OneExNum(r,3);
-	string strC2=calcC2(r);
-	string strN3=calcN3(r);
-	string strN4=calcN4(r);
-	string strN7=calcN7(r);	
-	string strN1=calcN1(r);	
+	//int bN=IsNilpotent(r);	
+	//int bL=OneExNum(r,2);
+	//int bR=OneExNum(r,3);
+	//string strC2=calcC2(r);
+	//string strN3=calcN3(r);
+	//string strN4=calcN4(r);
+	//string strN7=calcN7(r);	
+	//string strN1=calcN1(r);	
     // bNbLbRC2N3N4N7N1
-	char sz[2048]={0};
-	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s,%s",bN,bL,bR,strC2.c_str(),strN3.c_str(),strN4.c_str(),strN7.c_str(),strN1.c_str());	
-	return sz;
+	//char sz[2048]={0};
+	//sprintf(sz,"%d,%d,%d,%s,%s,%s,%s,%s",bN,bL,bR,strC2.c_str(),strN3.c_str(),strN4.c_str(),strN7.c_str(),strN1.c_str());
+	//sprintf(sz, "%s", calcS2(r).c_str());
+	//sprintf(sz, "%s,%s", calcI1(r).c_str(), calcI2(r).c_str());
+	//return sz;
+	return calcQ3(r);
 }
 
 string calcRingInvariant3(IRing* r){
@@ -2509,7 +2597,7 @@ int IdRing(IRing* r){
 			if(vID04.size()==1){
 				printf("R%d_%d,Q1=%s,m0=%d,RI3=%s\n",r->size(),vID04[0],Q1.c_str(),im0,sRI3.c_str());				
 				return vID04[0];	
-			}	
+			}
 			printf("R%d_0(%d),Q1=%s,m0=%d,RI3=%s,RI=%s\n",r->size(),vID02[0],Q1.c_str(),im0,sRI3.c_str(),strRingInvariant.c_str());	
 			return 0;//ID不确定，还需要新的环不变量确定编号
 /* 			string strI1I2=calcI1(r)+","+calcI2(r);
@@ -2557,22 +2645,22 @@ int IdRing(IRing* r){
 			printf("出错了，%d阶环的Q1=%s与ID=%d,Q1=%s不匹配！\n",r->size(),Q1.c_str(),vID[0],Q10.c_str());
 		}
    }   
-   // if(/* r->size()==16||r->size()==27|| */r->size()==81||r->size()==125){
-		// int im0=calcm0(r);
-		// string m0=itos(im0);
-		// string m00=idHelper.StrFromID(r->size(),vID[0],5);
-		// if(m00!="" && m00!=m0){			
-			// printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
-		// }
-   // }      
-    /*if(r->size()==16||r->size()==27||r->size()==81){
+/*    if(r->size()==16||r->size()==27||r->size()==81||r->size()==125){
+		 int im0=calcm0(r);
+		 string m0=itos(im0);
+		 string m00=idHelper.StrFromID(r->size(),vID[0],5);
+		 if(m00!="" && m00!=m0){			
+			 printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
+		 }
+    } */     
+   if(r->size()==16){
 		string sRI2=calcRingInvariant2(r);
 		string sRI20=idHelper.StrFromID(r->size(),vID[0],1);		
 		if(sRI20!="" && sRI2.find(sRI20)==string::npos){			
 			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),sRI2.c_str(),vID[0],sRI20.c_str());
 		}
-   }*/
-   if(r->size()==16||r->size()==27||r->size()==81){
+   }
+   if(/*r->size()==16||r->size()==27||*/r->size()==81){
 		string sRI3=calcRingInvariant3(r);
 		string sRI30=idHelper.StrFromID(r->size(),vID[0],2);		
 		if(sRI30!="" && sRI3.find(sRI30)==string::npos){			
