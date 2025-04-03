@@ -1816,6 +1816,107 @@ string calcQ1(IRing* r){
 	return str;
 }
 
+string calQ1(IRing* r){
+	int IdRing(IRing* r);
+	int n = r->size();
+	int p = 2;
+	for (; p <= n; p++){
+		if (n%p == 0)
+			break;
+	}
+	if (p == n){
+		return "[]";
+	}
+	vector<int> v1;
+	for (int i = 1; i<n; i++){
+		vector<int> v;
+		v.push_back(i);
+		Subring S1i0;
+		bool b = S1i0.init(r, v, p);
+		if (!b)
+			continue;
+		if (S1i0.m_Set.size() != p)
+			continue;
+		vector<int> v0 = v;
+		v = S1i0.m_Set;
+		int iret1 = IsIdeal(r, v);
+		if (iret1 != 1)
+			continue;
+		quotientRing S1i(r, v);
+		bool b1 = IsRing(&S1i);
+		if (!b1){
+			continue;
+		}
+		int ID = IdRing(&S1i);
+		v1.push_back(ID);
+	}
+	std::sort(v1.begin(), v1.end());
+	vector<pair<int, int> > v2 = doN1Vec(v1);
+	string str = "[";
+	for (int i = 0; i<v2.size(); i++){
+		char sz[20] = { 0 };
+		sprintf(sz, "[%d,%d],", v2[i].first, v2[i].second);
+		str += sz;
+	}
+	if (str.size()>2){
+		str = str.substr(0, str.size() - 1);
+	}
+	str += "]";
+	return str;
+}
+
+string calq2(IRing* r){
+	int IdRing(IRing* r);
+	int n = r->size();
+	int p = 2;
+	for (; p <= n; p++){
+		if (n%p == 0)
+			break;
+	}
+	if (p == n){
+		return "[]";
+	}
+	vector<pair<int, int> > v1;
+	for (int i = 1; i<n; i++){
+		vector<int> v;
+		v.push_back(i);
+		Subring S1i0;
+		bool b = S1i0.init(r, v, p);
+		if (!b)
+			continue;
+		if (S1i0.m_Set.size() != p)
+			continue;
+		vector<int> v0 = v;
+		v = S1i0.m_Set;
+		int iret1 = IsIdeal(r, v);
+		if (iret1 != 1)
+			continue;
+		quotientRing S1i(r, v);
+		bool b1 = IsRing(&S1i);
+		if (!b1){
+			continue;
+		}
+		int ID0 = IdRing(&S1i0);
+		int ID = IdRing(&S1i);
+		v1.push_back(make_pair(ID0, ID));
+	}
+	std::sort(v1.begin(), v1.end());
+	vector<tuple<int, int, int> > v2 = doN2Vec(v1);
+	string str = "[";
+	for (int i = 0; i<v2.size(); i++)
+	{
+		char sz[20] = { 0 };
+		sprintf(sz, "[%d,%d,%d],", get<0>(v2[i]), get<1>(v2[i]), get<2>(v2[i]));
+		str += sz;
+	}
+	if (str.size()>2)
+	{
+		str = str.substr(0, str.size() - 1);
+	}
+	str += "]";
+	return str;
+}
+
 string calcQ2(IRing* r){
 	int IdRing(IRing* r);
 	int n=r->size();
@@ -2421,11 +2522,11 @@ RIDHelper::RIDHelper(){
 	iret=LoadStr("m0R81.csv",81,5);
 	iret=LoadStr("m0R125.csv",125,5);	
  	int m0cnt=m_Str[5].size();
- 	iret=LoadStr("Q3R16.csv",16,1);	
-	//iret=LoadStr("I2R27.csv",27,1);	
+ 	//iret=LoadStr("q2R16.csv",16,1);	
+	//iret=LoadStr("q2R27.csv",27,1);	
 	//iret=LoadStr("I2R32.csv",32,1);
 	//iret=LoadStr("I2R81.csv",81,1);	
-	int ri2cnt=m_Str[1].size();
+	//int ri2cnt=m_Str[1].size();
     //printf("ri2cnt=%d\n",ri2cnt);	
  	iret=LoadStr("RI3R16.csv",16,2);	
 	iret=LoadStr("RI3R27.csv",27,2);	
@@ -2542,7 +2643,7 @@ string calcRingInvariant2(IRing* r){
 	//sprintf(sz, "%s", calcS2(r).c_str());
 	//sprintf(sz, "%s,%s", calcI1(r).c_str(), calcI2(r).c_str());
 	//return sz;
-	return calcQ3(r);
+	return calI2(r);
 }
 
 string calcRingInvariant3(IRing* r){
@@ -2652,14 +2753,14 @@ int IdRing(IRing* r){
 		 if(m00!="" && m00!=m0){			
 			 printf("出错了，%d阶环的m0=%s与ID=%d,m0=%s不匹配！\n",r->size(),m0.c_str(),vID[0],m00.c_str());
 		 }
-    } */     
-   if(r->size()==16){
+    }      
+   if (r->size() == 81){
 		string sRI2=calcRingInvariant2(r);
 		string sRI20=idHelper.StrFromID(r->size(),vID[0],1);		
 		if(sRI20!="" && sRI2.find(sRI20)==string::npos){			
 			printf("出错了，%d阶环的RI2=%s与ID=%d,RI2=%s不匹配！\n",r->size(),sRI2.c_str(),vID[0],sRI20.c_str());
 		}
-   }
+   }*/
    if(/*r->size()==16||r->size()==27||*/r->size()==81){
 		string sRI3=calcRingInvariant3(r);
 		string sRI30=idHelper.StrFromID(r->size(),vID[0],2);		

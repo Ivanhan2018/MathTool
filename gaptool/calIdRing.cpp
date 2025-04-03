@@ -225,6 +225,21 @@ public:
 	int m_delt; 
 };
 
+string calcRI2(IRing* r){
+	int bN=IsNilpotent(r);	
+	int bL=OneExNum(r,2);
+	int bR=OneExNum(r,3);
+	string strC2=calcC2(r);
+	string strN3=calcN3(r);
+	string strN4=calcN4(r);
+	string strN7=calcN7(r);	
+	string strN1=calcN1(r);	
+	//bNbLbRC2N3N4N7N1
+	char sz[2048]={0};
+	sprintf(sz,"%d,%d,%d,%s,%s,%s,%s,%s",bN,bL,bR,strC2.c_str(),strN3.c_str(),strN4.c_str(),strN7.c_str(),strN1.c_str());
+	return sz;
+}
+
 void FiniteRing::printTable()
 {
 	bool b1=IsRing(this);
@@ -246,6 +261,9 @@ void FiniteRing::printTable()
 #elif defined(Q1_)
 	string Q1=calcQ1(this);
 	printf("%d,%s\n",ID,Q1.c_str());
+#elif defined(q2_)
+	string q2 = calq2(this);
+	printf("%d,%s\n", ID, q2.c_str());
 #elif defined(Q3_)
 	string Q3 = calcQ3(this);
 	printf("%d,%s\n", ID, Q3.c_str());
@@ -311,17 +329,21 @@ void FiniteRing::printTable()
 	string Q1=calcQ1(this);
 	printf("Q1=%s\n",Q1.c_str());
 	int m0=calcm0(this);
-	printf("m0=%d\n",m0);	
-	string str2=calcRingInvariant2(this);  
-	printf("RI2=%s\n",str2.c_str());	
+	printf("m0=%d\n",m0);
+	string Q3 = calcQ3(this);
+	printf("Q3=%s\n", Q3.c_str());	
 	string str3=calcRingInvariant3(this);  
-	printf("RI3=%s\n",str3.c_str());	
+	printf("RI3=%s\n",str3.c_str());
 	int bN=IsNilpotent(this);
 	printf("bN=%d\n",bN);		
 	int rk=Rank(this);
 	printf("r=%d\n",rk);
 	string b8N8N9=calcb8N8N9(this);
 	printf("b8N8N9=%s\n",b8N8N9.c_str());
+	string q1 = calQ1(this);
+	printf("q1=%s\n", q1.c_str());
+	string q2 = calq2(this);
+	printf("q2=%s\n", q2.c_str());
 /*
 	vector<pair<int,int> > v1=calcAddGen(this);
 	string str1="[";
